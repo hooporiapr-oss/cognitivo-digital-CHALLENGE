@@ -449,7 +449,12 @@ function showFinalScore(finalLevel,finalTime){
   if(!IS_OFFICIAL){
     $('endLabel').textContent='Practice Run · Longest Chain Held';
     status.style.color='#7d8ba3';
-    status.textContent='Practice run — nothing recorded.';
+    status.textContent='Practice run.';
+
+    // A practice best is shown to sponsors on the pledge page, so it
+    // is kept per challenge and only ever moves upward. Free play
+    // outside a challenge records nothing at all.
+    if (CHALLENGE_ID && PLAYER_ID) recordPractice(finalLevel);
     return;
   }
 
@@ -498,6 +503,51 @@ function showFinalScore(finalLevel,finalTime){
     status.textContent='Could not reach the server — contact your coach before playing again.';
     console.error('Challenge run write — network error:',e);
   });
+}
+
+// Keeps the highest practice level for this player in this
+// challenge. Upserts, then only overwrites when the new run is
+// actually better — so a bad run never lowers a posted best.
+function recordPractice(finalLevel){
+  var base = SB_URL + '/rest/v1/challenge_practice';
+  var headers = {
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer ' + SB_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+  var filter = '?challenge_id=eq.' + encodeURIComponent(CHALLENGE_ID)
+             + '&player_id=eq.' + encodeURIComponent(PLAYER_ID);
+
+  fetch(base + filter + '&select=best_level,runs', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(rows){
+    if (rows && rows.length){
+      var row = rows[0];
+      return fetch(base + filter, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify({
+          best_level: Math.max(row.best_level || 0, finalLevel),
+          runs: (row.runs || 0) + 1,
+          updated_at: new Date().toISOString()
+        })
+      });
+    }
+    return fetch(base, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        challenge_id: CHALLENGE_ID,
+        player_id: PLAYER_ID,
+        best_level: finalLevel,
+        runs: 1
+      })
+    });
+  })
+  .catch(function(e){ console.error('Practice record:', e); });
 }
 
 function loadBest(){
