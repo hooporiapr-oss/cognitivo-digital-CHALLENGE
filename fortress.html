@@ -481,14 +481,19 @@ function buildBoard(){
             '<stop offset="100%" stop-color="#c07d00"/>' +
           '</linearGradient>' +
         '</defs>' +
-        '<g fill="none" stroke="rgba(25,12,0,.95)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">' +
-          '<path d="M70 28 C70 16 56 12 46 12 C32 12 24 20 24 30 C24 52 74 46 74 70 C74 82 62 88 48 88 C34 88 26 82 24 72"/>' +
-          '<line x1="49" y1="2" x2="49" y2="98"/>' +
+        // Dark outline under everything, so the gold reads on any of
+        // the five ball colors.
+        '<g fill="none" stroke="rgba(20,10,0,.95)" stroke-width="30" stroke-linecap="round">' +
+          '<path d="M72 34 C72 22 60 18 50 18 C36 18 28 24 28 34 C28 52 72 48 72 66 C72 76 60 82 50 82 C38 82 28 77 27 68"/>' +
+          '<line x1="50" y1="4" x2="50" y2="96"/>' +
         '</g>' +
-        '<g fill="none" stroke="url(#g' + i + ')" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">' +
-          '<path d="M70 28 C70 16 56 12 46 12 C32 12 24 20 24 30 C24 52 74 46 74 70 C74 82 62 88 48 88 C34 88 26 82 24 72"/>' +
-          '<line x1="49" y1="2" x2="49" y2="98"/>' +
+        // The bar is drawn LAST and runs well past the curve at both
+        // ends — that overshoot is the whole difference between a
+        // dollar sign and an S.
+        '<g fill="none" stroke="url(#g' + i + ')" stroke-width="15" stroke-linecap="round">' +
+          '<path d="M72 34 C72 22 60 18 50 18 C36 18 28 24 28 34 C28 52 72 48 72 66 C72 76 60 82 50 82 C38 82 28 77 27 68"/>' +
         '</g>' +
+        '<line x1="50" y1="4" x2="50" y2="96" stroke="url(#g' + i + ')" stroke-width="15" stroke-linecap="round"/>' +
       '</svg>';
     el.appendChild(mark);
 
