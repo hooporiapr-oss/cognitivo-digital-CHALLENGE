@@ -175,7 +175,10 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 var params = new URLSearchParams(window.location.search);
 var CHALLENGE_ID = params.get('c') || null;
 var PLAYER_ID = params.get('p') || null;
-var IS_OFFICIAL = !!(CHALLENGE_ID && PLAYER_ID && params.get('official') === '1');
+var RUN_KEY = params.get('k');
+// An official run needs the player's own run key. Without it this is
+// practice, however the link was edited.
+var IS_OFFICIAL = !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.get('official') === '1');
 
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 
@@ -212,7 +215,8 @@ var runStartTime=0;
 // their score and their official-run button live.
 (function setBackLink(){
   if (CHALLENGE_ID && PLAYER_ID){
-    var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID);
+    var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
+             + (RUN_KEY ? '&k=' + encodeURIComponent(RUN_KEY) : '');
     $('backToPledge').href = back;
     $('backToPledge').textContent = '← Back to my Challenge page';
     document.querySelector('.intro-back').href = back;
@@ -555,41 +559,43 @@ function showFinalScore(finalLevel,finalTime){
   status.style.color='#a7adba';
   status.textContent='Recording your official run…';
 
-  fetch(SB_URL+'/rest/v1/challenge_runs',{
+  // The run key is checked inside the database, so holding the public
+  // sponsor link is not enough to end anyone's official run.
+  fetch(SB_URL+'/rest/v1/rpc/record_official_run',{
     method:'POST',
     headers:{
       'apikey':SB_KEY,
       'Authorization':'Bearer '+SB_KEY,
-      'Content-Type':'application/json',
-      'Prefer':'return=minimal'
+      'Content-Type':'application/json'
     },
     body:JSON.stringify({
-      challenge_id:CHALLENGE_ID,
-      player_id:PLAYER_ID,
-      level_reached:finalLevel,
-      points:points,
-      time_seconds:Number(finalTime.toFixed(2))
+      p_challenge:CHALLENGE_ID,
+      p_player:PLAYER_ID,
+      p_key:RUN_KEY,
+      p_level:finalLevel,
+      p_points:points,
+      p_time:Number(finalTime.toFixed(2))
     })
   })
   .then(function(r){
-    if(r.ok){
+    if(!r.ok) throw new Error('request failed');
+    return r.json();
+  })
+  .then(function(out){
+    if(out && out.ok){
       status.style.color='#00D9A5';
       status.textContent='✓ Official run recorded — ' + points + ' points.';
       IS_OFFICIAL=false;
       return;
     }
-    return r.text().then(function(body){
-      // A unique violation means an official run already existed —
-      // not a failure worth alarming anyone about.
-      if(body.indexOf('23505')!==-1){
-        status.style.color='#ffd35a';
-        status.textContent='Your official run was already recorded. This one was practice.';
-      }else{
-        status.style.color='#ff6b35';
-        status.textContent='Could not record this run — contact your coach before playing again.';
-      }
-      console.error('Challenge run write failed:',r.status,body);
-    });
+    if(out && out.reason==='already'){
+      status.style.color='#ffd35a';
+      status.textContent='Your official run was already recorded. This one was practice.';
+      IS_OFFICIAL=false;
+      return;
+    }
+    status.style.color='#ff6b35';
+    status.textContent='This link cannot record an official run — ask your coach for your own link.';
   })
   .catch(function(e){
     status.style.color='#ff6b35';
