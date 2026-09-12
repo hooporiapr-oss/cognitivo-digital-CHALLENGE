@@ -267,7 +267,21 @@ var BALL_SEAMS="url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/
 function buildBoard(){
   var layer=$('targetLayer');
   var court=$('keySvg').getBoundingClientRect();
-  layer.style.position='absolute';
+
+  // The court has to have actually been laid out before its box can be
+  // measured. Switching screens, entering fullscreen and rotating all
+  // change that box, and on a phone the change lands a frame or two
+  // after the code that caused it — measuring too early put every ball
+  // in the top-left corner. So: bail out and try again rather than
+  // building against a box that is not real yet.
+  if (court.width < 60 || court.height < 60){
+    requestAnimationFrame(buildBoard);
+    return;
+  }
+
+  // Fixed, not absolute — these are viewport coordinates, and this
+  // page never scrolls.
+  layer.style.position='fixed';
   layer.style.left=court.left+'px';
   layer.style.top=court.top+'px';
   layer.style.width=court.width+'px';
@@ -293,7 +307,18 @@ function buildBoard(){
     targetEls.push(el);
   }
 }
-window.addEventListener('resize',function(){if($('screen-game').style.display==='flex')buildBoard()});
+// Any of these can resize or move the court under the balls: rotating
+// the phone, the address bar sliding away, entering or leaving
+// fullscreen. Rebuilding keeps the balls on the key.
+function rebuildIfPlaying(){
+  if($('screen-game').style.display==='flex') buildBoard();
+}
+window.addEventListener('resize',rebuildIfPlaying);
+window.addEventListener('orientationchange',function(){setTimeout(rebuildIfPlaying,220)});
+document.addEventListener('fullscreenchange',function(){setTimeout(rebuildIfPlaying,220)});
+if (window.visualViewport){
+  window.visualViewport.addEventListener('resize',rebuildIfPlaying);
+}
 
 var audioCtx=null;
 function ensureAudio(){ if(!audioCtx){ try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){} } }
@@ -339,8 +364,17 @@ function startDrill(){
   $('screen-intro').style.display='none';
   $('screen-end').style.display='none';
   $('screen-game').style.display='flex';
-  buildBoard();
-  showCountdownThen(runDrill);
+
+  // Two frames, so the game screen is genuinely laid out before the
+  // court is measured. The countdown then gives another 2.4 seconds
+  // for fullscreen to settle, and buildBoard runs again at the end of
+  // it against the final box.
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      buildBoard();
+      showCountdownThen(function(){ buildBoard(); runDrill(); });
+    });
+  });
 }
 
 function showCountdownThen(cb){
