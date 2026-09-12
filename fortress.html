@@ -28,6 +28,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(168,85,247,.5);background:rgba(168,85,247,.1);border-radius:14px;color:#c9a3fa;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px;text-decoration:none;display:flex;align-items:center;justify-content:center}
 .best-line{margin-top:16px;font-size:.85rem;color:#a7adba}
 .best-line b{color:#a855f7}
+.lang-btn{position:fixed;top:16px;right:16px;padding:8px 14px;border:2px solid rgba(168,85,247,.45);background:rgba(0,0,0,.5);color:#c9a3fa;font-size:.72rem;font-weight:900;letter-spacing:.08em;border-radius:999px;cursor:pointer;z-index:60}
 .intro-back{position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none;z-index:60}
 
 .official-banner{
@@ -89,11 +90,12 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <!-- INTRO -->
 <div id="screen-intro">
   <a class="intro-back" href="index.html">← Back</a>
-  <div class="vrr-sub">The 2-1-2 Zone</div>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
+  <div class="vrr-sub" id="introSub">The 2-1-2 Zone</div>
   <div class="vrr-title">THE <span>FORTRESS</span></div>
 
   <div class="official-banner" id="officialBanner" style="display:none;">
-    <div class="ob-kick">Official Run</div>
+    <div class="ob-kick" id="obKick">Official Run</div>
     <div class="ob-name" id="obPlayer">—</div>
     <div class="ob-note" id="obNote">This run counts. Your sponsors pay on the points you score, and you only get one.</div>
   </div>
@@ -112,9 +114,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <div id="screen-game">
   <div id="flash"></div>
   <div class="topbar">
-    <div class="top-box"><div class="top-label">Level</div><div class="top-val" id="hLevel">0</div></div>
-    <div class="top-box official"><div class="top-label">Points</div><div class="top-val" id="hPoints">0</div></div>
-    <div class="top-box"><div class="top-label">Time</div><div class="top-val" id="hTime">0.0</div></div>
+    <div class="top-box"><div class="top-label" id="lblLevel">Level</div><div class="top-val" id="hLevel">0</div></div>
+    <div class="top-box official"><div class="top-label" id="lblPoints">Points</div><div class="top-val" id="hPoints">0</div></div>
+    <div class="top-box"><div class="top-label" id="lblTime">Time</div><div class="top-val" id="hTime">0.0</div></div>
   </div>
   <div id="msg" class="watch"></div>
   <div class="court-wrap">
@@ -138,8 +140,8 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="final-label" id="endLabel">Longest Chain Held</div>
 
   <div class="final-stats">
-    <div class="final-stat-cell points-cell"><div class="final-stat-label">Points</div><div class="final-stat-val" id="endPoints">0</div></div>
-    <div class="final-stat-cell"><div class="final-stat-label">Time</div><div class="final-stat-val" id="endTime">0.0s</div></div>
+    <div class="final-stat-cell points-cell"><div class="final-stat-label" id="statPointsLbl">Points</div><div class="final-stat-val" id="endPoints">0</div></div>
+    <div class="final-stat-cell"><div class="final-stat-label" id="statTimeLbl">Time</div><div class="final-stat-val" id="endTime">0.0s</div></div>
   </div>
 
   <div class="save-status" id="saveStatus"></div>
@@ -150,6 +152,104 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 <script>
 function $(id){return document.getElementById(id)}
+
+// ══════════════════════════════════════════════════════
+//  LANGUAGE — Puerto Rico, so Spanish is not an afterthought.
+//  The choice is remembered and shared with the challenge pages
+//  through the same localStorage key.
+// ══════════════════════════════════════════════════════
+var STR = {
+  en:{
+    sub:'The 2-1-2 Zone',
+    rule:'<b>Five basketballs, set in a real 2-1-2 zone, fixed in place.</b> Watch the chain light up inside the key, then repeat it back — at your own pace, any speed. Every round the chain adds one more ball. One wrong tap ends the run — your score is the longest chain you held.',
+    namePh:'Your name',
+    start:'▶ START', startOfficial:'▶ START OFFICIAL RUN', startPractice:'▶ PRACTICE RUN',
+    officialKick:'Official Run',
+    officialNote:'This run counts. Your sponsors pay on the points you score, and you only get one.',
+    alreadyRun:'Your official run is already in: <b>level {L}, {P} points</b>. You can keep practising, but this score is final.',
+    confirmOfficial:'This is your official run. Your sponsors pay on the points you score, and you only get one. Ready?',
+    back:'← Back', backToChallenge:'← Back to my Challenge page', home:'← Home',
+    lblLevel:'Level', lblPoints:'Points', lblTime:'Time',
+    getReady:'GET READY...', watch:'WATCH THE FORTRESS', yourTurn:'YOUR TURN',
+    held:'✅ HELD THE FORTRESS', broken:'FORTRESS BROKEN',
+    labelPractice:'Practice Run · Longest Chain Held',
+    labelOfficial:'Official Run · Longest Chain Held',
+    playAgain:'▶ PLAY AGAIN',
+    statPoints:'Points', statTime:'Time',
+    practiceOnly:'Practice run.',
+    recording:'Recording your official run…',
+    recorded:'✓ Official run recorded — {P} points.',
+    wasAlready:'Your official run was already recorded. This one was practice.',
+    wrongLink:'This link cannot record an official run — ask your coach for your own link.',
+    noServer:'Could not reach the server — contact your coach before playing again.',
+    bestLine:'Your best practice run: <b>level {L}</b> · {P} points'
+  },
+  es:{
+    sub:'La Zona 2-1-2',
+    rule:'<b>Cinco balones, colocados en una zona 2-1-2 real, fijos en su sitio.</b> Observa la cadena encenderse dentro de la pintura y repítela — a tu propio ritmo, sin prisa. Cada ronda añade un balón más. Un toque equivocado termina la corrida — tu puntuación es la cadena más larga que aguantaste.',
+    namePh:'Tu nombre',
+    start:'▶ EMPEZAR', startOfficial:'▶ EMPEZAR CORRIDA OFICIAL', startPractice:'▶ CORRIDA DE PRÁCTICA',
+    officialKick:'Corrida Oficial',
+    officialNote:'Esta corrida cuenta. Tus padrinos pagan por los puntos que anotes, y solo tienes una.',
+    alreadyRun:'Tu corrida oficial ya está hecha: <b>nivel {L}, {P} puntos</b>. Puedes seguir practicando, pero esa puntuación es final.',
+    confirmOfficial:'Esta es tu corrida oficial. Tus padrinos pagan por los puntos que anotes, y solo tienes una. ¿Listo?',
+    back:'← Atrás', backToChallenge:'← Volver a mi página del Reto', home:'← Inicio',
+    lblLevel:'Nivel', lblPoints:'Puntos', lblTime:'Tiempo',
+    getReady:'PREPÁRATE...', watch:'OBSERVA LA FORTALEZA', yourTurn:'TU TURNO',
+    held:'✅ AGUANTASTE LA FORTALEZA', broken:'CAYÓ LA FORTALEZA',
+    labelPractice:'Práctica · Cadena más larga',
+    labelOfficial:'Corrida Oficial · Cadena más larga',
+    playAgain:'▶ JUGAR OTRA VEZ',
+    statPoints:'Puntos', statTime:'Tiempo',
+    practiceOnly:'Corrida de práctica.',
+    recording:'Guardando tu corrida oficial…',
+    recorded:'✓ Corrida oficial guardada — {P} puntos.',
+    wasAlready:'Tu corrida oficial ya estaba guardada. Esta fue práctica.',
+    wrongLink:'Este enlace no puede guardar una corrida oficial — pídele a tu entrenador tu propio enlace.',
+    noServer:'No se pudo conectar al servidor — habla con tu entrenador antes de jugar otra vez.',
+    bestLine:'Tu mejor práctica: <b>nivel {L}</b> · {P} puntos'
+  }
+};
+
+var LANG = 'en';
+try { LANG = localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'); } catch(e){}
+
+function T(key, vals){
+  var out = (STR[LANG] && STR[LANG][key]) || STR.en[key] || key;
+  if (vals) Object.keys(vals).forEach(function(k){
+    out = out.split('{'+k+'}').join(vals[k]);
+  });
+  return out;
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  $('introSub').textContent = T('sub');
+  $('ruleText').innerHTML = T('rule');
+  $('playerNameInputMain').placeholder = T('namePh');
+  $('obKick').textContent = T('officialKick');
+  $('lblLevel').textContent = T('lblLevel');
+  $('lblPoints').textContent = T('lblPoints');
+  $('lblTime').textContent = T('lblTime');
+  $('statPointsLbl').textContent = T('statPoints');
+  $('statTimeLbl').textContent = T('statTime');
+  $('againBtn').textContent = T('playAgain');
+  $('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
+  document.querySelector('.intro-back').textContent = (CHALLENGE_ID && PLAYER_ID) ? T('backToChallenge') : T('back');
+  document.querySelector('#controls .ctrl-btn').textContent = (CHALLENGE_ID && PLAYER_ID) ? T('backToChallenge') : T('home');
+  $('backToPledge').textContent = (CHALLENGE_ID && PLAYER_ID) ? T('backToChallenge') : T('back');
+  if (!$('bigStart').dataset.locked){
+    $('bigStart').textContent = IS_OFFICIAL ? T('startOfficial') : T('start');
+  }
+  if (!$('obNote').dataset.locked) $('obNote').textContent = T('officialNote');
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('fc-lang', LANG); } catch(e){}
+  applyLang();
+  loadBest();
+}
 
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
@@ -218,7 +318,7 @@ var runStartTime=0;
     var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
              + (RUN_KEY ? '&k=' + encodeURIComponent(RUN_KEY) : '');
     $('backToPledge').href = back;
-    $('backToPledge').textContent = '← Back to my Challenge page';
+    $('backToPledge').textContent = T('backToChallenge');
     document.querySelector('.intro-back').href = back;
     document.querySelector('#controls .ctrl-btn').href = back;
   }
@@ -229,7 +329,7 @@ var runStartTime=0;
 
   $('officialBanner').style.display='block';
   $('bigStart').className='big-btn official';
-  $('bigStart').textContent='▶ START OFFICIAL RUN';
+  $('bigStart').textContent=T('startOfficial');
   $('againBtn').style.display='none';
 
   // Pull the player's name so they do not type it, and so the run is
@@ -257,10 +357,11 @@ var runStartTime=0;
   .then(function(r){ return r.json(); })
   .then(function(rows){
     if (rows && rows.length){
-      $('obNote').innerHTML = 'Your official run is already in: <b>level ' + rows[0].level_reached
-        + ', ' + rows[0].points + ' points</b>. You can keep practising, but this score is final.';
+      $('obNote').innerHTML = T('alreadyRun', { L: rows[0].level_reached, P: rows[0].points });
+      $('obNote').dataset.locked='1';
       $('bigStart').className='big-btn';
-      $('bigStart').textContent='▶ PRACTICE RUN';
+      $('bigStart').textContent=T('startPractice');
+      $('bigStart').dataset.locked='1';
       IS_OFFICIAL = false;
     }
   })
@@ -452,7 +553,7 @@ function runDrill(){
   phase='running';sequence=[];playerIdx=0;level=0;
   runStartTime=performance.now();
   $('hLevel').textContent='0';$('hPoints').textContent='0';$('hTime').textContent='0.0';
-  msg('GET READY...','go');
+  msg(T('getReady'),'go');
   timers.push(setTimeout(startLevel,900));
   requestAnimationFrame(updateTimerDisplay);
 }
@@ -469,7 +570,7 @@ function startLevel(){
   level=sequence.length;
   $('hLevel').textContent=level;
   setReady(false);
-  msg('WATCH THE FORTRESS','watch');
+  msg(T('watch'),'watch');
   playSequence(0);
 }
 
@@ -477,7 +578,7 @@ function playSequence(i){
   if(phase!=='running')return;
   if(i>=sequence.length){
     setReady(true);
-    msg('YOUR TURN','go');
+    msg(T('yourTurn'),'go');
     return;
   }
   var idx=sequence[i];
@@ -503,7 +604,7 @@ function handleTargetTap(idx){
       setReady(false);
       // Points only bank on a level actually held to the end.
       $('hPoints').textContent = pointsFor(level);
-      msg('✅ HELD THE FORTRESS','go');
+      msg(T('held'),'go');
       timers.push(setTimeout(startLevel,LEVEL_PAUSE_MS));
     }
   }else{
@@ -524,7 +625,7 @@ function endDrill(){
   var finalLevel = Math.max(0, level - 1);
   var finalTime=(performance.now()-runStartTime)/1000;
 
-  msg('FORTRESS BROKEN','miss');
+  msg(T('broken'),'miss');
   timers.push(setTimeout(function(){
     showFinalScore(finalLevel,finalTime);
   },700));
@@ -544,9 +645,9 @@ function showFinalScore(finalLevel,finalTime){
   var status=$('saveStatus');
 
   if(!IS_OFFICIAL){
-    $('endLabel').textContent='Practice Run · Longest Chain Held';
+    $('endLabel').textContent=T('labelPractice');
     status.style.color='#7d8ba3';
-    status.textContent='Practice run.';
+    status.textContent=T('practiceOnly');
 
     // A practice best is shown to sponsors on the pledge page, so it
     // is kept per challenge and only ever moves upward. Free play
@@ -555,9 +656,9 @@ function showFinalScore(finalLevel,finalTime){
     return;
   }
 
-  $('endLabel').textContent='Official Run · Longest Chain Held';
+  $('endLabel').textContent=T('labelOfficial');
   status.style.color='#a7adba';
-  status.textContent='Recording your official run…';
+  status.textContent=T('recording');
 
   // The run key is checked inside the database, so holding the public
   // sponsor link is not enough to end anyone's official run.
@@ -584,22 +685,22 @@ function showFinalScore(finalLevel,finalTime){
   .then(function(out){
     if(out && out.ok){
       status.style.color='#00D9A5';
-      status.textContent='✓ Official run recorded — ' + points + ' points.';
+      status.textContent=T('recorded', { P: points });
       IS_OFFICIAL=false;
       return;
     }
     if(out && out.reason==='already'){
       status.style.color='#ffd35a';
-      status.textContent='Your official run was already recorded. This one was practice.';
+      status.textContent=T('wasAlready');
       IS_OFFICIAL=false;
       return;
     }
     status.style.color='#ff6b35';
-    status.textContent='This link cannot record an official run — ask your coach for your own link.';
+    status.textContent=T('wrongLink');
   })
   .catch(function(e){
     status.style.color='#ff6b35';
-    status.textContent='Could not reach the server — contact your coach before playing again.';
+    status.textContent=T('noServer');
     console.error('Challenge run write — network error:',e);
   });
 }
@@ -652,15 +753,13 @@ function recordPractice(finalLevel){
 function loadBest(){
   best=0;
   try{best=parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0}catch(e){}
-  $('bestLine').innerHTML = best>0
-    ? ('Your best practice run: <b>level ' + best + '</b> · ' + pointsFor(best) + ' points')
-    : '';
+  $('bestLine').innerHTML = best>0 ? T('bestLine', { L: best, P: pointsFor(best) }) : '';
 }
 function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
 function handleStartClick(){
   if(IS_OFFICIAL){
-    if(!confirm('This is your official run. Your sponsors pay on the points you score, and you only get one. Ready?')) return;
+    if(!confirm(T('confirmOfficial'))) return;
     startDrill();
     return;
   }
@@ -686,6 +785,7 @@ $('againBtn').addEventListener('click',function(){
   loadBest();
 });
 
+applyLang();
 loadBest();
 </script>
 </body>
