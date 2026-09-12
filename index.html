@@ -107,6 +107,130 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 //  each level is worth more than the one before. Level 12 is 78
 //  points; level 13 is 91.
 // ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+//  LANGUAGE — Puerto Rico, so Spanish is not an afterthought.
+//  Shares its choice with the game through the same key.
+// ══════════════════════════════════════════════════════
+var STR = {
+  en:{
+    brand:'Gostar Digital', title1:'The Fortress ', title2:'Challenge',
+    lede:'A memory drill that pays. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.',
+    howTitle:'How it works',
+    s1h:'Sponsors pledge per point', s1p:'Any rate they choose. Nothing is charged when they pledge.',
+    s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
+    s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
+    s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.',
+    tryIt:'▶ Try The Fortress', freeNote:'Free to play. Nothing recorded.',
+    haveLink:'Looking for a player or a team? Use the link they sent you.',
+    kick:'The Fortress Challenge',
+    teamPoints:'Team points', runsDone:'Runs done',
+    pledgeTeam:'Pledge to the whole team', pledgeTeamNote:'Your pledge is multiplied by the team\u2019s combined points.',
+    rosterTitle:'The roster', rosterNote:'Tap a player to pledge to them directly.',
+    noPlayers:'No players yet.', notYet:'not yet', practisingL:'practising · L', pts:'pts',
+    officialPoints:'Official points', levelHeld:'Level held',
+    practiceBest:'Practice best', wouldScore:'Would score',
+    runDone:'Official run complete — {L} levels held, {P} points.',
+    practisingNow:'Practising now. {N} has reached level {L} in practice, which would be {P} points. The official run is still to come.',
+    notPractised:'{N} has not practised yet.',
+    closedTitle:'Pledging has closed for this run',
+    closedNote:'The official run is done, so the score is final. You can still pledge to the team.',
+    seeTeam:'← See the whole team',
+    pledgeTo:'Pledge to {N}',
+    pledgeNote:'Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.',
+    yourRunTitle:'Your official run', yourRunDone:'Your run is done',
+    runDoneNote:'You held {L} levels for {P} points. That score is final — but the game is always open.',
+    practiceNote:'Practise as much as you like. Nothing counts until you start the official run, and you only get one.',
+    practiceBtn:'▶ Practice run', officialBtn:'▶ Start official run', practiceOnlyBtn:'▶ Practice',
+    ownPage:'This is your own page. Share the link below with people who want to back you — it lets them pledge, but not play.',
+    copyShare:'Copy my sponsor link',
+    shareCopied:'Link copied — send it to anyone who wants to back you:',
+    copyPrompt:'Copy this link:',
+    yourName:'Your name', yourEmail:'Your email', perPoint:'Amount per point ($)',
+    previewEmpty:'Enter a rate to see what that could come to.',
+    previewLine:'Level 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Level 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Level 20 (210 pts) → <b>{C}</b>',
+    makePledge:'Make this pledge', saving:'Recording your pledge…',
+    pledgeOk:'✓ Pledge recorded. You will be invoiced at {R} per point after the official run — nothing is charged before then.',
+    thankYou:'Thank you.',
+    needName:'Please enter your name.', needEmail:'Please enter a valid email — the invoice goes there.',
+    needRate:'Please enter an amount per point.', pledgeFail:'Could not save that pledge — please try again.',
+    pledgesClose:'Pledges close', runsBy:'runs by',
+    notFound:'{W} not found', notFoundNote:'Check the link, or ask whoever sent it for a new one.',
+    backHome:'← The Fortress Challenge', loadFail:'Could not load this page. Please try again.',
+    wordChallenge:'Challenge', wordPlayer:'Player', wordTeam:'The team',
+    footer:'Gostar Digital LLC — Puerto Rico'
+  },
+  es:{
+    brand:'Gostar Digital', title1:'El Reto ', title2:'Fortress',
+    lede:'Un ejercicio de memoria que recauda. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y la mitad de todo lo cobrado va directo a su programa.',
+    howTitle:'Cómo funciona',
+    s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
+    s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
+    s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
+    s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados. La mitad de lo cobrado va al programa.',
+    tryIt:'▶ Prueba The Fortress', freeNote:'Gratis. No se guarda nada.',
+    haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
+    kick:'El Reto Fortress',
+    teamPoints:'Puntos del equipo', runsDone:'Corridas hechas',
+    pledgeTeam:'Promete a todo el equipo', pledgeTeamNote:'Tu promesa se multiplica por los puntos combinados del equipo.',
+    rosterTitle:'El equipo', rosterNote:'Toca a un jugador para prometerle directamente.',
+    noPlayers:'Todavía no hay jugadores.', notYet:'aún no', practisingL:'practicando · N', pts:'pts',
+    officialPoints:'Puntos oficiales', levelHeld:'Nivel aguantado',
+    practiceBest:'Mejor práctica', wouldScore:'Anotaría',
+    runDone:'Corrida oficial completa — {L} niveles aguantados, {P} puntos.',
+    practisingNow:'Practicando ahora. {N} ha llegado al nivel {L} en práctica, lo que serían {P} puntos. La corrida oficial está por venir.',
+    notPractised:'{N} todavía no ha practicado.',
+    closedTitle:'Las promesas cerraron para esta corrida',
+    closedNote:'La corrida oficial ya está hecha, así que la puntuación es final. Todavía puedes prometerle al equipo.',
+    seeTeam:'← Ver todo el equipo',
+    pledgeTo:'Prométele a {N}',
+    pledgeNote:'Escoge la cantidad que quieras por punto. No se cobra nada ahora — se te facturará después de la corrida oficial.',
+    yourRunTitle:'Tu corrida oficial', yourRunDone:'Tu corrida está hecha',
+    runDoneNote:'Aguantaste {L} niveles para {P} puntos. Esa puntuación es final — pero el juego siempre está abierto.',
+    practiceNote:'Practica todo lo que quieras. Nada cuenta hasta que empieces la corrida oficial, y solo tienes una.',
+    practiceBtn:'▶ Corrida de práctica', officialBtn:'▶ Empezar corrida oficial', practiceOnlyBtn:'▶ Practicar',
+    ownPage:'Esta es tu propia página. Comparte el enlace de abajo con quien quiera apoyarte — con él pueden prometer, pero no jugar.',
+    copyShare:'Copiar mi enlace de padrinos',
+    shareCopied:'Enlace copiado — envíaselo a quien quiera apoyarte:',
+    copyPrompt:'Copia este enlace:',
+    yourName:'Tu nombre', yourEmail:'Tu correo', perPoint:'Cantidad por punto ($)',
+    previewEmpty:'Entra una tarifa para ver a cuánto llegaría.',
+    previewLine:'Nivel 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Nivel 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Nivel 20 (210 pts) → <b>{C}</b>',
+    makePledge:'Hacer esta promesa', saving:'Guardando tu promesa…',
+    pledgeOk:'✓ Promesa guardada. Se te facturará a {R} por punto después de la corrida oficial — no se cobra nada antes.',
+    thankYou:'Gracias.',
+    needName:'Por favor entra tu nombre.', needEmail:'Por favor entra un correo válido — ahí llega la factura.',
+    needRate:'Por favor entra una cantidad por punto.', pledgeFail:'No se pudo guardar la promesa — intenta de nuevo.',
+    pledgesClose:'Las promesas cierran', runsBy:'corridas hasta',
+    notFound:'{W} no encontrado', notFoundNote:'Verifica el enlace o pide uno nuevo a quien te lo envió.',
+    backHome:'← El Reto Fortress', loadFail:'No se pudo cargar esta página. Intenta de nuevo.',
+    wordChallenge:'Reto', wordPlayer:'Jugador', wordTeam:'El equipo',
+    footer:'Gostar Digital LLC — Puerto Rico'
+  }
+};
+
+var LANG = 'en';
+try { LANG = localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'); } catch(e){}
+
+function T(key, vals){
+  var out = (STR[LANG] && STR[LANG][key]) || STR.en[key] || key;
+  if (vals) Object.keys(vals).forEach(function(k){ out = out.split('{'+k+'}').join(vals[k]); });
+  return out;
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('fc-lang', LANG); } catch(e){}
+  location.reload();
+}
+
+function langBtnHtml(){
+  return '<button onclick="toggleLang()" style="position:fixed;top:14px;right:14px;z-index:60;' +
+         'padding:7px 13px;border:1px solid var(--line);background:var(--panel);color:var(--mute);' +
+         'border-radius:999px;font-family:inherit;font-size:.72rem;font-weight:800;cursor:pointer;">' +
+         (LANG === 'en' ? 'ES' : 'EN') + '</button>';
+}
+
 var params = new URLSearchParams(window.location.search);
 var CHALLENGE = params.get('c');
 var PLAYER = params.get('p');
@@ -136,29 +260,30 @@ var app = document.getElementById('app');
 // ---------- landing ----------
 function renderLanding(){
   app.innerHTML =
-    '<div class="kick">Gostar Digital</div>' +
-    '<h1>The Fortress <span>Challenge</span></h1>' +
-    '<p style="margin-top:14px;">A memory drill that pays. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.</p>' +
+    langBtnHtml() +
+    '<div class="kick">' + T('brand') + '</div>' +
+    '<h1>' + T('title1') + '<span>' + T('title2') + '</span></h1>' +
+    '<p style="margin-top:14px;">' + T('lede') + '</p>' +
 
     '<div class="panel">' +
-      '<h2>How it works</h2>' +
+      '<h2>' + T('howTitle') + '</h2>' +
       '<div class="steps">' +
-        '<div class="step"><div><b>Sponsors pledge per point</b><span>Any rate they choose. Nothing is charged when they pledge.</span></div></div>' +
-        '<div class="step"><div><b>The player practises free</b><span>As many runs as they like, so nobody goes in cold.</span></div></div>' +
-        '<div class="step"><div><b>One official run</b><span>Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.</span></div></div>' +
-        '<div class="step"><div><b>Invoices go out</b><span>Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.</span></div></div>' +
+        '<div class="step"><div><b>' + T('s1h') + '</b><span>' + T('s1p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s2h') + '</b><span>' + T('s2p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s3h') + '</b><span>' + T('s3p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s4h') + '</b><span>' + T('s4p') + '</span></div></div>' +
       '</div>' +
     '</div>' +
 
-    '<a class="btn" href="fortress.html">▶ Try The Fortress</a>' +
-    '<p class="mute" style="margin-top:12px;text-align:center;">Free to play. Nothing recorded.</p>' +
+    '<a class="btn" href="fortress.html">' + T('tryIt') + '</a>' +
+    '<p class="mute" style="margin-top:12px;text-align:center;">' + T('freeNote') + '</p>' +
 
-    '<p class="mute" style="margin-top:26px;">Looking for a player or a team? Use the link they sent you.</p>' +
+    '<p class="mute" style="margin-top:26px;">' + T('haveLink') + '</p>' +
     footerHtml();
 }
 
 function footerHtml(){
-  return '<footer>Gostar Digital LLC — Puerto Rico<br>' +
+  return '<footer>' + T('footer') + '<br>' +
          '<a href="mailto:cashflowhoops@gmail.com" style="color:var(--mute)">cashflowhoops@gmail.com</a></footer>';
 }
 
@@ -176,8 +301,8 @@ function renderTeam(ch, campaign, players, runs, practice){
     var run = byPlayer[p.id];
     var prac = practiceBy[p.id];
     var right = run
-      ? esc(run.points) + ' pts'
-      : (prac ? 'practising · L' + esc(prac.best_level) : 'not yet');
+      ? esc(run.points) + ' ' + T('pts')
+      : (prac ? T('practisingL') + esc(prac.best_level) : T('notYet'));
     return '<a href="?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(p.id) + '">' +
              '<span>' + esc(p.name) + '</span>' +
              '<span class="pts">' + right + '</span>' +
@@ -185,27 +310,28 @@ function renderTeam(ch, campaign, players, runs, practice){
   }).join('');
 
   app.innerHTML =
-    '<div class="kick">The Fortress Challenge</div>' +
+    langBtnHtml() +
+    '<div class="kick">' + T('kick') + '</div>' +
     '<h1>' + esc(campaign ? campaign.name : ch.name) + '</h1>' +
     (ch.name ? '<p class="mute" style="margin-top:8px;">' + esc(ch.name) + '</p>' : '') +
 
     '<div class="stat-row">' +
-      '<div class="stat gold"><div class="stat-label">Team points</div><div class="stat-val">' + teamPoints + '</div></div>' +
-      '<div class="stat purple"><div class="stat-label">Runs done</div><div class="stat-val">' + done + ' / ' + players.length + '</div></div>' +
+      '<div class="stat gold"><div class="stat-label">' + T('teamPoints') + '</div><div class="stat-val">' + teamPoints + '</div></div>' +
+      '<div class="stat purple"><div class="stat-label">' + T('runsDone') + '</div><div class="stat-val">' + done + ' / ' + players.length + '</div></div>' +
     '</div>' +
 
     deadlineHtml(ch) +
 
     '<div class="panel">' +
-      '<h2>Pledge to the whole team</h2>' +
-      '<p class="mute">Your pledge is multiplied by the team\'s combined points.</p>' +
+      '<h2>' + T('pledgeTeam') + '</h2>' +
+      '<p class="mute">' + T('pledgeTeamNote') + '</p>' +
       pledgeFormHtml(null) +
     '</div>' +
 
     '<div class="panel">' +
-      '<h2>The roster</h2>' +
-      '<p class="mute">Tap a player to pledge to them directly.</p>' +
-      '<div class="roster">' + (roster || '<p class="mute">No players yet.</p>') + '</div>' +
+      '<h2>' + T('rosterTitle') + '</h2>' +
+      '<p class="mute">' + T('rosterNote') + '</p>' +
+      '<div class="roster">' + (roster || '<p class="mute">' + T('noPlayers') + '</p>') + '</div>' +
     '</div>' +
 
     footerHtml();
@@ -219,24 +345,24 @@ function renderPlayer(ch, campaign, player, run, prac){
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
 
   app.innerHTML =
-    '<div class="kick">The Fortress Challenge</div>' +
+    langBtnHtml() +
+    '<div class="kick">' + T('kick') + '</div>' +
     '<h1>' + esc(player.name) + '</h1>' +
     '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') + '</p>' +
 
     '<div class="stat-row">' +
       (run
-        ? '<div class="stat gold"><div class="stat-label">Official points</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
-          '<div class="stat"><div class="stat-label">Level held</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
-        : '<div class="stat purple"><div class="stat-label">Practice best</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
-          '<div class="stat gold"><div class="stat-label">Would score</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>') +
+        ? '<div class="stat gold"><div class="stat-label">' + T('officialPoints') + '</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">' + T('levelHeld') + '</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
+        : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
+          '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>') +
     '</div>' +
 
     (run
-      ? '<p class="mute">Official run complete — ' + esc(run.level_reached) + ' levels held, ' + esc(run.points) + ' points.</p>'
+      ? '<p class="mute">' + T('runDone', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>'
       : (prac
-          ? '<p class="mute">Practising now. ' + esc(player.name) + ' has reached level ' + esc(prac.best_level) +
-            ' in practice, which would be ' + pointsFor(prac.best_level) + ' points. The official run is still to come.</p>'
-          : '<p class="mute">' + esc(player.name) + ' has not practised yet.</p>')) +
+          ? '<p class="mute">' + T('practisingNow', { N: esc(player.name), L: esc(prac.best_level), P: pointsFor(prac.best_level) }) + '</p>'
+          : '<p class="mute">' + T('notPractised', { N: esc(player.name) }) + '</p>')) +
 
     deadlineHtml(ch) +
 
@@ -246,31 +372,30 @@ function renderPlayer(ch, campaign, player, run, prac){
     (RUN_KEY
 
       ? '<div class="panel">' +
-          '<h2>' + (run ? 'Your run is done' : 'Your official run') + '</h2>' +
+          '<h2>' + (run ? T('yourRunDone') : T('yourRunTitle')) + '</h2>' +
           (run
-            ? '<p class="mute">You held ' + esc(run.level_reached) + ' levels for ' + esc(run.points) +
-              ' points. That score is final — but the game is always open.</p>' +
-              '<a class="btn line" href="fortress.html">▶ Practice</a>'
-            : '<p class="mute">Practise as much as you like. Nothing counts until you start the official run, and you only get one.</p>' +
+            ? '<p class="mute">' + T('runDoneNote', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>' +
+              '<a class="btn line" href="fortress.html">' + T('practiceOnlyBtn') + '</a>'
+            : '<p class="mute">' + T('practiceNote') + '</p>' +
               '<a class="btn line" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
-                '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">▶ Practice run</a>' +
+                '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">' + T('practiceBtn') + '</a>' +
               '<a class="btn gold" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
                 '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
-                '&official=1">▶ Start official run</a>') +
+                '&official=1">' + T('officialBtn') + '</a>') +
         '</div>' +
-        '<p class="mute" style="font-size:.82rem;">This is your own page. Share the link below with people who want to back you — it lets them pledge, but not play.</p>' +
-        '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">Copy my sponsor link</a>'
+        '<p class="mute" style="font-size:.82rem;">' + T('ownPage') + '</p>' +
+        '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>'
 
       : (run
-          ? '<div class="panel"><h2>Pledging has closed for this run</h2>' +
-            '<p class="mute">The official run is done, so the score is final. You can still pledge to the team.</p>' +
-            '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">← See the whole team</a></div>'
-          : '<div class="panel"><h2>Pledge to ' + esc(player.name) + '</h2>' +
-            '<p class="mute">Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.</p>' +
+          ? '<div class="panel"><h2>' + T('closedTitle') + '</h2>' +
+            '<p class="mute">' + T('closedNote') + '</p>' +
+            '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">' + T('seeTeam') + '</a></div>'
+          : '<div class="panel"><h2>' + T('pledgeTo', { N: esc(player.name) }) + '</h2>' +
+            '<p class="mute">' + T('pledgeNote') + '</p>' +
             pledgeFormHtml(player) + '</div>')) +
 
     '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
-      esc(campaign ? campaign.name : 'The team') + '</a>' +
+      esc(campaign ? campaign.name : T('wordTeam')) + '</a>' +
 
     footerHtml();
 
@@ -288,31 +413,31 @@ function copyShare(e){
   }
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(link)
-      .then(function(){ alert('Link copied — send it to anyone who wants to back you:\n\n' + link); })
-      .catch(function(){ prompt('Copy this link:', link); });
+      .then(function(){ alert(T('shareCopied') + '\n\n' + link); })
+      .catch(function(){ prompt(T('copyPrompt'), link); });
   } else {
-    prompt('Copy this link:', link);
+    prompt(T('copyPrompt'), link);
   }
 }
 
 function deadlineHtml(ch){
   if (!ch.pledge_deadline && !ch.run_deadline) return '';
   var bits = [];
-  if (ch.pledge_deadline) bits.push('Pledges close ' + esc(ch.pledge_deadline));
-  if (ch.run_deadline) bits.push('runs by ' + esc(ch.run_deadline));
+  if (ch.pledge_deadline) bits.push(T('pledgesClose') + ' ' + esc(ch.pledge_deadline));
+  if (ch.run_deadline) bits.push(T('runsBy') + ' ' + esc(ch.run_deadline));
   return '<p class="mute" style="margin-top:-4px;">' + bits.join(' · ') + '</p>';
 }
 
 function pledgeFormHtml(player){
   return '' +
-    '<label>Your name</label>' +
+    '<label>' + T('yourName') + '</label>' +
     '<input type="text" id="spName" maxlength="60" autocomplete="name">' +
-    '<label>Your email</label>' +
+    '<label>' + T('yourEmail') + '</label>' +
     '<input type="email" id="spEmail" maxlength="120" autocomplete="email">' +
-    '<label>Amount per point ($)</label>' +
+    '<label>' + T('perPoint') + '</label>' +
     '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
-    '<div class="pledge-preview" id="spPreview">Enter a rate to see what that could come to.</div>' +
-    '<button class="btn" id="spSubmit" style="margin-top:14px;">Make this pledge</button>' +
+    '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
+    '<button class="btn" id="spSubmit" style="margin-top:14px;">' + T('makePledge') + '</button>' +
     '<div class="msg" id="spMsg"></div>';
 }
 
@@ -328,13 +453,12 @@ function wirePledgeForm(player){
   rate.addEventListener('input', function(){
     var r = parseFloat(rate.value);
     if (!r || r <= 0){
-      preview.textContent = 'Enter a rate to see what that could come to.';
+      preview.textContent = T('previewEmpty');
       return;
     }
-    preview.innerHTML =
-      'Level 10 (55 pts) → <b>' + money(55 * r) + '</b> &nbsp;·&nbsp; ' +
-      'Level 15 (120 pts) → <b>' + money(120 * r) + '</b> &nbsp;·&nbsp; ' +
-      'Level 20 (210 pts) → <b>' + money(210 * r) + '</b>';
+    preview.innerHTML = T('previewLine', {
+      A: money(55 * r), B: money(120 * r), C: money(210 * r)
+    });
   });
 
   submit.addEventListener('click', function(){
@@ -342,13 +466,13 @@ function wirePledgeForm(player){
     var email = (document.getElementById('spEmail').value || '').trim();
     var r = parseFloat(rate.value);
 
-    if (!name){ return fail(msg, 'Please enter your name.'); }
-    if (!email || email.indexOf('@') === -1){ return fail(msg, 'Please enter a valid email — the invoice goes there.'); }
-    if (!r || r <= 0){ return fail(msg, 'Please enter an amount per point.'); }
+    if (!name){ return fail(msg, T('needName')); }
+    if (!email || email.indexOf('@') === -1){ return fail(msg, T('needEmail')); }
+    if (!r || r <= 0){ return fail(msg, T('needRate')); }
 
     submit.disabled = true;
     msg.style.color = 'var(--mute)';
-    msg.textContent = 'Recording your pledge…';
+    msg.textContent = T('saving');
 
     fetch(SB_URL + '/rest/v1/pledges', {
       method: 'POST',
@@ -369,18 +493,17 @@ function wirePledgeForm(player){
     .then(function(res){
       if (!res.ok) throw new Error('save failed');
       msg.style.color = '#00D9A5';
-      msg.innerHTML = '✓ Pledge recorded. You will be invoiced at ' + money(r) +
-                      ' per point after the official run — nothing is charged before then.';
+      msg.innerHTML = T('pledgeOk', { R: money(r) });
       document.getElementById('spName').value = '';
       document.getElementById('spEmail').value = '';
       rate.value = '';
-      preview.textContent = 'Thank you.';
+      preview.textContent = T('thankYou');
       submit.disabled = false;
     })
     .catch(function(e){
       console.error('Pledge failed:', e);
       submit.disabled = false;
-      fail(msg, 'Could not save that pledge — please try again.');
+      fail(msg, T('pledgeFail'));
     });
   });
 }
@@ -391,9 +514,9 @@ function fail(msg, text){
 }
 
 function notFound(what){
-  app.innerHTML = '<div class="panel"><h2>' + what + ' not found</h2>' +
-    '<p class="mute">Check the link, or ask whoever sent it for a new one.</p>' +
-    '<a class="btn line" href="index.html">← The Fortress Challenge</a></div>' + footerHtml();
+  app.innerHTML = '<div class="panel"><h2>' + T('notFound', { W: what }) + '</h2>' +
+    '<p class="mute">' + T('notFoundNote') + '</p>' +
+    '<a class="btn line" href="index.html">' + T('backHome') + '</a></div>' + footerHtml();
 }
 
 // ---------- routing ----------
@@ -402,7 +525,7 @@ if (!CHALLENGE){
 } else {
   get('challenges?id=eq.' + encodeURIComponent(CHALLENGE) + '&select=*')
     .then(function(rows){
-      if (!rows || !rows.length) { notFound('Challenge'); return; }
+      if (!rows || !rows.length) { notFound(T('wordChallenge')); return; }
       var ch = rows[0];
 
       return Promise.all([
@@ -422,7 +545,7 @@ if (!CHALLENGE){
         }
 
         var player = players.filter(function(p){ return p.id === PLAYER; })[0];
-        if (!player) { notFound('Player'); return; }
+        if (!player) { notFound(T('wordPlayer')); return; }
 
         var run = runs.filter(function(r){ return r.player_id === PLAYER; })[0];
         var prac = practice.filter(function(r){ return r.player_id === PLAYER; })[0];
@@ -431,7 +554,7 @@ if (!CHALLENGE){
     })
     .catch(function(e){
       console.error(e);
-      app.innerHTML = '<div class="panel"><p style="color:#ff8888">Could not load this page. Please try again.</p></div>';
+      app.innerHTML = '<div class="panel"><p style="color:#ff8888">' + T('loadFail') + '</p></div>';
     });
 }
 </script>
