@@ -42,7 +42,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 #countdown{position:fixed;inset:0;z-index:56;display:none;align-items:center;justify-content:center;background:#000}
 #bigCount{font-size:8rem;font-weight:900;color:#a855f7;text-shadow:0 0 60px rgba(124,58,237,.9)}
 
-#screen-end{position:fixed;inset:0;z-index:55;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;text-align:center;padding:20px;overflow-y:auto}
+#screen-end{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;text-align:center;padding:20px;overflow-y:auto}
 .final-num{font-size:6rem;font-weight:900;color:#a855f7;line-height:1;text-shadow:0 0 60px rgba(124,58,237,.9)}
 .final-label{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:10px}
 .next-player-btn{margin-top:28px;height:64px;padding:0 40px;border:none;border-radius:16px;background:linear-gradient(120deg,#7c3aed,#a855f7);color:#fff;font-size:1.15rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 30px rgba(124,58,237,.6)}
@@ -67,6 +67,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 #msg.watch{color:#a855f7}#msg.go{color:#ffd35a}#msg.miss{color:#ff1e3c}
 
 .court-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:6px}
+/* The ball layer is fixed to the viewport, so it must not be left
+   sitting over other screens' buttons once a run is over. */
+#targetLayer{z-index:12}
 #keySvg{height:100%;max-height:100%;width:auto;max-width:96%}
 
 .fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;background-size:cover}
@@ -204,13 +207,25 @@ var runStartTime=0;
 
 // Set up the official framing before anything else, so a kid never
 // sees a practice screen when they came to perform.
+// Whether this was practice or official, a player who arrived from a
+// challenge page should land back on it — that is where their pledges,
+// their score and their official-run button live.
+(function setBackLink(){
+  if (CHALLENGE_ID && PLAYER_ID){
+    var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID);
+    $('backToPledge').href = back;
+    $('backToPledge').textContent = '← Back to my Challenge page';
+    document.querySelector('.intro-back').href = back;
+    document.querySelector('#controls .ctrl-btn').href = back;
+  }
+})();
+
 (function initOfficial(){
   if (!IS_OFFICIAL) return;
 
   $('officialBanner').style.display='block';
   $('bigStart').className='big-btn official';
   $('bigStart').textContent='▶ START OFFICIAL RUN';
-  $('backToPledge').href = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID);
   $('againBtn').style.display='none';
 
   // Pull the player's name so they do not type it, and so the run is
@@ -286,6 +301,7 @@ function buildBoard(){
   layer.style.top=court.top+'px';
   layer.style.width=court.width+'px';
   layer.style.height=court.height+'px';
+  layer.style.pointerEvents='';
   layer.innerHTML='';
   targetEls=[];
   var positions=shuffle(LAYOUT);
@@ -454,6 +470,8 @@ function handleTargetTap(idx){
 function endDrill(){
   if(phase==='done')return;
   phase='done';clrT();setReady(false);
+  var layer=$('targetLayer');
+  if(layer) layer.style.pointerEvents='none';
 
   // The level being attempted when the run ended was never completed,
   // so the score is the last level actually held. Same rule for
