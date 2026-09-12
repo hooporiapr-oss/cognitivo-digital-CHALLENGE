@@ -73,7 +73,33 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 #targetLayer{z-index:12}
 #keySvg{height:100%;max-height:100%;width:auto;max-width:96%}
 
-.fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;background-size:cover}
+.fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;background-size:cover;display:grid;place-content:center}
+/* The dollar sign rides on top of the ball art. Its own size is set
+   in JS alongside the ball's, so it scales with the court rather than
+   being fixed. */
+.fortress-ball .ball-mark{
+  font-family:'Arial Black',Arial,Helvetica,sans-serif;font-weight:900;line-height:1;
+  /* Brushed gold rather than flat yellow — a highlight across the top
+     third and a deeper tone below is what makes it read as metal
+     instead of a colored character. */
+  background:linear-gradient(180deg,#fff6c9 0%,#ffd84d 34%,#e8a200 68%,#b87400 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  /* A dark outline is what keeps it legible against five different
+     ball colors — without it the gold disappears on the yellow ball. */
+  -webkit-text-stroke:2.5px rgba(30,14,0,.92);
+  paint-order:stroke fill;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.75)) drop-shadow(0 0 10px rgba(255,190,40,.55));
+  pointer-events:none;user-select:none;
+  transform:translateZ(0);
+}
+.fortress-ball.lit .ball-mark{
+  background:linear-gradient(180deg,#ffffff 0%,#fff3a8 30%,#ffd000 66%,#d99000 100%);
+  -webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.8)) drop-shadow(0 0 22px rgba(255,215,0,.95));
+  animation:markPop .18s ease-out;
+}
+@keyframes markPop{0%{transform:scale(1)}55%{transform:scale(1.22)}100%{transform:scale(1)}}
 .fortress-ball.ready{pointer-events:all}
 .fortress-ball.lit{filter:brightness(1.55) saturate(1.25);box-shadow:0 0 40px currentColor,0 0 75px currentColor;transform:translate(-50%,-50%) scale(1.1)}
 .fortress-ball.wrong{filter:grayscale(1) brightness(.5)}
@@ -448,6 +474,14 @@ function buildBoard(){
     el.style.height=size+'px';
     el.style.background=BALL_SEAMS+', radial-gradient(circle at 35% 32%,'+colors[i]+'dd,'+colors[i]+' 55%,'+colors[i]+'99 85%)';
     el.style.color=colors[i];
+
+    var mark=document.createElement('span');
+    mark.className='ball-mark';
+    mark.textContent='$';
+    mark.style.fontSize=Math.round(size*0.62)+'px';
+    mark.style.webkitTextStrokeWidth=Math.max(2, Math.round(size*0.035))+'px';
+    el.appendChild(mark);
+
     (function(idx){
       el.addEventListener('pointerdown',function(e){e.preventDefault();handleTargetTap(idx)});
     })(i);
