@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Fortress Challenge</title>
+<style>
+:root{
+  --ink:#0a0a0f;
+  --panel:#150f1b;
+  --line:#2e2140;
+  --purple:#a855f7;
+  --purple-deep:#7c3aed;
+  --gold:#ffd35a;
+  --paper:#f3eef7;
+  --mute:#8e84a0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--ink);color:var(--paper);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.wrap{width:min(620px,92vw);margin:0 auto;padding:26px 0 60px}
+
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:900;font-style:italic;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+h1 span{color:var(--purple)}
+h2{font-size:1.15rem;font-weight:900;letter-spacing:-.01em;margin:0 0 .5em}
+.kick{font-size:.68rem;font-weight:900;letter-spacing:.26em;text-transform:uppercase;color:var(--purple);margin-bottom:8px}
+p{margin:0 0 1em;color:#ded5e8}
+.mute{color:var(--mute);font-size:.9rem}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0}
+
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:14px 0}
+.stat{background:#0e0a14;border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center}
+.stat-label{font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:5px}
+.stat-val{font-size:1.7rem;font-weight:900;line-height:1}
+.stat.gold .stat-val{color:var(--gold)}
+.stat.purple .stat-val{color:var(--purple)}
+
+label{display:block;font-size:.66rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:14px 0 6px}
+input{
+  width:100%;padding:13px 14px;border-radius:10px;
+  border:1px solid #ffffff1f;background:#0e0a14;color:#fff;
+  font-family:inherit;font-size:1rem;
+}
+input:focus{outline:none;border-color:var(--purple)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:100%;padding:15px;border:none;border-radius:12px;
+  font-family:inherit;font-size:1rem;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;text-decoration:none;
+  background:linear-gradient(135deg,var(--purple-deep),var(--purple));color:#fff;
+}
+.btn:active{transform:scale(.99)}
+.btn.gold{background:linear-gradient(135deg,#ffd35a,#ff8c42);color:#2a1a00}
+.btn.line{background:transparent;border:1px solid var(--line);color:var(--paper)}
+
+.pledge-preview{
+  margin-top:12px;padding:12px 14px;border-radius:10px;
+  background:rgba(255,211,90,.07);border:1px solid rgba(255,211,90,.25);
+  font-size:.9rem;color:var(--gold);min-height:44px;display:flex;align-items:center;
+}
+
+.roster a{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:13px 14px;background:#0e0a14;border:1px solid var(--line);
+  border-radius:10px;margin:7px 0;text-decoration:none;color:var(--paper);
+}
+.roster .pts{color:var(--gold);font-weight:900;flex-shrink:0}
+
+.steps{counter-reset:s;margin-top:10px}
+.step{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step::before{content:counter(s);font-size:1.5rem;font-weight:900;color:var(--line);line-height:.9}
+.step b{display:block;margin-bottom:2px}
+.step span{color:var(--mute);font-size:.92rem}
+
+.msg{margin-top:14px;font-size:.9rem;font-weight:700;min-height:20px}
+footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-align:center;color:var(--mute);font-size:.8rem}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app">
+  <p class="mute">Loading…</p>
+</div>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+// ══════════════════════════════════════════════════════
+//  Three states, all on this one page:
+//
+//    no parameters      → what the Challenge is, and free practice
+//    ?c=<challenge>     → the team's page: total, roster, team pledge
+//    ?c=..&p=<player>   → a player's page: their score, their pledges
+//
+//  A pledge is a promise, not a payment. Nothing is charged here.
+//  After the run deadline the organizer invoices each sponsor for
+//  their rate times the points actually scored.
+//
+//  POINTS — reaching level n means n(n+1)/2 taps were performed, so
+//  each level is worth more than the one before. Level 12 is 78
+//  points; level 13 is 91.
+// ══════════════════════════════════════════════════════
+var params = new URLSearchParams(window.location.search);
+var CHALLENGE = params.get('c');
+var PLAYER = params.get('p');
+
+function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function money(n){ return '$' + Number(n || 0).toFixed(2); }
+
+function get(path){
+  return fetch(SB_URL + '/rest/v1/' + path, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  }).then(function(r){
+    if (!r.ok) throw new Error('request failed');
+    return r.json();
+  });
+}
+
+var app = document.getElementById('app');
+
+// ---------- landing ----------
+function renderLanding(){
+  app.innerHTML =
+    '<div class="kick">Gostar Digital</div>' +
+    '<h1>The Fortress <span>Challenge</span></h1>' +
+    '<p style="margin-top:14px;">A memory drill that pays. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.</p>' +
+
+    '<div class="panel">' +
+      '<h2>How it works</h2>' +
+      '<div class="steps">' +
+        '<div class="step"><div><b>Sponsors pledge per point</b><span>Any rate they choose. Nothing is charged when they pledge.</span></div></div>' +
+        '<div class="step"><div><b>The player practises free</b><span>As many runs as they like, so nobody goes in cold.</span></div></div>' +
+        '<div class="step"><div><b>One official run</b><span>Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.</span></div></div>' +
+        '<div class="step"><div><b>Invoices go out</b><span>Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.</span></div></div>' +
+      '</div>' +
+    '</div>' +
+
+    '<a class="btn" href="fortress.html">▶ Try The Fortress</a>' +
+    '<p class="mute" style="margin-top:12px;text-align:center;">Free to play. Nothing recorded.</p>' +
+
+    '<p class="mute" style="margin-top:26px;">Looking for a player or a team? Use the link they sent you.</p>' +
+    footerHtml();
+}
+
+function footerHtml(){
+  return '<footer>Gostar Digital LLC — Puerto Rico<br>' +
+         '<a href="mailto:cashflowhoops@gmail.com" style="color:var(--mute)">cashflowhoops@gmail.com</a></footer>';
+}
+
+// ---------- team page ----------
+function renderTeam(ch, campaign, players, runs, practice){
+  var byPlayer = {};
+  runs.forEach(function(r){ byPlayer[r.player_id] = r; });
+  var practiceBy = {};
+  practice.forEach(function(p){ practiceBy[p.player_id] = p; });
+
+  var teamPoints = runs.reduce(function(sum, r){ return sum + (r.points || 0); }, 0);
+  var done = runs.length;
+
+  var roster = players.map(function(p){
+    var run = byPlayer[p.id];
+    var prac = practiceBy[p.id];
+    var right = run
+      ? esc(run.points) + ' pts'
+      : (prac ? 'practising · L' + esc(prac.best_level) : 'not yet');
+    return '<a href="?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(p.id) + '">' +
+             '<span>' + esc(p.name) + '</span>' +
+             '<span class="pts">' + right + '</span>' +
+           '</a>';
+  }).join('');
+
+  app.innerHTML =
+    '<div class="kick">The Fortress Challenge</div>' +
+    '<h1>' + esc(campaign ? campaign.name : ch.name) + '</h1>' +
+    (ch.name ? '<p class="mute" style="margin-top:8px;">' + esc(ch.name) + '</p>' : '') +
+
+    '<div class="stat-row">' +
+      '<div class="stat gold"><div class="stat-label">Team points</div><div class="stat-val">' + teamPoints + '</div></div>' +
+      '<div class="stat purple"><div class="stat-label">Runs done</div><div class="stat-val">' + done + ' / ' + players.length + '</div></div>' +
+    '</div>' +
+
+    deadlineHtml(ch) +
+
+    '<div class="panel">' +
+      '<h2>Pledge to the whole team</h2>' +
+      '<p class="mute">Your pledge is multiplied by the team\'s combined points.</p>' +
+      pledgeFormHtml(null) +
+    '</div>' +
+
+    '<div class="panel">' +
+      '<h2>The roster</h2>' +
+      '<p class="mute">Tap a player to pledge to them directly.</p>' +
+      '<div class="roster">' + (roster || '<p class="mute">No players yet.</p>') + '</div>' +
+    '</div>' +
+
+    footerHtml();
+
+  wirePledgeForm(null);
+}
+
+// ---------- player page ----------
+function renderPlayer(ch, campaign, player, run, prac){
+  var isMe = false;
+  try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
+
+  app.innerHTML =
+    '<div class="kick">The Fortress Challenge</div>' +
+    '<h1>' + esc(player.name) + '</h1>' +
+    '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') + '</p>' +
+
+    '<div class="stat-row">' +
+      (run
+        ? '<div class="stat gold"><div class="stat-label">Official points</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">Level held</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
+        : '<div class="stat purple"><div class="stat-label">Practice best</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
+          '<div class="stat gold"><div class="stat-label">Would score</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>') +
+    '</div>' +
+
+    (run
+      ? '<p class="mute">Official run complete — ' + esc(run.level_reached) + ' levels held, ' + esc(run.points) + ' points.</p>'
+      : (prac
+          ? '<p class="mute">Practising now. ' + esc(player.name) + ' has reached level ' + esc(prac.best_level) +
+            ' in practice, which would be ' + pointsFor(prac.best_level) + ' points. The official run is still to come.</p>'
+          : '<p class="mute">' + esc(player.name) + ' has not practised yet.</p>')) +
+
+    deadlineHtml(ch) +
+
+    (run
+      ? '<div class="panel"><h2>Pledging has closed for this run</h2>' +
+        '<p class="mute">The official run is done, so the score is final. You can still pledge to the team.</p>' +
+        '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">← See the whole team</a></div>'
+      : '<div class="panel"><h2>Pledge to ' + esc(player.name) + '</h2>' +
+        '<p class="mute">Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.</p>' +
+        pledgeFormHtml(player) + '</div>') +
+
+    '<div class="panel">' +
+      '<h2>' + (run ? 'Keep practising' : 'Your official run') + '</h2>' +
+      (run
+        ? '<p class="mute">Your official score is locked in, but the game is always open.</p>' +
+          '<a class="btn line" href="fortress.html">▶ Practice</a>'
+        : '<p class="mute">Practise as much as you like — nothing counts until you start the official run.</p>' +
+          '<a class="btn line" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">▶ Practice run</a>' +
+          '<a class="btn gold" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(player.id) + '&official=1">▶ Start official run</a>') +
+    '</div>' +
+
+    '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
+      esc(campaign ? campaign.name : 'The team') + '</a>' +
+
+    footerHtml();
+
+  if (!run) wirePledgeForm(player);
+}
+
+function deadlineHtml(ch){
+  if (!ch.pledge_deadline && !ch.run_deadline) return '';
+  var bits = [];
+  if (ch.pledge_deadline) bits.push('Pledges close ' + esc(ch.pledge_deadline));
+  if (ch.run_deadline) bits.push('runs by ' + esc(ch.run_deadline));
+  return '<p class="mute" style="margin-top:-4px;">' + bits.join(' · ') + '</p>';
+}
+
+function pledgeFormHtml(player){
+  return '' +
+    '<label>Your name</label>' +
+    '<input type="text" id="spName" maxlength="60" autocomplete="name">' +
+    '<label>Your email</label>' +
+    '<input type="email" id="spEmail" maxlength="120" autocomplete="email">' +
+    '<label>Amount per point ($)</label>' +
+    '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
+    '<div class="pledge-preview" id="spPreview">Enter a rate to see what that could come to.</div>' +
+    '<button class="btn" id="spSubmit" style="margin-top:14px;">Make this pledge</button>' +
+    '<div class="msg" id="spMsg"></div>';
+}
+
+function wirePledgeForm(player){
+  var rate = document.getElementById('spRate');
+  var preview = document.getElementById('spPreview');
+  var submit = document.getElementById('spSubmit');
+  var msg = document.getElementById('spMsg');
+  if (!rate || !submit) return;
+
+  // Shows what the pledge would come to at a few realistic scores, so
+  // nobody pledges a rate without seeing where it lands.
+  rate.addEventListener('input', function(){
+    var r = parseFloat(rate.value);
+    if (!r || r <= 0){
+      preview.textContent = 'Enter a rate to see what that could come to.';
+      return;
+    }
+    preview.innerHTML =
+      'Level 10 (55 pts) → <b>' + money(55 * r) + '</b> &nbsp;·&nbsp; ' +
+      'Level 15 (120 pts) → <b>' + money(120 * r) + '</b> &nbsp;·&nbsp; ' +
+      'Level 20 (210 pts) → <b>' + money(210 * r) + '</b>';
+  });
+
+  submit.addEventListener('click', function(){
+    var name = (document.getElementById('spName').value || '').trim();
+    var email = (document.getElementById('spEmail').value || '').trim();
+    var r = parseFloat(rate.value);
+
+    if (!name){ return fail(msg, 'Please enter your name.'); }
+    if (!email || email.indexOf('@') === -1){ return fail(msg, 'Please enter a valid email — the invoice goes there.'); }
+    if (!r || r <= 0){ return fail(msg, 'Please enter an amount per point.'); }
+
+    submit.disabled = true;
+    msg.style.color = 'var(--mute)';
+    msg.textContent = 'Recording your pledge…';
+
+    fetch(SB_URL + '/rest/v1/pledges', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        challenge_id: CHALLENGE,
+        player_id: player ? player.id : null,
+        sponsor_name: name,
+        sponsor_email: email,
+        rate_per_point: r
+      })
+    })
+    .then(function(res){
+      if (!res.ok) throw new Error('save failed');
+      msg.style.color = '#00D9A5';
+      msg.innerHTML = '✓ Pledge recorded. You will be invoiced at ' + money(r) +
+                      ' per point after the official run — nothing is charged before then.';
+      document.getElementById('spName').value = '';
+      document.getElementById('spEmail').value = '';
+      rate.value = '';
+      preview.textContent = 'Thank you.';
+      submit.disabled = false;
+    })
+    .catch(function(e){
+      console.error('Pledge failed:', e);
+      submit.disabled = false;
+      fail(msg, 'Could not save that pledge — please try again.');
+    });
+  });
+}
+
+function fail(msg, text){
+  msg.style.color = '#ff8888';
+  msg.textContent = text;
+}
+
+function notFound(what){
+  app.innerHTML = '<div class="panel"><h2>' + what + ' not found</h2>' +
+    '<p class="mute">Check the link, or ask whoever sent it for a new one.</p>' +
+    '<a class="btn line" href="index.html">← The Fortress Challenge</a></div>' + footerHtml();
+}
+
+// ---------- routing ----------
+if (!CHALLENGE){
+  renderLanding();
+} else {
+  get('challenges?id=eq.' + encodeURIComponent(CHALLENGE) + '&select=*')
+    .then(function(rows){
+      if (!rows || !rows.length) { notFound('Challenge'); return; }
+      var ch = rows[0];
+
+      return Promise.all([
+        get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=name,logo_url'),
+        get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name&order=name.asc'),
+        get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
+        get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs')
+      ]).then(function(res){
+        var campaign = res[0] && res[0][0];
+        var players = res[1] || [];
+        var runs = res[2] || [];
+        var practice = res[3] || [];
+
+        if (!PLAYER){
+          renderTeam(ch, campaign, players, runs, practice);
+          return;
+        }
+
+        var player = players.filter(function(p){ return p.id === PLAYER; })[0];
+        if (!player) { notFound('Player'); return; }
+
+        var run = runs.filter(function(r){ return r.player_id === PLAYER; })[0];
+        var prac = practice.filter(function(r){ return r.player_id === PLAYER; })[0];
+        renderPlayer(ch, campaign, player, run, prac);
+      });
+    })
+    .catch(function(e){
+      console.error(e);
+      app.innerHTML = '<div class="panel"><p style="color:#ff8888">Could not load this page. Please try again.</p></div>';
+    });
+}
+</script>
+</body>
+</html>
