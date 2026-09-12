@@ -311,7 +311,13 @@ function buildBoard(){
   // beat later and moving the balls costs nothing and catches it.
   if (!buildBoard.settled){
     buildBoard.settled = true;
-    setTimeout(function(){ buildBoard.settled = false; buildBoard(); }, 350);
+    setTimeout(function(){
+      buildBoard.settled = false;
+      // Moving the balls under someone's finger mid-tap is worse than
+      // a slightly misplaced board, so this waits for the sequence to
+      // be playing rather than interrupting the player's turn.
+      if (!isReady) buildBoard();
+    }, 350);
   }
 
   // Fixed, not absolute — these are viewport coordinates, and this
@@ -343,6 +349,9 @@ function buildBoard(){
     layer.appendChild(el);
     targetEls.push(el);
   }
+
+  // Restore whatever the run was in the middle of.
+  targetEls.forEach(function(el){el.classList.toggle('ready',isReady)});
 }
 // Any of these can resize or move the court under the balls: rotating
 // the phone, the address bar sliding away, entering or leaving
@@ -391,7 +400,16 @@ function playThump(){
 
 function lightTarget(idx){targetEls[idx].classList.add('lit');playThump()}
 function unlightTarget(idx){targetEls[idx].classList.remove('lit')}
-function setReady(on){targetEls.forEach(function(el){el.classList.toggle('ready',on)})}
+
+// Whether the balls are currently accepting taps. Kept as state
+// rather than only as a class, because re-measuring the court rebuilds
+// the ball elements — and a rebuild landing during the player's turn
+// used to silently drop their ability to tap.
+var isReady=false;
+function setReady(on){
+  isReady=on;
+  targetEls.forEach(function(el){el.classList.toggle('ready',on)});
+}
 
 function startDrill(){
   if(phase==='running')return;
