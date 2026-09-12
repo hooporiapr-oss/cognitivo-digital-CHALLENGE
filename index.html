@@ -111,6 +111,12 @@ var params = new URLSearchParams(window.location.search);
 var CHALLENGE = params.get('c');
 var PLAYER = params.get('p');
 
+// The run key is what separates a player from a sponsor. It only
+// appears in the private link a coach hands to the player, and it is
+// verified by the database — adding it to a public link by hand gets
+// nowhere, because the key itself cannot be guessed or read.
+var RUN_KEY = params.get('k');
+
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
@@ -234,30 +240,59 @@ function renderPlayer(ch, campaign, player, run, prac){
 
     deadlineHtml(ch) +
 
-    (run
-      ? '<div class="panel"><h2>Pledging has closed for this run</h2>' +
-        '<p class="mute">The official run is done, so the score is final. You can still pledge to the team.</p>' +
-        '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">← See the whole team</a></div>'
-      : '<div class="panel"><h2>Pledge to ' + esc(player.name) + '</h2>' +
-        '<p class="mute">Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.</p>' +
-        pledgeFormHtml(player) + '</div>') +
+    // A sponsor never sees a button that could end this player's one
+    // official run, and a player is not shown a pledge form for
+    // themselves. Which half appears depends on the run key.
+    (RUN_KEY
 
-    '<div class="panel">' +
-      '<h2>' + (run ? 'Keep practising' : 'Your official run') + '</h2>' +
-      (run
-        ? '<p class="mute">Your official score is locked in, but the game is always open.</p>' +
-          '<a class="btn line" href="fortress.html">▶ Practice</a>'
-        : '<p class="mute">Practise as much as you like — nothing counts until you start the official run.</p>' +
-          '<a class="btn line" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">▶ Practice run</a>' +
-          '<a class="btn gold" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(player.id) + '&official=1">▶ Start official run</a>') +
-    '</div>' +
+      ? '<div class="panel">' +
+          '<h2>' + (run ? 'Your run is done' : 'Your official run') + '</h2>' +
+          (run
+            ? '<p class="mute">You held ' + esc(run.level_reached) + ' levels for ' + esc(run.points) +
+              ' points. That score is final — but the game is always open.</p>' +
+              '<a class="btn line" href="fortress.html">▶ Practice</a>'
+            : '<p class="mute">Practise as much as you like. Nothing counts until you start the official run, and you only get one.</p>' +
+              '<a class="btn line" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
+                '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">▶ Practice run</a>' +
+              '<a class="btn gold" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
+                '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
+                '&official=1">▶ Start official run</a>') +
+        '</div>' +
+        '<p class="mute" style="font-size:.82rem;">This is your own page. Share the link below with people who want to back you — it lets them pledge, but not play.</p>' +
+        '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">Copy my sponsor link</a>'
+
+      : (run
+          ? '<div class="panel"><h2>Pledging has closed for this run</h2>' +
+            '<p class="mute">The official run is done, so the score is final. You can still pledge to the team.</p>' +
+            '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">← See the whole team</a></div>'
+          : '<div class="panel"><h2>Pledge to ' + esc(player.name) + '</h2>' +
+            '<p class="mute">Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.</p>' +
+            pledgeFormHtml(player) + '</div>')) +
 
     '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
       esc(campaign ? campaign.name : 'The team') + '</a>' +
 
     footerHtml();
 
-  if (!run) wirePledgeForm(player);
+  if (!run && !RUN_KEY) wirePledgeForm(player);
+}
+
+// The sponsor link is this page without the run key.
+function copyShare(e){
+  if (e) e.preventDefault();
+  var link = window.location.origin + window.location.pathname +
+             '?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(PLAYER);
+  if (navigator.share){
+    navigator.share({ url: link }).catch(function(){});
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link)
+      .then(function(){ alert('Link copied — send it to anyone who wants to back you:\n\n' + link); })
+      .catch(function(){ prompt('Copy this link:', link); });
+  } else {
+    prompt('Copy this link:', link);
+  }
 }
 
 function deadlineHtml(ch){
