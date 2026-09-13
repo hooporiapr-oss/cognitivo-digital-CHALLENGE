@@ -79,6 +79,24 @@ input:focus{outline:none;border-color:var(--purple)}
 .step span{color:var(--mute);font-size:.92rem}
 
 .msg{margin-top:14px;font-size:.9rem;font-weight:700;min-height:20px}
+/* One card per game. Each keeps its own colour so the three read as
+   genuinely different things rather than three of the same. */
+.games{display:grid;gap:10px;margin-top:14px}
+.game-card{
+  display:block;padding:16px 18px;border-radius:14px;text-decoration:none;
+  border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
+  transition:transform .08s,background .12s;
+}
+.game-card:active{transform:scale(.985)}
+.game-name{display:block;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.01em;font-size:1.05rem}
+.game-desc{display:block;margin-top:4px;font-size:.85rem;color:var(--mute)}
+.game-card.fortress{border-color:rgba(168,85,247,.45);background:rgba(168,85,247,.07)}
+.game-card.fortress .game-name{color:#c9a3fa}
+.game-card.recall{border-color:rgba(255,107,53,.45);background:rgba(255,107,53,.07)}
+.game-card.recall .game-name{color:#ffb38a}
+.game-card.recognition{border-color:rgba(255,149,0,.45);background:rgba(255,149,0,.07)}
+.game-card.recognition .game-name{color:#ffc074}
+
 footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-align:center;color:var(--mute);font-size:.8rem}
 </style>
 </head>
@@ -121,6 +139,11 @@ var STR = {
     s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
     s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
     s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.',
+    practiceTitle:'Practise any time', 
+    practiceNote:'All three games are open — no code, no account. Practice runs are never recorded, so play as much as you like.',
+    gFortress:'The Fortress', gFortressDesc:'Five basketballs in a 2-1-2 zone. Watch the chain, repeat it back, one more every round.',
+    gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
+    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
     tryIt:'▶ Try The Fortress', freeNote:'Free to play. Nothing recorded.',
     haveLink:'Looking for a player or a team? Use the link they sent you.',
     kick:'The Fortress Challenge',
@@ -168,6 +191,11 @@ var STR = {
     s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
     s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
     s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados. La mitad de lo cobrado va al programa.',
+    practiceTitle:'Practica cuando quieras',
+    practiceNote:'Los tres juegos están abiertos — sin código, sin cuenta. Las prácticas nunca se guardan, así que juega todo lo que quieras.',
+    gFortress:'The Fortress', gFortressDesc:'Cinco balones en una zona 2-1-2. Observa la cadena y repítela, una más cada ronda.',
+    gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
+    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
     tryIt:'▶ Prueba The Fortress', freeNote:'Gratis. No se guarda nada.',
     haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
     kick:'El Reto Fortress',
@@ -285,8 +313,28 @@ function renderLanding(){
       '</div>' +
     '</div>' +
 
-    '<a class="btn" href="fortress.html">' + T('tryIt') + '</a>' +
-    '<p class="mute" style="margin-top:12px;text-align:center;">' + T('freeNote') + '</p>' +
+    // Free practice, straight from the browser. No code, no link, no
+    // account — a kid can get good at any of these before a challenge
+    // ever exists, which is the whole point of practice being free.
+    '<div class="panel">' +
+      '<h2>' + T('practiceTitle') + '</h2>' +
+      '<p class="mute">' + T('practiceNote') + '</p>' +
+      '<div class="games">' +
+        '<a class="game-card fortress" href="fortress.html">' +
+          '<span class="game-name">' + T('gFortress') + '</span>' +
+          '<span class="game-desc">' + T('gFortressDesc') + '</span>' +
+        '</a>' +
+        '<a class="game-card recall" href="recall.html">' +
+          '<span class="game-name">' + T('gRecall') + '</span>' +
+          '<span class="game-desc">' + T('gRecallDesc') + '</span>' +
+        '</a>' +
+        '<a class="game-card recognition" href="recognition.html">' +
+          '<span class="game-name">' + T('gRecognition') + '</span>' +
+          '<span class="game-desc">' + T('gRecognitionDesc') + '</span>' +
+        '</a>' +
+      '</div>' +
+      '<p class="mute" style="margin:14px 0 0;font-size:.85rem;">' + T('freeNote') + '</p>' +
+    '</div>' +
 
     '<p class="mute" style="margin-top:26px;">' + T('haveLink') + '</p>' +
     footerHtml();
