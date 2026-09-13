@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Recognition Challenge</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+
+#screen-intro{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#0a1400 0%,#000 70%);z-index:100;
+  overflow-y:auto;overflow-x:hidden;padding:20px 16px 24px;
+}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#ff9500;margin-bottom:8px;text-align:center}
+.vrr-title{font-size:2.2rem;font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 40px rgba(255,149,0,.7);margin-bottom:16px;text-align:center}
+.vrr-title span{color:#ff9500}
+.rule-t{font-size:.9rem;color:#c9c0a8;line-height:1.55;max-width:440px;margin-bottom:22px;text-align:center}
+.rule-t b{color:#fff}
+.big-btn{width:100%;max-width:420px;height:68px;border:none;border-radius:20px;background:linear-gradient(135deg,#ff9500,#B8E050);color:#101000;font-size:1.2rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(255,149,0,.7);margin-bottom:14px}
+.big-btn:hover{transform:scale(1.03)}
+.big-btn.official{background:linear-gradient(135deg,#ffd35a,#ff8c42);color:#2a1a00;box-shadow:0 0 40px rgba(255,211,90,.6)}
+.name-input{width:100%;max-width:420px;padding:14px;border-radius:14px;border:2px solid rgba(255,149,0,.4);background:rgba(255,255,255,.05);color:#fff;font-family:Arial,sans-serif;font-size:1rem;text-align:center;margin-bottom:14px}
+.name-input:focus{outline:none;border-color:#ff9500;box-shadow:0 0 20px rgba(255,149,0,.35)}
+.box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(255,149,0,.5);background:rgba(255,149,0,.1);border-radius:14px;color:#ffc074;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.best-line{margin-top:16px;font-size:.85rem;color:#a7adba}
+.best-line b{color:#ff9500}
+.intro-back{position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none;z-index:60}
+.lang-btn{position:fixed;top:16px;right:16px;padding:8px 14px;border:2px solid rgba(255,149,0,.45);background:rgba(0,0,0,.5);color:#ffc074;font-size:.72rem;font-weight:900;letter-spacing:.08em;border-radius:999px;cursor:pointer;z-index:60}
+
+.official-banner{
+  max-width:420px;width:100%;padding:14px 16px;border-radius:14px;
+  border:2px solid rgba(255,211,90,.45);background:rgba(255,211,90,.08);
+  margin-bottom:18px;text-align:center;
+}
+.official-banner .ob-kick{font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#ffd35a;margin-bottom:5px}
+.official-banner .ob-name{font-size:1.05rem;font-weight:900;color:#fff}
+.official-banner .ob-note{font-size:.78rem;color:#c9c0a8;margin-top:6px;line-height:1.45}
+
+#countdown{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85)}
+#bigCount{font-size:7rem;font-weight:900;color:#ff9500;text-shadow:0 0 40px #ff9500,0 0 80px #ffd35a}
+
+#screen-end{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0a1400 0%,#000 70%);text-align:center;padding:20px;overflow-y:auto}
+.final-num{font-size:6rem;font-weight:900;color:#ff9500;line-height:1;text-shadow:0 0 60px rgba(255,149,0,.9)}
+.final-label{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:10px}
+.final-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:300px;margin:18px auto}
+.final-stat-cell{border-radius:12px;border:2px solid rgba(255,149,0,.35);background:rgba(255,149,0,.06);padding:12px 4px;text-align:center}
+.final-stat-label{font-size:.58rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#ffc074;margin-bottom:4px}
+.final-stat-val{font-size:1.3rem;font-weight:900;color:#fff}
+.points-cell{border-color:rgba(255,211,90,.5);background:rgba(255,211,90,.08)}
+.points-cell .final-stat-label{color:#ffd35a}
+.save-status{font-size:.78rem;font-weight:700;margin-top:14px;min-height:18px}
+.next-player-btn{margin-top:24px;height:64px;padding:0 40px;border:none;border-radius:16px;background:linear-gradient(120deg,#ff9500,#B8E050);color:#101000;font-size:1.15rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 30px rgba(255,149,0,.6)}
+
+#screen-game{position:fixed;inset:0;display:none;flex-direction:column;background:#000;overflow:hidden}
+.topbar{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;padding:10px 10px 4px;flex-shrink:0}
+.top-box{background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.3);border-radius:10px;padding:5px 14px;text-align:center;min-width:72px}
+.top-box.official{border-color:rgba(255,211,90,.45);background:rgba(255,211,90,.08)}
+.top-label{font-size:.55rem;color:#a7adba;text-transform:uppercase;letter-spacing:.06em}
+.top-val{font-size:1.3rem;font-weight:900}
+#hLevel{color:#fff}#hPoints{color:#ffd35a}#hTime{color:#ffd35a}
+
+#msg{text-align:center;padding:6px;font-size:1.05rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;min-height:32px}
+#msg.watch{color:#FFD700}#msg.echo{color:#ff9500}#msg.go{color:#00D9A5}#msg.miss{color:#FF1493}
+
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:8px}
+.court{
+  display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
+  gap:2.2%;padding:2.2%;
+  border:2px solid rgba(255,149,0,.4);border-radius:16px;background:#2b1810;
+  box-shadow:0 0 60px rgba(255,149,0,.22),inset 0 0 40px rgba(255,149,0,.05),0 20px 60px rgba(0,0,0,.8);
+}
+.cell{
+  border-radius:10px;background:rgba(255,149,0,.05);border:2px solid rgba(255,149,0,.28);
+  display:flex;align-items:center;justify-content:center;font-weight:900;
+  color:transparent;cursor:pointer;transition:all .08s;touch-action:manipulation;
+}
+/* Gold is the original pattern, orange is the echo — two clearly
+   different colours, because the whole game is telling them apart. */
+.cell.lit{background:#FFD700!important;border-color:#FFD700!important;box-shadow:0 0 26px rgba(255,215,0,.9)!important;transform:scale(1.05)}
+.cell.echo{background:#ff9500!important;border-color:#B8E050!important;box-shadow:0 0 26px rgba(255,149,0,.9)!important;transform:scale(1.05)}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
+.cell.answer{border:3px solid #00D9A5!important;background:rgba(0,217,165,.22)!important}
+.cell.was{border:3px dashed #FFD700!important;background:rgba(255,215,0,.16)!important}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+#controls{display:flex;justify-content:center;gap:10px;padding:8px 16px 14px;flex-shrink:0}
+.ctrl-btn{height:46px;flex:0 1 170px;max-width:200px;border:2px solid rgba(255,149,0,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.92rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+
+<div id="screen-intro">
+  <a class="intro-back" href="index.html" id="introBack">← Back</a>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
+
+  <div class="vrr-sub" id="introSub">Memory Basketball</div>
+  <div class="vrr-title">THE <span>RECOGNITION</span></div>
+
+  <div class="official-banner" id="officialBanner" style="display:none;">
+    <div class="ob-kick" id="obKick">Official Run</div>
+    <div class="ob-name" id="obPlayer">—</div>
+    <div class="ob-note" id="obNote">This run counts. Your sponsors pay on the points you score, and you only get one.</div>
+  </div>
+
+  <div class="rule-t" id="ruleText"><b>A pattern lights up in gold. Then it comes back in orange — with one cell moved.</b> Tap the one that moved. Every round keeps the pattern and adds one more cell, so it gets harder to spot. One wrong tap ends the run.</div>
+
+  <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off">
+  <button class="big-btn" id="bigStart" onclick="handleStartClick()">▶ START</button>
+  <div class="best-line" id="bestLine"></div>
+</div>
+
+<div id="countdown"><div id="bigCount">3</div></div>
+
+<div id="screen-game">
+  <div class="topbar">
+    <div class="top-box"><div class="top-label" id="lblLevel">Pattern</div><div class="top-val" id="hLevel">0</div></div>
+    <div class="top-box official"><div class="top-label" id="lblPoints">Points</div><div class="top-val" id="hPoints">0</div></div>
+    <div class="top-box"><div class="top-label" id="lblTime">Time</div><div class="top-val" id="hTime">0.0</div></div>
+  </div>
+  <div id="msg" class="watch"></div>
+  <div class="court-area"><div class="court" id="court"></div></div>
+  <div id="controls">
+    <a class="ctrl-btn" href="index.html" id="homeBtn">← Home</a>
+  </div>
+</div>
+
+<div id="screen-end">
+  <div class="final-num" id="endNum">0</div>
+  <div class="final-label" id="endLabel">Longest Pattern Recognized</div>
+
+  <div class="final-stats">
+    <div class="final-stat-cell points-cell"><div class="final-stat-label" id="statPointsLbl">Points</div><div class="final-stat-val" id="endPoints">0</div></div>
+    <div class="final-stat-cell"><div class="final-stat-label" id="statTimeLbl">Time</div><div class="final-stat-val" id="endTime">0.0s</div></div>
+  </div>
+
+  <div class="save-status" id="saveStatus"></div>
+
+  <button class="next-player-btn" id="againBtn">▶ PLAY AGAIN</button>
+  <a class="box-open-btn" id="backToPledge" href="index.html" style="max-width:300px;margin:14px auto 0;">← Back</a>
+</div>
+
+<script>
+function $(id){return document.getElementById(id)}
+
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+// ══════════════════════════════════════════════════════
+//  THE RECOGNITION — Challenge edition.
+//
+//  A pattern is shown, then shown again with exactly one cell moved.
+//  The player taps the cell that moved. Each round keeps every
+//  earlier position and adds one more, so the pattern grows and the
+//  change gets harder to find.
+//
+//  Escalating by one per round means the points formula is the same
+//  as every other game here: reaching pattern length n is n(n+1)/2.
+//
+//  Practice is free and unrecorded. An official run needs the
+//  player's own run key and the database allows only one.
+// ══════════════════════════════════════════════════════
+var params = new URLSearchParams(window.location.search);
+var CHALLENGE_ID = params.get('c') || null;
+var PLAYER_ID = params.get('p') || null;
+var RUN_KEY = params.get('k');
+var IS_OFFICIAL = !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.get('official') === '1');
+var GAME = 'recognition';
+
+function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+
+var STR = {
+  en:{
+    sub:'Memory Basketball',
+    rule:'<b>A pattern lights up in gold. Then it comes back in orange — with one cell moved.</b> Tap the one that moved. Every round keeps the pattern and adds one more cell, so it gets harder to spot. One wrong tap ends the run.',
+    namePh:'Your name',
+    start:'▶ START', startOfficial:'▶ START OFFICIAL RUN', startPractice:'▶ PRACTICE RUN',
+    officialKick:'Official Run',
+    officialNote:'This run counts. Your sponsors pay on the points you score, and you only get one.',
+    alreadyRun:'Your official run is already in: <b>pattern {L}, {P} points</b>. You can keep practising, but this score is final.',
+    confirmOfficial:'This is your official run. Your sponsors pay on the points you score, and you only get one. Ready?',
+    back:'← Back', backToChallenge:'← Back to my Challenge page', home:'← Home',
+    lblLevel:'Pattern', lblPoints:'Points', lblTime:'Time',
+    getReady:'GET READY...', watchGold:'WATCH THE GOLD', nowOrange:'ONE MOVED — TAP IT',
+    nice:'✅ FOUND IT', wrong:'THAT WAS NOT IT',
+    labelPractice:'Practice Run · Longest Pattern',
+    labelOfficial:'Official Run · Longest Pattern',
+    playAgain:'▶ PLAY AGAIN', statPoints:'Points', statTime:'Time',
+    practiceOnly:'Practice run.',
+    recording:'Recording your official run…',
+    recorded:'✓ Official run recorded — {P} points.',
+    wasAlready:'Your official run was already recorded. This one was practice.',
+    wrongLink:'This link cannot record an official run — ask your coach for your own link.',
+    noServer:'Could not reach the server — contact your coach before playing again.',
+    bestLine:'Your best practice run: <b>pattern {L}</b> · {P} points'
+  },
+  es:{
+    sub:'Baloncesto de Memoria',
+    rule:'<b>Un patrón se enciende en dorado. Luego vuelve en anaranjado — con una celda movida.</b> Toca la que se movió. Cada ronda mantiene el patrón y añade una celda más, así que cuesta más encontrarla. Un toque equivocado termina la corrida.',
+    namePh:'Tu nombre',
+    start:'▶ EMPEZAR', startOfficial:'▶ EMPEZAR CORRIDA OFICIAL', startPractice:'▶ CORRIDA DE PRÁCTICA',
+    officialKick:'Corrida Oficial',
+    officialNote:'Esta corrida cuenta. Tus padrinos pagan por los puntos que anotes, y solo tienes una.',
+    alreadyRun:'Tu corrida oficial ya está hecha: <b>patrón {L}, {P} puntos</b>. Puedes seguir practicando, pero esa puntuación es final.',
+    confirmOfficial:'Esta es tu corrida oficial. Tus padrinos pagan por los puntos que anotes, y solo tienes una. ¿Listo?',
+    back:'← Atrás', backToChallenge:'← Volver a mi página del Reto', home:'← Inicio',
+    lblLevel:'Patrón', lblPoints:'Puntos', lblTime:'Tiempo',
+    getReady:'PREPÁRATE...', watchGold:'OBSERVA EL DORADO', nowOrange:'UNA SE MOVIÓ — TÓCALA',
+    nice:'✅ LA ENCONTRASTE', wrong:'ESA NO ERA',
+    labelPractice:'Práctica · Patrón más largo',
+    labelOfficial:'Corrida Oficial · Patrón más largo',
+    playAgain:'▶ JUGAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
+    practiceOnly:'Corrida de práctica.',
+    recording:'Guardando tu corrida oficial…',
+    recorded:'✓ Corrida oficial guardada — {P} puntos.',
+    wasAlready:'Tu corrida oficial ya estaba guardada. Esta fue práctica.',
+    wrongLink:'Este enlace no puede guardar una corrida oficial — pídele a tu entrenador tu propio enlace.',
+    noServer:'No se pudo conectar al servidor — habla con tu entrenador antes de jugar otra vez.',
+    bestLine:'Tu mejor práctica: <b>patrón {L}</b> · {P} puntos'
+  }
+};
+
+var LANG = 'en';
+try { LANG = localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'); } catch(e){}
+
+function T(key, vals){
+  var out = (STR[LANG] && STR[LANG][key]) || STR.en[key] || key;
+  if (vals) Object.keys(vals).forEach(function(k){ out = out.split('{'+k+'}').join(vals[k]); });
+  return out;
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  $('introSub').textContent = T('sub');
+  $('ruleText').innerHTML = T('rule');
+  $('playerNameInputMain').placeholder = T('namePh');
+  $('obKick').textContent = T('officialKick');
+  $('lblLevel').textContent = T('lblLevel');
+  $('lblPoints').textContent = T('lblPoints');
+  $('lblTime').textContent = T('lblTime');
+  $('statPointsLbl').textContent = T('statPoints');
+  $('statTimeLbl').textContent = T('statTime');
+  $('againBtn').textContent = T('playAgain');
+  $('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
+  var linked = CHALLENGE_ID && PLAYER_ID;
+  $('introBack').textContent = linked ? T('backToChallenge') : T('back');
+  $('homeBtn').textContent = linked ? T('backToChallenge') : T('home');
+  $('backToPledge').textContent = linked ? T('backToChallenge') : T('back');
+  if (!$('bigStart').dataset.locked) $('bigStart').textContent = IS_OFFICIAL ? T('startOfficial') : T('start');
+  if (!$('obNote').dataset.locked) $('obNote').textContent = T('officialNote');
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('fc-lang', LANG); } catch(e){}
+  applyLang();
+  loadBest();
+}
+
+(function setBackLink(){
+  if (CHALLENGE_ID && PLAYER_ID){
+    var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
+             + (RUN_KEY ? '&k=' + encodeURIComponent(RUN_KEY) : '');
+    $('introBack').href = back;
+    $('homeBtn').href = back;
+    $('backToPledge').href = back;
+  }
+})();
+
+(function initOfficial(){
+  if (!IS_OFFICIAL) return;
+
+  $('officialBanner').style.display='block';
+  $('bigStart').className='big-btn official';
+  $('againBtn').style.display='none';
+
+  fetch(SB_URL + '/rest/v1/players?id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=name', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(rows){
+    if (rows && rows.length){
+      $('obPlayer').textContent = rows[0].name;
+      $('playerNameInputMain').value = rows[0].name;
+      $('playerNameInputMain').style.display = 'none';
+    }
+  })
+  .catch(function(){});
+
+  fetch(SB_URL + '/rest/v1/challenge_runs?challenge_id=eq.' + encodeURIComponent(CHALLENGE_ID)
+        + '&player_id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=level_reached,points', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(rows){
+    if (rows && rows.length){
+      $('obNote').innerHTML = T('alreadyRun', { L: rows[0].level_reached, P: rows[0].points });
+      $('obNote').dataset.locked='1';
+      $('bigStart').className='big-btn';
+      $('bigStart').textContent=T('startPractice');
+      $('bigStart').dataset.locked='1';
+      IS_OFFICIAL = false;
+    }
+  })
+  .catch(function(){});
+})();
+
+// ---- the game ----
+var GRID = 25;
+var START_LENGTH = 2;
+var SHOW_MS = 1900;      // the gold pattern
+var GAP_MS = 550;        // blank between gold and orange
+var BETWEEN_MS = 850;
+
+var phase='idle';
+var pattern=[];          // the gold positions
+var movedFrom=-1;        // which position left
+var movedTo=-1;          // where it went — the answer
+var level=0;
+var best=0;
+var timers=[];
+var cells=[];
+var runStartTime=0;
+var canTap=false;
+
+function clrT(){timers.forEach(clearTimeout);timers=[]}
+function msg(t,c){var e=$('msg');e.textContent=t;e.className=c||'watch'}
+
+function resizeCourt(){
+  var area=document.querySelector('.court-area');
+  var court=$('court');
+  if(!area||!court)return;
+  var size=Math.min(area.clientWidth, area.clientHeight);
+  if(size<80){ requestAnimationFrame(resizeCourt); return; }
+  court.style.width=size+'px';
+  court.style.height=size+'px';
+}
+window.addEventListener('resize',resizeCourt);
+window.addEventListener('orientationchange',function(){setTimeout(resizeCourt,220)});
+document.addEventListener('fullscreenchange',function(){setTimeout(resizeCourt,220)});
+
+function buildCourt(){
+  var court=$('court');
+  court.innerHTML='';cells=[];
+  for(var i=0;i<GRID;i++){
+    var c=document.createElement('div');
+    c.className='cell';
+    (function(idx){
+      c.addEventListener('pointerdown',function(e){e.preventDefault();handleTap(idx)});
+    })(i);
+    court.appendChild(c);
+    cells.push(c);
+  }
+  resizeCourt();
+}
+
+function clearCells(){ cells.forEach(function(c){ c.className='cell'; }); }
+
+var audioCtx=null;
+function ensureAudio(){ if(!audioCtx){ try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){} } }
+function blip(freq){
+  if(!audioCtx)return;
+  try{
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='sine'; o.frequency.value=freq||440;
+    o.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(.16,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.12);
+    o.start(); o.stop(audioCtx.currentTime+.13);
+  }catch(e){}
+}
+
+function startRun(){
+  if(phase==='running')return;
+  ensureAudio();
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+  try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); } }catch(e){}
+
+  $('screen-intro').style.display='none';
+  $('screen-end').style.display='none';
+  $('screen-game').style.display='flex';
+  buildCourt();
+
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      resizeCourt();
+      countdownThen(function(){ resizeCourt(); beginRun(); });
+    });
+  });
+}
+
+function countdownThen(cb){
+  $('countdown').style.display='flex';
+  var n=3;$('bigCount').textContent=n;
+  var iv=setInterval(function(){
+    n--;
+    if(n<=0){clearInterval(iv);$('countdown').style.display='none';cb()}
+    else{$('bigCount').textContent=n}
+  },800);
+}
+
+function beginRun(){
+  phase='running';
+  pattern=[];
+  level=0;
+  runStartTime=performance.now();
+  $('hLevel').textContent='0';$('hPoints').textContent='0';$('hTime').textContent='0.0';
+  msg(T('getReady'),'go');
+  timers.push(setTimeout(nextLevel,900));
+  requestAnimationFrame(tickTimer);
+}
+
+function tickTimer(){
+  if(phase!=='running')return;
+  $('hTime').textContent=((performance.now()-runStartTime)/1000).toFixed(1);
+  requestAnimationFrame(tickTimer);
+}
+
+function freeCell(exclude){
+  var c;
+  var guard=0;
+  do { c=Math.floor(Math.random()*GRID); guard++; }
+  while (exclude.indexOf(c)!==-1 && guard<400);
+  return c;
+}
+
+function nextLevel(){
+  if(phase!=='running')return;
+
+  // The pattern keeps everything from earlier rounds and gains one
+  // more cell — that growth is what makes spotting the change harder
+  // as the run goes on. The first round adds two, since a
+  // single-cell pattern would give the answer away.
+  var add = pattern.length===0 ? START_LENGTH : 1;
+  for(var i=0;i<add;i++){
+    if(pattern.length >= GRID-1) break;   // leave room for the move
+    pattern.push(freeCell(pattern));
+  }
+
+  level = pattern.length;
+  $('hLevel').textContent=level;
+
+  // One cell leaves its position for a cell that is not in use.
+  var idx = Math.floor(Math.random()*pattern.length);
+  movedFrom = pattern[idx];
+  movedTo = freeCell(pattern);
+
+  canTap=false;
+  clearCells();
+  msg(T('watchGold'),'watch');
+  pattern.forEach(function(p){ cells[p].classList.add('lit'); });
+  blip(760);
+
+  timers.push(setTimeout(function(){
+    if(phase!=='running')return;
+    clearCells();
+  }, SHOW_MS));
+
+  timers.push(setTimeout(function(){
+    if(phase!=='running')return;
+    msg(T('nowOrange'),'echo');
+    pattern.forEach(function(p){
+      cells[p === movedFrom ? movedTo : p].classList.add('echo');
+    });
+    blip(560);
+    canTap=true;
+  }, SHOW_MS + GAP_MS));
+}
+
+function handleTap(idx){
+  if(phase!=='running' || !canTap)return;
+
+  if(idx===movedTo){
+    canTap=false;
+    cells[idx].classList.add('correct');
+    blip(980);
+    $('hPoints').textContent=pointsFor(level);
+    msg(T('nice'),'go');
+
+    // The moved cell keeps its new home, so the pattern the player
+    // has to hold in mind genuinely changes as the run goes on.
+    pattern[pattern.indexOf(movedFrom)] = movedTo;
+
+    timers.push(setTimeout(nextLevel,BETWEEN_MS));
+  }else{
+    canTap=false;
+    cells[idx].classList.add('wrong');
+    cells[movedTo].classList.add('answer');
+    if(movedFrom>=0) cells[movedFrom].classList.add('was');
+    endRun();
+  }
+}
+
+function endRun(){
+  if(phase==='done')return;
+  phase='done';clrT();
+
+  // The pattern being shown when the run ended was not solved, so the
+  // score is the last pattern actually recognized.
+  var finalLevel=Math.max(0, level-1);
+  var finalTime=(performance.now()-runStartTime)/1000;
+
+  msg(T('wrong'),'miss');
+  timers.push(setTimeout(function(){ showFinal(finalLevel,finalTime); },1400));
+}
+
+function showFinal(finalLevel,finalTime){
+  var points=pointsFor(finalLevel);
+
+  if(finalLevel>best){best=finalLevel;saveBest()}
+
+  $('endNum').textContent=finalLevel;
+  $('endPoints').textContent=points;
+  $('endTime').textContent=finalTime.toFixed(1)+'s';
+  $('screen-game').style.display='none';
+  $('screen-end').style.display='flex';
+
+  var status=$('saveStatus');
+
+  if(!IS_OFFICIAL){
+    $('endLabel').textContent=T('labelPractice');
+    status.style.color='#7d8ba3';
+    status.textContent=T('practiceOnly');
+    if(CHALLENGE_ID && PLAYER_ID) recordPractice(finalLevel);
+    return;
+  }
+
+  $('endLabel').textContent=T('labelOfficial');
+  status.style.color='#a7adba';
+  status.textContent=T('recording');
+
+  fetch(SB_URL+'/rest/v1/rpc/record_official_run',{
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({
+      p_challenge:CHALLENGE_ID, p_player:PLAYER_ID, p_key:RUN_KEY,
+      p_level:finalLevel, p_points:points, p_time:Number(finalTime.toFixed(2)),
+      p_game:GAME
+    })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('failed'); return r.json(); })
+  .then(function(out){
+    if(out && out.ok){
+      status.style.color='#00D9A5';
+      status.textContent=T('recorded',{P:points});
+      IS_OFFICIAL=false;
+      return;
+    }
+    if(out && out.reason==='already'){
+      status.style.color='#ffd35a';
+      status.textContent=T('wasAlready');
+      IS_OFFICIAL=false;
+      return;
+    }
+    status.style.color='#ff6b35';
+    status.textContent=T('wrongLink');
+  })
+  .catch(function(e){
+    status.style.color='#ff6b35';
+    status.textContent=T('noServer');
+    console.error('Challenge run write:',e);
+  });
+}
+
+function recordPractice(finalLevel){
+  var base=SB_URL+'/rest/v1/challenge_practice';
+  var headers={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+  var filter='?challenge_id=eq.'+encodeURIComponent(CHALLENGE_ID)
+           +'&player_id=eq.'+encodeURIComponent(PLAYER_ID);
+
+  fetch(base+filter+'&select=best_level,runs',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
+  .then(function(r){return r.json()})
+  .then(function(rows){
+    if(rows && rows.length){
+      var row=rows[0];
+      return fetch(base+filter,{method:'PATCH',headers:headers,body:JSON.stringify({
+        best_level:Math.max(row.best_level||0,finalLevel),
+        runs:(row.runs||0)+1,
+        updated_at:new Date().toISOString()
+      })});
+    }
+    return fetch(base,{method:'POST',headers:headers,body:JSON.stringify({
+      challenge_id:CHALLENGE_ID, player_id:PLAYER_ID, game:GAME,
+      best_level:finalLevel, runs:1
+    })});
+  })
+  .catch(function(e){console.error('Practice record:',e)});
+}
+
+var BEST_KEY='fc-recognition-best';
+function loadBest(){
+  best=0;
+  try{best=parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0}catch(e){}
+  $('bestLine').innerHTML = best>0 ? T('bestLine',{L:best,P:pointsFor(best)}) : '';
+}
+function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
+
+function handleStartClick(){
+  if(IS_OFFICIAL){
+    if(!confirm(T('confirmOfficial'))) return;
+    startRun();
+    return;
+  }
+  var nameField=$('playerNameInputMain');
+  var name=nameField.value.trim();
+  if(!name){
+    nameField.focus();
+    nameField.style.borderColor='#FF1493';
+    setTimeout(function(){nameField.style.borderColor=''},600);
+    return;
+  }
+  startRun();
+}
+
+$('playerNameInputMain').addEventListener('keydown',function(e){
+  if(e.key==='Enter')handleStartClick();
+});
+
+$('againBtn').addEventListener('click',function(){
+  phase='idle';
+  $('screen-end').style.display='none';
+  $('screen-intro').style.display='flex';
+  loadBest();
+});
+
+applyLang();
+loadBest();
+</script>
+</body>
+</html>
