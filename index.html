@@ -242,6 +242,16 @@ var PLAYER = params.get('p');
 var RUN_KEY = params.get('k');
 
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+
+// A challenge names one game. Adding another is a row here plus its
+// own file — nothing else in this page needs to know the difference.
+var GAMES = {
+  fortress:  { file:'fortress.html',  label:'The Fortress' },
+  recall:    { file:'recall.html',    label:'The Recall' },
+  recognition:{ file:'recognition.html', label:'Recognition' }
+};
+function gameFile(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).file; }
+function gameLabel(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).label; }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 function money(n){ return '$' + Number(n || 0).toFixed(2); }
@@ -311,7 +321,7 @@ function renderTeam(ch, campaign, players, runs, practice){
 
   app.innerHTML =
     langBtnHtml() +
-    '<div class="kick">' + T('kick') + '</div>' +
+    '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
     '<h1>' + esc(campaign ? campaign.name : ch.name) + '</h1>' +
     (ch.name ? '<p class="mute" style="margin-top:8px;">' + esc(ch.name) + '</p>' : '') +
 
@@ -346,7 +356,7 @@ function renderPlayer(ch, campaign, player, run, prac){
 
   app.innerHTML =
     langBtnHtml() +
-    '<div class="kick">' + T('kick') + '</div>' +
+    '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
     '<h1>' + esc(player.name) + '</h1>' +
     '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') + '</p>' +
 
@@ -375,11 +385,11 @@ function renderPlayer(ch, campaign, player, run, prac){
           '<h2>' + (run ? T('yourRunDone') : T('yourRunTitle')) + '</h2>' +
           (run
             ? '<p class="mute">' + T('runDoneNote', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>' +
-              '<a class="btn line" href="fortress.html">' + T('practiceOnlyBtn') + '</a>'
+              '<a class="btn line" href="' + gameFile(ch) + '">' + T('practiceOnlyBtn') + '</a>'
             : '<p class="mute">' + T('practiceNote') + '</p>' +
-              '<a class="btn line" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
+              '<a class="btn line" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
                 '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">' + T('practiceBtn') + '</a>' +
-              '<a class="btn gold" href="fortress.html?c=' + encodeURIComponent(CHALLENGE) +
+              '<a class="btn gold" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
                 '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
                 '&official=1">' + T('officialBtn') + '</a>') +
         '</div>' +
