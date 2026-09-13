@@ -126,6 +126,12 @@ header{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,72px)}
 .tab.off .face{transform:rotate(-16deg) translate(-118%,26%);opacity:0}
 @media (prefers-reduced-motion:reduce){.tab .face{transition:none}}
 
+.ex div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.ex div:last-child{border-bottom:none}
+.ex span{color:var(--mute)}
+.ex b{font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.ex .hi b{color:var(--gold)}
+
 .card-hint{margin:16px 0 0;font-size:.8rem;color:var(--mute)}
 
 /* ---------- split ---------- */
@@ -203,16 +209,74 @@ footer a{color:var(--mute)}
 <header id="top">
   <div class="wrap hero">
     <div>
-      <h1 data-t="h1">Sixteen digital coupons. Half the money goes to the team.</h1>
-      <p class="lede" data-t="lede">The team sells a digital BOGO card for $20 and keeps half. The coupons are from local businesses people already go to. Nobody sells chocolate door to door.</p>
+      <h1 data-t="h1">Sponsors pledge for every point your players score.</h1>
+      <p class="lede" data-t="lede">Your team plays a memory drill we built. Sponsors pledge whatever they like per point, the players take one official run, and half of everything collected goes straight to the program. No boxes, no coupons, nobody selling door to door.</p>
       <div class="hero-actions">
         <a class="btn btn-solid" href="signup.html" data-t="ctaTeam">Start a team fundraiser</a>
-        <a class="btn btn-line" href="#merchants" data-t="ctaBiz">Enroll my business</a>
+        <a class="btn btn-line" href="index.html" data-t="ctaPlay">Try the games</a>
       </div>
     </div>
 
     <div>
       <div class="card">
+        <div class="card-top">
+          <span class="card-brand" data-t="exBrand">What a run is worth</span>
+          <span class="card-meta" data-t="exMeta">at 25¢ a point</span>
+        </div>
+        <div class="ex">
+          <div><span data-t="exL10">Holds 10 levels</span><b>55 pts · $13.75</b></div>
+          <div><span data-t="exL15">Holds 15 levels</span><b>120 pts · $30.00</b></div>
+          <div class="hi"><span data-t="exL20">Holds 20 levels</span><b>210 pts · $52.50</b></div>
+        </div>
+        <p class="card-hint" data-t="exHint">One sponsor. One run. Every level is worth more than the last.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="split wrap" id="how">
+  <h2 data-t="h2money">Where the money goes</h2>
+  <div class="money">
+    <div class="hi"><b data-t="mHalf">Half</b><span data-t="m1">Straight to the program</span></div>
+    <div><b data-t="mHalf2">Half</b><span data-t="m2">Runs the platform</span></div>
+    <div><b>$0</b><span data-t="m3">Cost to sign up</span></div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div>
+        <h3 data-t="s1h">Sponsors pledge per point</h3>
+        <p data-t="s1p">A player shares their link. Family, neighbors and followers pledge any amount per point — a dime, a quarter, a dollar. Nothing is charged when they pledge.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <h3 data-t="s2h">Players practise free</h3>
+        <p data-t="s2p">All three games are open to anyone, any time, with nothing recorded. Nobody goes into their run cold.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <h3 data-t="s3h">One official run each</h3>
+        <p data-t="s3p">The score is the longest chain they hold. Reach level 12 and that is 78 points. Our software counts it, so there is nothing to argue about.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
+        <p data-t="s4p">Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="split wrap">
+  <h2 data-t="h2paths">Also available</h2>
+  <div class="paths">
+    <div class="path path-teams" id="teams">
+      <h3 data-t="p1h">BOGO coupon cards</h3>
+      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p1intro">The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.</p>
+      <div class="card" style="margin:0 0 16px;">
         <div class="card-top">
           <span class="card-brand" data-t="cardBrand">Coupons from a local favorite</span>
           <span class="card-meta" data-t="cardMeta">16 coupons</span>
@@ -220,56 +284,17 @@ footer a{color:var(--mute)}
         <div class="tabs" id="tabs"></div>
         <p class="card-hint" data-t="hint">Tap a coupon to peel it.</p>
       </div>
-    </div>
-  </div>
-</header>
-
-<section class="split wrap" id="how">
-  <h2 data-t="h2money">Where the twenty dollars goes</h2>
-  <div class="money">
-    <div class="hi"><b>$10</b><span data-t="m1">Straight to the team</span></div>
-    <div><b>$10</b><span data-t="m2">Runs the platform</span></div>
-    <div><b>$0</b><span data-t="m3">Cost to the business</span></div>
-  </div>
-
-  <div class="steps">
-    <div class="step">
-      <div>
-        <h3 data-t="s1h">A business sets an offer</h3>
-        <p data-t="s1p">Buy one, get one free at their counter. They print nothing, stock nothing and pay nothing.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div>
-        <h3 data-t="s2h">The team sells the card</h3>
-        <p data-t="s2p">Players share their own link with family, neighbors and followers. Supporters can back one player or the whole team.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div>
-        <h3 data-t="s3h">Supporters buy, then use it all year</h3>
-        <p data-t="s3p">The card arrives by email in seconds. At the register they peel a coupon and hand over their phone.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="split wrap">
-  <h2 data-t="h2paths">Two ways in</h2>
-  <div class="paths">
-    <div class="path path-teams" id="teams">
-      <h3 data-t="p1h">For teams and clubs</h3>
       <ul>
         <li data-t="p1a">Half of every card, paid to the team</li>
         <li data-t="p1b">Each player has their own link and their own total</li>
-        <li data-t="p1c">See what you have earned and what has been paid, any time</li>
-        <li data-t="p1d">Nothing to buy up front and no boxes in the garage</li>
+        <li data-t="p1c">Coupons good for a year, redeemed on a phone</li>
       </ul>
       <a class="btn btn-solid" href="signup.html" data-t="p1cta">Get your team set up</a>
     </div>
 
     <div class="path path-merchants" id="merchants">
       <h3 data-t="p2h">For local businesses</h3>
+      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p2intro">Put your offer on a card a whole neighborhood carries, or back a team's challenge as its sponsor.</p>
       <ul>
         <li data-t="p2a">New customers walking in to buy one and get one</li>
         <li data-t="p2b">One coupon per visit, so they come back</li>
@@ -325,64 +350,80 @@ function drawTabs(){
 /* ---- language ---- */
 const T = {
   en:{
-    navHow:'How it works', navTeams:'For teams', navMerchants:'For businesses',
-    h1:'Sixteen digital coupons. Half the money goes to the team.',
-    lede:'The team sells a digital BOGO card for $20 and keeps half. The coupons are from local businesses people already go to. Nobody sells chocolate door to door.',
-    navGames:'Play the games',
-    ctaTeam:'Start a team fundraiser', ctaBiz:'Enroll my business',
-    cardBrand:'Coupons from a local favorite', cardMeta:'16 coupons', hint:'Tap a coupon to peel it.',
-    h2money:'Where the twenty dollars goes',
-    m1:'Straight to the team', m2:'Runs the platform', m3:'Cost to the business',
-    s1h:'A business sets an offer',
-    s1p:'Buy one, get one free at their counter. They print nothing, stock nothing and pay nothing.',
-    s2h:'The team sells the card',
-    s2p:'Players share their own link with family, neighbors and followers. Supporters can back one player or the whole team.',
-    s3h:'Supporters buy, then use it all year',
-    s3p:'The card arrives by email in seconds. At the register they peel a coupon and hand over their phone.',
-    h2paths:'Two ways in',
-    p1h:'For teams and clubs',
+    h1:'Sponsors pledge for every point your players score.',
+    lede:'Your team plays a memory drill we built. Sponsors pledge whatever they like per point, the players take one official run, and half of everything collected goes straight to the program. No boxes, no coupons, nobody selling door to door.',
+    ctaPlay:'Try the games',
+    exBrand:'What a run is worth', exMeta:'at 25\u00a2 a point',
+    exL10:'Holds 10 levels', exL15:'Holds 15 levels', exL20:'Holds 20 levels',
+    exHint:'One sponsor. One run. Every level is worth more than the last.',
+    h2money:'Where the money goes',
+    mHalf:'Half', mHalf2:'Half',
+    m1:'Straight to the program', m2:'Runs the platform', m3:'Cost to sign up',
+    s1h:'Sponsors pledge per point',
+    s1p:'A player shares their link. Family, neighbors and followers pledge any amount per point \u2014 a dime, a quarter, a dollar. Nothing is charged when they pledge.',
+    s2h:'Players practise free',
+    s2p:'All three games are open to anyone, any time, with nothing recorded. Nobody goes into their run cold.',
+    s3h:'One official run each',
+    s3p:'The score is the longest chain they hold. Reach level 12 and that is 78 points. Our software counts it, so there is nothing to argue about.',
+    s4h:'Invoices go out, the program gets paid',
+    s4p:'Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.',
+    h2paths:'Also available',
+    p1h:'BOGO coupon cards',
+    p1intro:'The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.',
     p1a:'Half of every card, paid to the team',
     p1b:'Each player has their own link and their own total',
-    p1c:'See what you have earned and what has been paid, any time',
-    p1d:'Nothing to buy up front and no boxes in the garage',
-    p1cta:'Get your team set up',
-    p2h:'For local businesses',
+    p1c:'Coupons good for a year, redeemed on a phone',
+    p2intro:"Put your offer on a card a whole neighborhood carries, or back a team's challenge as its sponsor.",
     p2a:'New customers walking in to buy one and get one',
     p2b:'One coupon per visit, so they come back',
     p2c:'Your name on every card in the neighborhood',
     p2d:'No fees, no minimum, no printing',
+    navHow:'How it works', navTeams:'For teams', navMerchants:'For businesses',
+    navGames:'Play the games',
+    ctaTeam:'Start a team fundraiser', ctaBiz:'Enroll my business',
+    cardBrand:'Coupons from a local favorite', cardMeta:'16 coupons', hint:'Tap a coupon to peel it.',
+    p1cta:'Get your team set up',
+    p2h:'For local businesses',
     p2cta:'Enroll your business',
     closeH:"Let's go.",
     closeP:'Tell us the team or the business and we will have you selling within a week.',
     closeCta:'Email us', coachSignin:'Coach sign in', termsLink:'Terms', privacyLink:'Privacy'
   },
   es:{
+    h1:'Los padrinos prometen por cada punto que anoten tus jugadores.',
+    lede:'Tu equipo juega un ejercicio de memoria que creamos nosotros. Los padrinos prometen lo que quieran por punto, los jugadores hacen una corrida oficial, y la mitad de todo lo cobrado va directo al programa. Sin cajas, sin cupones, sin vender puerta por puerta.',
+    ctaPlay:'Prueba los juegos',
+    exBrand:'Cu\u00e1nto vale una corrida', exMeta:'a 25\u00a2 por punto',
+    exL10:'Aguanta 10 niveles', exL15:'Aguanta 15 niveles', exL20:'Aguanta 20 niveles',
+    exHint:'Un padrino. Una corrida. Cada nivel vale m\u00e1s que el anterior.',
+    h2money:'A d\u00f3nde va el dinero',
+    mHalf:'Mitad', mHalf2:'Mitad',
+    m1:'Directo al programa', m2:'Opera la plataforma', m3:'Costo de inscribirse',
+    s1h:'Los padrinos prometen por punto',
+    s1p:'El jugador comparte su enlace. Familia, vecinos y seguidores prometen lo que quieran por punto \u2014 diez centavos, veinticinco, un d\u00f3lar. No se cobra nada al prometer.',
+    s2h:'Los jugadores practican gratis',
+    s2p:'Los tres juegos est\u00e1n abiertos para cualquiera, a cualquier hora, sin guardar nada. Nadie llega en fr\u00edo a su corrida.',
+    s3h:'Una corrida oficial cada uno',
+    s3p:'La puntuaci\u00f3n es la cadena m\u00e1s larga que aguanten. Llegar al nivel 12 son 78 puntos. Nuestro programa los cuenta, as\u00ed que no hay nada que discutir.',
+    s4h:'Salen las facturas, el programa cobra',
+    s4p:'A cada padrino se le factura su tarifa por los puntos anotados, con treinta d\u00edas para pagar. El programa recibe la mitad de todo lo cobrado.',
+    h2paths:'Tambi\u00e9n disponible',
+    p1h:'Tarjetas de cupones BOGO',
+    p1intro:'La otra forma de recaudar. Una tarjeta digital de cupones dos por uno de un negocio local, vendida a $20 con la mitad para el equipo.',
+    p1a:'La mitad de cada tarjeta, pagada al equipo',
+    p1b:'Cada jugador tiene su propio enlace y su propio total',
+    p1c:'Cupones v\u00e1lidos por un a\u00f1o, redimidos en el celular',
+    p2intro:'Pon tu oferta en una tarjeta que lleva todo un vecindario, o auspicia el reto de un equipo.',
+    p2a:'Clientes nuevos entrando a comprar uno y llevarse dos',
+    p2b:'Un cup\u00f3n por visita, para que vuelvan',
+    p2c:'Tu nombre en cada tarjeta del vecindario',
+    p2d:'Sin cargos, sin m\u00ednimo, sin imprimir',
     navHow:'Cómo funciona', navTeams:'Para equipos', navMerchants:'Para negocios',
-    h1:'Dieciséis cupones digitales. La mitad del dinero es del equipo.',
-    lede:'El equipo vende una tarjeta digital BOGO de $20 y se queda con la mitad. Los cupones son de negocios locales que la gente ya visita. Nadie vende chocolates puerta por puerta.',
     navGames:'Juega los juegos',
     ctaTeam:'Empieza con tu equipo', ctaBiz:'Inscribe tu negocio',
     cardBrand:'Cupones de un favorito local', cardMeta:'16 cupones', hint:'Toca un cupón para despegarlo.',
-    h2money:'A dónde van los veinte dólares',
-    m1:'Directo al equipo', m2:'Mantiene la plataforma', m3:'Le cuesta al negocio',
-    s1h:'El negocio pone su oferta',
-    s1p:'Compra uno y llévate otro gratis en su mostrador. No imprime nada, no almacena nada y no paga nada.',
-    s2h:'El equipo vende la tarjeta',
-    s2p:'Los jugadores comparten su enlace con familia, vecinos y seguidores. Se puede apoyar a un jugador o al equipo entero.',
-    s3h:'Los seguidores compran y la usan todo el año',
-    s3p:'La tarjeta llega por correo en segundos. En el mostrador despegan un cupón y entregan el celular.',
-    h2paths:'Dos maneras de entrar',
-    p1h:'Para equipos y clubes',
-    p1a:'La mitad de cada tarjeta, pagada al equipo',
-    p1b:'Cada jugador con su enlace y su propio total',
-    p1c:'Mira lo que has ganado y lo que se ha pagado, cuando quieras',
-    p1d:'Nada que comprar por adelantado ni cajas en el garaje',
     p1cta:'Prepara tu equipo',
     p2h:'Para negocios locales',
-    p2a:'Clientes nuevos que entran a comprar uno y llevarse otro',
-    p2b:'Un cupón por visita, así regresan',
-    p2c:'Tu nombre en cada tarjeta del vecindario',
-    p2d:'Sin cuotas, sin mínimos, sin imprimir',
     p2cta:'Inscribe tu negocio',
     closeH:'Vamos.',
     closeP:'Dinos el equipo o el negocio y en una semana estás vendiendo.',
