@@ -11,31 +11,48 @@
 :root{--ink:#160E1C;--panel:#1D1426;--line:#3A2647;--gold:#E8B23A;--leather:#C9601F;--paper:#F7F3EF;--mute:#B7A8C2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{width:min(1040px,92vw);margin:0 auto;padding:26px 0 70px}
-.navwrap{width:min(1040px,92vw);margin:0 auto}
-
-/* Two columns once there is room: what happens next on the left,
-   the form on the right. Below 900px it falls back to one column,
-   which is the right shape on a phone. */
-.cols{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;margin-top:22px}
-@media(max-width:900px){.cols{grid-template-columns:1fr;gap:16px}}
-.side{position:sticky;top:22px}
-@media(max-width:900px){.side{position:static}}
-
-.lede-wrap{max-width:720px}
+.wrap{width:min(1060px,92vw);margin:0 auto}
 
 nav{border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.mark{font-weight:800;letter-spacing:-.02em;text-decoration:none;font-size:1.05rem}
+.mark{font-weight:800;letter-spacing:-.02em;text-decoration:none;font-size:1.05rem;color:var(--paper)}
 .mark em{font-style:normal;color:var(--gold)}
+.navr{display:flex;align-items:center;gap:14px}
+.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
+.navr a:hover{color:var(--paper)}
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 
-h1{font-size:clamp(2rem,5.5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:0 0 .35em}
-h2{font-size:1.1rem;font-weight:800;letter-spacing:-.01em;margin:0 0 .6em}
-p{margin:0 0 1em;color:#E4DCEA}
-.mute{color:var(--mute);font-size:.92rem}
+/* ---- hero ---- */
+header{padding:52px 0 34px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .35em;max-width:16ch}
+.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#E4DCEA;max-width:58ch;margin:0}
 
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+/* ---- the four steps, across the page rather than down it ---- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:34px 0 40px}
+@media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr);gap:22px}}
+@media(max-width:520px){.steps{grid-template-columns:1fr;gap:18px}}
+.step{position:relative;padding-top:16px;border-top:2px solid var(--line)}
+.step .n{
+  position:absolute;top:-13px;left:0;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--gold);color:var(--gold);
+  font-size:.78rem;font-weight:800;display:grid;place-content:center;
+}
+.step b{display:block;font-size:1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+.step span{display:block;color:var(--mute);font-size:.9rem;line-height:1.5}
+
+/* ---- form ---- */
+.formwrap{padding:8px 0 70px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3vw,32px)}
+
+.sec{padding:26px 0;border-top:1px solid var(--line)}
+.sec:first-of-type{padding-top:0;border-top:none}
+.sec h2{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;margin:0 0 3px}
+.sec p{margin:0 0 6px;color:var(--mute);font-size:.9rem}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.full{grid-column:1/-1}
 
 label{display:block;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
 input,select,textarea{
@@ -43,149 +60,152 @@ input,select,textarea{
   border:1px solid #ffffff1f;background:#120C18;color:#fff;
   font-family:inherit;font-size:1rem;
 }
-textarea{height:90px;resize:vertical}
+textarea{height:88px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:560px){.row{grid-template-columns:1fr}}
-/* The first field of a pair should not carry the panel's top margin
-   twice over. */
-.row > div > label:first-child{margin-top:16px}
-.hint{font-size:.8rem;color:var(--mute);margin-top:5px}
+.hint{font-size:.8rem;color:var(--mute);margin-top:6px}
 
-.attest{display:flex;gap:12px;align-items:flex-start;margin-top:20px;padding:16px;border-radius:12px;border:1px solid rgba(232,178,58,.3);background:rgba(232,178,58,.06)}
-.attest input{width:22px;height:22px;flex-shrink:0;margin-top:2px}
-.attest span{font-size:.92rem;color:#EFE6D6}
+.attest{display:flex;gap:13px;align-items:flex-start;margin-top:8px;padding:16px 18px;border-radius:14px;border:1px solid rgba(232,178,58,.3);background:rgba(232,178,58,.06)}
+.attest input{width:22px;height:22px;flex-shrink:0;margin-top:2px;accent-color:var(--gold)}
+.attest span{font-size:.92rem;color:#EFE6D6;line-height:1.5}
 
+.send{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line);margin-top:26px}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;width:100%;
-  margin-top:20px;padding:16px;border:none;border-radius:12px;
+  flex:1 1 240px;padding:16px 22px;border:none;border-radius:12px;
   font-family:inherit;font-size:1rem;font-weight:800;letter-spacing:.04em;
   text-transform:uppercase;cursor:pointer;background:var(--gold);color:#20140B;
 }
 .btn:disabled{opacity:.55;cursor:default}
-.msg{margin-top:14px;font-size:.95rem;font-weight:600;min-height:22px}
+.msg{flex:1 1 240px;font-size:.93rem;font-weight:600;min-height:22px}
 
-.what{counter-reset:s;margin-top:6px}
-.what div{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
-.what div:last-child{border-bottom:1px solid var(--line)}
-.what div::before{content:counter(s);font-size:1.3rem;font-weight:800;color:var(--line);line-height:1}
-.what b{display:block}
-.what span{color:var(--mute);font-size:.9rem}
-
-footer{border-top:1px solid var(--line);margin-top:36px;padding-top:22px;text-align:center;color:var(--mute);font-size:.82rem}
+footer{border-top:1px solid var(--line);padding:24px 0 46px;text-align:center;color:var(--mute);font-size:.85rem}
 footer a{color:var(--mute)}
 </style>
 </head>
 <body>
 
-<nav><div class="navwrap navin">
-  <a class="mark" href="index.html">Cash Flow <em>Hoops</em></a>
-  <button id="lang" onclick="flip()">ES</button>
+<nav><div class="wrap navin">
+  <a class="mark" href="teams.html">Cash Flow <em>Hoops</em></a>
+  <div class="navr">
+    <a href="index.html" data-t="navGames">Play the games</a>
+    <a href="teams.html" data-t="navBack">How it works</a>
+    <button id="lang" onclick="flip()">ES</button>
+  </div>
 </div></nav>
 
+<header><div class="wrap">
+  <h1 data-t="h1">Sign up your program</h1>
+  <p class="lede" data-t="lede">Tell us about your team. We set you up, you start raising, and half of everything collected goes straight to the program.</p>
+</div></header>
+
 <div class="wrap">
-  <div class="lede-wrap">
-    <h1 data-t="h1">Sign up your program</h1>
-    <p class="mute" data-t="lede">Tell us about your team. We set you up, you start selling, and half of everything raised goes straight to the program.</p>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><b data-t="w1h">We call you</b><span data-t="w1p">Usually within a day, to work out which fundraiser fits your program.</span></div>
+    <div class="step"><span class="n">2</span><b data-t="w2h">We set it up</b><span data-t="w2p">Your campaign, your roster, and a link for every player.</span></div>
+    <div class="step"><span class="n">3</span><b data-t="w3h">Your players share</b><span data-t="w3p">You watch the money come in from your own dashboard.</span></div>
+    <div class="step"><span class="n">4</span><b data-t="w4h">We pay the program</b><span data-t="w4p">Half of everything collected, with a record you can see.</span></div>
   </div>
+</div>
 
-  <div class="cols">
-  <div class="side">
-  <div class="panel" style="margin-top:0;">
-    <h2 data-t="whatTitle">What happens next</h2>
-    <div class="what">
-      <div><b data-t="w1h">We call you</b><span data-t="w1p">Usually within a day, to work out which fundraiser fits your program.</span></div>
-      <div><b data-t="w2h">We set it up</b><span data-t="w2p">Your campaign, your roster, and a link for every player. Takes minutes.</span></div>
-      <div><b data-t="w3h">You start selling</b><span data-t="w3p">Players share their links. You watch the money come in from your own dashboard.</span></div>
-      <div><b data-t="w4h">We pay the program</b><span data-t="w4p">Half of everything collected, paid to the program with a record you can see.</span></div>
-    </div>
-  </div>
-  </div>
+<div class="wrap formwrap">
+  <div class="panel">
 
-  <div>
-  <div class="panel" style="margin-top:0;">
-    <h2 data-t="formTitle">Your program</h2>
-
-    <label data-t="lProgram">Program or team name</label>
-    <input type="text" id="programName" maxlength="80">
-
-    <label data-t="lType">What kind of organization</label>
-    <select id="orgType">
-      <option value="" data-t="oPick">Choose one…</option>
-      <option value="school" data-t="oSchool">School team</option>
-      <option value="booster" data-t="oBooster">Booster club or parents' association</option>
-      <option value="league" data-t="oLeague">Rec league or youth league</option>
-      <option value="club" data-t="oClub">Travel or AAU club</option>
-      <option value="nonprofit" data-t="oNonprofit">Registered non-profit</option>
-      <option value="other" data-t="oOther">Something else</option>
-    </select>
-
-    <div class="row">
-      <div>
-        <label data-t="lTown">Town</label>
-        <input type="text" id="town" maxlength="60">
-      </div>
-      <div>
-        <label data-t="lPlayers">How many players</label>
-        <input type="number" id="players" min="1" max="500">
+    <div class="sec">
+      <h2 data-t="formTitle">Your program</h2>
+      <div class="grid">
+        <div class="full">
+          <label data-t="lProgram">Program or team name</label>
+          <input type="text" id="programName" maxlength="80">
+        </div>
+        <div class="full">
+          <label data-t="lType">What kind of organization</label>
+          <select id="orgType">
+            <option value="" data-t="oPick">Choose one…</option>
+            <option value="school" data-t="oSchool">School team</option>
+            <option value="booster" data-t="oBooster">Booster club or parents' association</option>
+            <option value="league" data-t="oLeague">Rec league or youth league</option>
+            <option value="club" data-t="oClub">Travel or AAU club</option>
+            <option value="nonprofit" data-t="oNonprofit">Registered non-profit</option>
+            <option value="other" data-t="oOther">Something else</option>
+          </select>
+        </div>
+        <div>
+          <label data-t="lTown">Town</label>
+          <input type="text" id="town" maxlength="60">
+        </div>
+        <div>
+          <label data-t="lPlayers">How many players</label>
+          <input type="number" id="players" min="1" max="500">
+        </div>
+        <div class="full">
+          <label data-t="lRaising">What are you raising for</label>
+          <input type="text" id="raisingFor" maxlength="120" data-tph="phRaising" placeholder="Tournament entry, uniforms, travel…">
+        </div>
       </div>
     </div>
 
-    <label data-t="lRaising">What are you raising for</label>
-    <input type="text" id="raisingFor" maxlength="120" data-tph="phRaising" placeholder="Tournament entry, uniforms, travel…">
-
-    <h2 style="margin-top:26px;" data-t="contactTitle">Who we talk to</h2>
-
-    <div class="row">
-      <div>
-        <label data-t="lName">Your name</label>
-        <input type="text" id="contactName" maxlength="60" autocomplete="name">
-      </div>
-      <div>
-        <label data-t="lPhone">Phone</label>
-        <input type="tel" id="contactPhone" maxlength="30" autocomplete="tel">
+    <div class="sec">
+      <h2 data-t="contactTitle">Who we talk to</h2>
+      <div class="grid">
+        <div>
+          <label data-t="lName">Your name</label>
+          <input type="text" id="contactName" maxlength="60" autocomplete="name">
+        </div>
+        <div>
+          <label data-t="lPhone">Phone</label>
+          <input type="tel" id="contactPhone" maxlength="30" autocomplete="tel">
+        </div>
+        <div class="full">
+          <label data-t="lEmail">Email</label>
+          <input type="email" id="contactEmail" maxlength="120" autocomplete="email">
+        </div>
       </div>
     </div>
 
-    <label data-t="lEmail">Email</label>
-    <input type="email" id="contactEmail" maxlength="120" autocomplete="email">
-
-    <h2 style="margin-top:26px;" data-t="payTitle">Getting paid</h2>
-    <p class="mute" data-t="payNote">We pay the program, not an individual. This is who the money goes to.</p>
-
-    <label data-t="lPayee">Who should be paid</label>
-    <input type="text" id="payeeName" maxlength="80" data-tph="phPayee" placeholder="e.g. Bayamón Warriors Booster Club">
-
-    <label data-t="lEin">EIN or registration number (optional)</label>
-    <input type="text" id="ein" maxlength="40">
-    <div class="hint" data-t="einHint">Leave blank if your program doesn't have one. Most school teams and booster clubs don't.</div>
-
-    <label data-t="lNotes">Anything else (optional)</label>
-    <textarea id="notes" maxlength="500"></textarea>
+    <div class="sec">
+      <h2 data-t="payTitle">Getting paid</h2>
+      <p data-t="payNote">We pay the program, not an individual. This is who the money goes to.</p>
+      <div class="grid">
+        <div>
+          <label data-t="lPayee">Who should be paid</label>
+          <input type="text" id="payeeName" maxlength="80" data-tph="phPayee" placeholder="e.g. Bayamón Warriors Booster Club">
+        </div>
+        <div>
+          <label data-t="lEin">EIN or registration number</label>
+          <input type="text" id="ein" maxlength="40" data-tph="phEin" placeholder="Optional">
+          <div class="hint" data-t="einHint">Most school teams and booster clubs don't have one. Leave it blank.</div>
+        </div>
+        <div class="full">
+          <label data-t="lNotes">Anything else</label>
+          <textarea id="notes" maxlength="500"></textarea>
+        </div>
+      </div>
+    </div>
 
     <!-- The requirement, stated plainly. The database refuses an
          application where this is not ticked, so it is a real
          condition rather than a formality on the page. -->
-    <div class="attest">
-      <input type="checkbox" id="attested">
-      <span data-t="attest">I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the team.</span>
+    <div class="sec">
+      <div class="attest">
+        <input type="checkbox" id="attested">
+        <span data-t="attest">I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the team.</span>
+      </div>
     </div>
 
-    <button class="btn" id="submit" data-t="submit">Send this in</button>
-    <div class="msg" id="msg"></div>
-  </div>
-  </div>
-  </div>
+    <div class="send">
+      <button class="btn" id="submit" data-t="submit">Send this in</button>
+      <div class="msg" id="msg"></div>
+    </div>
 
-  <p class="mute" data-t="already">Already running a campaign? Your coach link was emailed to you.</p>
-
-  <footer>
-    Gostar Digital LLC — Puerto Rico<br>
-    <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a> ·
-    <a href="terms.html" data-t="terms">Terms</a> ·
-    <a href="privacy.html" data-t="privacy">Privacy</a>
-  </footer>
+  </div>
 </div>
+
+<footer><div class="wrap">
+  <span data-t="already">Already running a campaign? Your coach link was emailed to you.</span><br><br>
+  Gostar Digital LLC — Puerto Rico ·
+  <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a> ·
+  <a href="terms.html" data-t="terms">Terms</a> ·
+  <a href="privacy.html" data-t="privacy">Privacy</a>
+</div></footer>
 
 <script>
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
@@ -193,13 +213,13 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 
 var T = {
   en:{
+    navGames:'Play the games', navBack:'How it works',
     h1:'Sign up your program',
-    lede:'Tell us about your team. We set you up, you start selling, and half of everything raised goes straight to the program.',
-    whatTitle:'What happens next',
+    lede:'Tell us about your team. We set you up, you start raising, and half of everything collected goes straight to the program.',
     w1h:'We call you', w1p:'Usually within a day, to work out which fundraiser fits your program.',
-    w2h:'We set it up', w2p:'Your campaign, your roster, and a link for every player. Takes minutes.',
-    w3h:'You start selling', w3p:'Players share their links. You watch the money come in from your own dashboard.',
-    w4h:'We pay the program', w4p:'Half of everything collected, paid to the program with a record you can see.',
+    w2h:'We set it up', w2p:'Your campaign, your roster, and a link for every player.',
+    w3h:'Your players share', w3p:'You watch the money come in from your own dashboard.',
+    w4h:'We pay the program', w4p:'Half of everything collected, with a record you can see.',
     formTitle:'Your program',
     lProgram:'Program or team name',
     lType:'What kind of organization',
@@ -213,9 +233,9 @@ var T = {
     payTitle:'Getting paid',
     payNote:'We pay the program, not an individual. This is who the money goes to.',
     lPayee:'Who should be paid', phPayee:'e.g. Bayamón Warriors Booster Club',
-    lEin:'EIN or registration number (optional)',
-    einHint:"Leave blank if your program doesn't have one. Most school teams and booster clubs don't.",
-    lNotes:'Anything else (optional)',
+    lEin:'EIN or registration number', phEin:'Optional',
+    einHint:"Most school teams and booster clubs don't have one. Leave it blank.",
+    lNotes:'Anything else',
     attest:'I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the team.',
     submit:'Send this in',
     already:'Already running a campaign? Your coach link was emailed to you.',
@@ -231,13 +251,13 @@ var T = {
     failed:'Could not send that — please try again, or email us.'
   },
   es:{
+    navGames:'Juega los juegos', navBack:'Cómo funciona',
     h1:'Inscribe tu programa',
-    lede:'Cuéntanos de tu equipo. Nosotros lo montamos, ustedes empiezan a vender, y la mitad de todo lo recaudado va directo al programa.',
-    whatTitle:'Qué pasa después',
+    lede:'Cuéntanos de tu equipo. Nosotros lo montamos, ustedes empiezan a recaudar, y la mitad de todo lo cobrado va directo al programa.',
     w1h:'Te llamamos', w1p:'Normalmente en un día, para ver cuál recaudación le sirve a tu programa.',
-    w2h:'Lo montamos', w2p:'Tu campaña, tu equipo y un enlace para cada jugador. Toma minutos.',
-    w3h:'Empiezan a vender', w3p:'Los jugadores comparten sus enlaces. Tú ves entrar el dinero desde tu propio panel.',
-    w4h:'Le pagamos al programa', w4p:'La mitad de todo lo cobrado, pagada al programa con un registro que puedes ver.',
+    w2h:'Lo montamos', w2p:'Tu campaña, tu equipo y un enlace para cada jugador.',
+    w3h:'Tus jugadores comparten', w3p:'Tú ves entrar el dinero desde tu propio panel.',
+    w4h:'Le pagamos al programa', w4p:'La mitad de todo lo cobrado, con un registro que puedes ver.',
     formTitle:'Tu programa',
     lProgram:'Nombre del programa o equipo',
     lType:'Qué tipo de organización',
@@ -251,9 +271,9 @@ var T = {
     payTitle:'El pago',
     payNote:'Le pagamos al programa, no a una persona. Este es quien recibe el dinero.',
     lPayee:'A quién se le debe pagar', phPayee:'ej. Club de Padres Warriors de Bayamón',
-    lEin:'EIN o número de registro (opcional)',
-    einHint:'Déjalo en blanco si tu programa no tiene uno. La mayoría de los equipos escolares y clubes de padres no lo tienen.',
-    lNotes:'Algo más (opcional)',
+    lEin:'EIN o número de registro', phEin:'Opcional',
+    einHint:'La mayoría de los equipos escolares y clubes de padres no tienen uno. Déjalo en blanco.',
+    lNotes:'Algo más',
     attest:'Confirmo que este es un programa sin fines de lucro — nadie saca ganancia de él, y todo lo que recaudamos vuelve al equipo.',
     submit:'Enviar',
     already:'¿Ya tienes una campaña? Tu enlace de entrenador te llegó por correo.',
