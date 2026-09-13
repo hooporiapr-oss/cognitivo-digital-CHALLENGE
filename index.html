@@ -97,6 +97,20 @@ input:focus{outline:none;border-color:var(--purple)}
 .game-card.recognition{border-color:rgba(255,149,0,.45);background:rgba(255,149,0,.07)}
 .game-card.recognition .game-name{color:#ffc074}
 
+.tryout-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
+.tryout-row.lead{border-color:rgba(255,211,90,.5);background:rgba(255,211,90,.08)}
+.tryout-row b{color:var(--gold);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-left:6px}
+.tryout-row .pts{color:var(--gold);font-weight:900;text-align:right}
+.tryout-row .pts .sub{display:block;color:var(--mute);font-weight:700;font-size:.68rem}
+
+.tryout-play{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;border:1.5px solid var(--line);background:#0e0a14;color:var(--paper)}
+.tryout-play:active{transform:scale(.99)}
+.tryout-play .tp-name{font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem}
+.tryout-play .tp-score{color:var(--mute);font-size:.85rem;flex-shrink:0}
+.tryout-play.fortress{border-color:rgba(168,85,247,.4)} .tryout-play.fortress .tp-name{color:#c9a3fa}
+.tryout-play.recall{border-color:rgba(255,107,53,.4)} .tryout-play.recall .tp-name{color:#ffb38a}
+.tryout-play.recognition{border-color:rgba(255,149,0,.4)} .tryout-play.recognition .tp-name{color:#ffc074}
+
 .coach-card{
   display:block;margin-top:18px;padding:18px;border-radius:16px;text-decoration:none;
   border:1.5px solid rgba(255,211,90,.4);background:rgba(255,211,90,.07);color:var(--paper);
@@ -156,6 +170,13 @@ var STR = {
     s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
     s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
     s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.',
+    tryoutKick:'Team tryout',
+    tryoutLede:'Play all three. Whichever the team scores highest on is the one worth running the fundraiser with.',
+    teamStanding:'How the team is doing', teamStandingNote:'Total points across everyone who has played.',
+    bestFit:'Best so far', playersWord:'players', notPlayed:'Not played yet',
+    yourTryout:'Play each one at least once. Your best run counts.',
+    whoAreYou:'Who are you?', whoAreYouNote:'Tap your name so your scores count for the team.',
+    notMe:'Not me — pick someone else',
     coachKick:'Coaches and programs',
     coachTitle:'Raise money for your team →',
     coachDesc:'How it works, what it costs, and how to sign your program up.',
@@ -212,6 +233,13 @@ var STR = {
     s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
     s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
     s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados. La mitad de lo cobrado va al programa.',
+    tryoutKick:'Prueba de equipo',
+    tryoutLede:'Juega los tres. Aquel donde el equipo anote más es el que vale la pena para la recaudación.',
+    teamStanding:'Cómo va el equipo', teamStandingNote:'Puntos totales de todos los que han jugado.',
+    bestFit:'El mejor hasta ahora', playersWord:'jugadores', notPlayed:'Sin jugar',
+    yourTryout:'Juega cada uno al menos una vez. Tu mejor corrida cuenta.',
+    whoAreYou:'¿Quién eres?', whoAreYouNote:'Toca tu nombre para que tus puntos cuenten para el equipo.',
+    notMe:'No soy yo — escoger otro',
     coachKick:'Entrenadores y programas',
     coachTitle:'Recauda para tu equipo →',
     coachDesc:'Cómo funciona, cuánto cuesta y cómo inscribir tu programa.',
@@ -293,6 +321,11 @@ var PLAYER = params.get('p');
 // verified by the database — adding it to a public link by hand gets
 // nowhere, because the key itself cannot be guessed or read.
 var RUN_KEY = params.get('k');
+
+// A tryout happens before any challenge exists — a team plays all
+// three games and picks the one they score best on. Addressed by
+// campaign rather than challenge for exactly that reason.
+var TRYOUT = params.get('tryout');
 
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 
@@ -622,8 +655,123 @@ function notFound(what){
     '<a class="btn line" href="index.html">' + T('backHome') + '</a></div>' + footerHtml();
 }
 
+
+// ══════════════════════════════════════════════════════
+//  TRYOUTS — a team plays all three games and sees which one they
+//  are collectively strongest at, before committing a fundraiser to
+//  it. No run keys and no official runs: nothing here is worth
+//  protecting, and the friction would defeat the point.
+// ══════════════════════════════════════════════════════
+function loadTryout(campaignId){
+  Promise.all([
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url'),
+    get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
+    get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs')
+  ])
+  .then(function(res){
+    var campaign = res[0] && res[0][0];
+    if (!campaign) { notFound(T('wordTeam')); return; }
+    renderTryout(campaignId, campaign, res[1] || [], res[2] || []);
+  })
+  .catch(function(e){
+    console.error(e);
+    app.innerHTML = '<div class="panel"><p style="color:#ff8888">' + T('loadFail') + '</p></div>';
+  });
+}
+
+function renderTryout(campaignId, campaign, players, scores){
+  var picked = null;
+  try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
+
+  // Which game is the team actually best at. Totalling points rather
+  // than levels, since points are what a sponsor pays against.
+  var totals = { fortress:0, recall:0, recognition:0 };
+  var counts = { fortress:0, recall:0, recognition:0 };
+  scores.forEach(function(r){
+    if (totals[r.game] === undefined) return;
+    totals[r.game] += pointsFor(r.best_level);
+    counts[r.game] += 1;
+  });
+
+  var order = ['fortress','recall','recognition'];
+  var leader = order.slice().sort(function(a,b){ return totals[b]-totals[a]; })[0];
+  var anyScores = order.some(function(g){ return counts[g] > 0; });
+
+  var me = picked ? players.filter(function(p){ return p.id === picked; })[0] : null;
+
+  var myScores = {};
+  if (me) scores.forEach(function(r){ if (r.player_id === me.id) myScores[r.game] = r; });
+
+  app.innerHTML =
+    langBtnHtml() +
+    '<div class="kick">' + T('tryoutKick') + '</div>' +
+    '<h1>' + esc(campaign.name) + '</h1>' +
+    '<p class="mute" style="margin-top:8px;">' + T('tryoutLede') + '</p>' +
+
+    (anyScores
+      ? '<div class="panel">' +
+          '<h2>' + T('teamStanding') + '</h2>' +
+          '<p class="mute">' + T('teamStandingNote') + '</p>' +
+          order.map(function(g){
+            var lead = g === leader && totals[g] > 0;
+            return '<div class="tryout-row' + (lead ? ' lead' : '') + '">' +
+                     '<span>' + gameLabelKey(g) + (lead ? ' <b>' + T('bestFit') + '</b>' : '') + '</span>' +
+                     '<span class="pts">' + totals[g] + ' ' + T('pts') +
+                       '<span class="sub">' + counts[g] + ' ' + T('playersWord') + '</span></span>' +
+                   '</div>';
+          }).join('') +
+        '</div>'
+      : '') +
+
+    (me
+      ? '<div class="panel">' +
+          '<h2>' + esc(me.name) + '</h2>' +
+          '<p class="mute">' + T('yourTryout') + '</p>' +
+          order.map(function(g){
+            var r = myScores[g];
+            return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
+                     '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) + '">' +
+                     '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
+                     '<span class="tp-score">' + (r ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts') : T('notPlayed')) + '</span>' +
+                   '</a>';
+          }).join('') +
+          '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
+        '</div>'
+      : '<div class="panel">' +
+          '<h2>' + T('whoAreYou') + '</h2>' +
+          '<p class="mute">' + T('whoAreYouNote') + '</p>' +
+          '<div class="roster">' +
+            (players.length
+              ? players.map(function(p){
+                  return '<a href="#" onclick="pickMe(\'' + campaignId + '\',\'' + p.id + '\');return false;">' +
+                           '<span>' + esc(p.name) + '</span><span class="pts">→</span></a>';
+                }).join('')
+              : '<p class="mute">' + T('noPlayers') + '</p>') +
+          '</div>' +
+        '</div>') +
+
+    footerHtml();
+}
+
+function gameLabelKey(g){
+  return T(g === 'fortress' ? 'gFortress' : g === 'recall' ? 'gRecall' : 'gRecognition');
+}
+
+function pickMe(campaignId, playerId){
+  try { localStorage.setItem('fc-tryout-' + campaignId, playerId); } catch(e){}
+  loadTryout(campaignId);
+}
+
+function forgetMe(campaignId){
+  try { localStorage.removeItem('fc-tryout-' + campaignId); } catch(e){}
+  loadTryout(campaignId);
+  return false;
+}
+
 // ---------- routing ----------
-if (!CHALLENGE){
+if (TRYOUT){
+  loadTryout(TRYOUT);
+} else if (!CHALLENGE){
   renderLanding();
 } else {
   get('challenges?id=eq.' + encodeURIComponent(CHALLENGE) + '&select=*')
