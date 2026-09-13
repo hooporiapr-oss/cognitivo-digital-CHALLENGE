@@ -97,6 +97,13 @@ input:focus{outline:none;border-color:var(--purple)}
 .game-card.recognition{border-color:rgba(255,149,0,.45);background:rgba(255,149,0,.07)}
 .game-card.recognition .game-name{color:#ffc074}
 
+.try-link{
+  display:block;margin-top:10px;text-align:center;font-size:.85rem;
+  color:var(--gold);text-decoration:none;border:1px dashed rgba(255,211,90,.35);
+  border-radius:10px;padding:10px;
+}
+.try-link:active{background:rgba(255,211,90,.08)}
+
 footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-align:center;color:var(--mute);font-size:.8rem}
 </style>
 </head>
@@ -139,6 +146,7 @@ var STR = {
     s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
     s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
     s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.',
+    tryYourself:'Not sure what to pledge? Play it yourself first →',
     practiceTitle:'Practise any time', 
     practiceNote:'All three games are open — no code, no account. Practice runs are never recorded, so play as much as you like.',
     gFortress:'The Fortress', gFortressDesc:'Five basketballs in a 2-1-2 zone. Watch the chain, repeat it back, one more every round.',
@@ -191,6 +199,7 @@ var STR = {
     s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
     s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
     s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados. La mitad de lo cobrado va al programa.',
+    tryYourself:'¿No sabes cuánto prometer? Juégalo tú primero →',
     practiceTitle:'Practica cuando quieras',
     practiceNote:'Los tres juegos están abiertos — sin código, sin cuenta. Las prácticas nunca se guardan, así que juega todo lo que quieras.',
     gFortress:'The Fortress', gFortressDesc:'Cinco balones en una zona 2-1-2. Observa la cadena y repítela, una más cada ronda.',
@@ -347,6 +356,7 @@ function footerHtml(){
 
 // ---------- team page ----------
 function renderTeam(ch, campaign, players, runs, practice){
+  PLEDGE_CH = ch;
   var byPlayer = {};
   runs.forEach(function(r){ byPlayer[r.player_id] = r; });
   var practiceBy = {};
@@ -399,6 +409,7 @@ function renderTeam(ch, campaign, players, runs, practice){
 
 // ---------- player page ----------
 function renderPlayer(ch, campaign, player, run, prac){
+  PLEDGE_CH = ch;
   var isMe = false;
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
 
@@ -486,6 +497,10 @@ function deadlineHtml(ch){
   return '<p class="mute" style="margin-top:-4px;">' + bits.join(' · ') + '</p>';
 }
 
+// Set just before a pledge form is drawn, so the try-it link opens
+// the game this challenge actually runs.
+var PLEDGE_CH = null;
+
 function pledgeFormHtml(player){
   return '' +
     '<label>' + T('yourName') + '</label>' +
@@ -495,6 +510,11 @@ function pledgeFormHtml(player){
     '<label>' + T('perPoint') + '</label>' +
     '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
     '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
+    // A sponsor cannot judge what a point is worth until they have
+    // played. Two minutes on the game is the best possible answer to
+    // "how much should I pledge".
+    '<a class="try-link" href="' + gameFile(PLEDGE_CH) + '" target="_blank" rel="noopener">' +
+      T('tryYourself') + '</a>' +
     '<button class="btn" id="spSubmit" style="margin-top:14px;">' + T('makePledge') + '</button>' +
     '<div class="msg" id="spMsg"></div>';
 }
