@@ -97,6 +97,16 @@ input:focus{outline:none;border-color:var(--purple)}
 .game-card.recognition{border-color:rgba(255,149,0,.45);background:rgba(255,149,0,.07)}
 .game-card.recognition .game-name{color:#ffc074}
 
+/* The landing page's own masthead — everything above the pitch is
+   centred on the logo, which is the one place a first-time visitor
+   should be looking. */
+.brandhead{text-align:center;margin-bottom:22px}
+.brandhead .kick{display:block;margin-bottom:14px}
+.brandhead .logo{
+  display:block;width:min(360px,76vw);height:auto;margin:0 auto 18px;
+}
+.brandhead h1{margin:0}
+
 .tryout-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
 .tryout-row.lead{border-color:rgba(255,211,90,.5);background:rgba(255,211,90,.08)}
 .tryout-row b{color:var(--gold);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-left:6px}
@@ -164,7 +174,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 var STR = {
   en:{
     brand:'Gostar Digital', title1:'The Fortress ', title2:'Challenge',
-    lede:'A memory drill that pays. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.',
+    lede:'Memory drills that pay. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.',
     howTitle:'How it works',
     s1h:'Sponsors pledge per point', s1p:'Any rate they choose. Nothing is charged when they pledge.',
     s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
@@ -227,7 +237,7 @@ var STR = {
   },
   es:{
     brand:'Gostar Digital', title1:'El Reto ', title2:'Fortress',
-    lede:'Un ejercicio de memoria que recauda. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y la mitad de todo lo cobrado va directo a su programa.',
+    lede:'Ejercicios de memoria que recaudan. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y la mitad de todo lo cobrado va directo a su programa.',
     howTitle:'Cómo funciona',
     s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
     s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
@@ -357,8 +367,11 @@ var app = document.getElementById('app');
 function renderLanding(){
   app.innerHTML =
     langBtnHtml() +
-    '<div class="kick">' + T('brand') + '</div>' +
-    '<h1>' + T('title1') + '<span>' + T('title2') + '</span></h1>' +
+    '<div class="brandhead">' +
+      '<span class="kick">' + T('brand') + '</span>' +
+      '<img class="logo" src="bball-money.png" alt="Basketball Money">' +
+      '<h1>' + T('title1') + '<span>' + T('title2') + '</span></h1>' +
+    '</div>' +
     '<p style="margin-top:14px;">' + T('lede') + '</p>' +
 
     '<div class="panel">' +
