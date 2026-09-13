@@ -337,15 +337,26 @@ document.getElementById('submit').addEventListener('click', function(){
   msg.style.color = 'var(--mute)';
   msg.textContent = t('sending');
 
+  var newId = (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){
+        var r = Math.random()*16|0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+
   fetch(SB_URL + '/rest/v1/program_applications', {
     method: 'POST',
     headers: {
       'apikey': SB_KEY,
       'Authorization': 'Bearer ' + SB_KEY,
       'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
+      'Prefer': 'return=minimal'
     },
     body: JSON.stringify({
+      // The id is made here rather than read back afterwards —
+      // applications are admin-only to read, so asking Supabase to
+      // return the saved row is refused, as it should be.
+      id: newId,
       program_name: val('programName'),
       org_type: val('orgType'),
       contact_name: val('contactName'),
@@ -362,20 +373,15 @@ document.getElementById('submit').addEventListener('click', function(){
   })
   .then(function(r){
     if (!r.ok) throw new Error('save failed');
-    return r.json();
-  })
-  .then(function(rows){
+
     // The application is already saved. Telling the office about it
     // is a separate, best-effort step — if the alert fails, nothing
     // is lost and it is still sitting in the table.
-    var row = rows && rows[0];
-    if (row && row.id){
-      fetch(SERVER + '/notify-application', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: row.id })
-      }).catch(function(){});
-    }
+    fetch(SERVER + '/notify-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: newId })
+    }).catch(function(){});
 
     msg.style.color = '#6f6';
     msg.textContent = t('sent');
