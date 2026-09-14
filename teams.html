@@ -167,6 +167,14 @@ header{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,72px)}
 @media(max-width:640px){.step{grid-template-columns:44px 1fr;gap:14px}}
 
 /* ---------- two audiences, deliberately unequal ---------- */
+.prizewrap{display:grid;grid-template-columns:1.35fr 1fr;gap:26px;align-items:start;margin-top:18px}
+@media(max-width:820px){.prizewrap{grid-template-columns:1fr;gap:20px}}
+.prizewrap p{color:#E4DCEA;max-width:60ch}
+.prizebox{background:rgba(232,178,58,.06);border:1px solid rgba(232,178,58,.28);border-radius:18px;padding:24px}
+.prizebox b{display:block;font-size:2.4rem;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--gold)}
+.prizebox span{display:block;color:var(--mute);font-size:.9rem;margin:6px 0 20px}
+.prizebox span:last-child{margin-bottom:0}
+
 .costnote{
   background:rgba(232,178,58,.06);border:1px solid rgba(232,178,58,.28);
   border-radius:18px;padding:clamp(20px,3vw,30px);margin-top:22px;max-width:70ch;
@@ -204,6 +212,7 @@ footer a{color:var(--mute)}
     <a class="mark" href="#top">Cash Flow <em>Hoops</em></a>
     <div class="navlinks">
       <a href="#how" data-t="navHow">How it works</a>
+      <a href="#prizes" data-t="navPrize">No prizes</a>
       <a href="#cost" data-t="navCost">What it costs</a>
       <!-- The games live at the root of this domain, so a coach can
            see the product rather than only read about it. -->
@@ -278,6 +287,22 @@ footer a{color:var(--mute)}
   </div>
 </section>
 
+<section class="split wrap" id="prizes">
+  <h2 data-t="h2prize">Nothing to buy, nothing to hand out</h2>
+  <div class="prizewrap">
+    <div>
+      <p data-t="pz1">Most fundraisers need a prize ladder — trinkets at $35, a water bottle at $50, a T-shirt at $100. Somebody has to choose it, buy it, store it and give it out, and the program is spending money before it has raised any.</p>
+      <p data-t="pz2">Ours has the prize built in. There is a score, it goes on a board next to their teammates' scores, and a player wants theirs to be higher. That is the whole motivation, and it costs nobody anything.</p>
+      <p data-t="pz3">It is fairer, too. A prize ladder rewards whoever has the wealthiest relatives. A score rewards whoever plays best — which is what you wanted to reward anyway.</p>
+    </div>
+    <div class="prizebox">
+      <b data-t="pzB1">$0</b><span data-t="pzB1s">Spent on prizes</span>
+      <b data-t="pzB2">0</b><span data-t="pzB2s">Things to order, store or hand out</span>
+      <b data-t="pzB3">1</b><span data-t="pzB3s">Board everybody wants to be top of</span>
+    </div>
+  </div>
+</section>
+
 <section class="split wrap" id="cost">
   <h2 data-t="h2cost">What it costs</h2>
 
@@ -342,6 +367,14 @@ const T = {
     s4h:'Sponsors are invoiced, the program gets paid',
     s4p:'Each sponsor is billed their pledge against their player\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.',
     navCashRack:'Cash Rack',
+    navPrize:'No prizes',
+    h2prize:'Nothing to buy, nothing to hand out',
+    pz1:'Most fundraisers need a prize ladder — trinkets at $35, a water bottle at $50, a T-shirt at $100. Somebody has to choose it, buy it, store it and give it out, and the program is spending money before it has raised any.',
+    pz2:"Ours has the prize built in. There is a score, it goes on a board next to their teammates' scores, and a player wants theirs to be higher. That is the whole motivation, and it costs nobody anything.",
+    pz3:'It is fairer, too. A prize ladder rewards whoever has the wealthiest relatives. A score rewards whoever plays best — which is what you wanted to reward anyway.',
+    pzB1:'$0', pzB1s:'Spent on prizes',
+    pzB2:'0', pzB2s:'Things to order, store or hand out',
+    pzB3:'1', pzB3s:'Board everybody wants to be top of',
     navCost:'What it costs',
     h2cost:'What it costs',
     c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of every pledge, to your program',
@@ -376,6 +409,14 @@ const T = {
     s4h:'Se factura a los padrinos, el programa cobra',
     s4p:'A cada padrino se le factura su promesa seg\u00fan la puntuaci\u00f3n de su jugador, m\u00e1s un cargo de plataforma de 10%, con treinta d\u00edas para pagar. El programa recibe cada d\u00f3lar prometido.',
     navCashRack:'Cash Rack',
+    navPrize:'Sin premios',
+    h2prize:'Nada que comprar, nada que repartir',
+    pz1:'La mayor\u00eda de las recaudaciones necesitan una escalera de premios — chucher\u00edas a $35, una botella a $50, una camiseta a $100. Alguien tiene que escogerlo, comprarlo, guardarlo y repartirlo, y el programa gasta dinero antes de recaudar nada.',
+    pz2:'La nuestra trae el premio adentro. Hay una puntuaci\u00f3n, va en un tablero al lado de la de sus compa\u00f1eros, y cada jugador quiere que la suya sea m\u00e1s alta. Esa es toda la motivaci\u00f3n, y no le cuesta nada a nadie.',
+    pz3:'Y es m\u00e1s justo. Una escalera de premios premia a quien tenga los familiares con m\u00e1s dinero. Una puntuaci\u00f3n premia a quien mejor juegue — que es lo que quer\u00edas premiar de todas formas.',
+    pzB1:'$0', pzB1s:'Gastados en premios',
+    pzB2:'0', pzB2s:'Cosas que pedir, guardar o repartir',
+    pzB3:'1', pzB3s:'Tablero en el que todos quieren estar arriba',
     navCost:'Lo que cuesta',
     h2cost:'Lo que cuesta',
     c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De cada promesa, para tu programa',
