@@ -200,6 +200,7 @@ footer a{color:var(--mute)}
       <a href="#merchants" data-t="navMerchants">For businesses</a>
       <!-- The games live at the root of this domain, so a coach can
            see the product rather than only read about it. -->
+      <a href="cash-rack.html" data-t="navCashRack">Cash Rack</a>
       <a href="index.html" data-t="navGames">Play the games</a>
       <button id="lang" onclick="flip()">ES</button>
     </div>
@@ -292,6 +293,17 @@ footer a{color:var(--mute)}
       <a class="btn btn-solid" href="signup.html" data-t="p1cta">Get your team set up</a>
     </div>
 
+    <div class="path path-teams" id="cashrack" style="border-color:rgba(232,178,58,.35);">
+      <h3 data-t="p3h">Cash Rack</h3>
+      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p3intro">Our own shooting event, free for any coach to run. Four three-point spots and a foul line, three shots each, on a clock. Sponsors pledge per point exactly as they do on the games.</p>
+      <ul>
+        <li data-t="p3a">Every shot attempted scores, so nobody finishes on zero</li>
+        <li data-t="p3b">Run it in your own gym with your own scorekeepers</li>
+        <li data-t="p3c">You set the clock, we handle the money</li>
+      </ul>
+      <a class="btn btn-line" href="cash-rack.html" data-t="p3cta">Read the rules</a>
+    </div>
+
     <div class="path path-merchants" id="merchants">
       <h3 data-t="p2h">For local businesses</h3>
       <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p2intro">Put your offer on a card a whole neighborhood carries, or back a team's challenge as its sponsor.</p>
@@ -367,6 +379,13 @@ const T = {
     s3p:'The score is the longest chain they hold. Reach level 12 and that is 78 points. Our software counts it, so there is nothing to argue about.',
     s4h:'Invoices go out, the program gets paid',
     s4p:'Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.',
+    navCashRack:'Cash Rack',
+    p3h:'Cash Rack',
+    p3intro:'Our own shooting event, free for any coach to run. Four three-point spots and a foul line, three shots each, on a clock. Sponsors pledge per point exactly as they do on the games.',
+    p3a:'Every shot attempted scores, so nobody finishes on zero',
+    p3b:'Run it in your own gym with your own scorekeepers',
+    p3c:'You set the clock, we handle the money',
+    p3cta:'Read the rules',
     h2paths:'Also available',
     p1h:'BOGO coupon cards',
     p1intro:'The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.',
@@ -407,6 +426,13 @@ const T = {
     s3p:'La puntuaci\u00f3n es la cadena m\u00e1s larga que aguanten. Llegar al nivel 12 son 78 puntos. Nuestro programa los cuenta, as\u00ed que no hay nada que discutir.',
     s4h:'Salen las facturas, el programa cobra',
     s4p:'A cada padrino se le factura su tarifa por los puntos anotados, con treinta d\u00edas para pagar. El programa recibe la mitad de todo lo cobrado.',
+    navCashRack:'Cash Rack',
+    p3h:'Cash Rack',
+    p3intro:'Nuestro propio evento de tiro, gratis para cualquier entrenador. Cuatro puntos de tres y una l\u00ednea de tiros libres, tres tiros en cada uno, con reloj. Los padrinos prometen por punto igual que en los juegos.',
+    p3a:'Cada tiro intentado suma, as\u00ed que nadie termina en cero',
+    p3b:'C\u00f3rrelo en tu cancha con tus propios anotadores',
+    p3c:'T\u00fa pones el reloj, nosotros manejamos el dinero',
+    p3cta:'Lee las reglas',
     h2paths:'Tambi\u00e9n disponible',
     p1h:'Tarjetas de cupones BOGO',
     p1intro:'La otra forma de recaudar. Una tarjeta digital de cupones dos por uno de un negocio local, vendida a $20 con la mitad para el equipo.',
