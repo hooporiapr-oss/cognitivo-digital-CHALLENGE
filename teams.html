@@ -205,8 +205,6 @@ footer a{color:var(--mute)}
     <div class="navlinks">
       <a href="#how" data-t="navHow">How it works</a>
       <a href="#cost" data-t="navCost">What it costs</a>
-      <a href="#teams" data-t="navTeams">For teams</a>
-      <a href="#merchants" data-t="navMerchants">For businesses</a>
       <!-- The games live at the root of this domain, so a coach can
            see the product rather than only read about it. -->
       <a href="https://hoops.cash/" data-t="navCashRack">Cash Rack</a>
@@ -220,7 +218,7 @@ footer a{color:var(--mute)}
   <div class="wrap hero">
     <div>
       <h1 data-t="h1">Sponsors pledge for every point your players score.</h1>
-      <p class="lede" data-t="lede">Your players find sponsors who pledge whatever they like per point. They take one official run, and every dollar pledged goes to the program. No boxes, no coupons, nobody selling door to door.</p>
+      <p class="lede" data-t="lede">Your team plays a memory drill we built. Sponsors pledge whatever they like per point, the players take one official run, and half of everything collected goes straight to the program. No boxes, no coupons, nobody selling door to door.</p>
       <div class="hero-actions">
         <a class="btn btn-solid" href="signup.html" data-t="ctaTeam">Start a team fundraiser</a>
         <a class="btn btn-line" href="index.html" data-t="ctaPlay">Try the games</a>
@@ -273,8 +271,8 @@ footer a{color:var(--mute)}
     </div>
     <div class="step">
       <div>
-        <h3 data-t="s4h">Sponsors are invoiced, the program gets paid</h3>
-        <p data-t="s4p">Each sponsor is billed their pledge against their player's score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.</p>
+        <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
+        <p data-t="s4p">Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.</p>
       </div>
     </div>
   </div>
@@ -294,53 +292,6 @@ footer a{color:var(--mute)}
     <p data-t="costP1">Your program keeps every dollar pledged. We are paid by a 10% platform fee added to the sponsor's invoice, shown as its own line so nothing is hidden.</p>
     <p data-t="costP2">Here is what it buys. We bring the event itself — the format, the rules, the scoring, the software your players compete on and the page every sponsor pledges through. We chase the invoices and we carry the cost when one goes unpaid. Your side is the gym, the players and a scorekeeper.</p>
     <p data-t="costP3">You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.</p>
-  </div>
-</section>
-
-<section class="split wrap">
-  <h2 data-t="h2paths">Also available</h2>
-  <div class="paths">
-    <div class="path path-teams" id="teams">
-      <h3 data-t="p1h">BOGO coupon cards</h3>
-      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p1intro">The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.</p>
-      <div class="card" style="margin:0 0 16px;">
-        <div class="card-top">
-          <span class="card-brand" data-t="cardBrand">Coupons from a local favorite</span>
-          <span class="card-meta" data-t="cardMeta">16 coupons</span>
-        </div>
-        <div class="tabs" id="tabs"></div>
-        <p class="card-hint" data-t="hint">Tap a coupon to peel it.</p>
-      </div>
-      <ul>
-        <li data-t="p1a">Half of every card, paid to the team</li>
-        <li data-t="p1b">Each player has their own link and their own total</li>
-        <li data-t="p1c">Coupons good for a year, redeemed on a phone</li>
-      </ul>
-      <a class="btn btn-solid" href="signup.html" data-t="p1cta">Get your team set up</a>
-    </div>
-
-    <div class="path path-teams" id="cashrack" style="border-color:rgba(232,178,58,.35);">
-      <h3 data-t="p3h">Cash Rack</h3>
-      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p3intro">Our own shooting event, free for any coach to run. Four three-point spots and a foul line, three shots each, on a clock. Sponsors pledge per point exactly as they do on the games.</p>
-      <ul>
-        <li data-t="p3a">Every shot attempted scores, so nobody finishes on zero</li>
-        <li data-t="p3b">Run it in your own gym with your own scorekeepers</li>
-        <li data-t="p3c">You set the clock, we handle the money</li>
-      </ul>
-      <a class="btn btn-line" href="https://hoops.cash/" data-t="p3cta">Read the rules</a>
-    </div>
-
-    <div class="path path-merchants" id="merchants">
-      <h3 data-t="p2h">For local businesses</h3>
-      <p style="color:var(--mute);font-size:.95rem;margin:0 0 14px;" data-t="p2intro">Put your offer on a card a whole neighborhood carries, or back a team's challenge as its sponsor.</p>
-      <ul>
-        <li data-t="p2a">New customers walking in to buy one and get one</li>
-        <li data-t="p2b">One coupon per visit, so they come back</li>
-        <li data-t="p2c">Your name on every card in the neighborhood</li>
-        <li data-t="p2d">No fees, no minimum, no printing</li>
-      </ul>
-      <a class="btn btn-line" href="#contact" data-t="p2cta">Enroll your business</a>
-    </div>
   </div>
 </section>
 
@@ -368,23 +319,7 @@ footer a{color:var(--mute)}
 </footer>
 
 <script>
-/* ---- the peel ---- */
-const OFFERS = { en:'BUY ONE<br>GET ONE', es:'COMPRA 1<br>LLEVA 2' };
 let lang = (navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en';
-
-function drawTabs(){
-  const box = document.getElementById('tabs');
-  box.innerHTML = '';
-  for(let i=1;i<=16;i++){
-    const b = document.createElement('button');
-    b.className = 'tab';
-    b.type = 'button';
-    b.setAttribute('aria-label','Coupon '+i);
-    b.innerHTML = '<span class="under">'+OFFERS[lang]+'</span><span class="face">'+i+'</span>';
-    b.addEventListener('click',()=>b.classList.toggle('off'));
-    box.appendChild(b);
-  }
-}
 
 /* ---- language ---- */
 const T = {
@@ -407,12 +342,6 @@ const T = {
     s4h:'Sponsors are invoiced, the program gets paid',
     s4p:'Each sponsor is billed their pledge against their player\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.',
     navCashRack:'Cash Rack',
-    p3h:'Cash Rack',
-    p3intro:'Our own shooting event, free for any coach to run. Four three-point spots and a foul line, three shots each, on a clock. Sponsors pledge per point exactly as they do on the games.',
-    p3a:'Every shot attempted scores, so nobody finishes on zero',
-    p3b:'Run it in your own gym with your own scorekeepers',
-    p3c:'You set the clock, we handle the money',
-    p3cta:'Read the rules',
     navCost:'What it costs',
     h2cost:'What it costs',
     c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of every pledge, to your program',
@@ -421,24 +350,9 @@ const T = {
     costP2:'Here is what it buys. We bring the event itself — the format, the rules, the scoring, the software your players compete on and the page every sponsor pledges through. We chase the invoices and we carry the cost when one goes unpaid. Your side is the gym, the players and a scorekeeper.',
     costP3:'You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.',
     closeCta2:'Try the games first',
-    h2paths:'Also available',
-    p1h:'BOGO coupon cards',
-    p1intro:'The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.',
-    p1a:'Half of every card, paid to the team',
-    p1b:'Each player has their own link and their own total',
-    p1c:'Coupons good for a year, redeemed on a phone',
-    p2intro:"Put your offer on a card a whole neighborhood carries, or back a team's challenge as its sponsor.",
-    p2a:'New customers walking in to buy one and get one',
-    p2b:'One coupon per visit, so they come back',
-    p2c:'Your name on every card in the neighborhood',
-    p2d:'No fees, no minimum, no printing',
-    navHow:'How it works', navTeams:'For teams', navMerchants:'For businesses',
+    navHow:'How it works',
     navGames:'Play the games',
-    ctaTeam:'Start a team fundraiser', ctaBiz:'Enroll my business',
-    cardBrand:'Coupons from a local favorite', cardMeta:'16 coupons', hint:'Tap a coupon to peel it.',
-    p1cta:'Get your team set up',
-    p2h:'For local businesses',
-    p2cta:'Enroll your business',
+    ctaTeam:'Start a team fundraiser',
     closeH:'We will set it up for you.',
     closeP:'Tell us about your program and we will build the whole thing — your campaign, your roster and a link for every player — and send it to you to look at. Nothing goes live and nobody is charged until you say so.',
     closeCta:'Set my program up', coachSignin:'Coach sign in', termsLink:'Terms', privacyLink:'Privacy'
@@ -462,12 +376,6 @@ const T = {
     s4h:'Se factura a los padrinos, el programa cobra',
     s4p:'A cada padrino se le factura su promesa seg\u00fan la puntuaci\u00f3n de su jugador, m\u00e1s un cargo de plataforma de 10%, con treinta d\u00edas para pagar. El programa recibe cada d\u00f3lar prometido.',
     navCashRack:'Cash Rack',
-    p3h:'Cash Rack',
-    p3intro:'Nuestro propio evento de tiro, gratis para cualquier entrenador. Cuatro puntos de tres y una l\u00ednea de tiros libres, tres tiros en cada uno, con reloj. Los padrinos prometen por punto igual que en los juegos.',
-    p3a:'Cada tiro intentado suma, as\u00ed que nadie termina en cero',
-    p3b:'C\u00f3rrelo en tu cancha con tus propios anotadores',
-    p3c:'T\u00fa pones el reloj, nosotros manejamos el dinero',
-    p3cta:'Lee las reglas',
     navCost:'Lo que cuesta',
     h2cost:'Lo que cuesta',
     c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De cada promesa, para tu programa',
@@ -476,24 +384,9 @@ const T = {
     costP2:'Esto es lo que compra. Nosotros ponemos el evento — el formato, las reglas, la anotaci\u00f3n, el programa donde compiten tus jugadores y la p\u00e1gina donde promete cada padrino. Nosotros perseguimos las facturas y asumimos el costo cuando una queda sin pagar. Lo tuyo es la cancha, los jugadores y un anotador.',
     costP3:'Nunca nos escribes un cheque, y no hay nada que descontar. Un padrino que promete $25 recibe una factura de $27.50, el programa recibe los $25, y los $2.50 son nuestros.',
     closeCta2:'Prueba los juegos primero',
-    h2paths:'Tambi\u00e9n disponible',
-    p1h:'Tarjetas de cupones BOGO',
-    p1intro:'La otra forma de recaudar. Una tarjeta digital de cupones dos por uno de un negocio local, vendida a $20 con la mitad para el equipo.',
-    p1a:'La mitad de cada tarjeta, pagada al equipo',
-    p1b:'Cada jugador tiene su propio enlace y su propio total',
-    p1c:'Cupones v\u00e1lidos por un a\u00f1o, redimidos en el celular',
-    p2intro:'Pon tu oferta en una tarjeta que lleva todo un vecindario, o auspicia el reto de un equipo.',
-    p2a:'Clientes nuevos entrando a comprar uno y llevarse dos',
-    p2b:'Un cup\u00f3n por visita, para que vuelvan',
-    p2c:'Tu nombre en cada tarjeta del vecindario',
-    p2d:'Sin cargos, sin m\u00ednimo, sin imprimir',
-    navHow:'Cómo funciona', navTeams:'Para equipos', navMerchants:'Para negocios',
+    navHow:'Cómo funciona',
     navGames:'Juega los juegos',
-    ctaTeam:'Empieza con tu equipo', ctaBiz:'Inscribe tu negocio',
-    cardBrand:'Cupones de un favorito local', cardMeta:'16 cupones', hint:'Toca un cupón para despegarlo.',
-    p1cta:'Prepara tu equipo',
-    p2h:'Para negocios locales',
-    p2cta:'Inscribe tu negocio',
+    ctaTeam:'Empieza con tu equipo',
     closeH:'Te lo montamos nosotros.',
     closeP:'Cuéntanos de tu programa y te armamos todo — tu campaña, tu equipo y un enlace para cada jugador — y te lo mandamos para que lo veas. Nada sale al aire y nadie paga hasta que tú lo digas.',
     closeCta:'Monta mi programa', coachSignin:'Acceso de entrenador', termsLink:'Términos', privacyLink:'Privacidad'
@@ -507,7 +400,6 @@ function paint(){
     if(v) el.textContent = v;
   });
   document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
-  drawTabs();
 }
 
 function flip(){
