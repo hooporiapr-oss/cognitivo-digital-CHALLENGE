@@ -174,12 +174,12 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 var STR = {
   en:{
     brand:'Gostar Digital', title1:'Memory Basketball ', title2:'Challenges',
-    lede:'Memory drills that pay. Sponsors pledge an amount for every point a player scores, the player gets one official run, and half of everything collected goes straight to their program.',
+    lede:'Memory drills that pay. Sponsors pledge an amount for every point a player scores, the player gets one official run, and every dollar pledged goes to their program.',
     howTitle:'How it works',
     s1h:'Sponsors pledge per point', s1p:'Any rate they choose. Nothing is charged when they pledge.',
     s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
     s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
-    s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored. Half of what is collected goes to the program.',
+    s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar pledged goes to the program.',
     inPersonTitle:'This one happens on the court',
     inPersonNote:'Cash Rack is shot in person, so there is nothing to play here. Your coach records the score afterwards and your sponsors are invoiced on it.',
     readRules:'Read the rules',
@@ -195,6 +195,7 @@ var STR = {
     coachKick:'Coaches and programs',
     coachTitle:'Raise money for your team →',
     coachDesc:'How it works, what it costs, and how to sign your program up.',
+    feeNote:'A 10% platform fee is added to the invoice. Every dollar you pledge goes to the program.',
     tryYourself:'Not sure what to pledge? Play it yourself first →',
     practiceTitle:'Practise any time', 
     practiceNote:'All three games are open — no code, no account. Practice runs are never recorded, so play as much as you like.',
@@ -242,12 +243,12 @@ var STR = {
   },
   es:{
     brand:'Gostar Digital', title1:'Retos de ', title2:'Memory Basketball',
-    lede:'Ejercicios de memoria que recaudan. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y la mitad de todo lo cobrado va directo a su programa.',
+    lede:'Ejercicios de memoria que recaudan. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y cada dólar prometido va a su programa.',
     howTitle:'Cómo funciona',
     s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
     s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
     s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
-    s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados. La mitad de lo cobrado va al programa.',
+    s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados, más un cargo de plataforma de 10%. Cada dólar prometido va al programa.',
     inPersonTitle:'Este se juega en la cancha',
     inPersonNote:'Cash Rack se tira en persona, así que aquí no hay nada que jugar. Tu entrenador anota la puntuación después y a tus padrinos se les factura por ella.',
     readRules:'Lee las reglas',
@@ -263,6 +264,7 @@ var STR = {
     coachKick:'Entrenadores y programas',
     coachTitle:'Recauda para tu equipo →',
     coachDesc:'Cómo funciona, cuánto cuesta y cómo inscribir tu programa.',
+    feeNote:'A la factura se le añade un cargo de plataforma de 10%. Cada dólar que prometes va al programa.',
     tryYourself:'¿No sabes cuánto prometer? Juégalo tú primero →',
     practiceTitle:'Practica cuando quieras',
     practiceNote:'Los tres juegos están abiertos — sin código, sin cuenta. Las prácticas nunca se guardan, así que juega todo lo que quieras.',
@@ -606,6 +608,7 @@ function pledgeFormHtml(player){
     '<label>' + T('perPoint') + '</label>' +
     '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
     '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
+    '<p class="mute" style="font-size:.82rem;margin:8px 0 0;">' + T('feeNote') + '</p>' +
     // A sponsor cannot judge what a point is worth until they have
     // played. Two minutes on the game is the best possible answer to
     // "how much should I pledge".
