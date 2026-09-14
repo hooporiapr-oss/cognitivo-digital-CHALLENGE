@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cash Flow Hoops — BOGO fundraising for basketball teams</title>
-<meta name="description" content="Teams raise money selling digital BOGO cards. Local businesses get customers. Half of every card goes straight to the team.">
+<title>Basketball Money — pledge fundraising for basketball programs</title>
+<meta name="description" content="Your players find sponsors who pledge per point. We bring the event, the scoring and the invoicing. Nothing upfront, and we only get paid out of money that actually arrives.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,6 +167,14 @@ header{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,72px)}
 @media(max-width:640px){.step{grid-template-columns:44px 1fr;gap:14px}}
 
 /* ---------- two audiences, deliberately unequal ---------- */
+.costnote{
+  background:rgba(232,178,58,.06);border:1px solid rgba(232,178,58,.28);
+  border-radius:18px;padding:clamp(20px,3vw,30px);margin-top:22px;max-width:70ch;
+}
+.costnote h3{margin-bottom:.5em}
+.costnote p{color:#E4DCEA;margin-bottom:1em}
+.costnote p:last-child{margin-bottom:0}
+
 .paths{display:grid;grid-template-columns:1.25fr .95fr;gap:22px;margin-top:34px}
 @media(max-width:820px){.paths{grid-template-columns:1fr}}
 .path{border:1px solid var(--line);border-radius:12px;padding:clamp(24px,3vw,34px)}
@@ -196,6 +204,7 @@ footer a{color:var(--mute)}
     <a class="mark" href="#top">Cash Flow <em>Hoops</em></a>
     <div class="navlinks">
       <a href="#how" data-t="navHow">How it works</a>
+      <a href="#cost" data-t="navCost">What it costs</a>
       <a href="#teams" data-t="navTeams">For teams</a>
       <a href="#merchants" data-t="navMerchants">For businesses</a>
       <!-- The games live at the root of this domain, so a coach can
@@ -211,7 +220,7 @@ footer a{color:var(--mute)}
   <div class="wrap hero">
     <div>
       <h1 data-t="h1">Sponsors pledge for every point your players score.</h1>
-      <p class="lede" data-t="lede">Your team plays a memory drill we built. Sponsors pledge whatever they like per point, the players take one official run, and half of everything collected goes straight to the program. No boxes, no coupons, nobody selling door to door.</p>
+      <p class="lede" data-t="lede">Your players find sponsors who pledge whatever they like per point. They take one official run, and every dollar pledged goes to the program. No boxes, no coupons, nobody selling door to door.</p>
       <div class="hero-actions">
         <a class="btn btn-solid" href="signup.html" data-t="ctaTeam">Start a team fundraiser</a>
         <a class="btn btn-line" href="index.html" data-t="ctaPlay">Try the games</a>
@@ -264,10 +273,27 @@ footer a{color:var(--mute)}
     </div>
     <div class="step">
       <div>
-        <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
-        <p data-t="s4p">Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.</p>
+        <h3 data-t="s4h">Sponsors are invoiced, the program gets paid</h3>
+        <p data-t="s4p">Each sponsor is billed their pledge against their player's score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="split wrap" id="cost">
+  <h2 data-t="h2cost">What it costs</h2>
+
+  <div class="money">
+    <div><b>$0</b><span data-t="c1">To sign up</span></div>
+    <div><b>$0</b><span data-t="c2">Upfront, ever</span></div>
+    <div class="hi"><b data-t="cHalf">100%</b><span data-t="c3">Of every pledge, to your program</span></div>
+  </div>
+
+  <div class="costnote">
+    <h3 data-t="costH">Said plainly</h3>
+    <p data-t="costP1">Your program keeps every dollar pledged. We are paid by a 10% platform fee added to the sponsor's invoice, shown as its own line so nothing is hidden.</p>
+    <p data-t="costP2">Here is what it buys. We bring the event itself — the format, the rules, the scoring, the software your players compete on and the page every sponsor pledges through. We chase the invoices and we carry the cost when one goes unpaid. Your side is the gym, the players and a scorekeeper.</p>
+    <p data-t="costP3">You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.</p>
   </div>
 </section>
 
@@ -320,10 +346,11 @@ footer a{color:var(--mute)}
 
 <section class="close" id="contact">
   <div class="wrap">
-    <h2 data-t="closeH">Let's go.</h2>
-    <p data-t="closeP">Tell us the team or the business and we will have you selling within a week.</p>
+    <h2 data-t="closeH">We will set it up for you.</h2>
+    <p data-t="closeP">Tell us about your program and we will build the whole thing — your campaign, your roster and a link for every player — and send it to you to look at. Nothing goes live and nobody is charged until you say so.</p>
     <div class="hero-actions">
-      <a class="btn btn-solid" href="mailto:cashflowhoops@gmail.com" data-t="closeCta">Email us</a>
+      <a class="btn btn-solid" href="signup.html" data-t="closeCta">Set my program up</a>
+      <a class="btn btn-line" href="index.html" data-t="closeCta2">Try the games first</a>
     </div>
   </div>
 </section>
@@ -363,22 +390,22 @@ function drawTabs(){
 const T = {
   en:{
     h1:'Sponsors pledge for every point your players score.',
-    lede:'Your team plays a memory drill we built. Sponsors pledge whatever they like per point, the players take one official run, and half of everything collected goes straight to the program. No boxes, no coupons, nobody selling door to door.',
+    lede:'Your players find sponsors who pledge whatever they like per point. They take one official run, and every dollar pledged goes to the program. No boxes, no coupons, nobody selling door to door.',
     ctaPlay:'Try the games',
     exBrand:'What a run is worth', exMeta:'at 25\u00a2 a point',
     exL10:'Holds 10 levels', exL15:'Holds 15 levels', exL20:'Holds 20 levels',
     exHint:'One sponsor. One run. Every level is worth more than the last.',
     h2money:'Where the money goes',
-    mHalf:'Half', mHalf2:'Half',
-    m1:'Straight to the program', m2:'Runs the platform', m3:'Cost to sign up',
+    mHalf:'100%', mHalf2:'10%',
+    m1:'Of every pledge, to the program', m2:'Added to the sponsor invoice', m3:'Cost to sign up',
     s1h:'Sponsors pledge per point',
     s1p:'A player shares their link. Family, neighbors and followers pledge any amount per point \u2014 a dime, a quarter, a dollar. Nothing is charged when they pledge.',
     s2h:'Players practise free',
     s2p:'All three games are open to anyone, any time, with nothing recorded. Nobody goes into their run cold.',
     s3h:'One official run each',
     s3p:'The score is the longest chain they hold. Reach level 12 and that is 78 points. Our software counts it, so there is nothing to argue about.',
-    s4h:'Invoices go out, the program gets paid',
-    s4p:'Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.',
+    s4h:'Sponsors are invoiced, the program gets paid',
+    s4p:'Each sponsor is billed their pledge against their player\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.',
     navCashRack:'Cash Rack',
     p3h:'Cash Rack',
     p3intro:'Our own shooting event, free for any coach to run. Four three-point spots and a foul line, three shots each, on a clock. Sponsors pledge per point exactly as they do on the games.',
@@ -386,6 +413,14 @@ const T = {
     p3b:'Run it in your own gym with your own scorekeepers',
     p3c:'You set the clock, we handle the money',
     p3cta:'Read the rules',
+    navCost:'What it costs',
+    h2cost:'What it costs',
+    c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of every pledge, to your program',
+    costH:'Said plainly',
+    costP1:'Your program keeps every dollar pledged. We are paid by a 10% platform fee added to the sponsor\u2019s invoice, shown as its own line so nothing is hidden.',
+    costP2:'Here is what it buys. We bring the event itself — the format, the rules, the scoring, the software your players compete on and the page every sponsor pledges through. We chase the invoices and we carry the cost when one goes unpaid. Your side is the gym, the players and a scorekeeper.',
+    costP3:'You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.',
+    closeCta2:'Try the games first',
     h2paths:'Also available',
     p1h:'BOGO coupon cards',
     p1intro:'The other way to raise. A digital card of buy-one-get-one coupons from a local business, sold for $20 with half to the team.',
@@ -404,28 +439,28 @@ const T = {
     p1cta:'Get your team set up',
     p2h:'For local businesses',
     p2cta:'Enroll your business',
-    closeH:"Let's go.",
-    closeP:'Tell us the team or the business and we will have you selling within a week.',
-    closeCta:'Email us', coachSignin:'Coach sign in', termsLink:'Terms', privacyLink:'Privacy'
+    closeH:'We will set it up for you.',
+    closeP:'Tell us about your program and we will build the whole thing — your campaign, your roster and a link for every player — and send it to you to look at. Nothing goes live and nobody is charged until you say so.',
+    closeCta:'Set my program up', coachSignin:'Coach sign in', termsLink:'Terms', privacyLink:'Privacy'
   },
   es:{
     h1:'Los padrinos prometen por cada punto que anoten tus jugadores.',
-    lede:'Tu equipo juega un ejercicio de memoria que creamos nosotros. Los padrinos prometen lo que quieran por punto, los jugadores hacen una corrida oficial, y la mitad de todo lo cobrado va directo al programa. Sin cajas, sin cupones, sin vender puerta por puerta.',
+    lede:'Tus jugadores consiguen padrinos que prometen lo que quieran por punto. Hacen una corrida oficial, y cada d\u00f3lar prometido va al programa. Sin cajas, sin cupones, sin vender puerta por puerta.',
     ctaPlay:'Prueba los juegos',
     exBrand:'Cu\u00e1nto vale una corrida', exMeta:'a 25\u00a2 por punto',
     exL10:'Aguanta 10 niveles', exL15:'Aguanta 15 niveles', exL20:'Aguanta 20 niveles',
     exHint:'Un padrino. Una corrida. Cada nivel vale m\u00e1s que el anterior.',
     h2money:'A d\u00f3nde va el dinero',
-    mHalf:'Mitad', mHalf2:'Mitad',
-    m1:'Directo al programa', m2:'Opera la plataforma', m3:'Costo de inscribirse',
+    mHalf:'100%', mHalf2:'10%',
+    m1:'De cada promesa, al programa', m2:'A\u00f1adido a la factura del padrino', m3:'Costo de inscribirse',
     s1h:'Los padrinos prometen por punto',
     s1p:'El jugador comparte su enlace. Familia, vecinos y seguidores prometen lo que quieran por punto \u2014 diez centavos, veinticinco, un d\u00f3lar. No se cobra nada al prometer.',
     s2h:'Los jugadores practican gratis',
     s2p:'Los tres juegos est\u00e1n abiertos para cualquiera, a cualquier hora, sin guardar nada. Nadie llega en fr\u00edo a su corrida.',
     s3h:'Una corrida oficial cada uno',
     s3p:'La puntuaci\u00f3n es la cadena m\u00e1s larga que aguanten. Llegar al nivel 12 son 78 puntos. Nuestro programa los cuenta, as\u00ed que no hay nada que discutir.',
-    s4h:'Salen las facturas, el programa cobra',
-    s4p:'A cada padrino se le factura su tarifa por los puntos anotados, con treinta d\u00edas para pagar. El programa recibe la mitad de todo lo cobrado.',
+    s4h:'Se factura a los padrinos, el programa cobra',
+    s4p:'A cada padrino se le factura su promesa seg\u00fan la puntuaci\u00f3n de su jugador, m\u00e1s un cargo de plataforma de 10%, con treinta d\u00edas para pagar. El programa recibe cada d\u00f3lar prometido.',
     navCashRack:'Cash Rack',
     p3h:'Cash Rack',
     p3intro:'Nuestro propio evento de tiro, gratis para cualquier entrenador. Cuatro puntos de tres y una l\u00ednea de tiros libres, tres tiros en cada uno, con reloj. Los padrinos prometen por punto igual que en los juegos.',
@@ -433,6 +468,14 @@ const T = {
     p3b:'C\u00f3rrelo en tu cancha con tus propios anotadores',
     p3c:'T\u00fa pones el reloj, nosotros manejamos el dinero',
     p3cta:'Lee las reglas',
+    navCost:'Lo que cuesta',
+    h2cost:'Lo que cuesta',
+    c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De cada promesa, para tu programa',
+    costH:'Dicho claro',
+    costP1:'Tu programa se queda con cada d\u00f3lar prometido. A nosotros nos paga un cargo de plataforma de 10% que se le a\u00f1ade a la factura del padrino, en su propia l\u00ednea para que nada quede escondido.',
+    costP2:'Esto es lo que compra. Nosotros ponemos el evento — el formato, las reglas, la anotaci\u00f3n, el programa donde compiten tus jugadores y la p\u00e1gina donde promete cada padrino. Nosotros perseguimos las facturas y asumimos el costo cuando una queda sin pagar. Lo tuyo es la cancha, los jugadores y un anotador.',
+    costP3:'Nunca nos escribes un cheque, y no hay nada que descontar. Un padrino que promete $25 recibe una factura de $27.50, el programa recibe los $25, y los $2.50 son nuestros.',
+    closeCta2:'Prueba los juegos primero',
     h2paths:'Tambi\u00e9n disponible',
     p1h:'Tarjetas de cupones BOGO',
     p1intro:'La otra forma de recaudar. Una tarjeta digital de cupones dos por uno de un negocio local, vendida a $20 con la mitad para el equipo.',
@@ -451,9 +494,9 @@ const T = {
     p1cta:'Prepara tu equipo',
     p2h:'Para negocios locales',
     p2cta:'Inscribe tu negocio',
-    closeH:'Vamos.',
-    closeP:'Dinos el equipo o el negocio y en una semana estás vendiendo.',
-    closeCta:'Escríbenos', coachSignin:'Acceso de entrenador', termsLink:'Términos', privacyLink:'Privacidad'
+    closeH:'Te lo montamos nosotros.',
+    closeP:'Cuéntanos de tu programa y te armamos todo — tu campaña, tu equipo y un enlace para cada jugador — y te lo mandamos para que lo veas. Nada sale al aire y nadie paga hasta que tú lo digas.',
+    closeCta:'Monta mi programa', coachSignin:'Acceso de entrenador', termsLink:'Términos', privacyLink:'Privacidad'
   }
 };
 
