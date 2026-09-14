@@ -357,7 +357,7 @@ var GAMES = {
   recognition:{ file:'recognition.html', label:'Recognition' },
   // Run on a real court, so there is nothing to play here — the
   // rules page is what a sponsor wants to see instead.
-  cashrack:   { file:'cash-rack.html',   label:'Cash Rack', manual:true }
+  cashrack:   { file:'https://hoops.cash/', label:'Cash Rack', manual:true }
 };
 function gameFile(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).file; }
 function isManual(ch){ return !!(GAMES[ch && ch.game] || {}).manual; }
