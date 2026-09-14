@@ -155,7 +155,11 @@ footer a{color:var(--mute)}
       <li data-t="n4">Three basketballs, and someone to feed them</li>
       <li data-t="n5">A scoresheet</li>
     </ul>
-    <a class="cta" href="signup.html" data-t="cta">Run this with your team</a>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <a class="cta" href="signup.html" data-t="cta">Run this with your team</a>
+      <a class="cta" href="cash-rack-scoresheet.html" target="_blank" rel="noopener"
+         style="background:transparent;border:1px solid var(--line);color:var(--paper);" data-t="sheet">Print a scoresheet</a>
+    </div>
   </section>
 
 </div>
@@ -206,6 +210,7 @@ var T = {
     n3:'A scorekeeper — one per station, or one who follows the shooter',
     n4:'Three basketballs, and someone to feed them', n5:'A scoresheet',
     cta:'Run this with your team',
+    sheet:'Print a scoresheet',
     footFree:'Free to run.'
   },
   es:{
@@ -246,6 +251,7 @@ var T = {
     n3:'Un anotador — uno por estación, o uno que siga al tirador',
     n4:'Tres bolas, y alguien pasándolas', n5:'Una hoja de anotación',
     cta:'Corre esto con tu equipo',
+    sheet:'Imprime una hoja',
     footFree:'Gratis para correrlo.'
   }
 };
