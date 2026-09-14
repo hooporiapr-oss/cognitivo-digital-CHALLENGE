@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cash Rack — scoresheet</title>
+<style>
+/* Built for paper first. On screen it looks like the sheet it will
+   become; printed, it is black on white with no wasted ink. */
+*{box-sizing:border-box}
+body{
+  margin:0;background:#e9e6e2;color:#111;
+  font-family:Archivo,system-ui,-apple-system,Arial,sans-serif;
+  font-size:14px;line-height:1.4;
+}
+.sheet{
+  width:210mm;min-height:297mm;margin:18px auto;padding:14mm 13mm;
+  background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.18);
+}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:3px solid #111;padding-bottom:8px}
+.title{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.title span{display:block;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#666;margin-bottom:3px}
+.headr{text-align:right;font-size:11px;color:#555;line-height:1.5}
+
+.meta{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:12px 0 14px}
+.meta div{border-bottom:1.5px solid #111;padding-bottom:3px}
+.meta label{display:block;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#666;margin-bottom:14px}
+
+.key{display:flex;gap:0;border:2px solid #111;margin-bottom:12px}
+.key div{flex:1;padding:7px 9px;border-right:1px solid #111;font-size:11px}
+.key div:last-child{border-right:none}
+.key b{display:block;font-size:16px;font-weight:800;line-height:1}
+.key span{color:#555}
+
+table{width:100%;border-collapse:collapse}
+th{
+  font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:#444;text-align:center;padding:0 2px 5px;
+}
+th.l{text-align:left}
+td{border:1px solid #999;height:26px;padding:0 6px}
+td.name{width:34%;border-left:2px solid #111}
+td.tot{width:13%;background:#f2efe9;border-right:2px solid #111}
+tbody tr:nth-child(5n) td{border-bottom:2px solid #111}
+.num{text-align:center}
+
+.foot{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:10px;color:#555}
+.foot p{margin:0;max-width:64%}
+
+@media print{
+  body{background:#fff}
+  .sheet{width:auto;min-height:0;margin:0;padding:10mm;box-shadow:none}
+  @page{size:A4 portrait;margin:8mm}
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="head">
+    <div class="title"><span>Basketball Money</span>CASH RACK</div>
+    <div class="headr">
+      Every attempt 1 · Made three +3 · Made foul shot +2<br>
+      Max 57 · A completed run is never less than 15
+    </div>
+  </div>
+
+  <div class="meta">
+    <div><label>Team / Program</label></div>
+    <div><label>Date</label></div>
+    <div><label>Time limit</label></div>
+  </div>
+
+  <div class="key">
+    <div><b>4 + 1</b><span>Four three-point spots, one foul line</span></div>
+    <div><b>3</b><span>Shots at each station</span></div>
+    <div><b>15</b><span>Shots in total</span></div>
+    <div><b>ATT × 1 + 3PT × 3 + FT × 2</b><span>How the total is worked out</span></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="l">Player</th>
+        <th>Shots<br>attempted</th>
+        <th>Threes<br>made</th>
+        <th>Foul shots<br>made</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <div class="foot">
+    <p>
+      A shot counts as attempted when it leaves the player's hands before the clock expires — it counts even if the buzzer sounds while the ball is in the air.
+      Enter these three numbers into the platform and it works out every total for you.
+    </p>
+    <p style="text-align:right;max-width:32%;">
+      hoops.money<br>
+      Gostar Digital LLC — Puerto Rico
+    </p>
+  </div>
+
+</div>
+
+<script>
+// Twenty rows, ruled every fifth line so a long roster stays readable.
+var rows = '';
+for (var i = 0; i < 20; i++) {
+  rows += '<tr><td class="name"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="tot"></td></tr>';
+}
+document.getElementById('rows').innerHTML = rows;
+</script>
+</body>
+</html>
