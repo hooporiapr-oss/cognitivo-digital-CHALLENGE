@@ -212,6 +212,7 @@ footer a{color:var(--mute)}
     <a class="mark" href="#top">Cash Flow <em>Hoops</em></a>
     <div class="navlinks">
       <a href="#how" data-t="navHow">How it works</a>
+      <a href="#followup" data-t="navFollow">No chasing</a>
       <a href="#prizes" data-t="navPrize">No prizes</a>
       <a href="#cost" data-t="navCost">What it costs</a>
       <!-- The games live at the root of this domain, so a coach can
@@ -283,6 +284,22 @@ footer a{color:var(--mute)}
         <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
         <p data-t="s4p">Each sponsor is billed their rate times the points scored, with thirty days to pay. The program receives half of everything collected.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="split wrap" id="followup">
+  <h2 data-t="h2follow">Nobody chases anyone</h2>
+  <div class="prizewrap">
+    <div>
+      <p data-t="fu1">This is the part that sinks most pledge drives. The event goes well, and then someone spends three weeks with a spreadsheet, working out who owes what, sending reminders and making phone calls nobody wants to make.</p>
+      <p data-t="fu2">None of that lands on you. The moment the scores are in, every sponsor is invoiced automatically for their own pledge against their own player's score. Stripe sends the invoice, sends the reminders, and takes the payment.</p>
+      <p data-t="fu3">You watch it from your dashboard — who pledged, who has been invoiced, who has paid. After thirty days the books close. Whatever came in came in, and nobody spends the season asking a neighbour for twelve dollars.</p>
+    </div>
+    <div class="prizebox">
+      <b data-t="fuB1">0</b><span data-t="fuB1s">Phone calls you have to make</span>
+      <b data-t="fuB2">0</b><span data-t="fuB2s">Envelopes, cash or spreadsheets</span>
+      <b data-t="fuB3">30</b><span data-t="fuB3s">Days to pay, then it closes</span>
     </div>
   </div>
 </section>
@@ -367,6 +384,14 @@ const T = {
     s4h:'Sponsors are invoiced, the program gets paid',
     s4p:'Each sponsor is billed their pledge against their player\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.',
     navCashRack:'Cash Rack',
+    navFollow:'No chasing',
+    h2follow:'Nobody chases anyone',
+    fu1:'This is the part that sinks most pledge drives. The event goes well, and then someone spends three weeks with a spreadsheet, working out who owes what, sending reminders and making phone calls nobody wants to make.',
+    fu2:"None of that lands on you. The moment the scores are in, every sponsor is invoiced automatically for their own pledge against their own player's score. Stripe sends the invoice, sends the reminders, and takes the payment.",
+    fu3:'You watch it from your dashboard — who pledged, who has been invoiced, who has paid. After thirty days the books close. Whatever came in came in, and nobody spends the season asking a neighbour for twelve dollars.',
+    fuB1:'0', fuB1s:'Phone calls you have to make',
+    fuB2:'0', fuB2s:'Envelopes, cash or spreadsheets',
+    fuB3:'30', fuB3s:'Days to pay, then it closes',
     navPrize:'No prizes',
     h2prize:'Nothing to buy, nothing to hand out',
     pz1:'Most fundraisers need a prize ladder — trinkets at $35, a water bottle at $50, a T-shirt at $100. Somebody has to choose it, buy it, store it and give it out, and the program is spending money before it has raised any.',
@@ -409,6 +434,14 @@ const T = {
     s4h:'Se factura a los padrinos, el programa cobra',
     s4p:'A cada padrino se le factura su promesa seg\u00fan la puntuaci\u00f3n de su jugador, m\u00e1s un cargo de plataforma de 10%, con treinta d\u00edas para pagar. El programa recibe cada d\u00f3lar prometido.',
     navCashRack:'Cash Rack',
+    navFollow:'Sin perseguir',
+    h2follow:'Nadie persigue a nadie',
+    fu1:'Esta es la parte que hunde a la mayor\u00eda de las recaudaciones por promesa. El evento sale bien, y despu\u00e9s alguien pasa tres semanas con una hoja de c\u00e1lculo, averiguando qui\u00e9n debe qu\u00e9, mandando recordatorios y haciendo llamadas que nadie quiere hacer.',
+    fu2:'Nada de eso te cae a ti. En cuanto entran las puntuaciones, a cada padrino se le factura autom\u00e1ticamente su propia promesa seg\u00fan la puntuaci\u00f3n de su propio jugador. Stripe manda la factura, manda los recordatorios y cobra.',
+    fu3:'T\u00fa lo ves desde tu panel — qui\u00e9n prometi\u00f3, a qui\u00e9n se le factur\u00f3, qui\u00e9n pag\u00f3. A los treinta d\u00edas se cierran los libros. Lo que entr\u00f3, entr\u00f3, y nadie se pasa la temporada pidi\u00e9ndole doce d\u00f3lares a un vecino.',
+    fuB1:'0', fuB1s:'Llamadas que tienes que hacer',
+    fuB2:'0', fuB2s:'Sobres, efectivo u hojas de c\u00e1lculo',
+    fuB3:'30', fuB3s:'D\u00edas para pagar, y se cierra',
     navPrize:'Sin premios',
     h2prize:'Nada que comprar, nada que repartir',
     pz1:'La mayor\u00eda de las recaudaciones necesitan una escalera de premios — chucher\u00edas a $35, una botella a $50, una camiseta a $100. Alguien tiene que escogerlo, comprarlo, guardarlo y repartirlo, y el programa gasta dinero antes de recaudar nada.',
