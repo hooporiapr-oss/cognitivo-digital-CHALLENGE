@@ -359,7 +359,9 @@ var GAMES = {
   recognition:{ file:'recognition.html', label:'Recognition' },
   // Run on a real court, so there is nothing to play here — the
   // rules page is what a sponsor wants to see instead.
-  cashrack:   { file:'https://hoops.cash/', label:'Cash Rack', manual:true }
+  cashrack:   { file:'https://hoops.cash/', label:'Cash Rack', manual:true },
+  // Lives on the Cash Rack site, since it is that event's own floor.
+  spots:      { file:'https://hoops.cash/spots.html', label:'The Spots' }
 };
 function gameFile(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).file; }
 function isManual(ch){ return !!(GAMES[ch && ch.game] || {}).manual; }
@@ -511,8 +513,8 @@ function renderPlayer(ch, campaign, player, run, prac){
         ? '<div class="stat gold"><div class="stat-label">' + T('officialPoints') + '</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
           '<div class="stat"><div class="stat-label">' + T('levelHeld') + '</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
         : (isManual(ch)
-            ? '<div class="stat gold"><div class="stat-label">' + T('maxScore') + '</div><div class="stat-val">57</div></div>' +
-              '<div class="stat purple"><div class="stat-label">' + T('minScore') + '</div><div class="stat-val">15</div></div>'
+            ? '<div class="stat gold"><div class="stat-label">' + T('maxScore') + '</div><div class="stat-val">69</div></div>' +
+              '<div class="stat purple"><div class="stat-label">' + T('minScore') + '</div><div class="stat-val">18</div></div>'
             : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
               '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>')) +
     '</div>' +
