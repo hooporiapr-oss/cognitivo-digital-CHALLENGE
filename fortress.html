@@ -73,7 +73,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 #targetLayer{z-index:12}
 #keySvg{height:100%;max-height:100%;width:auto;max-width:96%}
 
-.fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;background-size:cover;display:grid;place-content:center}
+.fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;display:grid;place-content:center;border:3px solid rgba(255,255,255,.22)}
 /* The dollar sign rides on top of the ball art. Its own size is set
    in JS alongside the ball's, so it scales with the court rather than
    being fixed. */
@@ -81,16 +81,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
    A heavy text outline was closing the gaps around the vertical bar
    and turning it into an S — here the bar is its own shape, so it
    cannot be lost at any size. */
-.fortress-ball .ball-mark{
-  font-family:Georgia,'Times New Roman',serif;font-weight:700;line-height:1;
-  color:#FFD700;
-  text-shadow:0 2px 4px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,.7);
-  pointer-events:none;user-select:none;
-}
-.fortress-ball.lit .ball-mark{color:#FFF3A0;animation:markPop .18s ease-out}
-@keyframes markPop{0%{transform:scale(1)}55%{transform:scale(1.22)}100%{transform:scale(1)}}
+
 .fortress-ball.ready{pointer-events:all}
-.fortress-ball.lit{filter:brightness(1.55) saturate(1.25);box-shadow:0 0 40px currentColor,0 0 75px currentColor;transform:translate(-50%,-50%) scale(1.1)}
+.fortress-ball.lit{filter:brightness(1.4) saturate(1.2);box-shadow:0 0 42px currentColor,0 0 80px currentColor;transform:translate(-50%,-50%) scale(1.12);border-color:rgba(255,255,255,.75)}
 .fortress-ball.wrong{filter:grayscale(1) brightness(.5)}
 .ripple{position:fixed;border-radius:50%;border:3px solid #a855f7;transform:translate(-50%,-50%) scale(0);pointer-events:none;z-index:14;animation:rippleOut .5s ease-out forwards}
 @keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(.5);opacity:1}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
@@ -106,7 +99,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <div id="screen-intro">
   <a class="intro-back" href="index.html">← Back</a>
   <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
-  <div class="vrr-sub" id="introSub">The 2-1-2 Zone</div>
+  <div class="vrr-sub" id="introSub">Memory &amp; Focus</div>
   <div class="vrr-title">THE <span>FORTRESS</span></div>
 
   <div class="official-banner" id="officialBanner" style="display:none;">
@@ -115,7 +108,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="ob-note" id="obNote">This run counts. Your sponsors pay on the points you score, and you only get one.</div>
   </div>
 
-  <div class="rule-t" id="ruleText"><b>Five basketballs, set in a real 2-1-2 zone, fixed in place.</b> Watch the chain light up inside the key, then repeat it back — at your own pace, any speed. Every round the chain adds one more ball. One wrong tap ends the run — your score is the longest chain you held.</div>
+  <div class="rule-t" id="ruleText"><b>Five circles, fixed in place.</b> Watch the chain light up, then tap it back — at your own pace, any speed. Every round the chain adds one more. One wrong tap ends the run, and your score is the longest chain you held.</div>
 
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off">
   <button class="big-btn" id="bigStart" onclick="handleStartClick()">▶ START</button>
@@ -136,11 +129,19 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div id="msg" class="watch"></div>
   <div class="court-wrap">
     <svg id="keySvg" viewBox="0 0 520 340" preserveAspectRatio="xMidYMid meet">
-      <rect x="89" y="70" width="300" height="200" fill="none" stroke="rgba(168,85,247,.4)" stroke-width="3"/>
-      <path d="M 389 70 A 100 100 0 0 1 389 270" fill="none" stroke="rgba(168,85,247,.4)" stroke-width="3"/>
-      <line x1="89" y1="70" x2="89" y2="270" stroke="rgba(168,85,247,.55)" stroke-width="5"/>
-      <circle cx="89" cy="170" r="8" fill="none" stroke="rgba(255,211,90,.7)" stroke-width="3"/>
-      <line x1="77" y1="170" x2="101" y2="170" stroke="rgba(255,211,90,.7)" stroke-width="3"/>
+      <!-- A plain field for the targets to sit on. It keeps the same
+           proportions the layout was built around, so nothing else
+           had to move. -->
+      <defs>
+        <linearGradient id="panelFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1B1026"/>
+          <stop offset="100%" stop-color="#120B1A"/>
+        </linearGradient>
+      </defs>
+      <rect x="10" y="10" width="500" height="320" rx="22"
+            fill="url(#panelFill)" stroke="rgba(168,85,247,.32)" stroke-width="3"/>
+      <rect x="28" y="28" width="464" height="284" rx="14"
+            fill="none" stroke="rgba(168,85,247,.14)" stroke-width="2"/>
     </svg>
     <div id="targetLayer"></div>
   </div>
@@ -175,8 +176,8 @@ function $(id){return document.getElementById(id)}
 // ══════════════════════════════════════════════════════
 var STR = {
   en:{
-    sub:'The 2-1-2 Zone',
-    rule:'<b>Five basketballs, set in a real 2-1-2 zone, fixed in place.</b> Watch the chain light up inside the key, then repeat it back — at your own pace, any speed. Every round the chain adds one more ball. One wrong tap ends the run — your score is the longest chain you held.',
+    sub:'Memory & Focus',
+    rule:'<b>Five circles, fixed in place.</b> Watch the chain light up, then tap it back — at your own pace, any speed. Every round the chain adds one more. One wrong tap ends the run, and your score is the longest chain you held.',
     namePh:'Your name',
     start:'▶ START', startOfficial:'▶ START OFFICIAL RUN', startPractice:'▶ PRACTICE RUN',
     officialKick:'Official Run',
@@ -185,8 +186,8 @@ var STR = {
     confirmOfficial:'This is your official run. Your sponsors pay on the points you score, and you only get one. Ready?',
     back:'← Back', backToChallenge:'← Back to my Challenge page', home:'← Home',
     lblLevel:'Level', lblPoints:'Points', lblTime:'Time',
-    getReady:'GET READY...', watch:'WATCH THE FORTRESS', yourTurn:'YOUR TURN',
-    held:'✅ HELD THE FORTRESS', broken:'FORTRESS BROKEN',
+    getReady:'GET READY...', watch:'WATCH THE CHAIN', yourTurn:'YOUR TURN',
+    held:'✅ CHAIN HELD', broken:'CHAIN BROKEN',
     labelPractice:'Practice Run · Longest Chain Held',
     labelOfficial:'Official Run · Longest Chain Held',
     playAgain:'▶ PLAY AGAIN',
@@ -202,8 +203,8 @@ var STR = {
     bestLine:'Your best practice run: <b>level {L}</b> · {P} points'
   },
   es:{
-    sub:'La Zona 2-1-2',
-    rule:'<b>Cinco balones, colocados en una zona 2-1-2 real, fijos en su sitio.</b> Observa la cadena encenderse dentro de la pintura y repítela — a tu propio ritmo, sin prisa. Cada ronda añade un balón más. Un toque equivocado termina la corrida — tu puntuación es la cadena más larga que aguantaste.',
+    sub:'Memoria y Enfoque',
+    rule:'<b>Cinco círculos, fijos en su sitio.</b> Observa la cadena encenderse y tócala de vuelta — a tu propio ritmo, sin prisa. Cada ronda añade uno más. Un toque equivocado termina la corrida, y tu puntuación es la cadena más larga que aguantaste.',
     namePh:'Tu nombre',
     start:'▶ EMPEZAR', startOfficial:'▶ EMPEZAR CORRIDA OFICIAL', startPractice:'▶ CORRIDA DE PRÁCTICA',
     officialKick:'Corrida Oficial',
@@ -212,8 +213,8 @@ var STR = {
     confirmOfficial:'Esta es tu corrida oficial. Tus padrinos pagan por los puntos que anotes, y solo tienes una. ¿Listo?',
     back:'← Atrás', backToChallenge:'← Volver a mi página del Reto', home:'← Inicio',
     lblLevel:'Nivel', lblPoints:'Puntos', lblTime:'Tiempo',
-    getReady:'PREPÁRATE...', watch:'OBSERVA THE FORTRESS', yourTurn:'TU TURNO',
-    held:'✅ AGUANTASTE THE FORTRESS', broken:'CAYÓ THE FORTRESS',
+    getReady:'PREPÁRATE...', watch:'OBSERVA LA CADENA', yourTurn:'TU TURNO',
+    held:'✅ CADENA AGUANTADA', broken:'CADENA ROTA',
     labelPractice:'Práctica · Cadena más larga',
     labelOfficial:'Corrida Oficial · Cadena más larga',
     playAgain:'▶ JUGAR OTRA VEZ',
@@ -356,8 +357,8 @@ var LEVEL_PAUSE_MS=800;
 
 var TARGET_COLORS=['#ff1e3c','#ffd35a','#00D9A5','#3b82f6','#ff6b35'];
 
-// A real 2-1-2 zone — two guards up by the free-throw line, one
-// center in the paint, two forwards on the blocks.
+// Five fixed positions, spread so no two sit close enough to be
+// confused with each other at a glance.
 var LAYOUT=[
   {x:75,y:24},{x:75,y:76},
   {x:51,y:50},
@@ -455,7 +456,6 @@ function shuffle(arr){
   return a;
 }
 
-var BALL_SEAMS="url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22c%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2249%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23c%29%22%20fill%3D%22none%22%20stroke%3D%22rgba%280%2C0%2C0%2C.45%29%22%20stroke-width%3D%223.4%22%3E%3Cline%20x1%3D%2250%22%20y1%3D%22-4%22%20x2%3D%2250%22%20y2%3D%22104%22/%3E%3Cpath%20d%3D%22M%20-4%2050%20Q%2050%20-4%20104%2050%22/%3E%3Cpath%20d%3D%22M%20-4%2050%20Q%2050%20104%20104%2050%22/%3E%3Cellipse%20cx%3D%2250%22%20cy%3D%2250%22%20rx%3D%2224%22%20ry%3D%2249%22/%3E%3C/g%3E%3C/svg%3E')";
 
 // Positions and colors are chosen once per run and then held. Every
 // later call only re-measures the court and moves the same balls to
@@ -519,17 +519,12 @@ function buildBoard(){
     el.style.top=positions[i].y+'%';
     el.style.width=size+'px';
     el.style.height=size+'px';
-    el.style.background=BALL_SEAMS+', radial-gradient(circle at 35% 32%,'+colors[i]+'dd,'+colors[i]+' 55%,'+colors[i]+'99 85%)';
+    el.style.background='radial-gradient(circle at 34% 30%,'+colors[i]+'ff,'+colors[i]+' 48%,'+colors[i]+'88 92%)';
     el.style.color=colors[i];
 
     // The S curve and the bar are separate shapes, both stroked in
     // gold over a dark outline, so the bar reads clearly on every one
     // of the five ball colors.
-    var mark=document.createElement('span');
-    mark.className='ball-mark';
-    mark.textContent = '$';
-    mark.style.fontSize = Math.round(size * 0.78) + 'px';
-    el.appendChild(mark);
 
     (function(idx){
       el.addEventListener('pointerdown',function(e){e.preventDefault();handleTargetTap(idx)});
