@@ -3,12 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign up your school — Every Point</title>
+<title>Sign up your school — Cognitivo Digital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#160E1C;--panel:#1D1426;--line:#3A2647;--gold:#E8B23A;--leather:#C9601F;--paper:#F7F3EF;--mute:#B7A8C2}
+:root{
+  /* Matching the logo, as on the rest of the site. */
+  --ink:#050A12;
+  --panel:#0D1826;
+  --line:#1E3550;
+  --gold:#22D3EE;
+  --leather:#38BDF8;
+  --paper:#EAF4FB;
+  --mute:#8AA4BD;
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{width:min(1060px,92vw);margin:0 auto}
@@ -25,7 +34,7 @@ nav{border-bottom:1px solid var(--line)}
 /* ---- hero ---- */
 header{padding:52px 0 34px;border-bottom:1px solid var(--line)}
 h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .35em;max-width:16ch}
-.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#E4DCEA;max-width:58ch;margin:0}
+.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#CFE3F2;max-width:58ch;margin:0}
 
 /* ---- the four steps, across the page rather than down it ---- */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:34px 0 40px}
@@ -57,22 +66,22 @@ h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;lin
 label{display:block;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
 input,select,textarea{
   width:100%;padding:13px 14px;border-radius:10px;
-  border:1px solid #ffffff1f;background:#120C18;color:#fff;
+  border:1px solid #ffffff1f;background:#08111C;color:#fff;
   font-family:inherit;font-size:1rem;
 }
 textarea{height:88px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 .hint{font-size:.8rem;color:var(--mute);margin-top:6px}
 
-.attest{display:flex;gap:13px;align-items:flex-start;margin-top:8px;padding:16px 18px;border-radius:14px;border:1px solid rgba(232,178,58,.3);background:rgba(232,178,58,.06)}
+.attest{display:flex;gap:13px;align-items:flex-start;margin-top:8px;padding:16px 18px;border-radius:14px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.06)}
 .attest input{width:22px;height:22px;flex-shrink:0;margin-top:2px;accent-color:var(--gold)}
-.attest span{font-size:.92rem;color:#EFE6D6;line-height:1.5}
+.attest span{font-size:.92rem;color:#DCEEFA;line-height:1.5}
 
 .send{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line);margin-top:26px}
 .btn{
   flex:1 1 240px;padding:16px 22px;border:none;border-radius:12px;
   font-family:inherit;font-size:1rem;font-weight:800;letter-spacing:.04em;
-  text-transform:uppercase;cursor:pointer;background:var(--gold);color:#20140B;
+  text-transform:uppercase;cursor:pointer;background:var(--gold);color:#04121A;
 }
 .btn:disabled{opacity:.55;cursor:default}
 .msg{flex:1 1 240px;font-size:.93rem;font-weight:600;min-height:22px}
@@ -84,7 +93,7 @@ footer a{color:var(--mute)}
 <body>
 
 <nav><div class="wrap navin">
-  <a class="mark" href="teams.html">Every <em>Point</em></a>
+  <a class="mark" href="teams.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
   <div class="navr">
     <a href="teams.html" data-t="navBack">How it works</a>
     <button id="lang" onclick="flip()">ES</button>
