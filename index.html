@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Memory Basketball Challenges</title>
+<title>Every Point — a fundraiser that sharpens memory</title>
 <style>
 :root{
   --ink:#0a0a0f;
@@ -102,9 +102,9 @@ input:focus{outline:none;border-color:var(--purple)}
    should be looking. */
 .brandhead{text-align:center;margin-bottom:22px}
 .brandhead .kick{display:block;margin-bottom:14px}
-.brandhead .logo{
-  display:block;width:min(360px,76vw);height:auto;margin:0 auto 18px;
-}
+/* The wordmark stands in until the new logo arrives — sized so the
+   masthead keeps its weight rather than collapsing. */
+.brandhead h1{font-size:clamp(2.4rem,9vw,4rem)}
 .brandhead h1{margin:0}
 
 .tryout-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
@@ -173,42 +173,36 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 // ══════════════════════════════════════════════════════
 var STR = {
   en:{
-    brand:'Gostar Digital', title1:'Memory Basketball ', title2:'Challenges',
-    lede:'Memory drills that pay. Sponsors pledge an amount for every point a player scores, the player gets one official run, and every dollar pledged goes to their program.',
+    brand:'Gostar Digital', title1:'Every ', title2:'Point',
+    lede:'A fundraiser that sharpens memory. Sponsors pledge an amount for every point a student scores, each student gets one official run, and every dollar pledged goes to the program.',
     howTitle:'How it works',
-    s1h:'Sponsors pledge per point', s1p:'Any rate they choose. Nothing is charged when they pledge.',
-    s2h:'The player practises free', s2p:'As many runs as they like, so nobody goes in cold.',
-    s3h:'One official run', s3p:'Five basketballs in a 2-1-2 zone. Every level adds one more to the chain. Hold level 12 and that is 78 points.',
-    s4h:'Invoices go out', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar pledged goes to the program.',
-    inPersonTitle:'This one happens on the court',
-    inPersonNote:'Cash Rack is shot in person, so there is nothing to play here. Your coach records the score afterwards and your sponsors are invoiced on it.',
-    readRules:'Read the rules',
-    awaitingEvent:'{N} has not shot yet. Scores go up after the event.',
-    maxScore:'Highest possible', minScore:'Floor for finishing',
-    tryoutKick:'Team tryout',
-    tryoutLede:'Play all three. Whichever the team scores highest on is the one worth running the fundraiser with.',
-    teamStanding:'How the team is doing', teamStandingNote:'Total points across everyone who has played.',
-    bestFit:'Best so far', playersWord:'players', notPlayed:'Not played yet',
+    s1h:'Sponsors pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
+    s2h:'Students practise free', s2p:'As many runs as they like, on any device. Nobody goes in cold, and the practice is the part that sharpens.',
+    s3h:'One official run', s3p:'A chain that grows by one every round. Hold twelve rounds and that is 78 points — and every round is working memory under pressure.',
+    s4h:'Sponsors are invoiced', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar pledged goes to the program.',
+    tryoutKick:'Program tryout',
+    tryoutLede:'Play all three. Whichever the program scores highest on is the one worth running the fundraiser with.',
+    teamStanding:'How the program is doing', teamStandingNote:'Total points across everyone who has played.',
+    bestFit:'Best so far', playersWord:'students', notPlayed:'Not played yet',
     yourTryout:'Play each one at least once. Your best run counts.',
-    whoAreYou:'Who are you?', whoAreYouNote:'Tap your name so your scores count for the team.',
+    whoAreYou:'Who are you?', whoAreYouNote:'Tap your name so your scores count for the program.',
     notMe:'Not me — pick someone else',
-    coachKick:'Coaches and programs',
-    coachTitle:'Raise money for your team →',
-    coachDesc:'How it works, what it costs, and how to sign your program up.',
+    coachKick:'Schools and programs',
+    coachTitle:'Raise money for your program →',
+    coachDesc:'How it works, what it costs, and how to sign your school up.',
     feeNote:'A 10% platform fee is added to the invoice. Every dollar you pledge goes to the program.',
     tryYourself:'Not sure what to pledge? Play it yourself first →',
     practiceTitle:'Practise any time', 
-    practiceNote:'All three games are open — no code, no account. Practice runs are never recorded, so play as much as you like.',
-    gFortress:'The Fortress', gFortressDesc:'Five basketballs in a 2-1-2 zone. Watch the chain, repeat it back, one more every round.',
+    practiceNote:'All three are open to anyone — no code, no account, nothing recorded. Play as much as you like; the practice is the part that sharpens.',
+    gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
-    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
-    tryIt:'▶ Try The Fortress', freeNote:'Free to play. Nothing recorded.',
+    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.', freeNote:'Free to play. Nothing recorded.',
     haveLink:'Looking for a player or a team? Use the link they sent you.',
-    kick:'Memory Basketball Challenges',
-    teamPoints:'Team points', runsDone:'Runs done',
-    pledgeTeam:'Pledge to the whole team', pledgeTeamNote:'Your pledge is multiplied by the team\u2019s combined points.',
-    rosterTitle:'The roster', rosterNote:'Tap a player to pledge to them directly.',
-    noPlayers:'No players yet.', notYet:'not yet', practisingL:'practising · L', pts:'pts',
+    kick:'Every Point',
+    teamPoints:'Division points', runsDone:'Runs done',
+    pledgeTeam:'Pledge to the whole division', pledgeTeamNote:'Your pledge is multiplied by the division\u2019s combined points.',
+    rosterTitle:'The students', rosterNote:'Tap a student to pledge to them directly.',
+    noPlayers:'No students yet.', notYet:'not yet', practisingL:'practising · L', pts:'pts',
     officialPoints:'Official points', levelHeld:'Level held',
     practiceBest:'Practice best', wouldScore:'Would score',
     runDone:'Official run complete — {L} levels held, {P} points.',
@@ -216,7 +210,7 @@ var STR = {
     notPractised:'{N} has not practised yet.',
     closedTitle:'Pledging has closed for this run',
     closedNote:'The official run is done, so the score is final. You can still pledge to the team.',
-    seeTeam:'← See the whole team',
+    seeTeam:'← See the whole division',
     pledgeTo:'Pledge to {N}',
     pledgeNote:'Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.',
     yourRunTitle:'Your official run', yourRunDone:'Your run is done',
@@ -237,47 +231,41 @@ var STR = {
     needRate:'Please enter an amount per point.', pledgeFail:'Could not save that pledge — please try again.',
     pledgesClose:'Pledges close', runsBy:'runs by',
     notFound:'{W} not found', notFoundNote:'Check the link, or ask whoever sent it for a new one.',
-    backHome:'← Memory Basketball Challenges', loadFail:'Could not load this page. Please try again.',
-    wordChallenge:'Challenge', wordPlayer:'Player', wordTeam:'The team',
+    backHome:'← Every Point', loadFail:'Could not load this page. Please try again.',
+    wordChallenge:'Challenge', wordPlayer:'Student', wordTeam:'The division',
     footer:'Gostar Digital LLC — Puerto Rico'
   },
   es:{
-    brand:'Gostar Digital', title1:'Retos de ', title2:'Memory Basketball',
-    lede:'Ejercicios de memoria que recaudan. Los padrinos prometen una cantidad por cada punto que anote el jugador, el jugador tiene una corrida oficial, y cada dólar prometido va a su programa.',
+    brand:'Gostar Digital', title1:'Every ', title2:'Point',
+    lede:'Una recaudación que agudiza la memoria. Los padrinos prometen una cantidad por cada punto que anote el estudiante, cada estudiante tiene una corrida oficial, y cada dólar prometido va al programa.',
     howTitle:'Cómo funciona',
     s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
-    s2h:'El jugador practica gratis', s2p:'Todas las corridas que quiera, para que nadie llegue en frío.',
-    s3h:'Una corrida oficial', s3p:'Cinco balones en una zona 2-1-2. Cada nivel añade uno más a la cadena. Aguanta el nivel 12 y son 78 puntos.',
-    s4h:'Salen las facturas', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados, más un cargo de plataforma de 10%. Cada dólar prometido va al programa.',
-    inPersonTitle:'Este se juega en la cancha',
-    inPersonNote:'Cash Rack se tira en persona, así que aquí no hay nada que jugar. Tu entrenador anota la puntuación después y a tus padrinos se les factura por ella.',
-    readRules:'Lee las reglas',
-    awaitingEvent:'{N} todavía no ha tirado. Las puntuaciones suben después del evento.',
-    maxScore:'Máximo posible', minScore:'Piso por terminar',
-    tryoutKick:'Prueba de equipo',
-    tryoutLede:'Juega los tres. Aquel donde el equipo anote más es el que vale la pena para la recaudación.',
-    teamStanding:'Cómo va el equipo', teamStandingNote:'Puntos totales de todos los que han jugado.',
-    bestFit:'El mejor hasta ahora', playersWord:'jugadores', notPlayed:'Sin jugar',
+    s2h:'Los estudiantes practican gratis', s2p:'Todas las corridas que quieran, en cualquier dispositivo. Nadie llega en frío, y la práctica es la parte que agudiza.',
+    s3h:'Una corrida oficial', s3p:'Una cadena que crece de a uno cada ronda. Aguanta doce rondas y son 78 puntos — y cada ronda es memoria de trabajo bajo presión.',
+    s4h:'Se factura a los padrinos', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados, más un cargo de plataforma de 10%. Cada dólar prometido va al programa.',
+    tryoutKick:'Prueba del programa',
+    tryoutLede:'Juega los tres. Aquel donde el programa anote más es el que vale la pena para la recaudación.',
+    teamStanding:'Cómo va el programa', teamStandingNote:'Puntos totales de todos los que han jugado.',
+    bestFit:'El mejor hasta ahora', playersWord:'estudiantes', notPlayed:'Sin jugar',
     yourTryout:'Juega cada uno al menos una vez. Tu mejor corrida cuenta.',
-    whoAreYou:'¿Quién eres?', whoAreYouNote:'Toca tu nombre para que tus puntos cuenten para el equipo.',
+    whoAreYou:'¿Quién eres?', whoAreYouNote:'Toca tu nombre para que tus puntos cuenten para el programa.',
     notMe:'No soy yo — escoger otro',
-    coachKick:'Entrenadores y programas',
-    coachTitle:'Recauda para tu equipo →',
-    coachDesc:'Cómo funciona, cuánto cuesta y cómo inscribir tu programa.',
+    coachKick:'Escuelas y programas',
+    coachTitle:'Recauda para tu programa →',
+    coachDesc:'Cómo funciona, cuánto cuesta y cómo inscribir tu escuela.',
     feeNote:'A la factura se le añade un cargo de plataforma de 10%. Cada dólar que prometes va al programa.',
     tryYourself:'¿No sabes cuánto prometer? Juégalo tú primero →',
     practiceTitle:'Practica cuando quieras',
-    practiceNote:'Los tres juegos están abiertos — sin código, sin cuenta. Las prácticas nunca se guardan, así que juega todo lo que quieras.',
-    gFortress:'The Fortress', gFortressDesc:'Cinco balones en una zona 2-1-2. Observa la cadena y repítela, una más cada ronda.',
+    practiceNote:'Los tres están abiertos para cualquiera — sin código, sin cuenta, sin guardar nada. Juega todo lo que quieras; la práctica es la parte que agudiza.',
+    gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
-    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
-    tryIt:'▶ Prueba The Fortress', freeNote:'Gratis. No se guarda nada.',
+    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.', freeNote:'Gratis. No se guarda nada.',
     haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
-    kick:'Retos de Memory Basketball',
-    teamPoints:'Puntos del equipo', runsDone:'Corridas hechas',
-    pledgeTeam:'Promete a todo el equipo', pledgeTeamNote:'Tu promesa se multiplica por los puntos combinados del equipo.',
-    rosterTitle:'El equipo', rosterNote:'Toca a un jugador para prometerle directamente.',
-    noPlayers:'Todavía no hay jugadores.', notYet:'aún no', practisingL:'practicando · N', pts:'pts',
+    kick:'Every Point',
+    teamPoints:'Puntos de la división', runsDone:'Corridas hechas',
+    pledgeTeam:'Promete a toda la división', pledgeTeamNote:'Tu promesa se multiplica por los puntos combinados de la división.',
+    rosterTitle:'Los estudiantes', rosterNote:'Toca a un estudiante para prometerle directamente.',
+    noPlayers:'Todavía no hay estudiantes.', notYet:'aún no', practisingL:'practicando · N', pts:'pts',
     officialPoints:'Puntos oficiales', levelHeld:'Nivel aguantado',
     practiceBest:'Mejor práctica', wouldScore:'Anotaría',
     runDone:'Corrida oficial completa — {L} niveles aguantados, {P} puntos.',
@@ -285,7 +273,7 @@ var STR = {
     notPractised:'{N} todavía no ha practicado.',
     closedTitle:'Las promesas cerraron para esta corrida',
     closedNote:'La corrida oficial ya está hecha, así que la puntuación es final. Todavía puedes prometerle al equipo.',
-    seeTeam:'← Ver todo el equipo',
+    seeTeam:'← Ver toda la división',
     pledgeTo:'Prométele a {N}',
     pledgeNote:'Escoge la cantidad que quieras por punto. No se cobra nada ahora — se te facturará después de la corrida oficial.',
     yourRunTitle:'Tu corrida oficial', yourRunDone:'Tu corrida está hecha',
@@ -306,8 +294,8 @@ var STR = {
     needRate:'Por favor entra una cantidad por punto.', pledgeFail:'No se pudo guardar la promesa — intenta de nuevo.',
     pledgesClose:'Las promesas cierran', runsBy:'corridas hasta',
     notFound:'{W} no encontrado', notFoundNote:'Verifica el enlace o pide uno nuevo a quien te lo envió.',
-    backHome:'← Retos de Memory Basketball', loadFail:'No se pudo cargar esta página. Intenta de nuevo.',
-    wordChallenge:'Reto', wordPlayer:'Jugador', wordTeam:'El equipo',
+    backHome:'← Every Point', loadFail:'No se pudo cargar esta página. Intenta de nuevo.',
+    wordChallenge:'Reto', wordPlayer:'Estudiante', wordTeam:'La división',
     footer:'Gostar Digital LLC — Puerto Rico'
   }
 };
@@ -359,12 +347,10 @@ var GAMES = {
   recognition:{ file:'recognition.html', label:'Recognition' },
   // Run on a real court, so there is nothing to play here — the
   // rules page is what a sponsor wants to see instead.
-  cashrack:   { file:'https://hoops.cash/', label:'Cash Rack', manual:true },
-  // Lives on the Cash Rack site, since it is that event's own floor.
-  spots:      { file:'https://hoops.cash/spots.html', label:'The Spots' }
+  // Cash Rack and The Spots belong to Basketball Money and live on
+  // hoops.cash with their own pledge pages.
 };
 function gameFile(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).file; }
-function isManual(ch){ return !!(GAMES[ch && ch.game] || {}).manual; }
 function gameLabel(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).label; }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
@@ -387,7 +373,6 @@ function renderLanding(){
     langBtnHtml() +
     '<div class="brandhead">' +
       '<span class="kick">' + T('brand') + '</span>' +
-      '<img class="logo" src="bball-money.png" alt="Basketball Money">' +
       '<h1>' + T('title1') + '<span>' + T('title2') + '</span></h1>' +
     '</div>' +
     '<p style="margin-top:14px;">' + T('lede') + '</p>' +
@@ -512,18 +497,15 @@ function renderPlayer(ch, campaign, player, run, prac){
       (run
         ? '<div class="stat gold"><div class="stat-label">' + T('officialPoints') + '</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
           '<div class="stat"><div class="stat-label">' + T('levelHeld') + '</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
-        : (isManual(ch)
-            ? '<div class="stat gold"><div class="stat-label">' + T('maxScore') + '</div><div class="stat-val">69</div></div>' +
-              '<div class="stat purple"><div class="stat-label">' + T('minScore') + '</div><div class="stat-val">18</div></div>'
-            : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
-              '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>')) +
+        : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
+          '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>') +
     '</div>' +
 
     (run
       ? '<p class="mute">' + T('runDone', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>'
       : (prac
           ? '<p class="mute">' + T('practisingNow', { N: esc(player.name), L: esc(prac.best_level), P: pointsFor(prac.best_level) }) + '</p>'
-          : '<p class="mute">' + (isManual(ch) ? T('awaitingEvent', { N: esc(player.name) }) : T('notPractised', { N: esc(player.name) })) + '</p>')) +
+          : '<p class="mute">' + T('notPractised', { N: esc(player.name) }) + '</p>')) +
 
     deadlineHtml(ch) +
 
@@ -532,15 +514,7 @@ function renderPlayer(ch, campaign, player, run, prac){
     // themselves. Which half appears depends on the run key.
     (RUN_KEY
 
-      ? (isManual(ch)
-        ? '<div class="panel">' +
-            '<h2>' + T('inPersonTitle') + '</h2>' +
-            '<p class="mute">' + T('inPersonNote') + '</p>' +
-            '<a class="btn line" href="' + gameFile(ch) + '">' + T('readRules') + '</a>' +
-          '</div>' +
-          '<p class="mute" style="font-size:.82rem;">' + T('ownPage') + '</p>' +
-          '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>'
-        : '<div class="panel">' +
+      ? '<div class="panel">' +
           '<h2>' + (run ? T('yourRunDone') : T('yourRunTitle')) + '</h2>' +
           (run
             ? '<p class="mute">' + T('runDoneNote', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>' +
@@ -553,7 +527,7 @@ function renderPlayer(ch, campaign, player, run, prac){
                 '&official=1">' + T('officialBtn') + '</a>') +
           '</div>' +
           '<p class="mute" style="font-size:.82rem;">' + T('ownPage') + '</p>' +
-          '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>')
+          '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>'
 
       : (run
           ? '<div class="panel"><h2>' + T('closedTitle') + '</h2>' +
