@@ -24,8 +24,10 @@ body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,syste
 
 nav{border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.mark{font-weight:800;letter-spacing:-.02em;text-decoration:none;font-size:1.05rem;color:var(--paper)}
-.mark em{font-style:normal;color:var(--gold)}
+/* The logo is the wordmark now, so it needs an explicit height. */
+.mark{display:block;line-height:0;text-decoration:none}
+.mark img{display:block;height:32px;width:auto}
+@media(max-width:560px){.mark img{height:26px}}
 .navr{display:flex;align-items:center;gap:14px}
 .navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
 .navr a:hover{color:var(--paper)}
