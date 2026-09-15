@@ -59,8 +59,11 @@ nav{
   border-bottom:1px solid var(--line);
 }
 .navin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
-.mark{font-weight:800;letter-spacing:-.02em;font-size:1.06rem;text-decoration:none}
-.mark em{font-style:normal;color:var(--gold)}
+/* The logo is the wordmark now, so it needs an explicit height —
+   without one the image renders at its natural size. */
+.mark{display:block;line-height:0;text-decoration:none}
+.mark img{display:block;height:34px;width:auto}
+@media(max-width:560px){.mark img{height:26px}}
 .navlinks{display:flex;align-items:center;gap:22px;font-size:.92rem}
 .navlinks a{text-decoration:none;color:var(--mute)}
 .navlinks a:hover{color:var(--paper)}
