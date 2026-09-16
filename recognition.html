@@ -22,6 +22,60 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .big-btn{width:100%;max-width:420px;height:68px;border:none;border-radius:20px;background:linear-gradient(135deg,#2DD4BF,#5EEAD4);color:#04121A;font-size:1.2rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(45,212,191,.7);margin-bottom:14px}
 .big-btn:hover{transform:scale(1.03)}
 .big-btn.official{background:linear-gradient(135deg,#22D3EE,#0C7FC4);color:#04121A;box-shadow:0 0 40px rgba(34,211,238,.6)}
+/* ---- the demonstration and the instructions, intro screen only ---- */
+.demo-wrap{position:relative;margin:8px 0 18px}
+.demo-label{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  font-size:.66rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  background:#050A12;border:1px solid rgba(34,211,238,.35);color:#22D3EE;
+  padding:4px 12px;border-radius:999px;white-space:nowrap;z-index:2;transition:color .2s,border-color .2s;
+}
+.demo-label.echo{color:#5EEAD4;border-color:rgba(45,212,191,.5)}
+.demo-label.good{color:#00D9A5;border-color:rgba(0,217,165,.5)}
+.demo-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;
+  width:190px;height:190px;margin:0 auto;
+  background:#0D1826;border:1px solid rgba(34,211,238,.25);border-radius:14px;
+}
+.demo-cell{
+  border-radius:5px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.8rem;color:transparent;transition:all .15s;
+}
+/* the two states the whole game turns on */
+.demo-cell.lit{background:#22D3EE;border-color:#67E8F9;box-shadow:0 0 14px rgba(34,211,238,.6);transform:scale(1.06)}
+.demo-cell.echo{background:#2DD4BF;border-color:#5EEAD4;box-shadow:0 0 14px rgba(45,212,191,.6);transform:scale(1.06)}
+.demo-cell.found{background:#00D9A5;border-color:#5EEAD4;color:#04211A;box-shadow:0 0 16px rgba(0,217,165,.7)}
+.demo-cell.was{border:2px dashed #22D3EE;background:rgba(34,211,238,.14)}
+.demo-grid.pulse{animation:demoPulse .5s ease-out}
+@keyframes demoPulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.55)}60%{box-shadow:0 0 22px 7px rgba(45,212,191,.25)}100%{box-shadow:none}}
+
+.htp{width:100%;max-width:420px;margin:0 0 16px}
+.htp-toggle{
+  display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  padding:12px 16px;border-radius:12px;cursor:pointer;font-family:inherit;
+  background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.25);
+}
+.htp-toggle-text{font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#5EEAD4}
+.htp-arrow{color:#5EEAD4;font-size:.7rem;transition:transform .3s}
+.htp-toggle.open .htp-arrow{transform:rotate(180deg)}
+.htp-body{max-height:0;overflow:hidden;transition:max-height .45s ease-out}
+.htp-body.open{max-height:900px}
+.htp-card{background:#0D1826;border:1px solid #1E3550;border-radius:12px;padding:15px;margin-top:10px;text-align:left}
+.htp-card-title{font-size:.8rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#2DD4BF;margin-bottom:11px}
+.htp-step{display:flex;gap:10px;margin-bottom:9px;align-items:flex-start}
+.htp-step:last-child{margin-bottom:0}
+.htp-step .n{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:#2DD4BF;color:#04121A;font-size:.72rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.htp-step .tx{font-size:.8rem;color:#CFE3F2;line-height:1.5}
+.htp-step .tx b{color:#5EEAD4}
+.htp-tip{background:rgba(34,211,238,.07);border-left:3px solid #22D3EE;padding:10px 12px;border-radius:0 8px 8px 0;margin-top:12px}
+.htp-tip-title{font-size:.6rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#22D3EE;margin-bottom:4px}
+.htp-tip-text{font-size:.75rem;color:#8AA4BD;line-height:1.45}
+
 .name-input{width:100%;max-width:420px;padding:14px;border-radius:14px;border:2px solid rgba(45,212,191,.4);background:rgba(255,255,255,.05);color:#fff;font-family:Arial,sans-serif;font-size:1rem;text-align:center;margin-bottom:14px}
 .name-input:focus{outline:none;border-color:#2DD4BF;box-shadow:0 0 20px rgba(45,212,191,.35)}
 .box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(45,212,191,.5);background:rgba(45,212,191,.1);border-radius:14px;color:#5EEAD4;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px;text-decoration:none;display:flex;align-items:center;justify-content:center}
@@ -106,7 +160,39 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="ob-note" id="obNote">This run counts. Your sponsors pay on the points you score, and you only get one.</div>
   </div>
 
-  <div class="rule-t" id="ruleText"><b>A pattern lights up in gold. Then it comes back in orange — with one cell moved.</b> Tap the one that moved. Every round keeps the pattern and adds one more cell, so it gets harder to spot. One wrong tap ends the run.</div>
+  <!-- A running demonstration, so a student who has never seen this
+       understands it before reading a word. It loops until they start
+       a run, and stops the moment they do. -->
+  <div class="demo-wrap">
+    <div class="demo-label" id="demoLabel">👀 Watch…</div>
+    <div class="demo-grid" id="demoGrid"></div>
+  </div>
+
+  <div class="htp">
+    <button class="htp-toggle" id="htpToggle" onclick="toggleHtp()">
+      <span>📖</span>
+      <span class="htp-toggle-text" id="htpText">How to play</span>
+      <span class="htp-arrow" id="htpArrow">▼</span>
+    </button>
+    <div class="htp-body" id="htpBody">
+      <div class="htp-card">
+        <div class="htp-card-title" id="cObjective">🎯 What to do</div>
+        <div class="htp-step"><span class="n">1</span><span class="tx" id="cs1"></span></div>
+        <div class="htp-step"><span class="n">2</span><span class="tx" id="cs2"></span></div>
+        <div class="htp-step"><span class="n">3</span><span class="tx" id="cs3"></span></div>
+      </div>
+      <div class="htp-card">
+        <div class="htp-card-title" id="cScoring">⭐ How it is scored</div>
+        <div class="htp-step"><span class="n">→</span><span class="tx" id="cp1"></span></div>
+        <div class="htp-step"><span class="n">→</span><span class="tx" id="cp2"></span></div>
+        <div class="htp-step"><span class="n">→</span><span class="tx" id="cp3"></span></div>
+        <div class="htp-tip">
+          <div class="htp-tip-title" id="cTipTitle">💡 Tip</div>
+          <div class="htp-tip-text" id="cTip"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off">
   <button class="big-btn" id="bigStart" onclick="handleStartClick()">▶ START</button>
@@ -180,7 +266,18 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 var STR = {
   en:{
     sub:'Memory Basketball',
-    rule:'<b>A pattern lights up in gold. Then it comes back in orange — with one cell moved.</b> Tap the one that moved. Every round keeps the pattern and adds one more cell, so it gets harder to spot. One wrong tap ends the run.',
+    demoWatch:'👀 Watch the pattern…', demoSpot:'One moved — find it', demoFound:'✅ Found it!',
+    htpText:'How to play',
+    cObjective:'🎯 What to do',
+    cs1:'<b>Watch</b> the pattern light up, and hold it in your head.',
+    cs2:'It comes back in a <b>different colour</b> — with exactly one cell somewhere else.',
+    cs3:'<b>Tap the one that moved.</b> Not where it was — where it went.',
+    cScoring:'⭐ How it is scored',
+    cp1:'The moved cell <b>stays in its new place</b>, and one more cell is added.',
+    cp2:'One wrong tap <b>ends the run</b> — your score is the longest pattern you held.',
+    cp3:'Hold <b>12 rounds</b> and that is <b>78 points</b>. Every round is worth more than the last.',
+    cTipTitle:'💡 Tip',
+    cTip:'Do not try to memorize every cell. Most people do better by noticing the shape the pattern makes, then seeing what breaks it.',
     namePh:'Your name',
     start:'▶ START', startOfficial:'▶ START OFFICIAL RUN', startPractice:'▶ PRACTICE RUN',
     officialKick:'Official Run',
@@ -206,7 +303,18 @@ var STR = {
   },
   es:{
     sub:'Baloncesto de Memoria',
-    rule:'<b>Un patrón se enciende en dorado. Luego vuelve en anaranjado — con una celda movida.</b> Toca la que se movió. Cada ronda mantiene el patrón y añade una celda más, así que cuesta más encontrarla. Un toque equivocado termina la corrida.',
+    demoWatch:'👀 Observa el patrón…', demoSpot:'Una se movió — encuéntrala', demoFound:'✅ ¡La encontraste!',
+    htpText:'Cómo jugar',
+    cObjective:'🎯 Qué hacer',
+    cs1:'<b>Observa</b> el patrón encenderse y guárdalo en tu cabeza.',
+    cs2:'Vuelve en <b>otro color</b> — con exactamente una celda en otro sitio.',
+    cs3:'<b>Toca la que se movió.</b> No donde estaba — donde llegó.',
+    cScoring:'⭐ Cómo se puntúa',
+    cp1:'La celda movida <b>se queda en su nuevo sitio</b>, y se añade una más.',
+    cp2:'Un toque equivocado <b>termina la corrida</b> — tu puntuación es el patrón más largo que aguantaste.',
+    cp3:'Aguanta <b>12 rondas</b> y son <b>78 puntos</b>. Cada ronda vale más que la anterior.',
+    cTipTitle:'💡 Consejo',
+    cTip:'No trates de memorizar cada celda. A la mayoría le va mejor fijándose en la forma que hace el patrón, y luego viendo qué la rompe.',
     namePh:'Tu nombre',
     start:'▶ EMPEZAR', startOfficial:'▶ EMPEZAR CORRIDA OFICIAL', startPractice:'▶ CORRIDA DE PRÁCTICA',
     officialKick:'Corrida Oficial',
@@ -242,9 +350,11 @@ function T(key, vals){
 }
 
 function applyLang(){
+  // the instruction cards
+  ['cObjective','cScoring','cs1','cs2','cs3','cp1','cp2','cp3','cTipTitle','cTip','htpText']
+    .forEach(function(id){ var el=$(id); if(el) el.innerHTML = T(id); });
   document.documentElement.lang = LANG;
   $('introSub').textContent = T('sub');
-  $('ruleText').innerHTML = T('rule');
   $('playerNameInputMain').placeholder = T('namePh');
   $('obKick').textContent = T('officialKick');
   $('lblLevel').textContent = T('lblLevel');
@@ -324,6 +434,101 @@ function toggleLang(){
   .catch(function(){});
 })();
 
+// ══════════════════════════════════════════════════════
+//  THE DEMONSTRATION
+//
+//  Runs on the intro screen only and shares nothing with the game.
+//  It shows the one thing the whole game turns on: a pattern, the
+//  same pattern again with a single cell somewhere else, and the
+//  catch. It stops the moment a run starts.
+// ══════════════════════════════════════════════════════
+var demoCells=[], demoTimers=[], demoOn=false;
+
+function demoClearTimers(){ demoTimers.forEach(clearTimeout); demoTimers=[]; }
+function demoLater(fn, ms){ demoTimers.push(setTimeout(fn, ms)); }
+
+function buildDemo(){
+  var g = $('demoGrid');
+  if (!g) return;
+  g.innerHTML=''; demoCells=[];
+  for (var i=0;i<25;i++){
+    var c=document.createElement('div');
+    c.className='demo-cell';
+    g.appendChild(c); demoCells.push(c);
+  }
+}
+
+function demoPick(n, exclude){
+  var pool=[];
+  for(var i=0;i<25;i++) if((exclude||[]).indexOf(i)===-1) pool.push(i);
+  for(var j=pool.length-1;j>0;j--){
+    var k=Math.floor(Math.random()*(j+1));
+    var t=pool[j]; pool[j]=pool[k]; pool[k]=t;
+  }
+  return pool.slice(0,n);
+}
+
+function demoRound(){
+  if (!demoOn) return;
+
+  var pat = demoPick(4);
+  var movedFrom = pat[Math.floor(Math.random()*pat.length)];
+  var movedTo = demoPick(1, pat)[0];
+  var lbl = $('demoLabel');
+
+  demoCells.forEach(function(c){ c.className='demo-cell'; c.textContent=''; });
+  lbl.textContent = T('demoWatch'); lbl.className='demo-label';
+
+  // the original
+  demoLater(function(){
+    if (!demoOn) return;
+    pat.forEach(function(i){ demoCells[i].classList.add('lit'); });
+  }, 500);
+
+  demoLater(function(){
+    if (!demoOn) return;
+    demoCells.forEach(function(c){ c.className='demo-cell'; });
+  }, 2300);
+
+  // the echo, with one cell somewhere else
+  demoLater(function(){
+    if (!demoOn) return;
+    lbl.textContent = T('demoSpot'); lbl.className='demo-label echo';
+    pat.forEach(function(i){
+      demoCells[i === movedFrom ? movedTo : i].classList.add('echo');
+    });
+  }, 2900);
+
+  // the catch, with the old position marked so the change is obvious
+  demoLater(function(){
+    if (!demoOn) return;
+    demoCells[movedTo].className='demo-cell found';
+    demoCells[movedTo].textContent='✓';
+    demoCells[movedFrom].className='demo-cell was';
+    lbl.textContent = T('demoFound'); lbl.className='demo-label good';
+    $('demoGrid').classList.add('pulse');
+    setTimeout(function(){ var g=$('demoGrid'); if(g) g.classList.remove('pulse'); }, 500);
+  }, 4900);
+
+  demoLater(demoRound, 7200);
+}
+
+function startDemo(){
+  if (demoOn) return;
+  demoOn = true;
+  buildDemo();
+  demoRound();
+}
+function stopDemo(){
+  demoOn = false;
+  demoClearTimers();
+}
+
+function toggleHtp(){
+  $('htpToggle').classList.toggle('open');
+  $('htpBody').classList.toggle('open');
+}
+
 // ---- the game ----
 var GRID = 25;
 var START_LENGTH = 2;
@@ -391,6 +596,7 @@ function blip(freq){
 
 function startRun(){
   if(phase==='running')return;
+  stopDemo();
   ensureAudio();
   if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
   try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); } }catch(e){}
@@ -688,10 +894,12 @@ $('againBtn').addEventListener('click',function(){
   $('screen-end').style.display='none';
   $('screen-intro').style.display='flex';
   loadBest();
+  startDemo();
 });
 
 applyLang();
 loadBest();
+startDemo();
 </script>
 </body>
 </html>
