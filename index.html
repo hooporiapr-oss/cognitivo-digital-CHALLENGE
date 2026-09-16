@@ -226,6 +226,8 @@ var STR = {
     rosterTitle:'The students', rosterNote:'Tap a student to pledge to them directly.',
     noPlayers:'No students yet.', notYet:'not yet', practisingL:'practising · L', pts:'pts',
     officialPoints:'Official points', levelHeld:'Level held',
+    compBest:'Competition round', compScored:'Which scored',
+    compLine:'{N} reached round {L} in the school competition — {P} points. The official run is still to come, and this is what a pledge would have been worth.',
     practiceBest:'Practice best', wouldScore:'Would score',
     runDone:'Official run complete — {L} levels held, {P} points.',
     practisingNow:'Practising now. {N} has reached level {L} in practice, which would be {P} points. The official run is still to come.',
@@ -293,6 +295,8 @@ var STR = {
     rosterTitle:'Los estudiantes', rosterNote:'Toca a un estudiante para prometerle directamente.',
     noPlayers:'Todavía no hay estudiantes.', notYet:'aún no', practisingL:'practicando · N', pts:'pts',
     officialPoints:'Puntos oficiales', levelHeld:'Nivel aguantado',
+    compBest:'Ronda en competencia', compScored:'Que anot\u00f3',
+    compLine:'{N} lleg\u00f3 a la ronda {L} en la competencia escolar — {P} puntos. La corrida oficial est\u00e1 por venir, y esto es lo que habr\u00eda valido una promesa.',
     practiceBest:'Mejor práctica', wouldScore:'Anotaría',
     runDone:'Corrida oficial completa — {L} niveles aguantados, {P} puntos.',
     practisingNow:'Practicando ahora. {N} ha llegado al nivel {L} en práctica, lo que serían {P} puntos. La corrida oficial está por venir.',
@@ -553,7 +557,7 @@ function renderTeam(ch, campaign, players, runs, practice){
 }
 
 // ---------- player page ----------
-function renderPlayer(ch, campaign, player, run, prac){
+function renderPlayer(ch, campaign, player, run, prac, comp){
   PLEDGE_CH = ch;
   var isMe = false;
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
@@ -569,15 +573,20 @@ function renderPlayer(ch, campaign, player, run, prac){
       (run
         ? '<div class="stat gold"><div class="stat-label">' + T('officialPoints') + '</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
           '<div class="stat"><div class="stat-label">' + T('levelHeld') + '</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
-        : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
-          '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>') +
+        : (comp
+            ? '<div class="stat purple"><div class="stat-label">' + T('compBest') + '</div><div class="stat-val">' + esc(comp.best_level) + '</div></div>' +
+              '<div class="stat gold"><div class="stat-label">' + T('compScored') + '</div><div class="stat-val">' + pointsFor(comp.best_level) + '</div></div>'
+            : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
+              '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>')) +
     '</div>' +
 
     (run
       ? '<p class="mute">' + T('runDone', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>'
-      : (prac
-          ? '<p class="mute">' + T('practisingNow', { N: esc(player.name), L: esc(prac.best_level), P: pointsFor(prac.best_level) }) + '</p>'
-          : '<p class="mute">' + T('notPractised', { N: esc(player.name) }) + '</p>')) +
+      : (comp
+          ? '<p class="mute">' + T('compLine', { N: esc(player.name), L: esc(comp.best_level), P: pointsFor(comp.best_level) }) + '</p>'
+          : (prac
+              ? '<p class="mute">' + T('practisingNow', { N: esc(player.name), L: esc(prac.best_level), P: pointsFor(prac.best_level) }) + '</p>'
+              : '<p class="mute">' + T('notPractised', { N: esc(player.name) }) + '</p>'))) +
 
     deadlineHtml(ch) +
 
@@ -887,12 +896,19 @@ if (TRYOUT){
         get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=name,logo_url'),
         get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name,grade&order=name.asc'),
         get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
-        get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs')
+        get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs'),
+        // A score from an earlier competition on this campaign. It is
+        // a real result rather than a practice number, so a sponsor
+        // can pledge against something that actually happened.
+        get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
+            '&game=eq.' + encodeURIComponent(ch.game || 'fortress') +
+            '&select=player_id,best_level')
       ]).then(function(res){
         var campaign = res[0] && res[0][0];
         var players = res[1] || [];
         var runs = res[2] || [];
         var practice = res[3] || [];
+        var comp = res[4] || [];
 
         if (!PLAYER){
           renderTeam(ch, campaign, players, runs, practice);
@@ -904,7 +920,8 @@ if (TRYOUT){
 
         var run = runs.filter(function(r){ return r.player_id === PLAYER; })[0];
         var prac = practice.filter(function(r){ return r.player_id === PLAYER; })[0];
-        renderPlayer(ch, campaign, player, run, prac);
+        var best = comp.filter(function(r){ return r.player_id === PLAYER; })[0];
+        renderPlayer(ch, campaign, player, run, prac, best);
       });
     })
     .catch(function(e){
