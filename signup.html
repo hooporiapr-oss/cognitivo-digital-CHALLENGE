@@ -3,59 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign up your school — Cognitivo Digital</title>
+<title>Run a Cash Rack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  /* Matching the logo, as on the rest of the site. */
-  --ink:#050A12;
-  --panel:#0D1826;
-  --line:#1E3550;
-  --gold:#22D3EE;
-  --leather:#38BDF8;
-  --paper:#EAF4FB;
-  --mute:#8AA4BD;
-}
+:root{--ink:#160E1C;--panel:#1D1426;--line:#3A2647;--gold:#E8B23A;--leather:#C9601F;--paper:#F7F3EF;--mute:#B7A8C2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{width:min(1060px,92vw);margin:0 auto}
 
 nav{border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-/* The logo is the wordmark now, so it needs an explicit height. */
-.mark{display:block;line-height:0;text-decoration:none}
-.mark img{display:block;height:32px;width:auto}
-@media(max-width:560px){.mark img{height:26px}}
+.mark{font-weight:800;letter-spacing:-.01em;text-decoration:none;color:var(--paper);font-size:1.05rem}
+.mark em{font-style:normal;color:var(--gold)}
 .navr{display:flex;align-items:center;gap:14px}
 .navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
 .navr a:hover{color:var(--paper)}
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 
-/* ---- hero ---- */
 header{padding:52px 0 34px;border-bottom:1px solid var(--line)}
-h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .35em;max-width:16ch}
-.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#CFE3F2;max-width:58ch;margin:0}
+h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .35em;max-width:18ch}
+.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#E4DCEA;max-width:58ch;margin:0}
 
-/* ---- the four steps, across the page rather than down it ---- */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:34px 0 40px}
 @media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr);gap:22px}}
 @media(max-width:520px){.steps{grid-template-columns:1fr;gap:18px}}
 .step{position:relative;padding-top:16px;border-top:2px solid var(--line)}
-.step .n{
-  position:absolute;top:-13px;left:0;
-  width:26px;height:26px;border-radius:50%;
+.step .n{position:absolute;top:-13px;left:0;width:26px;height:26px;border-radius:50%;
   background:var(--ink);border:2px solid var(--gold);color:var(--gold);
-  font-size:.78rem;font-weight:800;display:grid;place-content:center;
-}
+  font-size:.78rem;font-weight:800;display:grid;place-content:center}
 .step b{display:block;font-size:1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
 .step span{display:block;color:var(--mute);font-size:.9rem;line-height:1.5}
 
-/* ---- form ---- */
 .formwrap{padding:8px 0 70px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3vw,32px)}
-
 .sec{padding:26px 0;border-top:1px solid var(--line)}
 .sec:first-of-type{padding-top:0;border-top:none}
 .sec h2{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;margin:0 0 3px}
@@ -66,53 +48,48 @@ h1{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.035em;lin
 .full{grid-column:1/-1}
 
 label{display:block;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
-input,select,textarea{
-  width:100%;padding:13px 14px;border-radius:10px;
-  border:1px solid #ffffff1f;background:#08111C;color:#fff;
-  font-family:inherit;font-size:1rem;
-}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:10px;
+  border:1px solid #ffffff1f;background:#120C18;color:#fff;font-family:inherit;font-size:1rem}
 textarea{height:88px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 .hint{font-size:.8rem;color:var(--mute);margin-top:6px}
 
-.attest{display:flex;gap:13px;align-items:flex-start;margin-top:8px;padding:16px 18px;border-radius:14px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.06)}
+.attest{display:flex;gap:13px;align-items:flex-start;margin-top:8px;padding:16px 18px;border-radius:14px;
+  border:1px solid rgba(232,178,58,.3);background:rgba(232,178,58,.06)}
 .attest input{width:22px;height:22px;flex-shrink:0;margin-top:2px;accent-color:var(--gold)}
-.attest span{font-size:.92rem;color:#DCEEFA;line-height:1.5}
+.attest span{font-size:.92rem;color:#EFE6D6;line-height:1.5}
 
 .send{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line);margin-top:26px}
-.btn{
-  flex:1 1 240px;padding:16px 22px;border:none;border-radius:12px;
-  font-family:inherit;font-size:1rem;font-weight:800;letter-spacing:.04em;
-  text-transform:uppercase;cursor:pointer;background:var(--gold);color:#04121A;
-}
+.btn{flex:1 1 240px;padding:16px 22px;border:none;border-radius:12px;font-family:inherit;font-size:1rem;
+  font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;background:var(--gold);color:#20140B}
 .btn:disabled{opacity:.55;cursor:default}
 .msg{flex:1 1 240px;font-size:.93rem;font-weight:600;min-height:22px}
 
-footer{border-top:1px solid var(--line);padding:24px 0 46px;text-align:center;color:var(--mute);font-size:.85rem}
+footer{border-top:1px solid var(--line);padding:24px 0 50px;text-align:center;color:var(--mute);font-size:.85rem}
 footer a{color:var(--mute)}
 </style>
 </head>
 <body>
 
 <nav><div class="wrap navin">
-  <a class="mark" href="teams.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <a class="mark" href="index.html">CASH <em>RACK</em></a>
   <div class="navr">
-    <a href="teams.html" data-t="navBack">How it works</a>
+    <a href="index.html" data-t="navRules">The rules</a>
     <button id="lang" onclick="flip()">ES</button>
   </div>
 </div></nav>
 
 <header><div class="wrap">
-  <h1 data-t="h1">Sign up your school</h1>
-  <p class="lede" data-t="lede">Tell us about your program. We build the whole thing and send it to you to look at — nothing goes live until you say so, and every dollar pledged goes to the program.</p>
+  <h1 data-t="h1">Run a Cash Rack with your team</h1>
+  <p class="lede" data-t="lede">Your players find sponsors who pledge per point. Sponsors are invoiced for their pledge against their player's score. Every dollar collected is your program's.</p>
 </div></header>
 
 <div class="wrap">
   <div class="steps">
-    <div class="step"><span class="n">1</span><b data-t="w1h">We call you</b><span data-t="w1p">Usually within a day, to work out which fundraiser fits your program.</span></div>
-    <div class="step"><span class="n">2</span><b data-t="w2h">We set it up</b><span data-t="w2p">Your campaign, your divisions, and a link for every student.</span></div>
-    <div class="step"><span class="n">3</span><b data-t="w3h">Students share their links</b><span data-t="w3p">They find their own sponsors. You watch it come in from your own dashboard.</span></div>
-    <div class="step"><span class="n">4</span><b data-t="w4h">The program gets paid</b><span data-t="w4p">Every dollar pledged, with a record you can see.</span></div>
+    <div class="step"><span class="n">1</span><b data-t="w1h">We call you</b><span data-t="w1p">Usually within a day, to set a date and go over how it runs.</span></div>
+    <div class="step"><span class="n">2</span><b data-t="w2h">Your players find sponsors</b><span data-t="w2p">Each player shares their own link. Sponsors pledge per point, and nothing is charged when they do.</span></div>
+    <div class="step"><span class="n">3</span><b data-t="w3h">You shoot</b><span data-t="w3p">Your scorekeeper enters the numbers on a phone or tablet as players finish.</span></div>
+    <div class="step"><span class="n">4</span><b data-t="w4h">Sponsors are invoiced</b><span data-t="w4p">Each sponsor is billed their pledge plus a 10% platform fee. Every dollar collected is your program's.</span></div>
   </div>
 </div>
 
@@ -120,19 +97,20 @@ footer a{color:var(--mute)}
   <div class="panel">
 
     <div class="sec">
-      <h2 data-t="formTitle">Your school</h2>
+      <h2 data-t="formTitle">Your program</h2>
       <div class="grid">
         <div class="full">
-          <label data-t="lProgram">School or program name</label>
+          <label data-t="lProgram">Program or team name</label>
           <input type="text" id="programName" maxlength="80">
         </div>
         <div class="full">
           <label data-t="lType">What kind of organization</label>
           <select id="orgType">
             <option value="" data-t="oPick">Choose one…</option>
-            <option value="school" data-t="oSchool">Private or charter school</option>
-            <option value="public" data-t="oPublic">Public school</option>
-            <option value="booster" data-t="oBooster">Parents' association or booster club</option>
+            <option value="school" data-t="oSchool">School team</option>
+            <option value="booster" data-t="oBooster">Booster club or parents' association</option>
+            <option value="league" data-t="oLeague">Rec league or youth league</option>
+            <option value="club" data-t="oClub">Travel or AAU club</option>
             <option value="nonprofit" data-t="oNonprofit">Registered non-profit</option>
             <option value="other" data-t="oOther">Something else</option>
           </select>
@@ -142,12 +120,27 @@ footer a{color:var(--mute)}
           <input type="text" id="town" maxlength="60">
         </div>
         <div>
-          <label data-t="lPlayers">How many students</label>
+          <label data-t="lPlayers">How many players will shoot</label>
           <input type="number" id="players" min="1" max="500">
         </div>
         <div class="full">
           <label data-t="lRaising">What are you raising for</label>
-          <input type="text" id="raisingFor" maxlength="120" data-tph="phRaising" placeholder="Field trip, equipment, programs, travel…">
+          <input type="text" id="raisingFor" maxlength="120" data-tph="phRaising" placeholder="Tournament entry, uniforms, travel…">
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 data-t="eventTitle">The event</h2>
+      <p data-t="eventNote">Rough answers are fine — we work the details out on the call.</p>
+      <div class="grid">
+        <div>
+          <label data-t="lWhen">When you'd like to run it</label>
+          <input type="text" id="whenEvent" maxlength="80" data-tph="phWhen" placeholder="A date, a month, or 'not sure yet'">
+        </div>
+        <div>
+          <label data-t="lVenue">Where</label>
+          <input type="text" id="venue" maxlength="80" data-tph="phVenue" placeholder="Your gym, a school, a rec center…">
         </div>
       </div>
     </div>
@@ -176,12 +169,12 @@ footer a{color:var(--mute)}
       <div class="grid">
         <div>
           <label data-t="lPayee">Who should be paid</label>
-          <input type="text" id="payeeName" maxlength="80" data-tph="phPayee" placeholder="e.g. Paradiso College Prep">
+          <input type="text" id="payeeName" maxlength="80" data-tph="phPayee" placeholder="e.g. Bayamón Warriors Booster Club">
         </div>
         <div>
           <label data-t="lEin">EIN or registration number</label>
           <input type="text" id="ein" maxlength="40" data-tph="phEin" placeholder="Optional">
-          <div class="hint" data-t="einHint">If your school has one, it helps at payout time. Leave it blank if not.</div>
+          <div class="hint" data-t="einHint">Most school teams and booster clubs don't have one. Leave it blank.</div>
         </div>
         <div class="full">
           <label data-t="lNotes">Anything else</label>
@@ -190,13 +183,10 @@ footer a{color:var(--mute)}
       </div>
     </div>
 
-    <!-- The requirement, stated plainly. The database refuses an
-         application where this is not ticked, so it is a real
-         condition rather than a formality on the page. -->
     <div class="sec">
       <div class="attest">
         <input type="checkbox" id="attested">
-        <span data-t="attest">I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the school.</span>
+        <span data-t="attest">I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the team.</span>
       </div>
     </div>
 
@@ -209,11 +199,10 @@ footer a{color:var(--mute)}
 </div>
 
 <footer><div class="wrap">
-  <span data-t="already">Already running a campaign? Your sign-in link was emailed to you.</span><br><br>
+  <span data-t="footFree">Free to run.</span>
+  <a href="https://hoops.money/teams.html" data-t="footBrand">Basketball Money</a> ·
   Gostar Digital LLC — Puerto Rico ·
-  <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a> ·
-  <a href="terms.html" data-t="terms">Terms</a> ·
-  <a href="privacy.html" data-t="privacy">Privacy</a>
+  <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a>
 </div></footer>
 
 <script>
@@ -223,33 +212,33 @@ var SERVER='https://basketball-money-payments.onrender.com';
 
 var T = {
   en:{
-    navBack:'How it works',
-    h1:'Sign up your school',
-    lede:'Tell us about your program. We build the whole thing and send it to you to look at — nothing goes live until you say so, and every dollar pledged goes to the program.',
-    w1h:'We call you', w1p:'Usually within a day, to work out which fundraiser fits your program.',
-    w2h:'We set it up', w2p:'Your campaign, your divisions, and a link for every student.',
-    w3h:'Students share their links', w3p:'They find their own sponsors. You watch it come in from your own dashboard.',
-    w4h:'The program gets paid', w4p:'Every dollar pledged, with a record you can see.',
-    formTitle:'Your school',
-    lProgram:'School or program name',
-    lType:'What kind of organization',
-    oPick:'Choose one…', oSchool:'Private or charter school', oPublic:'Public school',
-    oBooster:"Parents' association or booster club",
+    navRules:'The rules',
+    h1:'Run a Cash Rack with your team',
+    lede:"Your players find sponsors who pledge per point. Sponsors are invoiced for their pledge against their player's score. Every dollar collected is your program's.",
+    w1h:'We call you', w1p:'Usually within a day, to set a date and go over how it runs.',
+    w2h:'Your players find sponsors', w2p:'Each player shares their own link. Sponsors pledge per point, and nothing is charged when they do.',
+    w3h:'You shoot', w3p:'Your scorekeeper enters the numbers on a phone or tablet as players finish.',
+    w4h:'Sponsors are invoiced', w4p:"Each sponsor is billed their pledge plus a 10% platform fee. Every dollar collected is your program's.",
+    formTitle:'Your program',
+    lProgram:'Program or team name', lType:'What kind of organization',
+    oPick:'Choose one…', oSchool:'School team', oBooster:"Booster club or parents' association",
+    oLeague:'Rec league or youth league', oClub:'Travel or AAU club',
     oNonprofit:'Registered non-profit', oOther:'Something else',
-    lTown:'Town', lPlayers:'How many students',
-    lRaising:'What are you raising for', phRaising:'Field trip, equipment, programs, travel…',
-    contactTitle:'Who we talk to',
-    lName:'Your name', lPhone:'Phone', lEmail:'Email',
+    lTown:'Town', lPlayers:'How many players will shoot',
+    lRaising:'What are you raising for', phRaising:'Tournament entry, uniforms, travel…',
+    eventTitle:'The event', eventNote:'Rough answers are fine — we work the details out on the call.',
+    lWhen:"When you'd like to run it", phWhen:"A date, a month, or 'not sure yet'",
+    lVenue:'Where', phVenue:'Your gym, a school, a rec center…',
+    contactTitle:'Who we talk to', lName:'Your name', lPhone:'Phone', lEmail:'Email',
     payTitle:'Getting paid',
     payNote:'We pay the program, not an individual. This is who the money goes to.',
-    lPayee:'Who should be paid', phPayee:'e.g. Paradiso College Prep',
+    lPayee:'Who should be paid', phPayee:'e.g. Bayamón Warriors Booster Club',
     lEin:'EIN or registration number', phEin:'Optional',
-    einHint:'If your school has one, it helps at payout time. Leave it blank if not.',
+    einHint:"Most school teams and booster clubs don't have one. Leave it blank.",
     lNotes:'Anything else',
-    attest:'I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the school.',
+    attest:'I confirm this is a non-profit program — nobody takes a profit from it, and everything we raise goes back into the team.',
     submit:'Send this in',
-    already:'Already running a campaign? Your sign-in link was emailed to you.',
-    terms:'Terms', privacy:'Privacy',
+    footFree:'Free to run.', footBrand:'Basketball Money',
     needProgram:'Please enter your program name.',
     needType:'Please choose what kind of organization this is.',
     needName:'Please enter your name.',
@@ -261,33 +250,33 @@ var T = {
     failed:'Could not send that — please try again, or email us.'
   },
   es:{
-    navBack:'Cómo funciona',
-    h1:'Inscribe tu escuela',
-    lede:'Cuéntanos de tu programa. Nosotros armamos todo y te lo mandamos para que lo veas — nada sale al aire hasta que tú lo digas, y cada dólar prometido va al programa.',
-    w1h:'Te llamamos', w1p:'Normalmente en un día, para ver cuál recaudación le sirve a tu programa.',
-    w2h:'Lo montamos', w2p:'Tu campaña, tus divisiones y un enlace para cada estudiante.',
-    w3h:'Los estudiantes comparten', w3p:'Ellos consiguen sus propios padrinos. Tú lo ves entrar desde tu propio panel.',
-    w4h:'El programa cobra', w4p:'Cada dólar prometido, con un registro que puedes ver.',
-    formTitle:'Tu escuela',
-    lProgram:'Nombre de la escuela o programa',
-    lType:'Qué tipo de organización',
-    oPick:'Escoge una…', oSchool:'Escuela privada o chárter', oPublic:'Escuela pública',
-    oBooster:'Asociación de padres',
+    navRules:'Las reglas',
+    h1:'Corre un Cash Rack con tu equipo',
+    lede:'Tus jugadores consiguen padrinos que prometen por punto. A los padrinos se les factura su promesa según la puntuación de su jugador. Cada dólar cobrado es de tu programa.',
+    w1h:'Te llamamos', w1p:'Normalmente en un día, para fijar fecha y repasar cómo se corre.',
+    w2h:'Tus jugadores consiguen padrinos', w2p:'Cada jugador comparte su propio enlace. Los padrinos prometen por punto, y no se cobra nada al hacerlo.',
+    w3h:'Tiran', w3p:'Tu anotador entra los números en un celular o tableta según terminan.',
+    w4h:'Se factura a los padrinos', w4p:'A cada padrino se le cobra su promesa más un cargo de plataforma de 10%. Cada dólar cobrado es de tu programa.',
+    formTitle:'Tu programa',
+    lProgram:'Nombre del programa o equipo', lType:'Qué tipo de organización',
+    oPick:'Escoge una…', oSchool:'Equipo escolar', oBooster:'Club de padres o asociación',
+    oLeague:'Liga recreativa o juvenil', oClub:'Club de viaje o AAU',
     oNonprofit:'Organización sin fines de lucro registrada', oOther:'Otra cosa',
-    lTown:'Pueblo', lPlayers:'Cuántos estudiantes',
-    lRaising:'Para qué están recaudando', phRaising:'Excursión, equipo, programas, viajes…',
-    contactTitle:'Con quién hablamos',
-    lName:'Tu nombre', lPhone:'Teléfono', lEmail:'Correo',
+    lTown:'Pueblo', lPlayers:'Cuántos jugadores van a tirar',
+    lRaising:'Para qué están recaudando', phRaising:'Inscripción a torneo, uniformes, viajes…',
+    eventTitle:'El evento', eventNote:'Respuestas aproximadas están bien — los detalles los vemos en la llamada.',
+    lWhen:'Cuándo lo quieres correr', phWhen:"Una fecha, un mes, o 'todavía no sé'",
+    lVenue:'Dónde', phVenue:'Tu cancha, una escuela, un centro recreativo…',
+    contactTitle:'Con quién hablamos', lName:'Tu nombre', lPhone:'Teléfono', lEmail:'Correo',
     payTitle:'El pago',
     payNote:'Le pagamos al programa, no a una persona. Este es quien recibe el dinero.',
-    lPayee:'A quién se le debe pagar', phPayee:'ej. Paradiso College Prep',
+    lPayee:'A quién se le debe pagar', phPayee:'ej. Club de Padres Warriors de Bayamón',
     lEin:'EIN o número de registro', phEin:'Opcional',
-    einHint:'Si tu escuela tiene uno, ayuda al momento del pago. Déjalo en blanco si no.',
+    einHint:'La mayoría de los equipos escolares y clubes de padres no tienen uno. Déjalo en blanco.',
     lNotes:'Algo más',
-    attest:'Confirmo que este es un programa sin fines de lucro — nadie saca ganancia de él, y todo lo que recaudamos vuelve a la escuela.',
+    attest:'Confirmo que este es un programa sin fines de lucro — nadie saca ganancia de él, y todo lo que recaudamos vuelve al equipo.',
     submit:'Enviar',
-    already:'¿Ya tienes una campaña? Tu enlace de acceso te llegó por correo.',
-    terms:'Términos', privacy:'Privacidad',
+    footFree:'Gratis para correrlo.', footBrand:'Basketball Money',
     needProgram:'Por favor entra el nombre de tu programa.',
     needType:'Por favor escoge qué tipo de organización es.',
     needName:'Por favor entra tu nombre.',
@@ -353,6 +342,14 @@ document.getElementById('submit').addEventListener('click', function(){
         return v.toString(16);
       });
 
+  // The event details go in the notes, so this form writes to the
+  // same table as every other application — one inbox, one place to
+  // look, rather than a second list to remember.
+  var extra = [];
+  if (val('whenEvent')) extra.push('When: ' + val('whenEvent'));
+  if (val('venue')) extra.push('Where: ' + val('venue'));
+  if (val('notes')) extra.push(val('notes'));
+
   fetch(SB_URL + '/rest/v1/program_applications', {
     method: 'POST',
     headers: {
@@ -362,9 +359,6 @@ document.getElementById('submit').addEventListener('click', function(){
       'Prefer': 'return=minimal'
     },
     body: JSON.stringify({
-      // The id is made here rather than read back afterwards —
-      // applications are admin-only to read, so asking Supabase to
-      // return the saved row is refused, as it should be.
       id: newId,
       program_name: val('programName'),
       org_type: val('orgType'),
@@ -373,19 +367,16 @@ document.getElementById('submit').addEventListener('click', function(){
       contact_phone: val('contactPhone') || null,
       town: val('town') || null,
       players: parseInt(val('players'), 10) || null,
-      raising_for: val('raisingFor') || null,
+      raising_for: 'CASH RACK — ' + (val('raisingFor') || '—'),
       payee_name: val('payeeName'),
       ein: val('ein') || null,
-      notes: val('notes') || null,
+      notes: extra.join(' · ') || null,
       attested: true
     })
   })
   .then(function(r){
     if (!r.ok) throw new Error('save failed');
 
-    // The application is already saved. Telling the office about it
-    // is a separate, best-effort step — if the alert fails, nothing
-    // is lost and it is still sitting in the table.
     fetch(SERVER + '/notify-application', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
