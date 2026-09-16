@@ -293,6 +293,8 @@ var STR = {
     statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
+    tryoutAlready:'You have already used your run at this game.',
+    confirmOnce:'One attempt only — whatever you score is your score. Ready?',
     tryoutFailed:'Could not save that to the tryout — try again.',
     recording:'Recording your official run…',
     recorded:'✓ Official run recorded — {P} points.',
@@ -330,6 +332,8 @@ var STR = {
     statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
+    tryoutAlready:'Ya usaste tu corrida en este juego.',
+    confirmOnce:'Un solo intento — lo que anotes es tu puntuación. ¿Listo?',
     tryoutFailed:'No se pudo guardar en la prueba — intenta otra vez.',
     recording:'Guardando tu corrida oficial…',
     recorded:'✓ Corrida oficial guardada — {P} puntos.',
@@ -411,6 +415,9 @@ var RUN_KEY = params.get('k');
 // is kept per player per game on the campaign rather than on any
 // challenge. Nothing official, no run key.
 var TRYOUT = params.get('tryout');
+// A one-run competition: the first score stands, and the game says so
+// rather than quietly keeping the better of two.
+var TRYOUT_ONCE = params.get('once') === '1';
 var GAME = 'fortress';
 // An official run needs the player's own run key. Without it this is
 // practice, however the link was edited.
@@ -437,6 +444,13 @@ function recordTryout(finalLevel, status){
   .then(function(rows){
     if (rows && rows.length){
       var row = rows[0];
+      if (TRYOUT_ONCE){
+        // A score already exists and only one attempt is allowed, so
+        // nothing is written — the first run is the result.
+        status.style.color = '#ffd35a';
+        status.textContent = T('tryoutAlready');
+        return;
+      }
       return fetch(base + filter, { method:'PATCH', headers:headers, body:JSON.stringify({
         best_level: Math.max(row.best_level || 0, finalLevel),
         runs: (row.runs || 0) + 1,
@@ -1043,6 +1057,7 @@ function loadBest(){
 function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
 function handleStartClick(){
+  if (TRYOUT_ONCE && !confirm(T('confirmOnce'))) return;
   if(IS_OFFICIAL){
     if(!confirm(T('confirmOfficial'))) return;
     startDrill();
