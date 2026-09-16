@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How the scoring works — Cognitivo Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#050A12;--panel:#0D1826;--line:#1E3550;--gold:#22D3EE;--leather:#38BDF8;--paper:#EAF4FB;--mute:#8AA4BD}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{width:min(940px,92vw);margin:0 auto}
+
+nav{border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.mark{display:block;line-height:0;text-decoration:none}
+.mark img{display:block;height:34px;width:auto}
+@media(max-width:560px){.mark img{height:26px}}
+.navr{display:flex;align-items:center;gap:14px}
+.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
+.navr a:hover{color:var(--paper)}
+#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+
+header{padding:54px 0 32px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(2.1rem,6vw,3.2rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .35em;max-width:18ch}
+.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#CFE3F2;max-width:60ch;margin:0}
+
+section{padding:38px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+h2{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:0 0 .5em}
+h3{font-size:1rem;font-weight:800;margin:0 0 .3em}
+p{margin:0 0 1em;color:#CFE3F2;max-width:62ch}
+.mute{color:var(--mute)}
+
+/* the rule itself, stated once and plainly */
+.rule{background:var(--panel);border:1px solid rgba(34,211,238,.3);border-radius:18px;padding:clamp(20px,3vw,30px);margin:22px 0}
+.rule .big{font-size:clamp(1.3rem,4vw,1.9rem);font-weight:800;letter-spacing:-.02em;color:var(--gold);margin:0 0 10px}
+.rule p{margin:0;max-width:58ch}
+
+/* the curve, drawn from the same numbers the platform uses */
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,26px);margin:22px 0}
+.chart svg{display:block;width:100%;height:auto}
+.chartnote{color:var(--mute);font-size:.88rem;margin:12px 0 0}
+
+/* the calculator */
+.calc{background:var(--panel);border:1px solid rgba(34,211,238,.3);border-radius:18px;padding:clamp(20px,3vw,30px);margin:22px 0}
+.crow{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.crow{grid-template-columns:1fr}}
+label{display:block;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.val{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.val small{font-size:.8rem;font-weight:600;color:var(--mute);letter-spacing:0}
+.out{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+@media(max-width:560px){.out{grid-template-columns:1fr}}
+.out div{background:#08111C;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+.out b{display:block;font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.out .hi b{color:var(--gold)}
+.out span{display:block;color:var(--mute);font-size:.82rem;margin-top:5px}
+.gain{margin:18px 0 0;padding:14px 16px;border-radius:12px;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.25);color:var(--paper);font-size:.95rem}
+.gain b{color:var(--gold)}
+
+/* the comparison table */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95rem}
+th{text-align:left;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding:0 12px 10px 0}
+td{padding:11px 12px 11px 0;border-top:1px solid var(--line)}
+td:last-child,th:last-child{text-align:right;padding-right:0}
+tr.hi td{color:var(--gold);font-weight:800}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.point{padding-top:16px;border-top:2px solid var(--line)}
+.point b{display:block;font-size:1.02rem;margin-bottom:5px}
+.point span{color:var(--mute);font-size:.93rem;line-height:1.55;display:block}
+
+.cta{display:inline-flex;align-items:center;justify-content:center;padding:15px 26px;border-radius:12px;background:var(--gold);color:#04121A;font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;margin-top:8px}
+
+footer{border-top:1px solid var(--line);padding:24px 0 50px;text-align:center;color:var(--mute);font-size:.85rem}
+footer a{color:var(--mute)}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap navin">
+  <a class="mark" href="teams.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <div class="navr">
+    <a href="index.html" data-t="navPlay">Play</a>
+    <a href="teams.html" data-t="navHow">How it works</a>
+    <button id="lang" onclick="flip()">ES</button>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <h1 data-t="h1">One number, and it can't be argued with.</h1>
+  <p class="lede" data-t="lede">Every challenge we run produces a single score, counted by software rather than by a person with a clipboard. Here is exactly how that number is built, why it rewards the students who push hardest, and what it means for what a school raises.</p>
+</div></header>
+
+<div class="wrap">
+
+  <section>
+    <h2 data-t="h2rule">The rule</h2>
+    <div class="rule">
+      <p class="big" data-t="ruleBig">Reach round 12 and you have scored 78 points.</p>
+      <p data-t="ruleP">A challenge is a chain that grows by one every round. Round one is a single item. Round two is two. By the time a student holds a chain of twelve, they have correctly recalled 1 + 2 + 3 all the way to 12 — seventy-eight separate acts of memory, in one unbroken run.</p>
+    </div>
+    <p data-t="ruleP2">The score is not a made-up number attached to a level. It is the actual count of what the student did. That is why it holds up: a parent can be told precisely what their pledge is paying for.</p>
+  </section>
+
+  <section>
+    <h2 data-t="h2curve">Every round is worth more than the last</h2>
+    <p data-t="curveP">This is the part that changes how students behave. Because each round adds one more item to the chain, the points a round is worth go up as the run goes on. The tenth round is worth ten. The twentieth is worth twenty.</p>
+
+    <div class="chart">
+      <svg viewBox="0 0 800 320" role="img" aria-label="Points scored at each round, rising steeply">
+        <defs>
+          <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(34,211,238,.35)"/>
+            <stop offset="100%" stop-color="rgba(34,211,238,0)"/>
+          </linearGradient>
+        </defs>
+        <g id="grid"></g>
+        <path id="area" fill="url(#fill)"/>
+        <path id="curve" fill="none" stroke="#22D3EE" stroke-width="3" stroke-linejoin="round"/>
+        <g id="dots"></g>
+        <g id="labels"></g>
+      </svg>
+      <p class="chartnote" data-t="chartNote">Total points at each round. The line is not straight — that is the whole point.</p>
+    </div>
+
+    <p data-t="curveP2">A student who improves from ten rounds to twelve has not improved by twenty percent. They have gone from 55 points to 78 — a forty percent jump in what they raise. The effort at the edge of what they can hold is worth the most, which is exactly where you want a student working.</p>
+  </section>
+
+  <section>
+    <h2 data-t="h2calc">What that means in money</h2>
+    <p data-t="calcP">Move the sliders. This is the same arithmetic the platform runs when it invoices a sponsor.</p>
+
+    <div class="calc">
+      <div class="crow">
+        <div>
+          <label data-t="lRounds">Rounds held</label>
+          <div class="val"><span id="vRounds">12</span> <small data-t="roundsWord">rounds</small></div>
+          <input type="range" id="rounds" min="3" max="20" value="12">
+        </div>
+        <div>
+          <label data-t="lRate">Pledged per point</label>
+          <div class="val">$<span id="vRate">0.25</span> <small data-t="perPoint">per point</small></div>
+          <input type="range" id="rate" min="5" max="100" step="5" value="25">
+        </div>
+      </div>
+
+      <div class="out">
+        <div class="hi"><b id="oPoints">78</b><span data-t="oPointsL">Points scored</span></div>
+        <div><b id="oOne">$19.50</b><span data-t="oOneL">From one sponsor</span></div>
+        <div><b id="oTen">$195</b><span data-t="oTenL">From ten sponsors</span></div>
+      </div>
+
+      <p class="gain" id="gainLine"></p>
+    </div>
+
+    <p class="mute" data-t="calcNote">A school of 120 students, each finding five sponsors at a quarter a point and averaging ten rounds, raises about $8,250. Every dollar of it goes to the program.</p>
+  </section>
+
+  <section>
+    <h2 data-t="h2same">The same number, whichever challenge you run</h2>
+    <p data-t="sameP">All three challenges score identically. A school can run Recall this year and Recognition next without explaining anything new to a single parent, and the two results are directly comparable.</p>
+
+    <table>
+      <thead>
+        <tr><th data-t="thRound">Rounds held</th><th data-t="thPts">Points</th><th data-t="thAt25">At 25¢</th><th data-t="thGain">That round alone</th></tr>
+      </thead>
+      <tbody id="tbl"></tbody>
+    </table>
+    <p class="mute" data-t="tblNote">The last column is what that single round added. It is also the reason a student wants one more.</p>
+  </section>
+
+  <section>
+    <h2 data-t="h2why">Why it is built this way</h2>
+    <div class="two">
+      <div class="point">
+        <b data-t="w1h">Nobody counts it</b>
+        <span data-t="w1p">The software records the run. There is no tally sheet, no volunteer, and nothing for a parent to question. In a fundraiser where money depends on a number, that matters more than anything else about it.</span>
+      </div>
+      <div class="point">
+        <b data-t="w2h">Effort is what moves it</b>
+        <span data-t="w2p">A student cannot raise their score by having wealthier relatives. They raise it by holding one more round than last time — which takes practice, and practice is the part that sharpens.</span>
+      </div>
+      <div class="point">
+        <b data-t="w3h">The prize is built in</b>
+        <span data-t="w3p">A score that climbs is its own motivation. There is no prize ladder to fund, nothing to order, nothing to hand out, and no student left out because their family could not sell enough.</span>
+      </div>
+      <div class="point">
+        <b data-t="w4h">Nobody scores zero</b>
+        <span data-t="w4p">A student who holds three rounds still scores six points, and their sponsors are still invoiced. Every student contributes something, which is not true of most fundraisers.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-t="h2honest">What it does not do</h2>
+    <p data-t="honestP">Worth saying plainly: a student with ten sponsors raises more than a student with two, however well they play. That is true of every pledge fundraiser there has ever been, and we have not solved it.</p>
+    <p data-t="honestP2">What the score does is make the second half fair. Once the sponsors are found, what each one pays is decided by the student's own work on the day — not by how many doors they knocked on.</p>
+    <a class="cta" href="signup.html" data-t="cta">Set my school up</a>
+  </section>
+
+</div>
+
+<footer><div class="wrap">
+  Gostar Digital LLC — Puerto Rico ·
+  <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> ·
+  <a href="terms.html" data-t="terms">Terms</a> ·
+  <a href="privacy.html" data-t="privacy">Privacy</a>
+</div></footer>
+
+<script>
+// The one rule behind every challenge: holding a chain of n rounds
+// means n(n+1)/2 individual correct recalls.
+function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
+
+var T = {
+  en:{
+    navPlay:'Play', navHow:'How it works',
+    h1:"One number, and it can't be argued with.",
+    lede:'Every challenge we run produces a single score, counted by software rather than by a person with a clipboard. Here is exactly how that number is built, why it rewards the students who push hardest, and what it means for what a school raises.',
+    h2rule:'The rule',
+    ruleBig:'Reach round 12 and you have scored 78 points.',
+    ruleP:'A challenge is a chain that grows by one every round. Round one is a single item. Round two is two. By the time a student holds a chain of twelve, they have correctly recalled 1 + 2 + 3 all the way to 12 — seventy-eight separate acts of memory, in one unbroken run.',
+    ruleP2:'The score is not a made-up number attached to a level. It is the actual count of what the student did. That is why it holds up: a parent can be told precisely what their pledge is paying for.',
+    h2curve:'Every round is worth more than the last',
+    curveP:'This is the part that changes how students behave. Because each round adds one more item to the chain, the points a round is worth go up as the run goes on. The tenth round is worth ten. The twentieth is worth twenty.',
+    chartNote:'Total points at each round. The line is not straight — that is the whole point.',
+    curveP2:'A student who improves from ten rounds to twelve has not improved by twenty percent. They have gone from 55 points to 78 — a forty percent jump in what they raise. The effort at the edge of what they can hold is worth the most, which is exactly where you want a student working.',
+    h2calc:'What that means in money',
+    calcP:'Move the sliders. This is the same arithmetic the platform runs when it invoices a sponsor.',
+    lRounds:'Rounds held', roundsWord:'rounds', lRate:'Pledged per point', perPoint:'per point',
+    oPointsL:'Points scored', oOneL:'From one sponsor', oTenL:'From ten sponsors',
+    gain:'Holding <b>one more round</b> would add <b>{P} points</b> — another <b>{M}</b> from every sponsor.',
+    calcNote:'A school of 120 students, each finding five sponsors at a quarter a point and averaging ten rounds, raises about $8,250. Every dollar of it goes to the program.',
+    h2same:'The same number, whichever challenge you run',
+    sameP:'All three challenges score identically. A school can run Recall this year and Recognition next without explaining anything new to a single parent, and the two results are directly comparable.',
+    thRound:'Rounds held', thPts:'Points', thAt25:'At 25¢', thGain:'That round alone',
+    tblNote:'The last column is what that single round added. It is also the reason a student wants one more.',
+    h2why:'Why it is built this way',
+    w1h:'Nobody counts it',
+    w1p:'The software records the run. There is no tally sheet, no volunteer, and nothing for a parent to question. In a fundraiser where money depends on a number, that matters more than anything else about it.',
+    w2h:'Effort is what moves it',
+    w2p:'A student cannot raise their score by having wealthier relatives. They raise it by holding one more round than last time — which takes practice, and practice is the part that sharpens.',
+    w3h:'The prize is built in',
+    w3p:'A score that climbs is its own motivation. There is no prize ladder to fund, nothing to order, nothing to hand out, and no student left out because their family could not sell enough.',
+    w4h:'Nobody scores zero',
+    w4p:'A student who holds three rounds still scores six points, and their sponsors are still invoiced. Every student contributes something, which is not true of most fundraisers.',
+    h2honest:'What it does not do',
+    honestP:'Worth saying plainly: a student with ten sponsors raises more than a student with two, however well they play. That is true of every pledge fundraiser there has ever been, and we have not solved it.',
+    honestP2:"What the score does is make the second half fair. Once the sponsors are found, what each one pays is decided by the student's own work on the day — not by how many doors they knocked on.",
+    cta:'Set my school up', terms:'Terms', privacy:'Privacy'
+  },
+  es:{
+    navPlay:'Jugar', navHow:'Cómo funciona',
+    h1:'Un solo número, y no se discute.',
+    lede:'Cada reto que corremos produce una sola puntuación, contada por el programa y no por alguien con una tablilla. Aquí está exactamente cómo se construye ese número, por qué premia a los estudiantes que más se esfuerzan, y qué significa para lo que recauda una escuela.',
+    h2rule:'La regla',
+    ruleBig:'Llega a la ronda 12 y anotaste 78 puntos.',
+    ruleP:'Un reto es una cadena que crece de a uno cada ronda. La ronda uno es un solo elemento. La dos son dos. Para cuando un estudiante aguanta una cadena de doce, ha recordado correctamente 1 + 2 + 3 hasta llegar a 12 — setenta y ocho actos de memoria distintos, en una sola corrida sin romperse.',
+    ruleP2:'La puntuación no es un número inventado pegado a un nivel. Es la cuenta real de lo que hizo el estudiante. Por eso se sostiene: a un padre se le puede decir exactamente qué está pagando su promesa.',
+    h2curve:'Cada ronda vale más que la anterior',
+    curveP:'Esta es la parte que cambia cómo se comportan los estudiantes. Como cada ronda añade un elemento más a la cadena, los puntos que vale una ronda suben según avanza la corrida. La décima ronda vale diez. La vigésima vale veinte.',
+    chartNote:'Puntos totales en cada ronda. La línea no es recta — de eso se trata.',
+    curveP2:'Un estudiante que mejora de diez rondas a doce no mejoró un veinte por ciento. Pasó de 55 puntos a 78 — un salto de cuarenta por ciento en lo que recauda. El esfuerzo al borde de lo que puede aguantar es el que más vale, que es justo donde quieres que trabaje.',
+    h2calc:'Qué significa eso en dinero',
+    calcP:'Mueve las barras. Esta es la misma aritmética que corre la plataforma cuando le factura a un padrino.',
+    lRounds:'Rondas aguantadas', roundsWord:'rondas', lRate:'Prometido por punto', perPoint:'por punto',
+    oPointsL:'Puntos anotados', oOneL:'De un padrino', oTenL:'De diez padrinos',
+    gain:'Aguantar <b>una ronda más</b> añadiría <b>{P} puntos</b> — otros <b>{M}</b> de cada padrino.',
+    calcNote:'Una escuela de 120 estudiantes, cada uno con cinco padrinos a veinticinco centavos por punto y un promedio de diez rondas, recauda unos $8,250. Cada dólar va al programa.',
+    h2same:'El mismo número, sea cual sea el reto',
+    sameP:'Los tres retos puntúan igual. Una escuela puede correr Recall este año y Recognition el próximo sin explicarle nada nuevo a ningún padre, y los dos resultados se comparan directamente.',
+    thRound:'Rondas', thPts:'Puntos', thAt25:'A 25¢', thGain:'Esa ronda sola',
+    tblNote:'La última columna es lo que añadió esa sola ronda. Es también la razón por la que un estudiante quiere una más.',
+    h2why:'Por qué está hecho así',
+    w1h:'Nadie lo cuenta',
+    w1p:'El programa graba la corrida. No hay hoja de conteo, no hay voluntario, y no hay nada que un padre pueda cuestionar. En una recaudación donde el dinero depende de un número, eso importa más que cualquier otra cosa.',
+    w2h:'El esfuerzo es lo que lo mueve',
+    w2p:'Un estudiante no puede subir su puntuación teniendo familiares con más dinero. La sube aguantando una ronda más que la vez pasada — lo que requiere práctica, y la práctica es la parte que agudiza.',
+    w3h:'El premio viene incluido',
+    w3p:'Una puntuación que sube es su propia motivación. No hay escalera de premios que financiar, nada que pedir, nada que repartir, y ningún estudiante excluido porque su familia no pudo vender bastante.',
+    w4h:'Nadie queda en cero',
+    w4p:'Un estudiante que aguanta tres rondas anota seis puntos, y a sus padrinos se les factura igual. Cada estudiante aporta algo, lo que no pasa en la mayoría de las recaudaciones.',
+    h2honest:'Lo que no resuelve',
+    honestP:'Vale decirlo claro: un estudiante con diez padrinos recauda más que uno con dos, por bien que juegue. Eso pasa en toda recaudación por promesa que haya existido, y nosotros no lo hemos resuelto.',
+    honestP2:'Lo que sí hace la puntuación es hacer justa la segunda mitad. Una vez conseguidos los padrinos, lo que paga cada uno lo decide el trabajo del propio estudiante ese día — no cuántas puertas tocó.',
+    cta:'Monta mi escuela', terms:'Términos', privacy:'Privacidad'
+  }
+};
+
+var lang = 'en';
+try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+
+function paint(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach(function(el){
+    var v = t(el.getAttribute('data-t'));
+    if (v) el.textContent = v;
+  });
+  document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
+  buildTable();
+  update();
+}
+function flip(){
+  lang = lang === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('cfh_lang', lang); } catch(e){}
+  paint();
+}
+
+function money(n){
+  return '$' + (n >= 100 ? Math.round(n).toLocaleString() : n.toFixed(2));
+}
+
+// ---- the curve ----
+// Drawn from pointsFor, so the picture can never drift from the
+// arithmetic the platform actually uses.
+(function drawCurve(){
+  var maxR = 20, maxP = pointsFor(maxR);
+  var L = 46, R = 780, Tp = 18, B = 280;
+  var x = function(r){ return L + (r / maxR) * (R - L); };
+  var y = function(p){ return B - (p / maxP) * (B - Tp); };
+
+  var grid = '', labels = '';
+  [0, 50, 100, 150, 200].forEach(function(p){
+    grid += '<line x1="' + L + '" y1="' + y(p) + '" x2="' + R + '" y2="' + y(p) +
+            '" stroke="rgba(30,53,80,.9)" stroke-width="1"/>';
+    labels += '<text x="' + (L - 10) + '" y="' + (y(p) + 4) +
+              '" text-anchor="end" font-family="Archivo,Arial" font-size="12" fill="#8AA4BD">' + p + '</text>';
+  });
+
+  var d = '', area = 'M ' + x(0) + ' ' + y(0);
+  for (var r = 0; r <= maxR; r++){
+    var px = x(r), py = y(pointsFor(r));
+    d += (r === 0 ? 'M ' : ' L ') + px + ' ' + py;
+    area += ' L ' + px + ' ' + py;
+  }
+  area += ' L ' + x(maxR) + ' ' + B + ' L ' + x(0) + ' ' + B + ' Z';
+
+  var dots = '';
+  [5, 10, 15, 20].forEach(function(r){
+    dots += '<circle cx="' + x(r) + '" cy="' + y(pointsFor(r)) + '" r="5" fill="#22D3EE"/>';
+    dots += '<text x="' + x(r) + '" y="' + (y(pointsFor(r)) - 14) +
+            '" text-anchor="middle" font-family="Archivo,Arial" font-size="13" font-weight="800" fill="#EAF4FB">' +
+            pointsFor(r) + '</text>';
+    labels += '<text x="' + x(r) + '" y="' + (B + 24) +
+              '" text-anchor="middle" font-family="Archivo,Arial" font-size="12" fill="#8AA4BD">' + r + '</text>';
+  });
+  labels += '<text x="' + ((L + R) / 2) + '" y="' + (B + 48) +
+            '" text-anchor="middle" font-family="Archivo,Arial" font-size="11" font-weight="800" ' +
+            'letter-spacing="1.6" fill="#8AA4BD">ROUNDS HELD</text>';
+
+  document.getElementById('grid').innerHTML = grid;
+  document.getElementById('area').setAttribute('d', area);
+  document.getElementById('curve').setAttribute('d', d);
+  document.getElementById('dots').innerHTML = dots;
+  document.getElementById('labels').innerHTML = labels;
+})();
+
+// ---- the table ----
+function buildTable(){
+  var rows = '';
+  [4, 6, 8, 10, 12, 15, 18, 20].forEach(function(r){
+    var p = pointsFor(r);
+    rows += '<tr' + (r === 12 ? ' class="hi"' : '') + '>' +
+      '<td>' + r + '</td>' +
+      '<td>' + p + '</td>' +
+      '<td>' + money(p * 0.25) + '</td>' +
+      '<td>+' + r + '</td>' +
+    '</tr>';
+  });
+  document.getElementById('tbl').innerHTML = rows;
+}
+
+// ---- the calculator ----
+function update(){
+  var r = parseInt(document.getElementById('rounds').value, 10);
+  var rate = parseInt(document.getElementById('rate').value, 10) / 100;
+  var p = pointsFor(r);
+
+  document.getElementById('vRounds').textContent = r;
+  document.getElementById('vRate').textContent = rate.toFixed(2);
+  document.getElementById('oPoints').textContent = p;
+  document.getElementById('oOne').textContent = money(p * rate);
+  document.getElementById('oTen').textContent = money(p * rate * 10);
+
+  // What one more round is worth — the number that makes a student
+  // want to practise.
+  var next = r + 1;
+  document.getElementById('gainLine').innerHTML =
+    t('gain').split('{P}').join(next).split('{M}').join(money(next * rate));
+}
+
+document.getElementById('rounds').addEventListener('input', update);
+document.getElementById('rate').addEventListener('input', update);
+
+paint();
+</script>
+</body>
+</html>
