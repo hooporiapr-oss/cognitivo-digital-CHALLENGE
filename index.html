@@ -197,6 +197,9 @@ var STR = {
     s2h:'Students practise free', s2p:'As many runs as they like, on any device. Nobody goes in cold, and the practice is the part that sharpens.',
     s3h:'One official run', s3p:'A chain that grows by one every round. Hold twelve rounds and that is 78 points — and every round is working memory under pressure.',
     s4h:'Sponsors are invoiced', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar collected goes to the program.',
+    tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
+    yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
+    runUsed:'run used',
     tryoutKick:'Program tryout',
     tryoutLede:'Play all three. Whichever the program scores highest on is the one worth running the fundraiser with.',
     teamStanding:'How the program is doing', teamStandingNote:'Total points across everyone who has played.',
@@ -261,6 +264,9 @@ var STR = {
     s2h:'Los estudiantes practican gratis', s2p:'Todas las corridas que quieran, en cualquier dispositivo. Nadie llega en frío, y la práctica es la parte que agudiza.',
     s3h:'Una corrida oficial', s3p:'Una cadena que crece de a uno cada ronda. Aguanta doce rondas y son 78 puntos — y cada ronda es memoria de trabajo bajo presión.',
     s4h:'Se factura a los padrinos', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados, más un cargo de plataforma de 10%. Cada dólar cobrado va al programa.',
+    tryoutOnce:'Una corrida cada uno. Juega cada juego una vez — tu puntuación es la que saques en ese intento, así que tómate tu tiempo.',
+    yourTryoutOnce:'Un intento en cada uno. No hay segunda oportunidad, y no hay reloj en tu turno.',
+    runUsed:'corrida usada',
     tryoutKick:'Prueba del programa',
     tryoutLede:'Juega los tres. Aquel donde el programa anote más es el que vale la pena para la recaudación.',
     teamStanding:'Cómo va el programa', teamStandingNote:'Puntos totales de todos los que han jugado.',
@@ -747,7 +753,7 @@ function notFound(what){
 // ══════════════════════════════════════════════════════
 function loadTryout(campaignId){
   Promise.all([
-    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url'),
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run'),
     get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
     get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs')
   ])
@@ -763,6 +769,7 @@ function loadTryout(campaignId){
 }
 
 function renderTryout(campaignId, campaign, players, scores){
+  var oneRun = !!campaign.tryout_one_run;
   var picked = null;
   try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
 
@@ -789,7 +796,7 @@ function renderTryout(campaignId, campaign, players, scores){
     langBtnHtml() +
     '<div class="kick">' + T('tryoutKick') + '</div>' +
     '<h1>' + esc(campaign.name) + '</h1>' +
-    '<p class="mute" style="margin-top:8px;">' + T('tryoutLede') + '</p>' +
+    '<p class="mute" style="margin-top:8px;">' + (oneRun ? T('tryoutOnce') : T('tryoutLede')) + '</p>' +
 
     (anyScores
       ? '<div class="panel">' +
@@ -809,13 +816,27 @@ function renderTryout(campaignId, campaign, players, scores){
     (me
       ? '<div class="panel">' +
           '<h2>' + esc(me.name) + '</h2>' +
-          '<p class="mute">' + T('yourTryout') + '</p>' +
+          '<p class="mute">' + (oneRun ? T('yourTryoutOnce') : T('yourTryout')) + '</p>' +
           order.map(function(g){
             var r = myScores[g];
+            var spent = oneRun && r;
+            var label = r
+              ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts')
+              : T('notPlayed');
+
+            // With one run each, a game already played is a result
+            // rather than a link.
+            if (spent){
+              return '<div class="tryout-play ' + g + ' spent">' +
+                       '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
+                       '<span class="tp-score">' + label + ' · ' + T('runUsed') + '</span>' +
+                     '</div>';
+            }
             return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
-                     '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) + '">' +
+                     '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
+                     (oneRun ? '&once=1' : '') + '">' +
                      '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
-                     '<span class="tp-score">' + (r ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts') : T('notPlayed')) + '</span>' +
+                     '<span class="tp-score">' + label + '</span>' +
                    '</a>';
           }).join('') +
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
