@@ -114,6 +114,17 @@ input:focus{outline:none;border-color:var(--purple)}
 }
 .brandhead h1{margin:0}
 
+/* the grade board and the headings that break up a long roster */
+.grade-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
+.grade-row.lead{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08)}
+.grade-row .pts{color:var(--gold);font-weight:900;text-align:right}
+.grade-row .pts .sub{display:block;color:var(--mute);font-weight:700;font-size:.68rem}
+.grade-head{
+  font-size:.66rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin:16px 0 6px;padding-left:2px;
+}
+.roster a:first-child + .grade-head{margin-top:8px}
+
 .tryout-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
 .tryout-row.lead{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08)}
 .tryout-row b{color:var(--gold);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-left:6px}
@@ -205,6 +216,8 @@ var STR = {
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.', freeNote:'Free to play. Nothing recorded.',
     haveLink:'Looking for a player or a team? Use the link they sent you.',
     kick:'Cognitivo Digital',
+    gradeWord:'Grade', noGrade:'No grade', studentsWord:'students',
+    gradeBoard:'How the grades are doing', gradeBoardNote:'Total points scored by everyone in each grade.',
     teamPoints:'Division points', runsDone:'Runs done',
     pledgeTeam:'Pledge to the whole division', pledgeTeamNote:'Your pledge is multiplied by the division\u2019s combined points.',
     rosterTitle:'The students', rosterNote:'Tap a student to pledge to them directly.',
@@ -267,6 +280,8 @@ var STR = {
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.', freeNote:'Gratis. No se guarda nada.',
     haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
     kick:'Cognitivo Digital',
+    gradeWord:'Grado', noGrade:'Sin grado', studentsWord:'estudiantes',
+    gradeBoard:'Cómo van los grados', gradeBoardNote:'Puntos totales de todos los de cada grado.',
     teamPoints:'Puntos de la división', runsDone:'Corridas hechas',
     pledgeTeam:'Promete a toda la división', pledgeTeamNote:'Tu promesa se multiplica por los puntos combinados de la división.',
     rosterTitle:'Los estudiantes', rosterNote:'Toca a un estudiante para prometerle directamente.',
@@ -444,17 +459,60 @@ function renderTeam(ch, campaign, players, runs, practice){
   var teamPoints = runs.reduce(function(sum, r){ return sum + (r.points || 0); }, 0);
   var done = runs.length;
 
-  var roster = players.map(function(p){
-    var run = byPlayer[p.id];
-    var prac = practiceBy[p.id];
-    var right = run
-      ? esc(run.points) + ' ' + T('pts')
-      : (prac ? T('practisingL') + esc(prac.best_level) : T('notYet'));
-    return '<a href="?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(p.id) + '">' +
-             '<span>' + esc(p.name) + '</span>' +
-             '<span class="pts">' + right + '</span>' +
-           '</a>';
-  }).join('');
+  // Grouped by grade, and the grades themselves ranked by what they
+  // have scored — which is the board a student actually cares about.
+  var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
+  function gradeRank(g){ var i = GRADES.indexOf(g); return i === -1 ? 998 : i; }
+
+  var byGrade = {};
+  players.forEach(function(p){
+    var g = p.grade || '';
+    (byGrade[g] = byGrade[g] || []).push(p);
+  });
+
+  var gradeKeys = Object.keys(byGrade);
+  var gradeTotals = {};
+  gradeKeys.forEach(function(g){
+    gradeTotals[g] = byGrade[g].reduce(function(sum, p){
+      return sum + (byPlayer[p.id] ? byPlayer[p.id].points : 0);
+    }, 0);
+  });
+
+  var ranked = gradeKeys.slice().sort(function(a,b){ return gradeTotals[b] - gradeTotals[a]; });
+  var anyScores = ranked.some(function(g){ return gradeTotals[g] > 0; });
+
+  var gradeBoard = (anyScores && gradeKeys.length > 1)
+    ? '<div class="panel">' +
+        '<h2>' + T('gradeBoard') + '</h2>' +
+        '<p class="mute">' + T('gradeBoardNote') + '</p>' +
+        ranked.map(function(g, i){
+          return '<div class="grade-row' + (i === 0 && gradeTotals[g] > 0 ? ' lead' : '') + '">' +
+                   '<span>' + (g ? T('gradeWord') + ' ' + esc(g) : T('noGrade')) + '</span>' +
+                   '<span class="pts">' + gradeTotals[g] + ' ' + T('pts') +
+                     '<span class="sub">' + byGrade[g].length + ' ' + T('studentsWord') + '</span>' +
+                   '</span>' +
+                 '</div>';
+        }).join('') +
+      '</div>'
+    : '';
+
+  var roster = gradeKeys.slice().sort(function(a,b){ return gradeRank(a) - gradeRank(b); })
+    .map(function(g){
+      var head = gradeKeys.length > 1
+        ? '<div class="grade-head">' + (g ? T('gradeWord') + ' ' + esc(g) : T('noGrade')) + '</div>'
+        : '';
+      return head + byGrade[g].map(function(p){
+        var run = byPlayer[p.id];
+        var prac = practiceBy[p.id];
+        var right = run
+          ? esc(run.points) + ' ' + T('pts')
+          : (prac ? T('practisingL') + esc(prac.best_level) : T('notYet'));
+        return '<a href="?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(p.id) + '">' +
+                 '<span>' + esc(p.name) + '</span>' +
+                 '<span class="pts">' + right + '</span>' +
+               '</a>';
+      }).join('');
+    }).join('');
 
   app.innerHTML =
     langBtnHtml() +
@@ -474,6 +532,8 @@ function renderTeam(ch, campaign, players, runs, practice){
       '<p class="mute">' + T('pledgeTeamNote') + '</p>' +
       pledgeFormHtml(null) +
     '</div>' +
+
+    gradeBoard +
 
     '<div class="panel">' +
       '<h2>' + T('rosterTitle') + '</h2>' +
@@ -496,7 +556,8 @@ function renderPlayer(ch, campaign, player, run, prac){
     langBtnHtml() +
     '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
     '<h1>' + esc(player.name) + '</h1>' +
-    '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') + '</p>' +
+    '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') +
+      (player.grade ? ' · ' + T('gradeWord') + ' ' + esc(player.grade) : '') + '</p>' +
 
     '<div class="stat-row">' +
       (run
@@ -803,7 +864,7 @@ if (TRYOUT){
 
       return Promise.all([
         get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=name,logo_url'),
-        get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name&order=name.asc'),
+        get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name,grade&order=name.asc'),
         get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
         get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs')
       ]).then(function(res){
