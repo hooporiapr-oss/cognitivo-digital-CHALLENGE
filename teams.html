@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cognitivo Digital — a fundraiser that sharpens memory</title>
-<meta name="description" content="Students find sponsors who pledge for every point they score in a memory challenge. Nothing to buy, nobody to chase, and every dollar pledged goes to the program.">
+<meta name="description" content="Students find sponsors who pledge for every point they score in a memory challenge. Nothing to buy, nobody to chase, and every dollar collected goes to the program.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,6 +185,17 @@ header{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,72px)}
   border-radius:18px;padding:clamp(20px,3vw,30px);margin-top:22px;max-width:70ch;
 }
 .costnote h3{margin-bottom:.5em}
+/* The fee shown as an arithmetic, because a percentage in a sentence
+   is skimmed and a worked example is not. */
+.feebox{background:#08111C;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
+.feeline{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.feeline:last-child{border-bottom:none}
+.feeline span{color:var(--mute)}
+.feeline b{font-weight:800;white-space:nowrap}
+.feeline.total{border-top:1px solid var(--line);margin-top:4px;padding-top:12px}
+.feeline.total span,.feeline.total b{color:var(--paper)}
+.feeline.paid span{color:var(--paper)}
+.feeline.paid b{color:var(--gold);font-size:1.15rem}
 .costnote p{color:#CFE3F2;margin-bottom:1em}
 .costnote p:last-child{margin-bottom:0}
 
@@ -233,7 +244,7 @@ footer a{color:var(--mute)}
   <div class="wrap hero">
     <div>
       <h1 data-t="h1">Sponsors pledge for every point your students score.</h1>
-      <p class="lede" data-t="lede">Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar pledged goes to the program. No boxes, no catalogues, nobody selling door to door.</p>
+      <p class="lede" data-t="lede">Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar collected goes to the program. No boxes, no catalogues, nobody selling door to door.</p>
       <div class="hero-actions">
         <a class="btn btn-solid" href="signup.html" data-t="ctaTeam">Start a school fundraiser</a>
         <a class="btn btn-line" href="index.html" data-t="ctaPlay">Try the games</a>
@@ -287,7 +298,7 @@ footer a{color:var(--mute)}
     <div class="step">
       <div>
         <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
-        <p data-t="s4p">Each sponsor is billed their pledge against their student's score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.</p>
+        <p data-t="s4p">Each sponsor is billed their pledge against their student's score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar collected.</p>
       </div>
     </div>
   </div>
@@ -331,14 +342,22 @@ footer a{color:var(--mute)}
   <div class="money">
     <div><b>$0</b><span data-t="c1">To sign up</span></div>
     <div><b>$0</b><span data-t="c2">Upfront, ever</span></div>
-    <div class="hi"><b data-t="cHalf">100%</b><span data-t="c3">Of every pledge, to your program</span></div>
+    <div class="hi"><b data-t="cHalf">100%</b><span data-t="c3">Of what is collected, to your program</span></div>
   </div>
 
   <div class="costnote">
     <h3 data-t="costH">Said plainly</h3>
-    <p data-t="costP1">Your program keeps every dollar pledged. We are paid by a 10% platform fee added to the sponsor's invoice, shown as its own line so nothing is hidden.</p>
-    <p data-t="costP2">Here is what it buys. We bring the whole thing — the challenges your students play, the scoring, the page every sponsor pledges through, and the invoicing afterwards. We chase the invoices and we carry the cost when one goes unpaid. Your side is the students and a date.</p>
-    <p data-t="costP3">You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.</p>
+
+    <div class="feebox">
+      <div class="feeline"><span data-t="fl1">A sponsor pledges</span><b>$25.00</b></div>
+      <div class="feeline"><span data-t="fl2">Platform fee, 10%, added to their invoice</span><b>$2.50</b></div>
+      <div class="feeline total"><span data-t="fl3">Their invoice</span><b>$27.50</b></div>
+      <div class="feeline paid"><span data-t="fl4">Your program receives, once it is paid</span><b>$25.00</b></div>
+    </div>
+
+    <p data-t="costP1">We charge the school nothing. Our fee is a flat <b>10% of each pledge</b>, added on top of the sponsor's invoice as its own line — so the program is never billed, and never has anything deducted.</p>
+    <p data-t="costP2">There is nothing else. No setup fee, no monthly fee, no minimum, no contract and no charge for the challenges themselves. The 10% is the only money we make.</p>
+    <p data-t="costP3">And it is only earned on money that actually arrives. If a sponsor never pays their invoice, the program receives nothing for that pledge and neither do we.</p>
   </div>
 </section>
 
@@ -372,14 +391,14 @@ let lang = (navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'
 const T = {
   en:{
     h1:'Sponsors pledge for every point your students score.',
-    lede:'Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar pledged goes to the program. No boxes, no catalogues, nobody selling door to door.',
+    lede:'Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar collected goes to the program. No boxes, no catalogues, nobody selling door to door.',
     ctaPlay:'Try the games',
     exBrand:'What a run is worth', exMeta:'at 25\u00a2 a point',
     exL10:'Holds 10 rounds', exL15:'Holds 15 rounds', exL20:'Holds 20 rounds',
     exHint:'One sponsor. One run. Every round is worth more than the last.',
     h2money:'Where the money goes',
     mHalf:'100%', mHalf2:'10%',
-    m1:'Of every pledge, to the program', m2:'Added to the sponsor invoice', m3:'Cost to sign up',
+    m1:'Of what is collected, to the program', m2:'Added to the sponsor invoice', m3:'Cost to sign up',
     s1h:'Sponsors pledge per point',
     s1p:'A student shares their link. Family, neighbours and friends pledge any amount per point \u2014 a dime, a quarter, a dollar. Nothing is charged when they pledge.',
     s2h:'Students practise free',
@@ -387,7 +406,7 @@ const T = {
     s3h:'One official run each',
     s3p:'The score is the longest chain they hold. Twelve rounds is 78 points. Our software counts it, so there is nothing to argue about — and every round is working memory under pressure.',
     s4h:'Sponsors are invoiced, the program gets paid',
-    s4p:'Each sponsor is billed their pledge against their student\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar pledged.',
+    s4p:'Each sponsor is billed their pledge against their student\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar collected.',
     navFollow:'No chasing',
     h2follow:'Nobody chases anyone',
     fu1:'This is the part that sinks most pledge drives. The event goes well, and then someone spends three weeks with a spreadsheet, working out who owes what, sending reminders and making phone calls nobody wants to make.',
@@ -407,11 +426,13 @@ const T = {
     navScoring:'The scoring',
     navCost:'What it costs',
     h2cost:'What it costs',
-    c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of every pledge, to your program',
+    c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of what is collected, to your program',
+    fl1:'A sponsor pledges', fl2:'Platform fee, 10%, added to their invoice',
+    fl3:'Their invoice', fl4:'Your program receives, once it is paid',
     costH:'Said plainly',
-    costP1:'Your program keeps every dollar pledged. We are paid by a 10% platform fee added to the sponsor\u2019s invoice, shown as its own line so nothing is hidden.',
-    costP2:'Here is what it buys. We bring the whole thing — the challenges your students play, the scoring, the page every sponsor pledges through, and the invoicing afterwards. We chase the invoices and we carry the cost when one goes unpaid. Your side is the students and a date.',
-    costP3:'You never write us a cheque, and there is nothing to deduct. A sponsor who pledges $25 is invoiced $27.50, the program receives the $25, and the $2.50 is ours.',
+    costP1:"We charge the school nothing. Our fee is a flat <b>10% of each pledge</b>, added on top of the sponsor's invoice as its own line — so the program is never billed, and never has anything deducted.",
+    costP2:'There is nothing else. No setup fee, no monthly fee, no minimum, no contract and no charge for the challenges themselves. The 10% is the only money we make.',
+    costP3:'And it is only earned on money that actually arrives. If a sponsor never pays their invoice, the program receives nothing for that pledge and neither do we.',
     closeCta2:'Try the games first',
     navHow:'How it works',
     navGames:'Play the games',
@@ -429,7 +450,7 @@ const T = {
     exHint:'Un padrino. Una corrida. Cada ronda vale m\u00e1s que la anterior.',
     h2money:'A d\u00f3nde va el dinero',
     mHalf:'100%', mHalf2:'10%',
-    m1:'De cada promesa, al programa', m2:'A\u00f1adido a la factura del padrino', m3:'Costo de inscribirse',
+    m1:'De lo cobrado, al programa', m2:'A\u00f1adido a la factura del padrino', m3:'Costo de inscribirse',
     s1h:'Los padrinos prometen por punto',
     s1p:'El estudiante comparte su enlace. Familia, vecinos y amigos prometen lo que quieran por punto \u2014 diez centavos, veinticinco, un d\u00f3lar. No se cobra nada al prometer.',
     s2h:'Los estudiantes practican gratis',
@@ -457,11 +478,13 @@ const T = {
     navScoring:'La puntuación',
     navCost:'Lo que cuesta',
     h2cost:'Lo que cuesta',
-    c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De cada promesa, para tu programa',
+    c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De lo cobrado, para tu programa',
+    fl1:'Un padrino promete', fl2:'Cargo de plataforma, 10%, a\u00f1adido a su factura',
+    fl3:'Su factura', fl4:'Tu programa recibe, una vez pagada',
     costH:'Dicho claro',
     costP1:'Tu programa se queda con cada d\u00f3lar prometido. A nosotros nos paga un cargo de plataforma de 10% que se le a\u00f1ade a la factura del padrino, en su propia l\u00ednea para que nada quede escondido.',
     costP2:'Esto es lo que compra. Nosotros ponemos todo — los retos que juegan tus estudiantes, la anotaci\u00f3n, la p\u00e1gina donde promete cada padrino y la facturaci\u00f3n despu\u00e9s. Nosotros perseguimos las facturas y asumimos el costo cuando una queda sin pagar. Lo tuyo son los estudiantes y una fecha.',
-    costP3:'Nunca nos escribes un cheque, y no hay nada que descontar. Un padrino que promete $25 recibe una factura de $27.50, el programa recibe los $25, y los $2.50 son nuestros.',
+    costP3:'Y solo se gana sobre el dinero que de verdad entra. Si un padrino nunca paga su factura, el programa no recibe nada por esa promesa y nosotros tampoco.',
     closeCta2:'Prueba los juegos primero',
     navHow:'Cómo funciona',
     navGames:'Juega los juegos',
