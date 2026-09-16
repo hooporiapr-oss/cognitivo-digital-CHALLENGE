@@ -10,12 +10,17 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 #screen-intro{
   position:fixed;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
+  align-items:center;
+  /* Starting at the top rather than centring. With the demo and the
+     instructions the intro is now taller than a phone screen, and a
+     centred flex column pushes its own top out past the padding —
+     which is what put the title under the pinned buttons. */
+  justify-content:flex-start;
   background:radial-gradient(ellipse at center,#061524 0%,#000 70%);z-index:100;
   overflow-y:auto;overflow-x:hidden;
   /* The Back and language buttons are pinned to the top corners, so
      the content starts below them rather than under them. */
-  padding:76px 16px 28px;
+  padding:84px 16px 34px;
 }
 .vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#38BDF8;margin-bottom:8px;text-align:center}
 .vrr-title{font-size:clamp(1.8rem,7vw,2.4rem);font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 40px rgba(56,189,248,.7);margin-bottom:16px;text-align:center}
