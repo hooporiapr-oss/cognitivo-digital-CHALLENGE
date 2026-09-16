@@ -154,8 +154,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <div id="screen-intro">
   <a class="intro-back" href="index.html" id="introBack">← Back</a>
   <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
-
-  <div class="vrr-sub" id="introSub">Memory Basketball</div>
   <div class="vrr-title">THE <span>RECOGNITION</span></div>
 
   <div class="official-banner" id="officialBanner" style="display:none;">
@@ -269,7 +267,6 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 
 var STR = {
   en:{
-    sub:'Memory Basketball',
     demoWatch:'👀 Watch the pattern…', demoSpot:'One moved — find it', demoFound:'✅ Found it!',
     htpText:'How to play',
     cObjective:'🎯 What to do',
@@ -306,7 +303,6 @@ var STR = {
     bestLine:'Your best practice run: <b>pattern {L}</b> · {P} points'
   },
   es:{
-    sub:'Baloncesto de Memoria',
     demoWatch:'👀 Observa el patrón…', demoSpot:'Una se movió — encuéntrala', demoFound:'✅ ¡La encontraste!',
     htpText:'Cómo jugar',
     cObjective:'🎯 Qué hacer',
@@ -358,7 +354,6 @@ function applyLang(){
   ['cObjective','cScoring','cs1','cs2','cs3','cp1','cp2','cp3','cTipTitle','cTip','htpText']
     .forEach(function(id){ var el=$(id); if(el) el.innerHTML = T(id); });
   document.documentElement.lang = LANG;
-  $('introSub').textContent = T('sub');
   $('playerNameInputMain').placeholder = T('namePh');
   $('obKick').textContent = T('officialKick');
   $('lblLevel').textContent = T('lblLevel');
