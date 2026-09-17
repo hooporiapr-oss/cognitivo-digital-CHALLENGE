@@ -3,514 +3,201 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cognitivo Digital — a fundraiser that sharpens memory</title>
-<meta name="description" content="Students find sponsors who pledge for every point they score in a memory challenge. Nothing to buy, nobody to chase, and every dollar collected goes to the program.">
-
+<title>Cognitivo Digital — memory challenges that raise money for schools</title>
+<meta name="description" content="Students play a memory challenge. Sponsors pledge for every point scored. The school keeps 100% of what is collected, and pays nothing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,800;1,400&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  /* Taken from the logo: deep blue-black, electric cyan, and a
-     brighter blue where the warm accents used to be. */
-  --ink:#050A12;
-  --paper:#EAF4FB;
-  --mute:#8AA4BD;
-  --line:#1E3550;
-  --panel:#0D1826;
-  --gold:#22D3EE;
-  --leather:#38BDF8;
-}
-
+:root{--ink:#050A12;--paper:#EAF4FB;--mute:#8AA4BD;--line:#1E3550;--panel:#0D1826;--gold:#22D3EE;--leather:#38BDF8}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{width:min(940px,92vw);margin:0 auto}
 
-body{
-  margin:0;
-  background:var(--ink);
-  color:var(--paper);
-  font-family:Archivo,system-ui,sans-serif;
-  font-size:17px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
-
-.wrap{width:min(1080px,92vw);margin:0 auto}
-
-h1,h2,h3{
-  font-weight:800;
-  letter-spacing:-.03em;
-  line-height:.98;
-  margin:0;
-}
-h1{font-size:clamp(2.9rem,7.5vw,5.4rem)}
-h2{font-size:clamp(2rem,4.4vw,3.2rem);margin-bottom:.6em}
-h3{font-size:1.22rem;letter-spacing:-.02em;line-height:1.15}
-p{margin:0 0 1em}
-a{color:inherit}
-
-/* ---------- nav ---------- */
-nav{
-  position:sticky;top:0;z-index:50;
-  background:rgba(22,14,28,.86);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);
-}
-.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
-/* The logo is the wordmark now, so it needs an explicit height —
-   without one the image renders at its natural size. */
+nav{border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
 .mark{display:block;line-height:0;text-decoration:none}
 .mark img{display:block;height:34px;width:auto}
 @media(max-width:560px){.mark img{height:26px}}
-.navlinks{display:flex;align-items:center;gap:22px;font-size:.92rem}
-.navlinks a{text-decoration:none;color:var(--mute)}
-.navlinks a:hover{color:var(--paper)}
-#lang{
-  background:none;border:1px solid var(--line);color:var(--mute);
-  border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer;
+.navr{display:flex;align-items:center;gap:16px}
+.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
+.navr a:hover{color:var(--paper)}
+@media(max-width:560px){.navr a{display:none}}
+#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+
+/* ---------- the one sentence ---------- */
+header{padding:clamp(48px,9vw,86px) 0 clamp(36px,6vw,54px)}
+h1{
+  font-size:clamp(2.1rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;
+  line-height:1.05;margin:0 0 .4em;max-width:19ch;
 }
-#lang:hover{color:var(--paper);border-color:var(--mute)}
-@media(max-width:720px){.navlinks a{display:none}}
-
-/* ---------- hero ---------- */
-header{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,72px)}
-.hero{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(30px,5vw,64px);align-items:center}
-@media(max-width:860px){.hero{grid-template-columns:1fr;gap:38px}}
-
-.lede{font-size:1.16rem;color:var(--mute);max-width:46ch;margin-top:1.3em}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:2em}
-
+h1 em{font-style:normal;color:var(--gold)}
+.lede{font-size:clamp(1.05rem,2.4vw,1.28rem);color:#CFE3F2;max-width:46ch;margin:0 0 30px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
 .btn{
-  display:inline-block;text-decoration:none;font-weight:600;font-size:.98rem;
-  padding:13px 24px;border-radius:6px;border:1px solid transparent;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:16px 28px;border-radius:12px;text-decoration:none;
+  font-weight:800;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;
 }
 .btn-solid{background:var(--gold);color:#04121A}
-.btn-solid:hover{background:#F2C258}
-.btn-line{border-color:var(--line);color:var(--paper)}
-.btn-line:hover{border-color:var(--mute)}
+.btn-line{border:1px solid var(--line);color:var(--paper)}
 
-/* ---------- the peel card ---------- */
-.card{
-  background:linear-gradient(163deg,#33144A,#1B0F26);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:20px;
-  box-shadow:0 30px 70px rgba(0,0,0,.5);
+/* ---------- 1 2 3 ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 0 clamp(40px,7vw,64px)}
+@media(max-width:780px){.steps{grid-template-columns:1fr;gap:26px}}
+.step{padding-top:18px;border-top:2px solid var(--line);position:relative}
+.step .n{
+  position:absolute;top:-15px;left:0;width:30px;height:30px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--gold);color:var(--gold);
+  font-size:.85rem;font-weight:800;display:grid;place-content:center;
 }
-.card-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px}
-.card-brand{font-weight:800;letter-spacing:-.02em}
-.card-meta{font-size:.76rem;color:var(--mute)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.step b{display:block;font-size:1.12rem;font-weight:800;letter-spacing:-.015em;margin-bottom:6px}
+.step span{display:block;color:var(--mute);font-size:.96rem;line-height:1.55}
 
-.tab{
-  position:relative;aspect-ratio:1;border:0;padding:0;cursor:pointer;
-  border-radius:8px;background:transparent;font:inherit;
-  perspective:600px;
+/* ---------- the cost, as one idea ---------- */
+.cost{
+  background:var(--panel);border:1px solid rgba(34,211,238,.32);border-radius:20px;
+  padding:clamp(26px,4vw,40px);text-align:center;margin-bottom:clamp(40px,7vw,64px);
 }
-.tab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.cost h2{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin:0 0 .3em;color:var(--gold)}
+.cost p{color:#CFE3F2;margin:0 auto;max-width:44ch}
+.cost .fine{color:var(--mute);font-size:.92rem;margin-top:14px}
 
-.tab .face,.tab .under{
-  position:absolute;inset:0;border-radius:8px;
-  display:grid;place-content:center;text-align:center;
-}
-.tab .under{
-  background:#120B18;color:var(--gold);
-  font-size:.62rem;font-weight:800;line-height:1.15;padding:4px;
-  letter-spacing:-.01em;
-}
-.tab .face{
-  background:linear-gradient(150deg,#6B2E8F,#3D1657);
-  border:1px solid rgba(255,255,255,.14);
-  color:#E6D6F0;font-size:1.05rem;
-  transform-origin:top left;
-  transition:transform .45s cubic-bezier(.34,.9,.4,1),opacity .45s;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
-}
-.tab.off .face{transform:rotate(-16deg) translate(-118%,26%);opacity:0}
-@media (prefers-reduced-motion:reduce){.tab .face{transition:none}}
+/* ---------- the close ---------- */
+.close{text-align:center;padding:0 0 clamp(48px,8vw,80px)}
+.close h2{font-size:clamp(1.6rem,4.4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin:0 0 .4em}
+.close p{color:var(--mute);max-width:48ch;margin:0 auto 24px}
+.close .actions{justify-content:center}
 
-.ex div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.95rem}
-.ex div:last-child{border-bottom:none}
-.ex span{color:var(--mute)}
-.ex b{font-weight:800;letter-spacing:-.01em;white-space:nowrap}
-.ex .hi b{color:var(--gold)}
-
-.card-hint{margin:16px 0 0;font-size:.8rem;color:var(--mute)}
-
-/* ---------- split ---------- */
-.split{border-top:1px solid var(--line);padding:clamp(50px,7vw,86px) 0}
-.money{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:34px;
-}
-.money div{padding:22px 20px;border-right:1px solid var(--line)}
-.money div:last-child{border-right:0}
-.money b{display:block;font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1}
-.money span{font-size:.86rem;color:var(--mute)}
-.money .hi b{color:var(--gold)}
-@media(max-width:700px){
-  .money{grid-template-columns:1fr}
-  .money div{border-right:0;border-bottom:1px solid var(--line)}
-  .money div:last-child{border-bottom:0}
-}
-
-/* ---------- steps (a real sequence) ---------- */
-.steps{counter-reset:s;display:grid;gap:2px;margin-top:36px}
-.step{
-  counter-increment:s;
-  display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;
-  padding:24px 0;border-top:1px solid var(--line);
-}
-.step:last-child{border-bottom:1px solid var(--line)}
-.step::before{
-  content:counter(s);
-  font-size:2.1rem;font-weight:800;color:var(--line);line-height:.8;letter-spacing:-.04em;
-}
-.step p{color:var(--mute);margin:.45em 0 0;max-width:60ch}
-@media(max-width:640px){.step{grid-template-columns:44px 1fr;gap:14px}}
-
-/* ---------- two audiences, deliberately unequal ---------- */
-.prizewrap{display:grid;grid-template-columns:1.35fr 1fr;gap:26px;align-items:start;margin-top:18px}
-@media(max-width:820px){.prizewrap{grid-template-columns:1fr;gap:20px}}
-.prizewrap p{color:#CFE3F2;max-width:60ch}
-.prizebox{background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.28);border-radius:18px;padding:24px}
-.prizebox b{display:block;font-size:2.4rem;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--gold)}
-.prizebox span{display:block;color:var(--mute);font-size:.9rem;margin:6px 0 20px}
-.prizebox span:last-child{margin-bottom:0}
-
-.costnote{
-  background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.28);
-  border-radius:18px;padding:clamp(20px,3vw,30px);margin-top:22px;max-width:70ch;
-}
-.costnote h3{margin-bottom:.5em}
-/* The fee shown as an arithmetic, because a percentage in a sentence
-   is skimmed and a worked example is not. */
-.feebox{background:#08111C;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
-.feeline{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem}
-.feeline:last-child{border-bottom:none}
-.feeline span{color:var(--mute)}
-.feeline b{font-weight:800;white-space:nowrap}
-.feeline.total{border-top:1px solid var(--line);margin-top:4px;padding-top:12px}
-.feeline.total span,.feeline.total b{color:var(--paper)}
-.feeline.paid span{color:var(--paper)}
-.feeline.paid b{color:var(--gold);font-size:1.15rem}
-.costnote p{color:#CFE3F2;margin-bottom:1em}
-.costnote p:last-child{margin-bottom:0}
-
-.paths{display:grid;grid-template-columns:1.25fr .95fr;gap:22px;margin-top:34px}
-@media(max-width:820px){.paths{grid-template-columns:1fr}}
-.path{border:1px solid var(--line);border-radius:12px;padding:clamp(24px,3vw,34px)}
-.path-teams{background:linear-gradient(168deg,#0A1A2B,#0A1420)}
-.path h3{margin-bottom:.7em}
-.path ul{margin:0 0 1.6em;padding:0;list-style:none}
-.path li{padding:9px 0 9px 22px;position:relative;color:var(--mute);font-size:.98rem;border-bottom:1px solid rgba(255,255,255,.055)}
-.path li:last-child{border-bottom:0}
-.path li::before{content:"";position:absolute;left:0;top:18px;width:9px;height:2px;background:var(--gold)}
-.path-merchants li::before{background:var(--leather)}
-
-/* ---------- close ---------- */
-.close{border-top:1px solid var(--line);padding:clamp(54px,8vw,96px) 0;text-align:center}
-.close p{color:var(--mute);max-width:52ch;margin-left:auto;margin-right:auto}
-.close .hero-actions{justify-content:center}
-
-footer{border-top:1px solid var(--line);padding:30px 0 44px;font-size:.85rem;color:var(--mute)}
-.footin{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
-.footlinks{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
 footer a{color:var(--mute)}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap navin">
-    <a class="mark" href="#top"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
-    <div class="navlinks">
-      <a href="#how" data-t="navHow">How it works</a>
-      <a href="#followup" data-t="navFollow">No chasing</a>
-      <a href="#prizes" data-t="navPrize">No prizes</a>
-      <a href="scoring.html" data-t="navScoring">The scoring</a>
-      <a href="#cost" data-t="navCost">What it costs</a>
-      <!-- The games live at the root of this domain, so a school can
-           see the product rather than only read about it. -->
-      <a href="index.html" data-t="navGames">Play the games</a>
-      <button id="lang" onclick="flip()">ES</button>
-    </div>
+<nav><div class="wrap navin">
+  <a class="mark" href="#top"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <div class="navr">
+    <a href="index.html" data-t="navPlay">Play a challenge</a>
+    <a href="scoring.html" data-t="navScoring">The scoring</a>
+    <button id="lang" onclick="flip()">ES</button>
   </div>
-</nav>
+</div></nav>
 
-<header id="top">
-  <div class="wrap hero">
-    <div>
-      <h1 data-t="h1">Sponsors pledge for every point your students score.</h1>
-      <p class="lede" data-t="lede">Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar collected goes to the program. No boxes, no catalogues, nobody selling door to door.</p>
-      <div class="hero-actions">
-        <a class="btn btn-solid" href="signup.html" data-t="ctaTeam">Start a school fundraiser</a>
-        <a class="btn btn-line" href="index.html" data-t="ctaPlay">Try the games</a>
-      </div>
-    </div>
-
-    <div>
-      <div class="card">
-        <div class="card-top">
-          <span class="card-brand" data-t="exBrand">What a run is worth</span>
-          <span class="card-meta" data-t="exMeta">at 25¢ a point</span>
-        </div>
-        <div class="ex">
-          <div><span data-t="exL10">Holds 10 rounds</span><b>55 pts · $13.75</b></div>
-          <div><span data-t="exL15">Holds 15 rounds</span><b>120 pts · $30.00</b></div>
-          <div class="hi"><span data-t="exL20">Holds 20 rounds</span><b>210 pts · $52.50</b></div>
-        </div>
-        <p class="card-hint" data-t="exHint">One sponsor. One run. Every level is worth more than the last.</p>
-      </div>
-    </div>
+<header id="top"><div class="wrap">
+  <h1 data-t="h1">Memory challenges that <em>raise money</em> for your school.</h1>
+  <p class="lede" data-t="lede">Students play. Sponsors pledge for every point scored. The school keeps what is collected.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="signup.html" data-t="cta1">Set my school up</a>
+    <a class="btn btn-line" href="index.html" data-t="cta2">Try a challenge</a>
   </div>
-</header>
+</div></header>
 
-<section class="split wrap" id="how">
-  <h2 data-t="h2money">Where the money goes</h2>
-  <div class="money">
-    <div class="hi"><b data-t="mHalf">Half</b><span data-t="m1">Straight to the program</span></div>
-    <div><b data-t="mHalf2">Half</b><span data-t="m2">Runs the platform</span></div>
-    <div><b>$0</b><span data-t="m3">Cost to sign up</span></div>
-  </div>
+<div class="wrap">
 
   <div class="steps">
     <div class="step">
-      <div>
-        <h3 data-t="s1h">Sponsors pledge per point</h3>
-        <p data-t="s1p">A student shares their link. Family, neighbours and friends pledge any amount per point — a dime, a quarter, a dollar. Nothing is charged when they pledge.</p>
-      </div>
+      <span class="n">1</span>
+      <b data-t="s1h">Students find sponsors</b>
+      <span data-t="s1p">Each student shares a link. Family and friends pledge any amount per point. Nothing is charged yet.</span>
     </div>
     <div class="step">
-      <div>
-        <h3 data-t="s2h">Students practise free</h3>
-        <p data-t="s2p">All three games are open to anyone, any time, with nothing recorded. Nobody goes into their run cold.</p>
-      </div>
+      <span class="n">2</span>
+      <b data-t="s2h">Students play, once</b>
+      <span data-t="s2p">Practice is free. Then one official run, scored by our software — twelve rounds is 78 points.</span>
     </div>
     <div class="step">
-      <div>
-        <h3 data-t="s3h">One official run each</h3>
-        <p data-t="s3p">The score is the longest chain they hold. Reach level 12 and that is 78 points. Our software counts it, so there is nothing to argue about.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div>
-        <h3 data-t="s4h">Invoices go out, the program gets paid</h3>
-        <p data-t="s4p">Each sponsor is billed their pledge against their student's score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar collected.</p>
-      </div>
+      <span class="n">3</span>
+      <b data-t="s3h">Sponsors are invoiced</b>
+      <span data-t="s3p">Their pledge times the points scored. The school chases nobody, and keeps 100% of what is collected.</span>
     </div>
   </div>
-</section>
 
-<section class="split wrap" id="followup">
-  <h2 data-t="h2follow">Nobody chases anyone</h2>
-  <div class="prizewrap">
-    <div>
-      <p data-t="fu1">This is the part that sinks most pledge drives. The event goes well, and then someone spends three weeks with a spreadsheet, working out who owes what, sending reminders and making phone calls nobody wants to make.</p>
-      <p data-t="fu2">None of that lands on you. The moment the scores are in, every sponsor is invoiced automatically for their own pledge against their own student's score. Stripe sends the invoice, sends the reminders, and takes the payment.</p>
-      <p data-t="fu3">You watch it from your dashboard — who pledged, who has been invoiced, who has paid. After thirty days the books close. Whatever came in came in, and nobody spends the season asking a neighbour for twelve dollars.</p>
-    </div>
-    <div class="prizebox">
-      <b data-t="fuB1">0</b><span data-t="fuB1s">Phone calls you have to make</span>
-      <b data-t="fuB2">0</b><span data-t="fuB2s">Envelopes, cash or spreadsheets</span>
-      <b data-t="fuB3">30</b><span data-t="fuB3s">Days to pay, then it closes</span>
-    </div>
-  </div>
-</section>
-
-<section class="split wrap" id="prizes">
-  <h2 data-t="h2prize">Nothing to buy, nothing to hand out</h2>
-  <div class="prizewrap">
-    <div>
-      <p data-t="pz1">Most fundraisers need a prize ladder — trinkets at $35, a water bottle at $50, a T-shirt at $100. Somebody has to choose it, buy it, store it and give it out, and the program is spending money before it has raised any.</p>
-      <p data-t="pz2">Ours has the prize built in. There is a score, it goes on a board next to their classmates' scores, and a student wants theirs to be higher. That is the whole motivation, and it costs nobody anything.</p>
-      <p data-t="pz3">It is fairer, too. A prize ladder rewards whoever has the wealthiest relatives. A score rewards whoever plays best — which is what you wanted to reward anyway.</p>
-    </div>
-    <div class="prizebox">
-      <b data-t="pzB1">$0</b><span data-t="pzB1s">Spent on prizes</span>
-      <b data-t="pzB2">0</b><span data-t="pzB2s">Things to order, store or hand out</span>
-      <b data-t="pzB3">1</b><span data-t="pzB3s">Board everybody wants to be top of</span>
-    </div>
-  </div>
-</section>
-
-<section class="split wrap" id="cost">
-  <h2 data-t="h2cost">What it costs</h2>
-
-  <div class="money">
-    <div><b>$0</b><span data-t="c1">To sign up</span></div>
-    <div><b>$0</b><span data-t="c2">Upfront, ever</span></div>
-    <div class="hi"><b data-t="cHalf">100%</b><span data-t="c3">Of what is collected, to your program</span></div>
+  <div class="cost">
+    <h2 data-t="costH">Free for your school.</h2>
+    <p data-t="costP">No setup fee, no monthly fee, no contract, and nothing deducted from what you raise.</p>
+    <p class="fine" data-t="costFine">We add 10% to each sponsor's invoice. That is our only fee.</p>
   </div>
 
-  <div class="costnote">
-    <h3 data-t="costH">Said plainly</h3>
-
-    <div class="feebox">
-      <div class="feeline"><span data-t="fl1">A sponsor pledges</span><b>$25.00</b></div>
-      <div class="feeline"><span data-t="fl2">Platform fee, 10%, added to their invoice</span><b>$2.50</b></div>
-      <div class="feeline total"><span data-t="fl3">Their invoice</span><b>$27.50</b></div>
-      <div class="feeline paid"><span data-t="fl4">Your program receives, once it is paid</span><b>$25.00</b></div>
-    </div>
-
-    <p data-t="costP1">We charge the school nothing. Our fee is a flat <b>10% of each pledge</b>, added on top of the sponsor's invoice as its own line — so the program is never billed, and never has anything deducted.</p>
-    <p data-t="costP2">There is nothing else. No setup fee, no monthly fee, no minimum, no contract and no charge for the challenges themselves. The 10% is the only money we make.</p>
-    <p data-t="costP3">And it is only earned on money that actually arrives. If a sponsor never pays their invoice, the program receives nothing for that pledge and neither do we.</p>
-  </div>
-</section>
-
-<section class="close" id="contact">
-  <div class="wrap">
+  <div class="close">
     <h2 data-t="closeH">We will set it up for you.</h2>
-    <p data-t="closeP">Tell us about your program and we will build the whole thing — your campaign, your roster and a link for every student — and send it to you to look at. Nothing goes live and nobody is charged until you say so.</p>
-    <div class="hero-actions">
-      <a class="btn btn-solid" href="signup.html" data-t="closeCta">Set my program up</a>
-      <a class="btn btn-line" href="index.html" data-t="closeCta2">Try the games first</a>
+    <p data-t="closeP">Tell us about your school and we will build it — roster, grades, a link for every student — and send it over. Nothing goes live until you say so.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="signup.html" data-t="cta1b">Set my school up</a>
     </div>
   </div>
-</section>
 
-<footer>
-  <div class="wrap footin">
-    <span>Gostar Digital LLC — Puerto Rico</span>
-    <span class="footlinks">
-      <a href="terms.html" data-t="termsLink">Terms</a>
-      <a href="privacy.html" data-t="privacyLink">Privacy</a>
-      <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a>
-      <a href="https://cashflowhoops.com/?signin=coach" data-t="coachSignin">School sign in</a>
-    </span>
-  </div>
-</footer>
+</div>
+
+<footer><div class="wrap">
+  Gostar Digital LLC — Puerto Rico ·
+  <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> ·
+  <a href="scoring.html" data-t="fScoring">The scoring</a> ·
+  <a href="terms.html" data-t="fTerms">Terms</a> ·
+  <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+</div></footer>
 
 <script>
-let lang = (navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en';
-
-/* ---- language ---- */
-const T = {
+var T = {
   en:{
-    h1:'Sponsors pledge for every point your students score.',
-    lede:'Your students play a memory challenge and find sponsors who pledge whatever they like per point. One official run each, and every dollar collected goes to the program. No boxes, no catalogues, nobody selling door to door.',
-    ctaPlay:'Try the games',
-    exBrand:'What a run is worth', exMeta:'at 25\u00a2 a point',
-    exL10:'Holds 10 rounds', exL15:'Holds 15 rounds', exL20:'Holds 20 rounds',
-    exHint:'One sponsor. One run. Every round is worth more than the last.',
-    h2money:'Where the money goes',
-    mHalf:'100%', mHalf2:'10%',
-    m1:'Of what is collected, to the program', m2:'Added to the sponsor invoice', m3:'Cost to sign up',
-    s1h:'Sponsors pledge per point',
-    s1p:'A student shares their link. Family, neighbours and friends pledge any amount per point \u2014 a dime, a quarter, a dollar. Nothing is charged when they pledge.',
-    s2h:'Students practise free',
-    s2p:'All three challenges are open to anyone, any time, with nothing recorded. Nobody goes into their run cold, and the practice is the part that sharpens.',
-    s3h:'One official run each',
-    s3p:'The score is the longest chain they hold. Twelve rounds is 78 points. Our software counts it, so there is nothing to argue about — and every round is working memory under pressure.',
-    s4h:'Sponsors are invoiced, the program gets paid',
-    s4p:'Each sponsor is billed their pledge against their student\u2019s score, plus a 10% platform fee, with thirty days to pay. The program receives every dollar collected.',
-    navFollow:'No chasing',
-    h2follow:'Nobody chases anyone',
-    fu1:'This is the part that sinks most pledge drives. The event goes well, and then someone spends three weeks with a spreadsheet, working out who owes what, sending reminders and making phone calls nobody wants to make.',
-    fu2:"None of that lands on you. The moment the scores are in, every sponsor is invoiced automatically for their own pledge against their own student's score. Stripe sends the invoice, sends the reminders, and takes the payment.",
-    fu3:'You watch it from your dashboard — who pledged, who has been invoiced, who has paid. After thirty days the books close. Whatever came in came in, and nobody spends the season asking a neighbour for twelve dollars.',
-    fuB1:'0', fuB1s:'Phone calls you have to make',
-    fuB2:'0', fuB2s:'Envelopes, cash or spreadsheets',
-    fuB3:'30', fuB3s:'Days to pay, then it closes',
-    navPrize:'No prizes',
-    h2prize:'Nothing to buy, nothing to hand out',
-    pz1:'Most fundraisers need a prize ladder — trinkets at $35, a water bottle at $50, a T-shirt at $100. Somebody has to choose it, buy it, store it and give it out, and the program is spending money before it has raised any.',
-    pz2:"Ours has the prize built in. There is a score, it goes on a board next to their classmates' scores, and a student wants theirs to be higher. That is the whole motivation, and it costs nobody anything.",
-    pz3:'It is fairer, too. A prize ladder rewards whoever has the wealthiest relatives. A score rewards whoever plays best — which is what you wanted to reward anyway.',
-    pzB1:'$0', pzB1s:'Spent on prizes',
-    pzB2:'0', pzB2s:'Things to order, store or hand out',
-    pzB3:'1', pzB3s:'Board everybody wants to be top of',
-    navScoring:'The scoring',
-    navCost:'What it costs',
-    h2cost:'What it costs',
-    c1:'To sign up', c2:'Upfront, ever', cHalf:'100%', c3:'Of what is collected, to your program',
-    fl1:'A sponsor pledges', fl2:'Platform fee, 10%, added to their invoice',
-    fl3:'Their invoice', fl4:'Your program receives, once it is paid',
-    costH:'Said plainly',
-    costP1:"We charge the school nothing. Our fee is a flat <b>10% of each pledge</b>, added on top of the sponsor's invoice as its own line — so the program is never billed, and never has anything deducted.",
-    costP2:'There is nothing else. No setup fee, no monthly fee, no minimum, no contract and no charge for the challenges themselves. The 10% is the only money we make.',
-    costP3:'And it is only earned on money that actually arrives. If a sponsor never pays their invoice, the program receives nothing for that pledge and neither do we.',
-    closeCta2:'Try the games first',
-    navHow:'How it works',
-    navGames:'Play the games',
-    ctaTeam:'Start a school fundraiser',
+    navPlay:'Play a challenge', navScoring:'The scoring',
+    h1:'Memory challenges that <em>raise money</em> for your school.',
+    lede:'Students play. Sponsors pledge for every point scored. The school keeps what is collected.',
+    cta1:'Set my school up', cta2:'Try a challenge', cta1b:'Set my school up',
+    s1h:'Students find sponsors',
+    s1p:'Each student shares a link. Family and friends pledge any amount per point. Nothing is charged yet.',
+    s2h:'Students play, once',
+    s2p:'Practice is free. Then one official run, scored by our software — twelve rounds is 78 points.',
+    s3h:'Sponsors are invoiced',
+    s3p:'Their pledge times the points scored. The school chases nobody, and keeps 100% of what is collected.',
+    costH:'Free for your school.',
+    costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise.',
+    costFine:"We add 10% to each sponsor's invoice. That is our only fee.",
     closeH:'We will set it up for you.',
-    closeP:'Tell us about your program and we will build the whole thing — your campaign, your roster and a link for every student — and send it to you to look at. Nothing goes live and nobody is charged until you say so.',
-    closeCta:'Set my program up', coachSignin:'School sign in', termsLink:'Terms', privacyLink:'Privacy'
+    closeP:'Tell us about your school and we will build it — roster, grades, a link for every student — and send it over. Nothing goes live until you say so.',
+    fScoring:'The scoring', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    h1:'Los padrinos prometen por cada punto que anoten tus estudiantes.',
-    lede:'Tus estudiantes juegan un reto de memoria y consiguen padrinos que prometen lo que quieran por punto. Una corrida oficial cada uno, y cada d\u00f3lar prometido va al programa. Sin cajas, sin cat\u00e1logos, sin vender puerta por puerta.',
-    ctaPlay:'Prueba los juegos',
-    exBrand:'Cu\u00e1nto vale una corrida', exMeta:'a 25\u00a2 por punto',
-    exL10:'Aguanta 10 rondas', exL15:'Aguanta 15 rondas', exL20:'Aguanta 20 rondas',
-    exHint:'Un padrino. Una corrida. Cada ronda vale m\u00e1s que la anterior.',
-    h2money:'A d\u00f3nde va el dinero',
-    mHalf:'100%', mHalf2:'10%',
-    m1:'De lo cobrado, al programa', m2:'A\u00f1adido a la factura del padrino', m3:'Costo de inscribirse',
-    s1h:'Los padrinos prometen por punto',
-    s1p:'El estudiante comparte su enlace. Familia, vecinos y amigos prometen lo que quieran por punto \u2014 diez centavos, veinticinco, un d\u00f3lar. No se cobra nada al prometer.',
-    s2h:'Los estudiantes practican gratis',
-    s2p:'Los tres juegos est\u00e1n abiertos para cualquiera, a cualquier hora, sin guardar nada. Nadie llega en fr\u00edo a su corrida.',
-    s3h:'Una corrida oficial cada uno',
-    s3p:'La puntuaci\u00f3n es la cadena m\u00e1s larga que aguanten. Doce rondas son 78 puntos. Nuestro programa los cuenta, as\u00ed que no hay nada que discutir — y cada ronda es memoria de trabajo bajo presi\u00f3n.',
-    s4h:'Se factura a los padrinos, el programa cobra',
-    s4p:'A cada padrino se le factura su promesa seg\u00fan la puntuaci\u00f3n de su estudiante, m\u00e1s un cargo de plataforma de 10%, con treinta d\u00edas para pagar. El programa recibe cada d\u00f3lar prometido.',
-    navFollow:'Sin perseguir',
-    h2follow:'Nadie persigue a nadie',
-    fu1:'Esta es la parte que hunde a la mayor\u00eda de las recaudaciones por promesa. El evento sale bien, y despu\u00e9s alguien pasa tres semanas con una hoja de c\u00e1lculo, averiguando qui\u00e9n debe qu\u00e9, mandando recordatorios y haciendo llamadas que nadie quiere hacer.',
-    fu2:'Nada de eso te cae a ti. En cuanto entran las puntuaciones, a cada padrino se le factura autom\u00e1ticamente su propia promesa seg\u00fan la puntuaci\u00f3n de su propio jugador. Stripe manda la factura, manda los recordatorios y cobra.',
-    fu3:'T\u00fa lo ves desde tu panel — qui\u00e9n prometi\u00f3, a qui\u00e9n se le factur\u00f3, qui\u00e9n pag\u00f3. A los treinta d\u00edas se cierran los libros. Lo que entr\u00f3, entr\u00f3, y nadie se pasa la temporada pidi\u00e9ndole doce d\u00f3lares a un vecino.',
-    fuB1:'0', fuB1s:'Llamadas que tienes que hacer',
-    fuB2:'0', fuB2s:'Sobres, efectivo u hojas de c\u00e1lculo',
-    fuB3:'30', fuB3s:'D\u00edas para pagar, y se cierra',
-    navPrize:'Sin premios',
-    h2prize:'Nada que comprar, nada que repartir',
-    pz1:'La mayor\u00eda de las recaudaciones necesitan una escalera de premios — chucher\u00edas a $35, una botella a $50, una camiseta a $100. Alguien tiene que escogerlo, comprarlo, guardarlo y repartirlo, y el programa gasta dinero antes de recaudar nada.',
-    pz2:'La nuestra trae el premio adentro. Hay una puntuaci\u00f3n, va en un tablero al lado de la de sus compa\u00f1eros, y cada jugador quiere que la suya sea m\u00e1s alta. Esa es toda la motivaci\u00f3n, y no le cuesta nada a nadie.',
-    pz3:'Y es m\u00e1s justo. Una escalera de premios premia a quien tenga los familiares con m\u00e1s dinero. Una puntuaci\u00f3n premia a quien mejor juegue — que es lo que quer\u00edas premiar de todas formas.',
-    pzB1:'$0', pzB1s:'Gastados en premios',
-    pzB2:'0', pzB2s:'Cosas que pedir, guardar o repartir',
-    pzB3:'1', pzB3s:'Tablero en el que todos quieren estar arriba',
-    navScoring:'La puntuación',
-    navCost:'Lo que cuesta',
-    h2cost:'Lo que cuesta',
-    c1:'Por inscribirte', c2:'Por adelantado, nunca', cHalf:'100%', c3:'De lo cobrado, para tu programa',
-    fl1:'Un padrino promete', fl2:'Cargo de plataforma, 10%, a\u00f1adido a su factura',
-    fl3:'Su factura', fl4:'Tu programa recibe, una vez pagada',
-    costH:'Dicho claro',
-    costP1:'Tu programa se queda con cada d\u00f3lar prometido. A nosotros nos paga un cargo de plataforma de 10% que se le a\u00f1ade a la factura del padrino, en su propia l\u00ednea para que nada quede escondido.',
-    costP2:'Esto es lo que compra. Nosotros ponemos todo — los retos que juegan tus estudiantes, la anotaci\u00f3n, la p\u00e1gina donde promete cada padrino y la facturaci\u00f3n despu\u00e9s. Nosotros perseguimos las facturas y asumimos el costo cuando una queda sin pagar. Lo tuyo son los estudiantes y una fecha.',
-    costP3:'Y solo se gana sobre el dinero que de verdad entra. Si un padrino nunca paga su factura, el programa no recibe nada por esa promesa y nosotros tampoco.',
-    closeCta2:'Prueba los juegos primero',
-    navHow:'Cómo funciona',
-    navGames:'Juega los juegos',
-    ctaTeam:'Empieza con tu escuela',
+    navPlay:'Prueba un reto', navScoring:'La puntuación',
+    h1:'Retos de memoria que <em>recaudan</em> para tu escuela.',
+    lede:'Los estudiantes juegan. Los padrinos prometen por cada punto anotado. La escuela se queda con lo cobrado.',
+    cta1:'Monta mi escuela', cta2:'Prueba un reto', cta1b:'Monta mi escuela',
+    s1h:'Los estudiantes consiguen padrinos',
+    s1p:'Cada estudiante comparte un enlace. Familia y amigos prometen lo que quieran por punto. Todavía no se cobra nada.',
+    s2h:'Los estudiantes juegan, una vez',
+    s2p:'La práctica es gratis. Después, una corrida oficial puntuada por nuestro programa — doce rondas son 78 puntos.',
+    s3h:'Se factura a los padrinos',
+    s3p:'Su promesa por los puntos anotados. La escuela no persigue a nadie, y se queda con el 100% de lo cobrado.',
+    costH:'Gratis para tu escuela.',
+    costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas.',
+    costFine:'Le añadimos 10% a la factura de cada padrino. Ese es nuestro único cargo.',
     closeH:'Te lo montamos nosotros.',
-    closeP:'Cuéntanos de tu programa y te armamos todo — tu campaña, tu lista y un enlace para cada estudiante — y te lo mandamos para que lo veas. Nada sale al aire y nadie paga hasta que tú lo digas.',
-    closeCta:'Monta mi programa', coachSignin:'Acceso de escuela', termsLink:'Términos', privacyLink:'Privacidad'
+    closeP:'Cuéntanos de tu escuela y lo armamos — lista, grados, un enlace para cada estudiante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
+    fScoring:'La puntuación', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
+var lang = 'en';
+try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+
 function paint(){
   document.documentElement.lang = lang;
-  document.querySelectorAll('[data-t]').forEach(el=>{
-    const v = T[lang][el.getAttribute('data-t')];
-    if(v) el.textContent = v;
+  document.querySelectorAll('[data-t]').forEach(function(el){
+    var key = el.getAttribute('data-t');
+    var v = (T[lang] && T[lang][key]) || T.en[key];
+    if (!v) return;
+    // the headline carries its own emphasis
+    if (v.indexOf('<') !== -1) el.innerHTML = v; else el.textContent = v;
   });
   document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
 }
 
 function flip(){
   lang = lang === 'en' ? 'es' : 'en';
-  try{ localStorage.setItem('cfh_lang', lang); }catch(e){}
+  try { localStorage.setItem('cfh_lang', lang); } catch(e){}
   paint();
 }
 
-try{ lang = localStorage.getItem('cfh_lang') || lang; }catch(e){}
 paint();
 </script>
 </body>
