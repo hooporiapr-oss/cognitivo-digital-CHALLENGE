@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk to us — Cognitivo Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#050A12;--paper:#EAF4FB;--mute:#8AA4BD;--line:#1E3550;--panel:#0D1826;--gold:#22D3EE}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{width:min(720px,92vw);margin:0 auto}
+
+nav{border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
+.mark{display:block;line-height:0;text-decoration:none}
+.mark img{display:block;height:34px;width:auto}
+@media(max-width:560px){.mark img{height:26px}}
+.navr{display:flex;align-items:center;gap:16px}
+.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
+.navr a:hover{color:var(--paper)}
+#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+
+header{padding:clamp(40px,7vw,64px) 0 26px}
+h1{font-size:clamp(1.9rem,5.5vw,2.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:0 0 .4em;max-width:16ch}
+.lede{color:#CFE3F2;max-width:52ch;margin:0}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3.5vw,32px);margin-bottom:40px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.full{grid-column:1/-1}
+label{display:block;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
+input,textarea{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;background:#08111C;color:#fff;font-family:inherit;font-size:1rem}
+textarea{height:110px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+
+.send{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px}
+.btn{flex:1 1 220px;padding:16px 22px;border:none;border-radius:12px;font-family:inherit;font-size:.95rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;background:var(--gold);color:#04121A}
+.btn:disabled{opacity:.55;cursor:default}
+.msg{flex:1 1 220px;font-size:.93rem;font-weight:600;min-height:22px}
+
+.direct{color:var(--mute);font-size:.95rem;text-align:center;margin:0 0 44px}
+.direct a{color:var(--gold)}
+
+footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
+footer a{color:var(--mute)}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap navin">
+  <a class="mark" href="index.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <div class="navr">
+    <a href="challenges.html" data-t="navPlay">The challenges</a>
+    <a href="scoring.html" data-t="navScoring">The scoring</a>
+    <button id="lang" onclick="flip()">ES</button>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <h1 data-t="h1">Talk to us.</h1>
+  <p class="lede" data-t="lede">Tell us about your school and we will build the whole thing — your roster, your grades, a link for every student — and send it over to look at. Nothing goes live until you say so.</p>
+</div></header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="grid">
+      <div class="full">
+        <label data-t="lSchool">School or program</label>
+        <input type="text" id="programName" maxlength="80">
+      </div>
+      <div>
+        <label data-t="lName">Your name</label>
+        <input type="text" id="contactName" maxlength="60" autocomplete="name">
+      </div>
+      <div>
+        <label data-t="lPhone">Phone</label>
+        <input type="tel" id="contactPhone" maxlength="30" autocomplete="tel">
+      </div>
+      <div>
+        <label data-t="lEmail">Email</label>
+        <input type="email" id="contactEmail" maxlength="120" autocomplete="email">
+      </div>
+      <div>
+        <label data-t="lStudents">How many students</label>
+        <input type="number" id="players" min="1" max="5000">
+      </div>
+      <div class="full">
+        <label data-t="lNotes">Anything you want to tell us</label>
+        <textarea id="notes" maxlength="600" data-tph="phNotes" placeholder="What you are raising for, when you would like to run it, anything else."></textarea>
+      </div>
+    </div>
+
+    <div class="send">
+      <button class="btn" id="submit" data-t="submit">Send it</button>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+
+  <p class="direct" data-t="direct">Or write to us directly at <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a>.</p>
+</div>
+
+<footer><div class="wrap">
+  Gostar Digital LLC — Puerto Rico ·
+  <a href="scoring.html" data-t="fScoring">The scoring</a> ·
+  <a href="terms.html" data-t="fTerms">Terms</a> ·
+  <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+</div></footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+var SERVER='https://basketball-money-payments.onrender.com';
+
+var T = {
+  en:{
+    navPlay:'The challenges', navScoring:'The scoring',
+    h1:'Talk to us.',
+    lede:'Tell us about your school and we will build the whole thing — your roster, your grades, a link for every student — and send it over to look at. Nothing goes live until you say so.',
+    lSchool:'School or program', lName:'Your name', lPhone:'Phone', lEmail:'Email',
+    lStudents:'How many students', lNotes:'Anything you want to tell us',
+    phNotes:'What you are raising for, when you would like to run it, anything else.',
+    submit:'Send it',
+    direct:'Or write to us directly at ',
+    needSchool:'Please tell us which school this is.',
+    needName:'Please enter your name.',
+    needEmail:'Please enter a valid email — that is how we reach you.',
+    sending:'Sending…',
+    sent:'✓ Thank you. We have your details and will be in touch within a day.',
+    failed:'Could not send that — please try again, or email us.',
+    fScoring:'The scoring', fTerms:'Terms', fPrivacy:'Privacy'
+  },
+  es:{
+    navPlay:'Los retos', navScoring:'La puntuación',
+    h1:'Habla con nosotros.',
+    lede:'Cuéntanos de tu escuela y lo armamos todo — tu lista, tus grados, un enlace para cada estudiante — y te lo mandamos para que lo veas. Nada sale al aire hasta que tú lo digas.',
+    lSchool:'Escuela o programa', lName:'Tu nombre', lPhone:'Teléfono', lEmail:'Correo',
+    lStudents:'Cuántos estudiantes', lNotes:'Lo que nos quieras contar',
+    phNotes:'Para qué recaudan, cuándo lo quieren correr, lo que sea.',
+    submit:'Enviar',
+    direct:'O escríbenos directamente a ',
+    needSchool:'Por favor dinos de qué escuela se trata.',
+    needName:'Por favor entra tu nombre.',
+    needEmail:'Por favor entra un correo válido — así te contactamos.',
+    sending:'Enviando…',
+    sent:'✓ Gracias. Tenemos tus datos y te contactamos en un día.',
+    failed:'No se pudo enviar — intenta de nuevo o escríbenos.',
+    fScoring:'La puntuación', fTerms:'Términos', fPrivacy:'Privacidad'
+  }
+};
+
+var lang = 'en';
+try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+
+function paint(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach(function(el){
+    var k = el.getAttribute('data-t');
+    var v = t(k);
+    if (!v) return;
+    // the direct line keeps its link
+    if (k === 'direct'){
+      el.innerHTML = v + '<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a>.';
+      return;
+    }
+    el.textContent = v;
+  });
+  document.querySelectorAll('[data-tph]').forEach(function(el){
+    el.setAttribute('placeholder', t(el.getAttribute('data-tph')));
+  });
+  document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
+}
+function flip(){
+  lang = lang === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('cfh_lang', lang); } catch(e){}
+  paint();
+}
+
+function val(id){ return (document.getElementById(id).value || '').trim(); }
+function fail(m){ var el=document.getElementById('msg'); el.style.color='#ff8888'; el.textContent=m; }
+
+document.getElementById('submit').addEventListener('click', function(){
+  var btn = this, msg = document.getElementById('msg');
+
+  if (!val('programName')) return fail(t('needSchool'));
+  if (!val('contactName')) return fail(t('needName'));
+  var email = val('contactEmail');
+  if (!email || email.indexOf('@') === -1) return fail(t('needEmail'));
+
+  btn.disabled = true;
+  msg.style.color = 'var(--mute)';
+  msg.textContent = t('sending');
+
+  // The id is made here rather than read back — enquiries are
+  // admin-only to read, so asking for the saved row is refused.
+  var newId = (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){
+        var r = Math.random()*16|0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+
+  fetch(SB_URL + '/rest/v1/program_applications', {
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      id: newId,
+      program_name: val('programName'),
+      org_type: 'school',
+      contact_name: val('contactName'),
+      contact_email: email,
+      contact_phone: val('contactPhone') || null,
+      players: parseInt(val('players'), 10) || null,
+      payee_name: val('programName'),
+      notes: val('notes') || null,
+      attested: true
+    })
+  })
+  .then(function(r){
+    if (!r.ok) throw new Error('save failed');
+
+    // Telling the office is a separate, best-effort step — if it
+    // fails the enquiry is still saved.
+    fetch(SERVER + '/notify-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: newId })
+    }).catch(function(){});
+
+    msg.style.color = '#6f6';
+    msg.textContent = t('sent');
+    document.querySelectorAll('input,textarea').forEach(function(el){ el.value = ''; });
+    btn.disabled = false;
+  })
+  .catch(function(e){
+    console.error('Enquiry failed:', e);
+    btn.disabled = false;
+    fail(t('failed'));
+  });
+});
+
+paint();
+</script>
+</body>
+</html>
