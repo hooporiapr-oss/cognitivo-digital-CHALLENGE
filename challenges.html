@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The challenges — Cognitivo Digital</title>
+<style>
+:root{
+  /* Taken from the logo: deep blue-black, electric cyan, and a
+     brighter blue for the accents that used to be gold. */
+  --ink:#050A12;
+  --panel:#0D1826;
+  --line:#1E3550;
+  --purple:#38BDF8;
+  --purple-deep:#0C7FC4;
+  --gold:#22D3EE;
+  --paper:#EAF4FB;
+  --mute:#8AA4BD;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--ink);color:var(--paper);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.wrap{width:min(620px,92vw);margin:0 auto;padding:26px 0 60px}
+
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:900;font-style:italic;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+h1 span{color:var(--purple)}
+h2{font-size:1.15rem;font-weight:900;letter-spacing:-.01em;margin:0 0 .5em}
+.kick{font-size:.68rem;font-weight:900;letter-spacing:.26em;text-transform:uppercase;color:var(--purple);margin-bottom:8px}
+p{margin:0 0 1em;color:#ded5e8}
+.mute{color:var(--mute);font-size:.9rem}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0}
+
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:14px 0}
+.stat{background:#0e0a14;border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center}
+.stat-label{font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:5px}
+.stat-val{font-size:1.7rem;font-weight:900;line-height:1}
+.stat.gold .stat-val{color:var(--gold)}
+.stat.purple .stat-val{color:var(--purple)}
+
+label{display:block;font-size:.66rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:14px 0 6px}
+input{
+  width:100%;padding:13px 14px;border-radius:10px;
+  border:1px solid #ffffff1f;background:#0e0a14;color:#fff;
+  font-family:inherit;font-size:1rem;
+}
+input:focus{outline:none;border-color:var(--purple)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:100%;padding:15px;border:none;border-radius:12px;
+  font-family:inherit;font-size:1rem;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;text-decoration:none;
+  background:linear-gradient(135deg,var(--purple-deep),var(--purple));color:#fff;
+}
+.btn:active{transform:scale(.99)}
+.btn.gold{background:linear-gradient(135deg,#ffd35a,#ff8c42);color:#2a1a00}
+.btn.line{background:transparent;border:1px solid var(--line);color:var(--paper)}
+
+.pledge-preview{
+  margin-top:12px;padding:12px 14px;border-radius:10px;
+  background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.25);
+  font-size:.9rem;color:var(--gold);min-height:44px;display:flex;align-items:center;
+}
+
+.roster a{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:13px 14px;background:#0e0a14;border:1px solid var(--line);
+  border-radius:10px;margin:7px 0;text-decoration:none;color:var(--paper);
+}
+.roster .pts{color:var(--gold);font-weight:900;flex-shrink:0}
+
+.steps{counter-reset:s;margin-top:10px}
+.step{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step::before{content:counter(s);font-size:1.5rem;font-weight:900;color:var(--line);line-height:.9}
+.step b{display:block;margin-bottom:2px}
+.step span{color:var(--mute);font-size:.92rem}
+
+.msg{margin-top:14px;font-size:.9rem;font-weight:700;min-height:20px}
+/* One card per game. Each keeps its own colour so the three read as
+   genuinely different things rather than three of the same. */
+.games{display:grid;gap:10px;margin-top:14px}
+.game-card{
+  display:block;padding:16px 18px;border-radius:14px;text-decoration:none;
+  border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
+  transition:transform .08s,background .12s;
+}
+.game-card:active{transform:scale(.985)}
+.game-name{display:block;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.01em;font-size:1.05rem}
+.game-desc{display:block;margin-top:4px;font-size:.85rem;color:var(--mute)}
+.game-card.fortress{border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.07)}
+.game-card.fortress .game-name{color:#22D3EE}
+.game-card.recall{border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.07)}
+.game-card.recall .game-name{color:#38BDF8}
+.game-card.recognition{border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07)}
+.game-card.recognition .game-name{color:#2DD4BF}
+
+/* The landing page's own masthead — everything above the pitch is
+   centred on the logo, which is the one place a first-time visitor
+   should be looking. */
+.brandhead{text-align:center;margin-bottom:22px}
+.brandhead .kick{display:block;margin-bottom:14px}
+.brandhead .logo{
+  display:block;width:min(300px,64vw);height:auto;margin:0 auto 14px;
+}
+.brandhead h1.tagline{
+  font-size:clamp(1.15rem,4vw,1.5rem);font-weight:700;font-style:normal;
+  letter-spacing:-.01em;text-transform:none;color:var(--paper);
+  max-width:24ch;margin:0 auto;line-height:1.3;
+}
+.brandhead h1{margin:0}
+
+/* the grade board and the headings that break up a long roster */
+.grade-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
+.grade-row.lead{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08)}
+.grade-row .pts{color:var(--gold);font-weight:900;text-align:right}
+.grade-row .pts .sub{display:block;color:var(--mute);font-weight:700;font-size:.68rem}
+.grade-head{
+  font-size:.66rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin:16px 0 6px;padding-left:2px;
+}
+.roster a:first-child + .grade-head{margin-top:8px}
+
+.tryout-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0e0a14;border:1px solid var(--line);margin:7px 0}
+.tryout-row.lead{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08)}
+.tryout-row b{color:var(--gold);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-left:6px}
+.tryout-row .pts{color:var(--gold);font-weight:900;text-align:right}
+.tryout-row .pts .sub{display:block;color:var(--mute);font-weight:700;font-size:.68rem}
+
+.tryout-play{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;border:1.5px solid var(--line);background:#0e0a14;color:var(--paper)}
+.tryout-play:active{transform:scale(.99)}
+.tryout-play .tp-name{font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem}
+.tryout-play .tp-score{color:var(--mute);font-size:.85rem;flex-shrink:0}
+.tryout-play.fortress{border-color:rgba(56,189,248,.4)} .tryout-play.fortress .tp-name{color:#7DD3FC}
+.tryout-play.recall{border-color:rgba(12,127,196,.4)} .tryout-play.recall .tp-name{color:#67E8F9}
+.tryout-play.recognition{border-color:rgba(34,211,238,.4)} .tryout-play.recognition .tp-name{color:#38BDF8}
+
+.coach-card{
+  display:block;margin-top:18px;padding:18px;border-radius:16px;text-decoration:none;
+  border:1.5px solid rgba(34,211,238,.4);background:rgba(34,211,238,.07);color:var(--paper);
+  transition:transform .08s,background .12s;
+}
+.coach-card:active{transform:scale(.99)}
+.coach-kick{display:block;font-size:.62rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.coach-name{display:block;font-weight:900;font-style:italic;text-transform:uppercase;font-size:1.15rem}
+.coach-desc{display:block;margin-top:5px;font-size:.9rem;color:var(--mute)}
+
+.try-link{
+  display:block;margin-top:10px;text-align:center;font-size:.85rem;
+  color:var(--gold);text-decoration:none;border:1px dashed rgba(34,211,238,.35);
+  border-radius:10px;padding:10px;
+}
+.try-link:active{background:rgba(34,211,238,.08)}
+
+footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-align:center;color:var(--mute);font-size:.8rem}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app">
+  <p class="mute">Loading…</p>
+</div>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+// ══════════════════════════════════════════════════════
+//  Three states, all on this one page:
+//
+//    no parameters      → what the Challenge is, and free practice
+//    ?c=<challenge>     → the team's page: total, roster, team pledge
+//    ?c=..&p=<player>   → a player's page: their score, their pledges
+//
+//  A pledge is a promise, not a payment. Nothing is charged here.
+//  After the run deadline the organizer invoices each sponsor for
+//  their rate times the points actually scored.
+//
+//  POINTS — reaching level n means n(n+1)/2 taps were performed, so
+//  each level is worth more than the one before. Level 12 is 78
+//  points; level 13 is 91.
+// ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+//  LANGUAGE — Puerto Rico, so Spanish is not an afterthought.
+//  Shares its choice with the game through the same key.
+// ══════════════════════════════════════════════════════
+var STR = {
+  en:{ tagline:'A fundraiser that sharpens memory.',
+    lede:'A fundraiser that sharpens memory. Sponsors pledge an amount for every point a student scores, each student gets one official run, and every dollar collected goes to the program.',
+    howTitle:'How it works',
+    s1h:'Sponsors pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
+    s2h:'Students practise free', s2p:'As many runs as they like, on any device. Nobody goes in cold, and the practice is the part that sharpens.',
+    s3h:'One official run', s3p:'A chain that grows by one every round. Hold twelve rounds and that is 78 points — and every round is working memory under pressure.',
+    s4h:'Sponsors are invoiced', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar collected goes to the program.',
+    tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
+    yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
+    runUsed:'run used',
+    tryoutKick:'Program tryout',
+    tryoutLede:'Play all three. Whichever the program scores highest on is the one worth running the fundraiser with.',
+    teamStanding:'How the program is doing', teamStandingNote:'Total points across everyone who has played.',
+    bestFit:'Best so far', playersWord:'students', notPlayed:'Not played yet',
+    yourTryout:'Play each one at least once. Your best run counts.',
+    whoAreYou:'Who are you?', whoAreYouNote:'Tap your name so your scores count for the program.',
+    notMe:'Not me — pick someone else',
+    coachKick:'Schools and programs',
+    coachTitle:'Raise money for your program →',
+    coachDesc:'How it works, what it costs, and how to sign your school up.',
+    feeNote:'Your invoice will be your pledge plus a 10% platform fee. The pledge itself goes to the program.',
+    tryYourself:'Not sure what to pledge? Play it yourself first →',
+    practiceTitle:'Practise any time', 
+    practiceNote:'All three are open to anyone — no code, no account, nothing recorded. Play as much as you like; the practice is the part that sharpens.',
+    gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
+    gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
+    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.', freeNote:'Free to play. Nothing recorded.',
+    haveLink:'Looking for a player or a team? Use the link they sent you.',
+    kick:'Cognitivo Digital',
+    gradeWord:'Grade', noGrade:'No grade', studentsWord:'students',
+    gradeBoard:'How the grades are doing', gradeBoardNote:'Total points scored by everyone in each grade.',
+    teamPoints:'Division points', runsDone:'Runs done',
+    pledgeTeam:'Pledge to the whole division', pledgeTeamNote:'Your pledge is multiplied by the division\u2019s combined points.',
+    rosterTitle:'The students', rosterNote:'Tap a student to pledge to them directly.',
+    noPlayers:'No students yet.', notYet:'not yet', practisingL:'practising · L', pts:'pts',
+    officialPoints:'Official points', levelHeld:'Level held',
+    compBest:'Competition round', compScored:'Which scored',
+    compLine:'{N} reached round {L} in the school competition — {P} points. The official run is still to come, and this is what a pledge would have been worth.',
+    practiceBest:'Practice best', wouldScore:'Would score',
+    runDone:'Official run complete — {L} levels held, {P} points.',
+    practisingNow:'Practising now. {N} has reached level {L} in practice, which would be {P} points. The official run is still to come.',
+    notPractised:'{N} has not practised yet.',
+    closedTitle:'Pledging has closed for this run',
+    closedNote:'The official run is done, so the score is final. You can still pledge to the team.',
+    seeTeam:'← See the whole division',
+    pledgeTo:'Pledge to {N}',
+    pledgeNote:'Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.',
+    yourRunTitle:'Your official run', yourRunDone:'Your run is done',
+    runDoneNote:'You held {L} levels for {P} points. That score is final — but the game is always open.',
+    practiceNote:'Practise as much as you like. Nothing counts until you start the official run, and you only get one.',
+    practiceBtn:'▶ Practice run', officialBtn:'▶ Start official run', practiceOnlyBtn:'▶ Practice',
+    ownPage:'This is your own page. Share the link below with people who want to back you — it lets them pledge, but not play.',
+    copyShare:'Copy my sponsor link',
+    shareCopied:'Link copied — send it to anyone who wants to back you:',
+    copyPrompt:'Copy this link:',
+    yourName:'Your name', yourEmail:'Your email', perPoint:'Amount per point ($)',
+    previewEmpty:'Enter a rate to see what that could come to.',
+    previewLine:'Level 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Level 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Level 20 (210 pts) → <b>{C}</b>',
+    makePledge:'Make this pledge', saving:'Recording your pledge…',
+    pledgeOk:'✓ Pledge recorded. After the official run you will be invoiced {R} per point, plus a 10% platform fee — nothing is charged before then.',
+    thankYou:'Thank you.',
+    needName:'Please enter your name.', needEmail:'Please enter a valid email — the invoice goes there.',
+    needRate:'Please enter an amount per point.', pledgeFail:'Could not save that pledge — please try again.',
+    pledgesClose:'Pledges close', runsBy:'runs by',
+    notFound:'{W} not found', notFoundNote:'Check the link, or ask whoever sent it for a new one.',
+    backHome:'← The challenges', loadFail:'Could not load this page. Please try again.',
+    wordChallenge:'Challenge', wordPlayer:'Student', wordTeam:'The division',
+    footer:'Gostar Digital LLC — Puerto Rico'
+  },
+  es:{ tagline:'Una recaudación que agudiza la memoria.',
+    lede:'Una recaudación que agudiza la memoria. Los padrinos prometen una cantidad por cada punto que anote el estudiante, cada estudiante tiene una corrida oficial, y cada dólar cobrado va al programa.',
+    howTitle:'Cómo funciona',
+    s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
+    s2h:'Los estudiantes practican gratis', s2p:'Todas las corridas que quieran, en cualquier dispositivo. Nadie llega en frío, y la práctica es la parte que agudiza.',
+    s3h:'Una corrida oficial', s3p:'Una cadena que crece de a uno cada ronda. Aguanta doce rondas y son 78 puntos — y cada ronda es memoria de trabajo bajo presión.',
+    s4h:'Se factura a los padrinos', s4p:'A cada padrino se le cobra su tarifa por los puntos anotados, más un cargo de plataforma de 10%. Cada dólar cobrado va al programa.',
+    tryoutOnce:'Una corrida cada uno. Juega cada juego una vez — tu puntuación es la que saques en ese intento, así que tómate tu tiempo.',
+    yourTryoutOnce:'Un intento en cada uno. No hay segunda oportunidad, y no hay reloj en tu turno.',
+    runUsed:'corrida usada',
+    tryoutKick:'Prueba del programa',
+    tryoutLede:'Juega los tres. Aquel donde el programa anote más es el que vale la pena para la recaudación.',
+    teamStanding:'Cómo va el programa', teamStandingNote:'Puntos totales de todos los que han jugado.',
+    bestFit:'El mejor hasta ahora', playersWord:'estudiantes', notPlayed:'Sin jugar',
+    yourTryout:'Juega cada uno al menos una vez. Tu mejor corrida cuenta.',
+    whoAreYou:'¿Quién eres?', whoAreYouNote:'Toca tu nombre para que tus puntos cuenten para el programa.',
+    notMe:'No soy yo — escoger otro',
+    coachKick:'Escuelas y programas',
+    coachTitle:'Recauda para tu programa →',
+    coachDesc:'Cómo funciona, cuánto cuesta y cómo inscribir tu escuela.',
+    feeNote:'Tu factura ser\u00e1 tu promesa m\u00e1s un cargo de plataforma de 10%. La promesa en s\u00ed va al programa.',
+    tryYourself:'¿No sabes cuánto prometer? Juégalo tú primero →',
+    practiceTitle:'Practica cuando quieras',
+    practiceNote:'Los tres están abiertos para cualquiera — sin código, sin cuenta, sin guardar nada. Juega todo lo que quieras; la práctica es la parte que agudiza.',
+    gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
+    gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
+    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.', freeNote:'Gratis. No se guarda nada.',
+    haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
+    kick:'Cognitivo Digital',
+    gradeWord:'Grado', noGrade:'Sin grado', studentsWord:'estudiantes',
+    gradeBoard:'Cómo van los grados', gradeBoardNote:'Puntos totales de todos los de cada grado.',
+    teamPoints:'Puntos de la división', runsDone:'Corridas hechas',
+    pledgeTeam:'Promete a toda la división', pledgeTeamNote:'Tu promesa se multiplica por los puntos combinados de la división.',
+    rosterTitle:'Los estudiantes', rosterNote:'Toca a un estudiante para prometerle directamente.',
+    noPlayers:'Todavía no hay estudiantes.', notYet:'aún no', practisingL:'practicando · N', pts:'pts',
+    officialPoints:'Puntos oficiales', levelHeld:'Nivel aguantado',
+    compBest:'Ronda en competencia', compScored:'Que anot\u00f3',
+    compLine:'{N} lleg\u00f3 a la ronda {L} en la competencia escolar — {P} puntos. La corrida oficial est\u00e1 por venir, y esto es lo que habr\u00eda valido una promesa.',
+    practiceBest:'Mejor práctica', wouldScore:'Anotaría',
+    runDone:'Corrida oficial completa — {L} niveles aguantados, {P} puntos.',
+    practisingNow:'Practicando ahora. {N} ha llegado al nivel {L} en práctica, lo que serían {P} puntos. La corrida oficial está por venir.',
+    notPractised:'{N} todavía no ha practicado.',
+    closedTitle:'Las promesas cerraron para esta corrida',
+    closedNote:'La corrida oficial ya está hecha, así que la puntuación es final. Todavía puedes prometerle al equipo.',
+    seeTeam:'← Ver toda la división',
+    pledgeTo:'Prométele a {N}',
+    pledgeNote:'Escoge la cantidad que quieras por punto. No se cobra nada ahora — se te facturará después de la corrida oficial.',
+    yourRunTitle:'Tu corrida oficial', yourRunDone:'Tu corrida está hecha',
+    runDoneNote:'Aguantaste {L} niveles para {P} puntos. Esa puntuación es final — pero el juego siempre está abierto.',
+    practiceNote:'Practica todo lo que quieras. Nada cuenta hasta que empieces la corrida oficial, y solo tienes una.',
+    practiceBtn:'▶ Corrida de práctica', officialBtn:'▶ Empezar corrida oficial', practiceOnlyBtn:'▶ Practicar',
+    ownPage:'Esta es tu propia página. Comparte el enlace de abajo con quien quiera apoyarte — con él pueden prometer, pero no jugar.',
+    copyShare:'Copiar mi enlace de padrinos',
+    shareCopied:'Enlace copiado — envíaselo a quien quiera apoyarte:',
+    copyPrompt:'Copia este enlace:',
+    yourName:'Tu nombre', yourEmail:'Tu correo', perPoint:'Cantidad por punto ($)',
+    previewEmpty:'Entra una tarifa para ver a cuánto llegaría.',
+    previewLine:'Nivel 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Nivel 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Nivel 20 (210 pts) → <b>{C}</b>',
+    makePledge:'Hacer esta promesa', saving:'Guardando tu promesa…',
+    pledgeOk:'✓ Promesa guardada. Despu\u00e9s de la corrida oficial se te facturar\u00e1 {R} por punto, m\u00e1s un cargo de plataforma de 10% — no se cobra nada antes.',
+    thankYou:'Gracias.',
+    needName:'Por favor entra tu nombre.', needEmail:'Por favor entra un correo válido — ahí llega la factura.',
+    needRate:'Por favor entra una cantidad por punto.', pledgeFail:'No se pudo guardar la promesa — intenta de nuevo.',
+    pledgesClose:'Las promesas cierran', runsBy:'corridas hasta',
+    notFound:'{W} no encontrado', notFoundNote:'Verifica el enlace o pide uno nuevo a quien te lo envió.',
+    backHome:'← The challenges', loadFail:'No se pudo cargar esta página. Intenta de nuevo.',
+    wordChallenge:'Reto', wordPlayer:'Estudiante', wordTeam:'La división',
+    footer:'Gostar Digital LLC — Puerto Rico'
+  }
+};
+
+var LANG = 'en';
+try { LANG = localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'); } catch(e){}
+
+function T(key, vals){
+  var out = (STR[LANG] && STR[LANG][key]) || STR.en[key] || key;
+  if (vals) Object.keys(vals).forEach(function(k){ out = out.split('{'+k+'}').join(vals[k]); });
+  return out;
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('fc-lang', LANG); } catch(e){}
+  location.reload();
+}
+
+function langBtnHtml(){
+  return '<button onclick="toggleLang()" style="position:fixed;top:14px;right:14px;z-index:60;' +
+         'padding:7px 13px;border:1px solid var(--line);background:var(--panel);color:var(--mute);' +
+         'border-radius:999px;font-family:inherit;font-size:.72rem;font-weight:800;cursor:pointer;">' +
+         (LANG === 'en' ? 'ES' : 'EN') + '</button>';
+}
+
+var params = new URLSearchParams(window.location.search);
+var CHALLENGE = params.get('c');
+var PLAYER = params.get('p');
+
+// The run key is what separates a player from a sponsor. It only
+// appears in the private link a coach hands to the player, and it is
+// verified by the database — adding it to a public link by hand gets
+// nowhere, because the key itself cannot be guessed or read.
+var RUN_KEY = params.get('k');
+
+// A tryout happens before any challenge exists — a team plays all
+// three games and picks the one they score best on. Addressed by
+// campaign rather than challenge for exactly that reason.
+var TRYOUT = params.get('tryout');
+
+function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+
+// A challenge names one game. Adding another is a row here plus its
+// own file — nothing else in this page needs to know the difference.
+var GAMES = {
+  fortress:   { file:'fortress.html',    label:'The Fortress' },
+  recall:     { file:'recall.html',      label:'The Recall' },
+  recognition:{ file:'recognition.html', label:'Recognition' },
+  // Run on a real court, so there is nothing to play here — the
+  // rules page is what a sponsor wants to see instead.
+  // Cash Rack and The Spots belong to Basketball Money and live on
+  // hoops.cash with their own pledge pages.
+};
+function gameFile(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).file; }
+function gameLabel(ch){ return (GAMES[ch && ch.game] || GAMES.fortress).label; }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function money(n){ return '$' + Number(n || 0).toFixed(2); }
+
+function get(path){
+  return fetch(SB_URL + '/rest/v1/' + path, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  }).then(function(r){
+    if (!r.ok) throw new Error('request failed');
+    return r.json();
+  });
+}
+
+var app = document.getElementById('app');
+
+// ---------- landing ----------
+function renderLanding(){
+  app.innerHTML =
+    langBtnHtml() +
+    '<div class="brandhead">' +
+      '<img class="logo" src="cognitivo.png" alt="Cognitivo Digital">' +
+      '<h1 class="tagline">' + T('tagline') + '</h1>' +
+    '</div>' +
+    '<p style="margin-top:14px;">' + T('lede') + '</p>' +
+
+    '<div class="panel">' +
+      '<h2>' + T('howTitle') + '</h2>' +
+      '<div class="steps">' +
+        '<div class="step"><div><b>' + T('s1h') + '</b><span>' + T('s1p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s2h') + '</b><span>' + T('s2p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s3h') + '</b><span>' + T('s3p') + '</span></div></div>' +
+        '<div class="step"><div><b>' + T('s4h') + '</b><span>' + T('s4p') + '</span></div></div>' +
+      '</div>' +
+    '</div>' +
+
+    // Free practice, straight from the browser. No code, no link, no
+    // account — a kid can get good at any of these before a challenge
+    // ever exists, which is the whole point of practice being free.
+    '<div class="panel">' +
+      '<h2>' + T('practiceTitle') + '</h2>' +
+      '<p class="mute">' + T('practiceNote') + '</p>' +
+      '<div class="games">' +
+        '<a class="game-card fortress" href="fortress.html">' +
+          '<span class="game-name">' + T('gFortress') + '</span>' +
+          '<span class="game-desc">' + T('gFortressDesc') + '</span>' +
+        '</a>' +
+        '<a class="game-card recall" href="recall.html">' +
+          '<span class="game-name">' + T('gRecall') + '</span>' +
+          '<span class="game-desc">' + T('gRecallDesc') + '</span>' +
+        '</a>' +
+        '<a class="game-card recognition" href="recognition.html">' +
+          '<span class="game-name">' + T('gRecognition') + '</span>' +
+          '<span class="game-desc">' + T('gRecognitionDesc') + '</span>' +
+        '</a>' +
+      '</div>' +
+      '<p class="mute" style="margin:14px 0 0;font-size:.85rem;">' + T('freeNote') + '</p>' +
+    '</div>' +
+
+    // A coach who types the domain rather than following a player's
+    // link lands here, so the way through to the pitch and the
+    // sign-up form has to be on this page.
+    '<a class="coach-card" href="index.html">' +
+      '<span class="coach-kick">' + T('coachKick') + '</span>' +
+      '<span class="coach-name">' + T('coachTitle') + '</span>' +
+      '<span class="coach-desc">' + T('coachDesc') + '</span>' +
+    '</a>' +
+
+    '<p class="mute" style="margin-top:26px;">' + T('haveLink') + '</p>' +
+    footerHtml();
+}
+
+function footerHtml(){
+  return '<footer>' + T('footer') + '<br>' +
+         '<a href="mailto:cashflowhoops@gmail.com" style="color:var(--mute)">cashflowhoops@gmail.com</a></footer>';
+}
+
+// ---------- team page ----------
+function renderTeam(ch, campaign, players, runs, practice){
+  PLEDGE_CH = ch;
+  var byPlayer = {};
+  runs.forEach(function(r){ byPlayer[r.player_id] = r; });
+  var practiceBy = {};
+  practice.forEach(function(p){ practiceBy[p.player_id] = p; });
+
+  var teamPoints = runs.reduce(function(sum, r){ return sum + (r.points || 0); }, 0);
+  var done = runs.length;
+
+  // Grouped by grade, and the grades themselves ranked by what they
+  // have scored — which is the board a student actually cares about.
+  var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
+  function gradeRank(g){ var i = GRADES.indexOf(g); return i === -1 ? 998 : i; }
+
+  var byGrade = {};
+  players.forEach(function(p){
+    var g = p.grade || '';
+    (byGrade[g] = byGrade[g] || []).push(p);
+  });
+
+  var gradeKeys = Object.keys(byGrade);
+  var gradeTotals = {};
+  gradeKeys.forEach(function(g){
+    gradeTotals[g] = byGrade[g].reduce(function(sum, p){
+      return sum + (byPlayer[p.id] ? byPlayer[p.id].points : 0);
+    }, 0);
+  });
+
+  var ranked = gradeKeys.slice().sort(function(a,b){ return gradeTotals[b] - gradeTotals[a]; });
+  var anyScores = ranked.some(function(g){ return gradeTotals[g] > 0; });
+
+  var gradeBoard = (anyScores && gradeKeys.length > 1)
+    ? '<div class="panel">' +
+        '<h2>' + T('gradeBoard') + '</h2>' +
+        '<p class="mute">' + T('gradeBoardNote') + '</p>' +
+        ranked.map(function(g, i){
+          return '<div class="grade-row' + (i === 0 && gradeTotals[g] > 0 ? ' lead' : '') + '">' +
+                   '<span>' + (g ? T('gradeWord') + ' ' + esc(g) : T('noGrade')) + '</span>' +
+                   '<span class="pts">' + gradeTotals[g] + ' ' + T('pts') +
+                     '<span class="sub">' + byGrade[g].length + ' ' + T('studentsWord') + '</span>' +
+                   '</span>' +
+                 '</div>';
+        }).join('') +
+      '</div>'
+    : '';
+
+  var roster = gradeKeys.slice().sort(function(a,b){ return gradeRank(a) - gradeRank(b); })
+    .map(function(g){
+      var head = gradeKeys.length > 1
+        ? '<div class="grade-head">' + (g ? T('gradeWord') + ' ' + esc(g) : T('noGrade')) + '</div>'
+        : '';
+      return head + byGrade[g].map(function(p){
+        var run = byPlayer[p.id];
+        var prac = practiceBy[p.id];
+        var right = run
+          ? esc(run.points) + ' ' + T('pts')
+          : (prac ? T('practisingL') + esc(prac.best_level) : T('notYet'));
+        return '<a href="?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(p.id) + '">' +
+                 '<span>' + esc(p.name) + '</span>' +
+                 '<span class="pts">' + right + '</span>' +
+               '</a>';
+      }).join('');
+    }).join('');
+
+  app.innerHTML =
+    langBtnHtml() +
+    '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
+    '<h1>' + esc(campaign ? campaign.name : ch.name) + '</h1>' +
+    (ch.name ? '<p class="mute" style="margin-top:8px;">' + esc(ch.name) + '</p>' : '') +
+
+    '<div class="stat-row">' +
+      '<div class="stat gold"><div class="stat-label">' + T('teamPoints') + '</div><div class="stat-val">' + teamPoints + '</div></div>' +
+      '<div class="stat purple"><div class="stat-label">' + T('runsDone') + '</div><div class="stat-val">' + done + ' / ' + players.length + '</div></div>' +
+    '</div>' +
+
+    deadlineHtml(ch) +
+
+    '<div class="panel">' +
+      '<h2>' + T('pledgeTeam') + '</h2>' +
+      '<p class="mute">' + T('pledgeTeamNote') + '</p>' +
+      pledgeFormHtml(null) +
+    '</div>' +
+
+    gradeBoard +
+
+    '<div class="panel">' +
+      '<h2>' + T('rosterTitle') + '</h2>' +
+      '<p class="mute">' + T('rosterNote') + '</p>' +
+      '<div class="roster">' + (roster || '<p class="mute">' + T('noPlayers') + '</p>') + '</div>' +
+    '</div>' +
+
+    footerHtml();
+
+  wirePledgeForm(null);
+}
+
+// ---------- player page ----------
+function renderPlayer(ch, campaign, player, run, prac, comp){
+  PLEDGE_CH = ch;
+  var isMe = false;
+  try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
+
+  app.innerHTML =
+    langBtnHtml() +
+    '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
+    '<h1>' + esc(player.name) + '</h1>' +
+    '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') +
+      (player.grade ? ' · ' + T('gradeWord') + ' ' + esc(player.grade) : '') + '</p>' +
+
+    '<div class="stat-row">' +
+      (run
+        ? '<div class="stat gold"><div class="stat-label">' + T('officialPoints') + '</div><div class="stat-val">' + esc(run.points) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">' + T('levelHeld') + '</div><div class="stat-val">' + esc(run.level_reached) + '</div></div>'
+        : (comp
+            ? '<div class="stat purple"><div class="stat-label">' + T('compBest') + '</div><div class="stat-val">' + esc(comp.best_level) + '</div></div>' +
+              '<div class="stat gold"><div class="stat-label">' + T('compScored') + '</div><div class="stat-val">' + pointsFor(comp.best_level) + '</div></div>'
+            : '<div class="stat purple"><div class="stat-label">' + T('practiceBest') + '</div><div class="stat-val">' + (prac ? 'L' + esc(prac.best_level) : '—') + '</div></div>' +
+              '<div class="stat gold"><div class="stat-label">' + T('wouldScore') + '</div><div class="stat-val">' + (prac ? pointsFor(prac.best_level) : '—') + '</div></div>')) +
+    '</div>' +
+
+    (run
+      ? '<p class="mute">' + T('runDone', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>'
+      : (comp
+          ? '<p class="mute">' + T('compLine', { N: esc(player.name), L: esc(comp.best_level), P: pointsFor(comp.best_level) }) + '</p>'
+          : (prac
+              ? '<p class="mute">' + T('practisingNow', { N: esc(player.name), L: esc(prac.best_level), P: pointsFor(prac.best_level) }) + '</p>'
+              : '<p class="mute">' + T('notPractised', { N: esc(player.name) }) + '</p>'))) +
+
+    deadlineHtml(ch) +
+
+    // A sponsor never sees a button that could end this player's one
+    // official run, and a player is not shown a pledge form for
+    // themselves. Which half appears depends on the run key.
+    (RUN_KEY
+
+      ? '<div class="panel">' +
+          '<h2>' + (run ? T('yourRunDone') : T('yourRunTitle')) + '</h2>' +
+          (run
+            ? '<p class="mute">' + T('runDoneNote', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>' +
+              '<a class="btn line" href="' + gameFile(ch) + '">' + T('practiceOnlyBtn') + '</a>'
+            : '<p class="mute">' + T('practiceNote') + '</p>' +
+              '<a class="btn line" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
+                '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">' + T('practiceBtn') + '</a>' +
+              '<a class="btn gold" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
+                '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
+                '&official=1">' + T('officialBtn') + '</a>') +
+          '</div>' +
+          '<p class="mute" style="font-size:.82rem;">' + T('ownPage') + '</p>' +
+          '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>'
+
+      : (run
+          ? '<div class="panel"><h2>' + T('closedTitle') + '</h2>' +
+            '<p class="mute">' + T('closedNote') + '</p>' +
+            '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">' + T('seeTeam') + '</a></div>'
+          : '<div class="panel"><h2>' + T('pledgeTo', { N: esc(player.name) }) + '</h2>' +
+            '<p class="mute">' + T('pledgeNote') + '</p>' +
+            pledgeFormHtml(player) + '</div>')) +
+
+    '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
+      esc(campaign ? campaign.name : T('wordTeam')) + '</a>' +
+
+    footerHtml();
+
+  if (!run && !RUN_KEY) wirePledgeForm(player);
+}
+
+// The sponsor link is this page without the run key.
+function copyShare(e){
+  if (e) e.preventDefault();
+  var link = window.location.origin + window.location.pathname +
+             '?c=' + encodeURIComponent(CHALLENGE) + '&p=' + encodeURIComponent(PLAYER);
+  if (navigator.share){
+    navigator.share({ url: link }).catch(function(){});
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link)
+      .then(function(){ alert(T('shareCopied') + '\n\n' + link); })
+      .catch(function(){ prompt(T('copyPrompt'), link); });
+  } else {
+    prompt(T('copyPrompt'), link);
+  }
+}
+
+function deadlineHtml(ch){
+  if (!ch.pledge_deadline && !ch.run_deadline) return '';
+  var bits = [];
+  if (ch.pledge_deadline) bits.push(T('pledgesClose') + ' ' + esc(ch.pledge_deadline));
+  if (ch.run_deadline) bits.push(T('runsBy') + ' ' + esc(ch.run_deadline));
+  return '<p class="mute" style="margin-top:-4px;">' + bits.join(' · ') + '</p>';
+}
+
+// Set just before a pledge form is drawn, so the try-it link opens
+// the game this challenge actually runs.
+var PLEDGE_CH = null;
+
+function pledgeFormHtml(player){
+  return '' +
+    '<label>' + T('yourName') + '</label>' +
+    '<input type="text" id="spName" maxlength="60" autocomplete="name">' +
+    '<label>' + T('yourEmail') + '</label>' +
+    '<input type="email" id="spEmail" maxlength="120" autocomplete="email">' +
+    '<label>' + T('perPoint') + '</label>' +
+    '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
+    '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
+    '<p class="mute" style="font-size:.82rem;margin:8px 0 0;">' + T('feeNote') + '</p>' +
+    // A sponsor cannot judge what a point is worth until they have
+    // played. Two minutes on the game is the best possible answer to
+    // "how much should I pledge".
+    '<a class="try-link" href="' + gameFile(PLEDGE_CH) + '" target="_blank" rel="noopener">' +
+      T('tryYourself') + '</a>' +
+    '<button class="btn" id="spSubmit" style="margin-top:14px;">' + T('makePledge') + '</button>' +
+    '<div class="msg" id="spMsg"></div>';
+}
+
+function wirePledgeForm(player){
+  var rate = document.getElementById('spRate');
+  var preview = document.getElementById('spPreview');
+  var submit = document.getElementById('spSubmit');
+  var msg = document.getElementById('spMsg');
+  if (!rate || !submit) return;
+
+  // Shows what the pledge would come to at a few realistic scores, so
+  // nobody pledges a rate without seeing where it lands.
+  rate.addEventListener('input', function(){
+    var r = parseFloat(rate.value);
+    if (!r || r <= 0){
+      preview.textContent = T('previewEmpty');
+      return;
+    }
+    preview.innerHTML = T('previewLine', {
+      A: money(55 * r), B: money(120 * r), C: money(210 * r)
+    });
+  });
+
+  submit.addEventListener('click', function(){
+    var name = (document.getElementById('spName').value || '').trim();
+    var email = (document.getElementById('spEmail').value || '').trim();
+    var r = parseFloat(rate.value);
+
+    if (!name){ return fail(msg, T('needName')); }
+    if (!email || email.indexOf('@') === -1){ return fail(msg, T('needEmail')); }
+    if (!r || r <= 0){ return fail(msg, T('needRate')); }
+
+    submit.disabled = true;
+    msg.style.color = 'var(--mute)';
+    msg.textContent = T('saving');
+
+    fetch(SB_URL + '/rest/v1/pledges', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        challenge_id: CHALLENGE,
+        player_id: player ? player.id : null,
+        sponsor_name: name,
+        sponsor_email: email,
+        rate_per_point: r
+      })
+    })
+    .then(function(res){
+      if (!res.ok) throw new Error('save failed');
+      msg.style.color = '#00D9A5';
+      msg.innerHTML = T('pledgeOk', { R: money(r) });
+      document.getElementById('spName').value = '';
+      document.getElementById('spEmail').value = '';
+      rate.value = '';
+      preview.textContent = T('thankYou');
+      submit.disabled = false;
+    })
+    .catch(function(e){
+      console.error('Pledge failed:', e);
+      submit.disabled = false;
+      fail(msg, T('pledgeFail'));
+    });
+  });
+}
+
+function fail(msg, text){
+  msg.style.color = '#ff8888';
+  msg.textContent = text;
+}
+
+function notFound(what){
+  app.innerHTML = '<div class="panel"><h2>' + T('notFound', { W: what }) + '</h2>' +
+    '<p class="mute">' + T('notFoundNote') + '</p>' +
+    '<a class="btn line" href="index.html">' + T('backHome') + '</a></div>' + footerHtml();
+}
+
+
+// ══════════════════════════════════════════════════════
+//  TRYOUTS — a team plays all three games and sees which one they
+//  are collectively strongest at, before committing a fundraiser to
+//  it. No run keys and no official runs: nothing here is worth
+//  protecting, and the friction would defeat the point.
+// ══════════════════════════════════════════════════════
+function loadTryout(campaignId){
+  Promise.all([
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run'),
+    get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
+    get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs')
+  ])
+  .then(function(res){
+    var campaign = res[0] && res[0][0];
+    if (!campaign) { notFound(T('wordTeam')); return; }
+    renderTryout(campaignId, campaign, res[1] || [], res[2] || []);
+  })
+  .catch(function(e){
+    console.error(e);
+    app.innerHTML = '<div class="panel"><p style="color:#ff8888">' + T('loadFail') + '</p></div>';
+  });
+}
+
+function renderTryout(campaignId, campaign, players, scores){
+  var oneRun = !!campaign.tryout_one_run;
+  var picked = null;
+  try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
+
+  // Which game is the team actually best at. Totalling points rather
+  // than levels, since points are what a sponsor pays against.
+  var totals = { fortress:0, recall:0, recognition:0 };
+  var counts = { fortress:0, recall:0, recognition:0 };
+  scores.forEach(function(r){
+    if (totals[r.game] === undefined) return;
+    totals[r.game] += pointsFor(r.best_level);
+    counts[r.game] += 1;
+  });
+
+  var order = ['fortress','recall','recognition'];
+  var leader = order.slice().sort(function(a,b){ return totals[b]-totals[a]; })[0];
+  var anyScores = order.some(function(g){ return counts[g] > 0; });
+
+  var me = picked ? players.filter(function(p){ return p.id === picked; })[0] : null;
+
+  var myScores = {};
+  if (me) scores.forEach(function(r){ if (r.player_id === me.id) myScores[r.game] = r; });
+
+  app.innerHTML =
+    langBtnHtml() +
+    '<div class="kick">' + T('tryoutKick') + '</div>' +
+    '<h1>' + esc(campaign.name) + '</h1>' +
+    '<p class="mute" style="margin-top:8px;">' + (oneRun ? T('tryoutOnce') : T('tryoutLede')) + '</p>' +
+
+    (anyScores
+      ? '<div class="panel">' +
+          '<h2>' + T('teamStanding') + '</h2>' +
+          '<p class="mute">' + T('teamStandingNote') + '</p>' +
+          order.map(function(g){
+            var lead = g === leader && totals[g] > 0;
+            return '<div class="tryout-row' + (lead ? ' lead' : '') + '">' +
+                     '<span>' + gameLabelKey(g) + (lead ? ' <b>' + T('bestFit') + '</b>' : '') + '</span>' +
+                     '<span class="pts">' + totals[g] + ' ' + T('pts') +
+                       '<span class="sub">' + counts[g] + ' ' + T('playersWord') + '</span></span>' +
+                   '</div>';
+          }).join('') +
+        '</div>'
+      : '') +
+
+    (me
+      ? '<div class="panel">' +
+          '<h2>' + esc(me.name) + '</h2>' +
+          '<p class="mute">' + (oneRun ? T('yourTryoutOnce') : T('yourTryout')) + '</p>' +
+          order.map(function(g){
+            var r = myScores[g];
+            var spent = oneRun && r;
+            var label = r
+              ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts')
+              : T('notPlayed');
+
+            // With one run each, a game already played is a result
+            // rather than a link.
+            if (spent){
+              return '<div class="tryout-play ' + g + ' spent">' +
+                       '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
+                       '<span class="tp-score">' + label + ' · ' + T('runUsed') + '</span>' +
+                     '</div>';
+            }
+            return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
+                     '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
+                     (oneRun ? '&once=1' : '') + '">' +
+                     '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
+                     '<span class="tp-score">' + label + '</span>' +
+                   '</a>';
+          }).join('') +
+          '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
+        '</div>'
+      : '<div class="panel">' +
+          '<h2>' + T('whoAreYou') + '</h2>' +
+          '<p class="mute">' + T('whoAreYouNote') + '</p>' +
+          '<div class="roster">' +
+            (players.length
+              ? players.map(function(p){
+                  return '<a href="#" onclick="pickMe(\'' + campaignId + '\',\'' + p.id + '\');return false;">' +
+                           '<span>' + esc(p.name) + '</span><span class="pts">→</span></a>';
+                }).join('')
+              : '<p class="mute">' + T('noPlayers') + '</p>') +
+          '</div>' +
+        '</div>') +
+
+    footerHtml();
+}
+
+function gameLabelKey(g){
+  return T(g === 'fortress' ? 'gFortress' : g === 'recall' ? 'gRecall' : 'gRecognition');
+}
+
+function pickMe(campaignId, playerId){
+  try { localStorage.setItem('fc-tryout-' + campaignId, playerId); } catch(e){}
+  loadTryout(campaignId);
+}
+
+function forgetMe(campaignId){
+  try { localStorage.removeItem('fc-tryout-' + campaignId); } catch(e){}
+  loadTryout(campaignId);
+  return false;
+}
+
+// ---------- routing ----------
+if (TRYOUT){
+  loadTryout(TRYOUT);
+} else if (!CHALLENGE){
+  renderLanding();
+} else {
+  get('challenges?id=eq.' + encodeURIComponent(CHALLENGE) + '&select=*')
+    .then(function(rows){
+      if (!rows || !rows.length) { notFound(T('wordChallenge')); return; }
+      var ch = rows[0];
+
+      return Promise.all([
+        get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=name,logo_url'),
+        get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name,grade&order=name.asc'),
+        get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
+        get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs'),
+        // A score from an earlier competition on this campaign. It is
+        // a real result rather than a practice number, so a sponsor
+        // can pledge against something that actually happened.
+        get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
+            '&game=eq.' + encodeURIComponent(ch.game || 'fortress') +
+            '&select=player_id,best_level')
+      ]).then(function(res){
+        var campaign = res[0] && res[0][0];
+        var players = res[1] || [];
+        var runs = res[2] || [];
+        var practice = res[3] || [];
+        var comp = res[4] || [];
+
+        if (!PLAYER){
+          renderTeam(ch, campaign, players, runs, practice);
+          return;
+        }
+
+        var player = players.filter(function(p){ return p.id === PLAYER; })[0];
+        if (!player) { notFound(T('wordPlayer')); return; }
+
+        var run = runs.filter(function(r){ return r.player_id === PLAYER; })[0];
+        var prac = practice.filter(function(r){ return r.player_id === PLAYER; })[0];
+        var best = comp.filter(function(r){ return r.player_id === PLAYER; })[0];
+        renderPlayer(ch, campaign, player, run, prac, best);
+      });
+    })
+    .catch(function(e){
+      console.error(e);
+      app.innerHTML = '<div class="panel"><p style="color:#ff8888">' + T('loadFail') + '</p></div>';
+    });
+}
+</script>
+</body>
+</html>
