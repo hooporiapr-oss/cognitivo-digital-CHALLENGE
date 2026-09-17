@@ -94,7 +94,7 @@ footer a{color:var(--mute)}
   <a class="mark" href="#top"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
   <div class="navr">
     <a href="challenges.html" data-t="navPlay">The challenges</a>
-    <a href="scoring.html" data-t="navScoring">The scoring</a>
+    <a href="scoring.html" data-t="navScoring">Chain scoring</a>
     <button id="lang" onclick="flip()">ES</button>
   </div>
 </div></nav>
@@ -130,10 +130,10 @@ footer a{color:var(--mute)}
 
   <div class="scoring">
     <div class="sc-copy">
-      <h2 data-t="scH">One number, and it cannot be argued with.</h2>
-      <p data-t="scP1">A challenge is a chain that grows by one every round. Hold twelve rounds and a student has recalled 1 + 2 + 3 all the way to 12 — <b>78 separate acts of memory</b>, in one unbroken run. That is the score, and it is what a sponsor pays against.</p>
-      <p data-t="scP2">Because the chain grows, every round is worth more than the last. Going from ten rounds to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises.</p>
-      <a class="sc-link" href="scoring.html" data-t="scMore">See how the scoring works →</a>
+      <h2 data-t="scH">Chain scoring.</h2>
+      <p data-t="scP1"><b>Each round adds one more, and each round is worth more than the last.</b> Complete round four and it banks four points; round nine banks nine. The score is the running total, which means it is an honest count of what the student actually did.</p>
+      <p data-t="scP2">That is why one more round matters so much. Going from ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises. The effort at the edge of what they can hold is worth the most.</p>
+      <a class="sc-link" href="scoring.html" data-t="scMore">How chain scoring works →</a>
     </div>
     <div class="sc-table">
       <div class="sc-row sc-head"><span data-t="scRounds">Rounds</span><span data-t="scPts">Points</span><span data-t="scAt">At 25¢</span></div>
@@ -165,7 +165,7 @@ footer a{color:var(--mute)}
 <footer><div class="wrap">
   Gostar Digital LLC — Puerto Rico ·
   <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> ·
-  <a href="scoring.html" data-t="fScoring">The scoring</a> ·
+  <a href="scoring.html" data-t="fScoring">Chain scoring</a> ·
   <a href="terms.html" data-t="fTerms">Terms</a> ·
   <a href="privacy.html" data-t="fPrivacy">Privacy</a>
 </div></footer>
@@ -173,7 +173,7 @@ footer a{color:var(--mute)}
 <script>
 var T = {
   en:{
-    navPlay:'The challenges', navScoring:'The scoring',
+    navPlay:'The challenges', navScoring:'Chain scoring',
     h1:'Memory challenges that <em>raise money</em> for your school.',
     lede:'Students play. Sponsors pledge for every point scored. The school keeps what is collected.',
     cta1:'Talk to us', cta2:'Try a challenge', cta1b:'Talk to us',
@@ -183,10 +183,10 @@ var T = {
     s2p:'Practice is free. Then one official run, scored by our software — twelve rounds is 78 points.',
     s3h:'Sponsors are invoiced',
     s3p:'Their pledge times the points scored. The school chases nobody, and keeps 100% of what is collected.',
-    scH:'One number, and it cannot be argued with.',
-    scP1:'A challenge is a chain that grows by one every round. Hold twelve rounds and a student has recalled 1 + 2 + 3 all the way to 12 — <b>78 separate acts of memory</b>, in one unbroken run. That is the score, and it is what a sponsor pays against.',
-    scP2:'Because the chain grows, every round is worth more than the last. Going from ten rounds to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises.',
-    scMore:'See how the scoring works →',
+    scH:'Chain scoring.',
+    scP1:'<b>Each round adds one more, and each round is worth more than the last.</b> Complete round four and it banks four points; round nine banks nine. The score is the running total, which means it is an honest count of what the student actually did.',
+    scP2:'That is why one more round matters so much. Going from ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises. The effort at the edge of what they can hold is worth the most.',
+    scMore:'How chain scoring works →',
     scRounds:'Rounds', scPts:'Points', scAt:'At 25¢',
     scNote:'Per sponsor, on one official run.',
     costH:'Free for your school.',
@@ -194,10 +194,10 @@ var T = {
     costFine:"We add 10% to each sponsor's invoice. That is our only fee.",
     closeH:'We will set it up for you.',
     closeP:'Tell us about your school and we will build it — roster, grades, a link for every student — and send it over. Nothing goes live until you say so.',
-    fScoring:'The scoring', fTerms:'Terms', fPrivacy:'Privacy'
+    fScoring:'Chain scoring', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    navPlay:'Los retos', navScoring:'La puntuación',
+    navPlay:'Los retos', navScoring:'Puntuación en cadena',
     h1:'Retos de memoria que <em>recaudan</em> para tu escuela.',
     lede:'Los estudiantes juegan. Los padrinos prometen por cada punto anotado. La escuela se queda con lo cobrado.',
     cta1:'Habla con nosotros', cta2:'Prueba un reto', cta1b:'Habla con nosotros',
@@ -207,10 +207,10 @@ var T = {
     s2p:'La práctica es gratis. Después, una corrida oficial puntuada por nuestro programa — doce rondas son 78 puntos.',
     s3h:'Se factura a los padrinos',
     s3p:'Su promesa por los puntos anotados. La escuela no persigue a nadie, y se queda con el 100% de lo cobrado.',
-    scH:'Un solo número, y no se discute.',
-    scP1:'Un reto es una cadena que crece de a uno cada ronda. Aguanta doce rondas y el estudiante ha recordado 1 + 2 + 3 hasta llegar a 12 — <b>78 actos de memoria distintos</b>, en una sola corrida. Esa es la puntuación, y es contra lo que paga un padrino.',
-    scP2:'Como la cadena crece, cada ronda vale más que la anterior. Pasar de diez rondas a doce no es un quinto mejor — es de <b>55 puntos a 78</b>, un salto de cuarenta por ciento en lo que recauda ese estudiante.',
-    scMore:'Mira cómo funciona la puntuación →',
+    scH:'Puntuación en cadena.',
+    scP1:'<b>Cada ronda añade una más, y cada ronda vale más que la anterior.</b> Completa la ronda cuatro y suma cuatro puntos; la nueve suma nueve. La puntuación es el total acumulado, lo que la hace una cuenta honesta de lo que el estudiante de verdad hizo.',
+    scP2:'Por eso una ronda más importa tanto. Pasar de diez a doce no es un quinto mejor — es de <b>55 puntos a 78</b>, un salto de cuarenta por ciento en lo que recauda ese estudiante. El esfuerzo al borde de lo que aguanta es el que más vale.',
+    scMore:'Cómo funciona la puntuación en cadena →',
     scRounds:'Rondas', scPts:'Puntos', scAt:'A 25¢',
     scNote:'Por padrino, en una corrida oficial.',
     costH:'Gratis para tu escuela.',
@@ -218,7 +218,7 @@ var T = {
     costFine:'Le añadimos 10% a la factura de cada padrino. Ese es nuestro único cargo.',
     closeH:'Te lo montamos nosotros.',
     closeP:'Cuéntanos de tu escuela y lo armamos — lista, grados, un enlace para cada estudiante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
-    fScoring:'La puntuación', fTerms:'Términos', fPrivacy:'Privacidad'
+    fScoring:'Puntuación en cadena', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
