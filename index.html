@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cognitivo Digital — memory challenges that raise money for schools, clubs and community groups</title>
-<meta name="description" content="Students play a memory challenge. Padrinos pledge for every point scored. Every pledge that is paid goes to the school in full, and the school pays nothing.">
+<title>Cognitivo Digital — the fundraiser that trains memory</title>
+<meta name="description" content="A pledge fundraiser built on memory training. Students practise working memory to raise more, padrinos pledge per point, and all collected pledges go to the program.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
@@ -48,6 +48,19 @@ h1 em{font-style:normal;color:var(--gold)}
 }
 .btn-solid{background:var(--gold);color:#04121A}
 .btn-line{border:1px solid var(--line);color:var(--paper)}
+
+/* ---------- the angle: the activity is worth doing ---------- */
+.angle{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(22px,4vw,44px);align-items:start;padding:0 0 clamp(36px,6vw,56px)}
+@media(max-width:820px){.angle{grid-template-columns:1fr;gap:24px}}
+.angle h2{font-size:clamp(1.4rem,3.8vw,1.95rem);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0 0 .6em;max-width:22ch}
+.angle p{color:#CFE3F2;margin:0 0 1em;max-width:54ch}
+.angle p:last-child{margin-bottom:0}
+.angle-box{display:grid;gap:12px}
+.ab{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.ab b{display:block;font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ab span{display:block;color:var(--mute);font-size:.86rem;margin-top:4px}
+.ab.hi{border-color:rgba(34,211,238,.45)}
+.ab.hi b{color:var(--gold)}
 
 /* ---------- 1 2 3 ---------- */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 0 clamp(40px,7vw,64px)}
@@ -126,8 +139,8 @@ footer a{color:var(--mute)}
 </div></nav>
 
 <header id="top"><div class="wrap">
-  <h1 data-t="h1">Memory challenges that <em>raise money</em> for your school.</h1>
-  <p class="lede" data-t="lede">Students play. Padrinos pledge for every point scored. Every pledge that is paid goes to the school in full.</p>
+  <h1 data-t="h1">The fundraiser where <em>practising is the point</em>.</h1>
+  <p class="lede" data-t="lede">Students train their memory to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.</p>
   <p class="forwho" data-t="forWho">For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
   <div class="actions">
     <a class="btn btn-solid" href="contact.html" data-t="cta1">Talk to us</a>
@@ -136,6 +149,20 @@ footer a{color:var(--mute)}
 </div></header>
 
 <div class="wrap">
+
+  <div class="angle">
+    <div>
+      <h2 data-t="anH">Every other fundraiser asks a student to sell something.</h2>
+      <p data-t="anP1">Chocolate bars, wrapping paper, laps around a field. Nobody believes selling popcorn is good for a child — it is just the thing that justifies the ask.</p>
+      <p data-t="anP2"><b>Here the activity is the point.</b> To raise more, a student has to hold a longer chain — and the only way to do that is to practise. What they are practising is working memory and focus, for a reason they actually care about.</p>
+      <p data-t="anP3">Nobody buys anything. Nobody knocks on a door. A student is asked to get better at something, and the getting better is what raises the money.</p>
+    </div>
+    <div class="angle-box">
+      <div class="ab"><b data-t="ab1n">0</b><span data-t="ab1">Things to sell</span></div>
+      <div class="ab"><b data-t="ab2n">0</b><span data-t="ab2">Doors to knock on</span></div>
+      <div class="ab hi"><b data-t="ab3n">∞</b><span data-t="ab3">Practice runs, all free</span></div>
+    </div>
+  </div>
 
   <div class="steps">
     <div class="step">
@@ -158,14 +185,14 @@ footer a{color:var(--mute)}
   <div class="padrino">
     <h2 data-t="padH">What is a padrino?</h2>
     <p data-t="padP1"><b>Someone who backs a student personally.</b> A parent, an aunt, a neighbour, a former coach, a family friend. The word means godparent, and that is the idea.</p>
-    <p class="mute" data-t="padP2">Not a company buying its name on a banner — a person who decided this student is worth backing. Most students find five or six.</p>
+    <p class="mute" data-t="padP2">Not a company buying its name on a banner. Most students find five or six.</p>
   </div>
 
   <div class="scoring">
     <div class="sc-copy">
       <h2 data-t="scH">Chain scoring.</h2>
-      <p data-t="scP1"><b>Each round adds one more, and each round is worth more than the last.</b> Complete round four and it banks four points; round nine banks nine. The score is the running total, which means it is an honest count of what the student actually did.</p>
-      <p data-t="scP2">That is why one more round matters so much. Going from ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises. The effort at the edge of what they can hold is worth the most.</p>
+      <p data-t="scP1"><b>Each round adds one more, and each round is worth more than the last.</b> Round four banks four points, round nine banks nine. The score is the running total — an honest count of what the student did.</p>
+      <p data-t="scP2">Which is why one more round matters so much. Ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises.</p>
       <a class="sc-link" href="scoring.html" data-t="scMore">How chain scoring works →</a>
     </div>
     <div class="sc-table">
@@ -212,8 +239,15 @@ footer a{color:var(--mute)}
 var T = {
   en:{
     navPlay:'The challenges', navScoring:'Chain scoring',
-    h1:'Memory challenges that <em>raise money</em> for your school.',
-    lede:'Students play. Padrinos pledge for every point scored. Every pledge that is paid goes to the school in full.',
+    h1:'The fundraiser where <em>practising is the point</em>.',
+    lede:'Students train their memory to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.',
+    anH:'Every other fundraiser asks a student to sell something.',
+    anP1:'Chocolate bars, wrapping paper, laps around a field. Nobody believes selling popcorn is good for a child — it is just the thing that justifies the ask.',
+    anP2:'<b>Here the activity is the point.</b> To raise more, a student has to hold a longer chain — and the only way to do that is to practise. What they are practising is working memory and focus, for a reason they actually care about.',
+    anP3:'Nobody buys anything. Nobody knocks on a door. A student is asked to get better at something, and the getting better is what raises the money.',
+    ab1n:'0', ab1:'Things to sell',
+    ab2n:'0', ab2:'Doors to knock on',
+    ab3n:'∞', ab3:'Practice runs, all free',
     forWho:'For schools, clubs, teams and any non-profit group raising money for something that matters.',
     cta1:'Talk to us', cta2:'Try a challenge', cta1b:'Talk to us',
     s1h:'Students find padrinos',
@@ -224,10 +258,10 @@ var T = {
     s3p:'Their pledge times the points scored, plus our 10% fee. The school chases nobody, and all collected pledges go to the school.',
     padH:'What is a padrino?',
     padP1:'<b>Someone who backs a student personally.</b> A parent, an aunt, a neighbour, a former coach, a family friend. The word means godparent, and that is the idea.',
-    padP2:'Not a company buying its name on a banner — a person who decided this student is worth backing. Most students find five or six.',
+    padP2:'Not a company buying its name on a banner. Most students find five or six.',
     scH:'Chain scoring.',
-    scP1:'<b>Each round adds one more, and each round is worth more than the last.</b> Complete round four and it banks four points; round nine banks nine. The score is the running total, which means it is an honest count of what the student actually did.',
-    scP2:'That is why one more round matters so much. Going from ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises. The effort at the edge of what they can hold is worth the most.',
+    scP1:'<b>Each round adds one more, and each round is worth more than the last.</b> Round four banks four points, round nine banks nine. The score is the running total — an honest count of what the student did.',
+    scP2:'Which is why one more round matters so much. Ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that student raises.',
     scMore:'How chain scoring works →',
     scRounds:'Rounds', scPts:'Points', scAt:'At 25¢',
     scNote:'Per padrino, on one official run.',
@@ -243,8 +277,15 @@ var T = {
   },
   es:{
     navPlay:'Los retos', navScoring:'Puntuación en cadena',
-    h1:'Retos de memoria que <em>recaudan</em> para tu escuela.',
-    lede:'Los estudiantes juegan. Los padrinos prometen por cada punto anotado. Cada promesa que se paga va completa a la escuela.',
+    h1:'La recaudación donde <em>practicar es el punto</em>.',
+    lede:'Los estudiantes entrenan su memoria para recaudar más. Los padrinos prometen por cada punto anotado, y todas las promesas cobradas van al programa.',
+    anH:'Toda otra recaudación le pide al estudiante que venda algo.',
+    anP1:'Chocolates, papel de regalo, vueltas a la cancha. Nadie cree que vender popcorn le hace bien a un niño — es solo lo que justifica el pedido.',
+    anP2:'<b>Aquí la actividad es el punto.</b> Para recaudar más, hay que aguantar una cadena más larga — y la única forma es practicando. Lo que practica es memoria de trabajo y concentración, por una razón que de verdad le importa.',
+    anP3:'Nadie compra nada. Nadie toca puertas. Al estudiante se le pide que mejore en algo, y ese mejorar es lo que recauda el dinero.',
+    ab1n:'0', ab1:'Cosas que vender',
+    ab2n:'0', ab2:'Puertas que tocar',
+    ab3n:'∞', ab3:'Prácticas, todas gratis',
     forWho:'Para escuelas, clubes, equipos y cualquier grupo sin fines de lucro que esté recaudando para algo que importa.',
     cta1:'Habla con nosotros', cta2:'Prueba un reto', cta1b:'Habla con nosotros',
     s1h:'Los estudiantes consiguen padrinos',
@@ -255,10 +296,10 @@ var T = {
     s3p:'Su promesa por los puntos anotados, más nuestro 10%. La escuela no persigue a nadie, y todas las promesas cobradas van a la escuela.',
     padH:'¿Qué es un padrino?',
     padP1:'<b>Alguien que apoya a un estudiante personalmente.</b> Una mamá, una tía, un vecino, un entrenador de antes, un amigo de la familia. La palabra quiere decir padrino de bautizo, y esa es la idea.',
-    padP2:'No una compañía comprando su nombre en un banner — una persona que decidió que este estudiante vale la pena. La mayoría consigue cinco o seis.',
+    padP2:'No una compañía comprando su nombre en un banner. La mayoría consigue cinco o seis.',
     scH:'Puntuación en cadena.',
-    scP1:'<b>Cada ronda añade una más, y cada ronda vale más que la anterior.</b> Completa la ronda cuatro y suma cuatro puntos; la nueve suma nueve. La puntuación es el total acumulado, lo que la hace una cuenta honesta de lo que el estudiante de verdad hizo.',
-    scP2:'Por eso una ronda más importa tanto. Pasar de diez a doce no es un quinto mejor — es de <b>55 puntos a 78</b>, un salto de cuarenta por ciento en lo que recauda ese estudiante. El esfuerzo al borde de lo que aguanta es el que más vale.',
+    scP1:'<b>Cada ronda añade una más, y cada ronda vale más que la anterior.</b> La ronda cuatro suma cuatro puntos, la nueve suma nueve. La puntuación es el total acumulado — una cuenta honesta de lo que hizo el estudiante.',
+    scP2:'Por eso una ronda más importa tanto. De diez a doce no es un quinto mejor — es de <b>55 puntos a 78</b>, un salto de cuarenta por ciento en lo que recauda ese estudiante.',
     scMore:'Cómo funciona la puntuación en cadena →',
     scRounds:'Rondas', scPts:'Puntos', scAt:'A 25¢',
     scNote:'Por padrino, en una corrida oficial.',
