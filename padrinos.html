@@ -22,6 +22,40 @@ nav{border-bottom:1px solid var(--line)}
 .navr{display:flex;align-items:center;gap:16px}
 .navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
 @media(max-width:560px){.navr a{display:none}}
+
+/* ---------- the menu ---------- */
+.burger{
+  display:none;width:42px;height:42px;flex-shrink:0;
+  background:none;border:1px solid var(--line);border-radius:11px;
+  cursor:pointer;padding:0;position:relative;
+}
+.burger span{
+  position:absolute;left:11px;right:11px;height:2px;background:var(--paper);
+  border-radius:2px;transition:transform .22s,opacity .18s;
+}
+.burger span:nth-child(1){top:14px}
+.burger span:nth-child(2){top:20px}
+.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+.menu{display:none}
+@media(max-width:760px){
+  .navr a{display:none}
+  .burger{display:block}
+  .menu{
+    display:block;max-height:0;overflow:hidden;
+    border-top:0 solid var(--line);transition:max-height .3s ease-out;
+  }
+  .menu.open{max-height:420px;border-top-width:1px}
+  .menu a{
+    display:block;padding:15px 0;color:var(--paper);text-decoration:none;
+    font-size:1rem;font-weight:600;border-bottom:1px solid var(--line);
+  }
+  .menu a:last-child{border-bottom:none}
+  .menu a.cta{color:var(--gold);font-weight:800}
+}
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 
 header{padding:clamp(44px,8vw,72px) 0 clamp(26px,4vw,34px)}
@@ -120,8 +154,19 @@ footer a{color:var(--mute)}
     <a href="challenges.html" data-t="navPlay">The challenges</a>
     <a href="scoring.html" data-t="navScoring">Chain scoring</a>
     <button id="lang" onclick="flip()">ES</button>
+    <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-</div></nav>
+</div>
+<div class="menu" id="menu"><div class="wrap">
+  <a href="index.html" data-t="mHow">How it works</a>
+  <a href="challenges.html" data-t="mPlay">The challenges</a>
+  <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
+  <a href="scoring.html" data-t="mScoring">Chain scoring</a>
+  <a class="cta" href="contact.html" data-t="mTalk">Talk to us →</a>
+</div></div>
+</nav>
 
 <header><div class="wrap">
   <h1 data-t="h1">Your score is one number. Your <em>padrinos decide what it is worth</em>.</h1>
@@ -253,6 +298,8 @@ function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
 
 var T = {
   en:{
+    mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
+    mScoring:'Chain scoring', mTalk:'Talk to us →',
     navPlay:'The challenges', navScoring:'Chain scoring',
     h1:'Your score is one number. Your <em>padrinos decide what it is worth</em>.',
     lede:'How far you get in the challenge is up to your practice. How much that is worth is up to how many padrinos you found. This is the part you can start on today.',
@@ -311,6 +358,8 @@ var T = {
     fScoring:'Chain scoring', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
+    mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
     navPlay:'Los retos', navScoring:'Puntuación en cadena',
     h1:'Tu puntuación es un número. Tus <em>padrinos deciden lo que vale</em>.',
     lede:'Hasta dónde llegues en el reto depende de tu práctica. Cuánto vale eso depende de cuántos padrinos conseguiste. Esta es la parte que puedes empezar hoy.',
@@ -373,6 +422,12 @@ var T = {
 var lang = 'en';
 try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
 function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+
+
+function toggleMenu(){
+  document.getElementById('burger').classList.toggle('open');
+  document.getElementById('menu').classList.toggle('open');
+}
 
 function paint(){
   document.documentElement.lang = lang;
