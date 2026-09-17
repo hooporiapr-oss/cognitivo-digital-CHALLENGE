@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cognitivo Digital — memory challenges that raise money for schools</title>
+<title>Cognitivo Digital — memory challenges that raise money for schools, clubs and community groups</title>
 <meta name="description" content="Students play a memory challenge. Padrinos pledge for every point scored. The school keeps 100% of what is collected, and pays nothing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +33,13 @@ h1{
 }
 h1 em{font-style:normal;color:var(--gold)}
 .lede{font-size:clamp(1.05rem,2.4vw,1.28rem);color:#CFE3F2;max-width:46ch;margin:0 0 30px}
+/* Who it is for, stated once rather than hedged into every
+   sentence — the copy stays concrete and says "school", this line
+   does the widening. */
+.forwho{
+  color:var(--mute);font-size:.95rem;max-width:52ch;margin:0 0 26px;
+  padding-left:14px;border-left:2px solid rgba(34,211,238,.4);
+}
 .actions{display:flex;gap:12px;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -112,6 +119,7 @@ footer a{color:var(--mute)}
 <header id="top"><div class="wrap">
   <h1 data-t="h1">Memory challenges that <em>raise money</em> for your school.</h1>
   <p class="lede" data-t="lede">Students play. Padrinos pledge for every point scored. The school keeps what is collected.</p>
+  <p class="forwho" data-t="forWho">For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
   <div class="actions">
     <a class="btn btn-solid" href="contact.html" data-t="cta1">Talk to us</a>
     <a class="btn btn-line" href="challenges.html" data-t="cta2">Try a challenge</a>
@@ -170,7 +178,7 @@ footer a{color:var(--mute)}
 
   <div class="close">
     <h2 data-t="closeH">We will set it up for you.</h2>
-    <p data-t="closeP">Tell us about your school and we will build it — roster, grades, a link for every student — and send it over. Nothing goes live until you say so.</p>
+    <p data-t="closeP">Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.</p>
     <div class="actions">
       <a class="btn btn-solid" href="contact.html" data-t="cta1b">Talk to us</a>
     </div>
@@ -192,6 +200,7 @@ var T = {
     navPlay:'The challenges', navScoring:'Chain scoring',
     h1:'Memory challenges that <em>raise money</em> for your school.',
     lede:'Students play. Padrinos pledge for every point scored. The school keeps what is collected.',
+    forWho:'For schools, clubs, teams and any non-profit group raising money for something that matters.',
     cta1:'Talk to us', cta2:'Try a challenge', cta1b:'Talk to us',
     s1h:'Students find padrinos',
     s1p:'Each student shares a link. Family and friends pledge any amount per point. Nothing is charged yet.',
@@ -212,13 +221,14 @@ var T = {
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise.',
     costFine:"We add 10% to each padrino's invoice. That is our only fee.",
     closeH:'We will set it up for you.',
-    closeP:'Tell us about your school and we will build it — roster, grades, a link for every student — and send it over. Nothing goes live until you say so.',
+    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.',
     fScoring:'Chain scoring', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
     navPlay:'Los retos', navScoring:'Puntuación en cadena',
     h1:'Retos de memoria que <em>recaudan</em> para tu escuela.',
     lede:'Los estudiantes juegan. Los padrinos prometen por cada punto anotado. La escuela se queda con lo cobrado.',
+    forWho:'Para escuelas, clubes, equipos y cualquier grupo sin fines de lucro que esté recaudando para algo que importa.',
     cta1:'Habla con nosotros', cta2:'Prueba un reto', cta1b:'Habla con nosotros',
     s1h:'Los estudiantes consiguen padrinos',
     s1p:'Cada estudiante comparte un enlace. Familia y amigos prometen lo que quieran por punto. Todavía no se cobra nada.',
@@ -239,7 +249,7 @@ var T = {
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas.',
     costFine:'Le añadimos 10% a la factura de cada padrino. Ese es nuestro único cargo.',
     closeH:'Te lo montamos nosotros.',
-    closeP:'Cuéntanos de tu escuela y lo armamos — lista, grados, un enlace para cada estudiante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
+    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
     fScoring:'Puntuación en cadena', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
