@@ -177,7 +177,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 //    ?c=..&p=<player>   → a player's page: their score, their pledges
 //
 //  A pledge is a promise, not a payment. Nothing is charged here.
-//  After the run deadline the organizer invoices each sponsor for
+//  After the run deadline the organizer invoices each padrino for
 //  their rate times the points actually scored.
 //
 //  POINTS — reaching level n means n(n+1)/2 taps were performed, so
@@ -191,12 +191,12 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 // ══════════════════════════════════════════════════════
 var STR = {
   en:{ tagline:'A fundraiser that sharpens memory.',
-    lede:'A fundraiser that sharpens memory. Sponsors pledge an amount for every point a student scores, each student gets one official run, and every dollar collected goes to the program.',
+    lede:'A fundraiser that sharpens memory. Padrinos pledge an amount for every point a student scores, each student gets one official run, and every dollar collected goes to the program.',
     howTitle:'How it works',
-    s1h:'Sponsors pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
+    s1h:'Padrinos pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
     s2h:'Students practise free', s2p:'As many runs as they like, on any device. Nobody goes in cold, and the practice is the part that sharpens.',
     s3h:'One official run', s3p:'A chain that grows by one every round. Hold twelve rounds and that is 78 points — and every round is working memory under pressure.',
-    s4h:'Sponsors are invoiced', s4p:'Each sponsor is billed their rate times the points scored, plus a 10% platform fee. Every dollar collected goes to the program.',
+    s4h:'Padrinos are invoiced', s4p:'Each padrino is billed their rate times the points scored, plus a 10% platform fee. Every dollar collected goes to the program.',
     tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
     yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
     runUsed:'run used',
@@ -236,13 +236,13 @@ var STR = {
     closedNote:'The official run is done, so the score is final. You can still pledge to the team.',
     seeTeam:'← See the whole division',
     pledgeTo:'Pledge to {N}',
-    pledgeNote:'Choose any amount per point. Nothing is charged now — you will be invoiced after the official run.',
+    pledgeNote:'A padrino backs a student personally — family, neighbours, friends. Choose any amount per point. Nothing is charged now; you are invoiced after the official run.',
     yourRunTitle:'Your official run', yourRunDone:'Your run is done',
     runDoneNote:'You held {L} levels for {P} points. That score is final — but the game is always open.',
     practiceNote:'Practise as much as you like. Nothing counts until you start the official run, and you only get one.',
     practiceBtn:'▶ Practice run', officialBtn:'▶ Start official run', practiceOnlyBtn:'▶ Practice',
     ownPage:'This is your own page. Share the link below with people who want to back you — it lets them pledge, but not play.',
-    copyShare:'Copy my sponsor link',
+    copyShare:'Copy my padrino link',
     shareCopied:'Link copied — send it to anyone who wants to back you:',
     copyPrompt:'Copy this link:',
     yourName:'Your name', yourEmail:'Your email', perPoint:'Amount per point ($)',
@@ -305,7 +305,7 @@ var STR = {
     closedNote:'La corrida oficial ya está hecha, así que la puntuación es final. Todavía puedes prometerle al equipo.',
     seeTeam:'← Ver toda la división',
     pledgeTo:'Prométele a {N}',
-    pledgeNote:'Escoge la cantidad que quieras por punto. No se cobra nada ahora — se te facturará después de la corrida oficial.',
+    pledgeNote:'Un padrino apoya a un estudiante personalmente — familia, vecinos, amigos. Escoge la cantidad que quieras por punto. No se cobra nada ahora; se te factura después de la corrida oficial.',
     yourRunTitle:'Tu corrida oficial', yourRunDone:'Tu corrida está hecha',
     runDoneNote:'Aguantaste {L} niveles para {P} puntos. Esa puntuación es final — pero el juego siempre está abierto.',
     practiceNote:'Practica todo lo que quieras. Nada cuenta hasta que empieces la corrida oficial, y solo tienes una.',
@@ -356,7 +356,7 @@ var params = new URLSearchParams(window.location.search);
 var CHALLENGE = params.get('c');
 var PLAYER = params.get('p');
 
-// The run key is what separates a player from a sponsor. It only
+// The run key is what separates a player from a padrino. It only
 // appears in the private link a coach hands to the player, and it is
 // verified by the database — adding it to a public link by hand gets
 // nowhere, because the key itself cannot be guessed or read.
@@ -376,7 +376,7 @@ var GAMES = {
   recall:     { file:'recall.html',      label:'The Recall' },
   recognition:{ file:'recognition.html', label:'Recognition' },
   // Run on a real court, so there is nothing to play here — the
-  // rules page is what a sponsor wants to see instead.
+  // rules page is what a padrino wants to see instead.
   // Cash Rack and The Spots belong to Basketball Money and live on
   // hoops.cash with their own pledge pages.
 };
@@ -590,7 +590,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
 
     deadlineHtml(ch) +
 
-    // A sponsor never sees a button that could end this player's one
+    // A padrino never sees a button that could end this player's one
     // official run, and a player is not shown a pledge form for
     // themselves. Which half appears depends on the run key.
     (RUN_KEY
@@ -626,7 +626,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
   if (!run && !RUN_KEY) wirePledgeForm(player);
 }
 
-// The sponsor link is this page without the run key.
+// The padrino link is this page without the run key.
 function copyShare(e){
   if (e) e.preventDefault();
   var link = window.location.origin + window.location.pathname +
@@ -666,7 +666,7 @@ function pledgeFormHtml(player){
     '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
     '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
     '<p class="mute" style="font-size:.82rem;margin:8px 0 0;">' + T('feeNote') + '</p>' +
-    // A sponsor cannot judge what a point is worth until they have
+    // A padrino cannot judge what a point is worth until they have
     // played. Two minutes on the game is the best possible answer to
     // "how much should I pledge".
     '<a class="try-link" href="' + gameFile(PLEDGE_CH) + '" target="_blank" rel="noopener">' +
@@ -719,8 +719,8 @@ function wirePledgeForm(player){
       body: JSON.stringify({
         challenge_id: CHALLENGE,
         player_id: player ? player.id : null,
-        sponsor_name: name,
-        sponsor_email: email,
+        padrino_name: name,
+        padrino_email: email,
         rate_per_point: r
       })
     })
@@ -783,7 +783,7 @@ function renderTryout(campaignId, campaign, players, scores){
   try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
 
   // Which game is the team actually best at. Totalling points rather
-  // than levels, since points are what a sponsor pays against.
+  // than levels, since points are what a padrino pays against.
   var totals = { fortress:0, recall:0, recognition:0 };
   var counts = { fortress:0, recall:0, recognition:0 };
   scores.forEach(function(r){
@@ -898,7 +898,7 @@ if (TRYOUT){
         get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
         get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs'),
         // A score from an earlier competition on this campaign. It is
-        // a real result rather than a practice number, so a sponsor
+        // a real result rather than a practice number, so a padrino
         // can pledge against something that actually happened.
         get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
             '&game=eq.' + encodeURIComponent(ch.game || 'fortress') +
