@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your pledge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#050A12;--panel:#0D1826;--line:#1E3550;--gold:#22D3EE;--paper:#EAF4FB;--mute:#8AA4BD;--good:#4ED6A1}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--ink);color:var(--paper);
+  font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.wrap{width:min(520px,92vw);margin:0 auto}
+
+nav{border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:center;padding:16px 0}
+.mark img{display:block;height:30px;width:auto}
+
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:34px 0 48px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,5vw,36px);width:100%}
+.card.open{border-color:rgba(34,211,238,.35)}
+.card.paid{border-color:rgba(78,214,161,.4)}
+
+.kick{font-size:.62rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+h1{font-size:clamp(1.5rem,5vw,2rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0 0 .5em}
+h1 em{font-style:normal;color:var(--gold)}
+p{margin:0 0 1em;color:#CFE3F2}
+p:last-child{margin-bottom:0}
+.mute{color:var(--mute);font-size:.92rem}
+
+.sums{margin:22px 0;border-top:1px solid var(--line)}
+.sum{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sum span{color:var(--mute);font-size:.95rem}
+.sum b{font-weight:800;white-space:nowrap}
+.sum.total b{font-size:1.5rem;color:var(--gold)}
+
+.pay{
+  display:block;width:100%;padding:18px;border-radius:14px;text-align:center;
+  background:var(--gold);color:#04121A;text-decoration:none;
+  font-weight:800;font-size:1.05rem;letter-spacing:.03em;
+}
+.note{color:var(--mute);font-size:.88rem;margin-top:16px;text-align:center}
+
+.state{text-align:center;padding:10px 0}
+.state .icon{font-size:2.6rem;line-height:1;margin-bottom:12px}
+.state.paid .icon{color:var(--good)}
+
+footer{border-top:1px solid var(--line);padding:20px 0 34px;text-align:center;color:var(--mute);font-size:.82rem}
+footer a{color:var(--mute)}
+#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;
+  padding:5px 12px;font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;
+  position:fixed;top:14px;right:14px}
+</style>
+</head>
+<body>
+
+<button id="lang" onclick="flip()">ES</button>
+
+<nav><div class="wrap navin">
+  <a class="mark" href="index.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+</div></nav>
+
+<main><div class="wrap">
+  <div class="card" id="card">
+    <p class="mute" id="loading">Loading…</p>
+  </div>
+</div></main>
+
+<footer><div class="wrap">
+  Gostar Digital LLC — Puerto Rico ·
+  <a href="terms.html" id="fTerms">Terms</a> ·
+  <a href="privacy.html" id="fPrivacy">Privacy</a>
+</div></footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+// ══════════════════════════════════════════════════════
+//  THE PLEDGE PAGE
+//
+//  Where a padrino's email sends them. It reads through a database
+//  function rather than the pledges table, so no email address and no
+//  other padrino's pledge can be reached from this link — and the
+//  thirty-day close is decided by the database, not by this page.
+// ══════════════════════════════════════════════════════
+var params = new URLSearchParams(location.search);
+var PLEDGE = params.get('p');
+var JUST_PAID = params.get('paid') === '1';
+
+var LANG = 'en';
+try { LANG = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+
+var S = {
+  en:{
+    kick:'Your pledge',
+    scored:'{N} scored <em>{P} points</em>',
+    youPledged:'You pledged {R} a point.',
+    lPledge:'Your pledge', lFee:'Platform fee (10%)', lTotal:'Total to pay',
+    pay:'Pay {T}',
+    goes:'The {A} you pledged goes to {G} in full. The fee is ours.',
+    window:'This link stays open for thirty days after the run.',
+
+    paidKick:'Settled',
+    paidH:'Thank you for backing {N}.',
+    paidP:'Your pledge of {A} is on its way to {G}. Nothing further is owed, and this link is now closed.',
+
+    closedKick:'Closed',
+    closedH:'This pledge has closed.',
+    closedP:'Pledging ended thirty days after the run, and <strong>nothing is owed</strong>. If you meant to pay it and the time got away from you, contact the program and they can sort it out.',
+
+    goneH:'We cannot find that pledge.',
+    goneP:'The link may be incomplete. Try opening it again from the email, or contact the program.',
+
+    failH:'Something went wrong.',
+    failP:'We could not load this pledge just now. Try again in a moment.',
+
+    terms:'Terms', privacy:'Privacy'
+  },
+  es:{
+    kick:'Tu promesa',
+    scored:'{N} anotó <em>{P} puntos</em>',
+    youPledged:'Prometiste {R} por punto.',
+    lPledge:'Tu promesa', lFee:'Cargo de plataforma (10%)', lTotal:'Total a pagar',
+    pay:'Pagar {T}',
+    goes:'Los {A} que prometiste van completos a {G}. El cargo es nuestro.',
+    window:'Este enlace queda abierto treinta días después de la corrida.',
+
+    paidKick:'Pagado',
+    paidH:'Gracias por apoyar a {N}.',
+    paidP:'Tu promesa de {A} va camino a {G}. No se debe nada más, y este enlace ya está cerrado.',
+
+    closedKick:'Cerrado',
+    closedH:'Esta promesa ya cerró.',
+    closedP:'Las promesas cerraron treinta días después de la corrida, y <strong>no se debe nada</strong>. Si querías pagarla y se te pasó el tiempo, habla con el programa y lo resuelven.',
+
+    goneH:'No encontramos esa promesa.',
+    goneP:'Puede que el enlace esté incompleto. Ábrelo otra vez desde el correo, o habla con el programa.',
+
+    failH:'Algo salió mal.',
+    failP:'No pudimos cargar esta promesa ahora mismo. Intenta en un momento.',
+
+    terms:'Términos', privacy:'Privacidad'
+  }
+};
+
+function T(k, v){
+  var out = (S[LANG] && S[LANG][k]) || S.en[k] || k;
+  if (v) Object.keys(v).forEach(function(x){ out = out.split('{'+x+'}').join(v[x]); });
+  return out;
+}
+function flip(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('cfh_lang', LANG); } catch(e){}
+  paintChrome();
+  if (DATA) render(DATA); 
+}
+function paintChrome(){
+  document.documentElement.lang = LANG;
+  document.getElementById('lang').textContent = LANG === 'en' ? 'ES' : 'EN';
+  document.getElementById('fTerms').textContent = T('terms');
+  document.getElementById('fPrivacy').textContent = T('privacy');
+}
+
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function money(n){ return '$' + Number(n || 0).toFixed(2); }
+
+var card = document.getElementById('card');
+var DATA = null;
+
+paintChrome();
+
+if (!PLEDGE){
+  card.innerHTML = '<div class="state"><div class="icon">🔍</div>' +
+    '<h1>' + T('goneH') + '</h1><p class="mute">' + T('goneP') + '</p></div>';
+} else {
+  fetch(SB_URL + '/rest/v1/rpc/pledge_for_payment', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_pledge: PLEDGE })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('bad'); return r.json(); })
+  .then(function(d){
+    if (!d || !d.ok){
+      card.innerHTML = '<div class="state"><div class="icon">🔍</div>' +
+        '<h1>' + T('goneH') + '</h1><p class="mute">' + T('goneP') + '</p></div>';
+      return;
+    }
+    // The language they pledged in wins, unless they have since asked
+    // for the other one on this device.
+    try { if (!localStorage.getItem('cfh_lang') && d.lang) { LANG = d.lang; paintChrome(); } } catch(e){}
+    DATA = d;
+    render(d);
+  })
+  .catch(function(e){
+    console.error('Pledge load:', e);
+    card.innerHTML = '<div class="state"><div class="icon">⚠️</div>' +
+      '<h1>' + T('failH') + '</h1><p class="mute">' + T('failP') + '</p></div>';
+  });
+}
+
+function render(d){
+  // Someone arriving straight back from Stripe may beat the webhook by
+  // a second, so trust the redirect as well as the stored status.
+  var status = (JUST_PAID && d.status === 'open') ? 'paid' : d.status;
+
+  if (status === 'paid'){
+    card.className = 'card paid';
+    card.innerHTML =
+      '<div class="state paid"><div class="icon">✓</div>' +
+        '<div class="kick">' + T('paidKick') + '</div>' +
+        '<h1>' + T('paidH', { N: esc(d.participant) }) + '</h1>' +
+        '<p class="mute">' + T('paidP', { A: money(d.pledged), G: esc(d.program) }) + '</p>' +
+      '</div>';
+    return;
+  }
+
+  if (status === 'closed'){
+    card.className = 'card';
+    card.innerHTML =
+      '<div class="state"><div class="icon">🕔</div>' +
+        '<div class="kick">' + T('closedKick') + '</div>' +
+        '<h1>' + T('closedH') + '</h1>' +
+        '<p class="mute">' + T('closedP') + '</p>' +
+      '</div>';
+    return;
+  }
+
+  card.className = 'card open';
+  card.innerHTML =
+    '<div class="kick">' + T('kick') + '</div>' +
+    '<h1>' + T('scored', { N: esc(d.participant), P: esc(d.points) }) + '</h1>' +
+    '<p>' + T('youPledged', { R: money(d.rate) }) + '</p>' +
+
+    '<div class="sums">' +
+      '<div class="sum"><span>' + T('lPledge') + '</span><b>' + money(d.pledged) + '</b></div>' +
+      '<div class="sum"><span>' + T('lFee') + '</span><b>' + money(d.fee) + '</b></div>' +
+      '<div class="sum total"><span>' + T('lTotal') + '</span><b>' + money(d.total) + '</b></div>' +
+    '</div>' +
+
+    (d.url
+      ? '<a class="pay" href="' + d.url + '">' + T('pay', { T: money(d.total) }) + '</a>'
+      : '') +
+
+    '<p class="note">' + T('goes', { A: money(d.pledged), G: esc(d.program) }) + '</p>' +
+    '<p class="note mute">' + T('window') + '</p>';
+}
+</script>
+</body>
+</html>
