@@ -14,7 +14,9 @@
 body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
 .wrap{width:min(900px,92vw);margin:0 auto}
 
-nav{border-bottom:1px solid var(--line)}
+/* The bar follows the page down, so the menu is always a tap
+   away rather than a scroll back to the top. */
+nav{position:sticky;top:0;z-index:70;background:var(--ink);border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
 .mark{display:block;line-height:0;text-decoration:none}
 .mark img{display:block;height:34px;width:auto}
