@@ -155,7 +155,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 <!-- INTRO -->
 <div id="screen-intro">
-  <a class="intro-back" href="index.html">← Back</a>
+  <a class="intro-back" href="challenges.html" id="introBack">← Back</a>
   <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
   <div class="vrr-title">THE <span>FORTRESS</span></div>
 
@@ -235,7 +235,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div id="targetLayer"></div>
   </div>
   <div id="controls">
-    <a class="ctrl-btn" href="index.html">← Home</a>
+    <a class="ctrl-btn" href="challenges.html" id="homeBtn">← Home</a>
   </div>
 </div>
 
@@ -252,7 +252,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <div class="save-status" id="saveStatus"></div>
 
   <button class="next-player-btn" id="againBtn">▶ PLAY AGAIN</button>
-  <a class="box-open-btn" id="backToPledge" href="index.html" style="max-width:300px;margin:14px auto 0;">← Back</a>
+  <a class="box-open-btn" id="backToPledge" href="challenges.html" style="max-width:300px;margin:14px auto 0;">← Back</a>
 </div>
 
 <script>
@@ -595,14 +595,14 @@ var runStartTime=0;
 // their score and their official-run button live.
 (function setBackLink(){
   if (TRYOUT){
-    var t = 'index.html?tryout=' + encodeURIComponent(TRYOUT);
+    var t = 'challenges.html?tryout=' + encodeURIComponent(TRYOUT);
     ['introBack','homeBtn','backToPledge'].forEach(function(id){
       var el = $(id); if (el) el.href = t;
     });
     return;
   }
   if (CHALLENGE_ID && PLAYER_ID){
-    var back = 'index.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
+    var back = 'challenges.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
              + (RUN_KEY ? '&k=' + encodeURIComponent(RUN_KEY) : '');
     $('backToPledge').href = back;
     $('backToPledge').textContent = T('backToChallenge');
