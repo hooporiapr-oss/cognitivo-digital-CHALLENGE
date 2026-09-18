@@ -120,17 +120,51 @@ input:focus{outline:none;border-color:var(--purple)}
 .game-card{
   display:block;padding:16px 18px;border-radius:14px;text-decoration:none;
   border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
-  transition:transform .08s,background .12s;
+  transition:transform .12s,background .12s,border-color .2s;
+  position:relative;overflow:hidden;
+  /* Each card takes its turn being lit, so the eye is drawn to one
+     at a time rather than to three things glowing at once. */
+  animation:cardTurn 7.5s ease-in-out infinite;
 }
 .game-card:active{transform:scale(.985)}
-.game-name{display:block;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.01em;font-size:1.05rem}
-.game-desc{display:block;margin-top:4px;font-size:.85rem;color:var(--mute)}
-.game-card.fortress{border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.07)}
+@keyframes cardTurn{
+  0%,100%{ box-shadow:0 0 0 0 rgba(var(--glow),0); transform:translateY(0) }
+  6%     { box-shadow:0 0 26px 2px rgba(var(--glow),.38); transform:translateY(-2px) }
+  16%    { box-shadow:0 0 0 0 rgba(var(--glow),0); transform:translateY(0) }
+}
+
+/* A light that sweeps across the card as it takes its turn. */
+.game-card::after{
+  content:'';position:absolute;top:0;bottom:0;width:45%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.07),transparent);
+  transform:skewX(-18deg);
+  animation:cardSweep 7.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes cardSweep{
+  0%,100%{ left:-60% }
+  8%     { left:-60% }
+  22%    { left:130% }
+  23%,99%{ left:130% }
+}
+
+.game-name{display:block;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.01em;font-size:1.05rem;position:relative}
+.game-desc{display:block;margin-top:4px;font-size:.85rem;color:var(--mute);position:relative}
+
+.game-card.fortress{--glow:34,211,238;border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.07)}
 .game-card.fortress .game-name{color:#22D3EE}
-.game-card.recall{border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.07)}
+.game-card.recall{--glow:56,189,248;border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.07);animation-delay:2.5s}
+.game-card.recall::after{animation-delay:2.5s}
 .game-card.recall .game-name{color:#38BDF8}
-.game-card.recognition{border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07)}
+.game-card.recognition{--glow:45,212,191;border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07);animation-delay:5s}
+.game-card.recognition::after{animation-delay:5s}
 .game-card.recognition .game-name{color:#2DD4BF}
+
+/* Anyone who has asked their device to stop moving things gets a
+   still page. */
+@media (prefers-reduced-motion:reduce){
+  .game-card,.game-card::after{animation:none}
+}
 
 /* The landing page's own masthead — everything above the pitch is
    centred on the logo, which is the one place a first-time visitor
