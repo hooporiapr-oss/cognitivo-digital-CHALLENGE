@@ -62,7 +62,14 @@ nav{position:sticky;top:0;z-index:70;background:var(--ink);border-bottom:1px sol
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 
 /* ---------- the one sentence ---------- */
-header{padding:clamp(48px,9vw,86px) 0 clamp(36px,6vw,54px)}
+header{padding:clamp(40px,7vw,64px) 0 clamp(36px,6vw,54px);text-align:center}
+/* The logo leads, and the copy under it is centred with it — the
+   whole masthead reads as one block. */
+.heromark{display:block;width:min(340px,70vw);height:auto;margin:0 auto clamp(22px,4vw,32px)}
+header h1{margin-left:auto;margin-right:auto}
+header .lede,header .forwho{margin-left:auto;margin-right:auto}
+header .forwho{border-left:none;padding-left:0;border-top:1px solid rgba(34,211,238,.35);padding-top:16px}
+header .actions{justify-content:center}
 h1{
   font-size:clamp(2.1rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;
   line-height:1.05;margin:0 0 .4em;max-width:19ch;
@@ -187,6 +194,7 @@ footer a{color:var(--mute)}
 </nav>
 
 <header id="top"><div class="wrap">
+  <img class="heromark" src="cognitivo.png" alt="Cognitivo Digital">
   <h1 data-t="h1">The fundraiser where <em>practising is the point</em>.</h1>
   <p class="lede" data-t="lede">Memory challenges to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.</p>
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
