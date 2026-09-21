@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#050A12;--paper:#EAF4FB;--mute:#8AA4BD;--line:#1E3550;--panel:#0D1826;--gold:#22D3EE;--leather:#38BDF8}
+html{scroll-behavior:smooth}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{width:min(940px,92vw);margin:0 auto}
@@ -91,6 +92,48 @@ h1 em{font-style:normal;color:var(--gold)}
 }
 .btn-solid{background:var(--gold);color:#04121A}
 .btn-line{border:1px solid var(--line);color:var(--paper)}
+
+/* ---------- the challenges, first thing under the headline ---------- */
+.play{padding:0 0 clamp(36px,6vw,56px);scroll-margin-top:84px}
+.playhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.playhead h2{font-size:clamp(1.3rem,3.4vw,1.6rem);font-weight:800;letter-spacing:-.025em;margin:0}
+.playnote{color:var(--mute);font-size:.9rem}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(max-width:780px){.games{grid-template-columns:1fr}}
+.game{
+  display:flex;flex-direction:column;gap:6px;min-height:44px;
+  padding:18px 20px;border-radius:16px;text-decoration:none;color:var(--paper);
+  border:1.5px solid var(--line);background:var(--panel);
+  position:relative;overflow:hidden;
+  transition:transform .12s,border-color .2s;
+  /* each card takes its turn, so the eye goes to one at a time */
+  animation:gTurn 7.5s ease-in-out infinite;
+}
+.game:hover{transform:translateY(-2px)}
+.game:active{transform:scale(.985)}
+.game::after{
+  content:'';position:absolute;top:0;bottom:0;width:45%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.07),transparent);
+  transform:skewX(-18deg);animation:gSweep 7.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes gTurn{
+  0%,100%{box-shadow:0 0 0 0 rgba(var(--glow),0);transform:translateY(0)}
+  6%{box-shadow:0 0 26px 2px rgba(var(--glow),.38);transform:translateY(-2px)}
+  16%{box-shadow:0 0 0 0 rgba(var(--glow),0);transform:translateY(0)}
+}
+@keyframes gSweep{0%,8%{left:-60%}22%,100%{left:130%}}
+.gname{font-weight:800;font-size:1.1rem;letter-spacing:-.01em;position:relative}
+.gdesc{color:var(--mute);font-size:.92rem;line-height:1.5;position:relative}
+.gplay{margin-top:auto;padding-top:6px;font-weight:800;font-size:.9rem;position:relative}
+.game.fortress{--glow:34,211,238;border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.07)}
+.game.fortress .gname,.game.fortress .gplay{color:#22D3EE}
+.game.recall{--glow:56,189,248;border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.07);animation-delay:2.5s}
+.game.recall::after{animation-delay:2.5s}
+.game.recall .gname,.game.recall .gplay{color:#38BDF8}
+.game.recognition{--glow:45,212,191;border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07);animation-delay:5s}
+.game.recognition::after{animation-delay:5s}
+.game.recognition .gname,.game.recognition .gplay{color:#2DD4BF}
+@media (prefers-reduced-motion:reduce){.game,.game::after{animation:none}}
 
 /* ---------- the angle: the activity is worth doing ---------- */
 .angle{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(22px,4vw,44px);align-items:start;padding:0 0 clamp(36px,6vw,56px)}
@@ -200,11 +243,37 @@ footer a{color:var(--mute)}
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
   <div class="actions">
     <a class="btn btn-solid" href="contact.html" data-t="cta1">Talk to us</a>
-    <a class="btn btn-line" href="challenges.html" data-t="cta2">Try a challenge</a>
+    <a class="btn btn-line" href="#play" data-t="cta2">Try a challenge</a>
   </div>
 </div></header>
 
 <div class="wrap">
+
+  <!-- The challenges come first: a visitor who plays one for thirty
+       seconds understands most of what follows before reading it. -->
+  <section class="play" id="play" aria-labelledby="playH">
+    <div class="playhead">
+      <h2 id="playH" data-t="playH">Try a challenge now</h2>
+      <span class="playnote" data-t="playNote">Free to play. Nothing is recorded.</span>
+    </div>
+    <div class="games">
+      <a class="game fortress" href="fortress.html">
+        <span class="gname" data-t="gFortress">The Fortress</span>
+        <span class="gdesc" data-t="gFortressDesc">Five circles, fixed in place. Watch the chain, tap it back, one more every round.</span>
+        <span class="gplay" data-t="gPlay">Play →</span>
+      </a>
+      <a class="game recall" href="recall.html">
+        <span class="gname" data-t="gRecall">The Recall</span>
+        <span class="gdesc" data-t="gRecallDesc">Numbered cells light up. Memorize them, then tap them back in order.</span>
+        <span class="gplay" data-t="gPlay">Play →</span>
+      </a>
+      <a class="game recognition" href="recognition.html">
+        <span class="gname" data-t="gRecognition">The Recognition</span>
+        <span class="gdesc" data-t="gRecognitionDesc">A pattern appears, then returns with one cell moved. Find the one that moved.</span>
+        <span class="gplay" data-t="gPlay">Play →</span>
+      </a>
+    </div>
+  </section>
 
   <div class="angle">
     <div>
@@ -295,6 +364,10 @@ footer a{color:var(--mute)}
 <script>
 var T = {
   en:{
+    playH:'Try a challenge now', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
+    gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
+    gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
+    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
     mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
     mScoring:'Chain scoring', mTalk:'Talk to us →',
     navPlay:'The challenges', navPad:'Getting padrinos', navScoring:'Chain scoring',
@@ -335,6 +408,10 @@ var T = {
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    playH:'Prueba un reto ahora', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
+    gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
+    gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
+    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
     mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
     mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
     navPlay:'Los retos', navPad:'Conseguir padrinos', navScoring:'Puntuación en cadena',
