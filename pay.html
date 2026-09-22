@@ -55,6 +55,13 @@ footer a{color:var(--mute)}
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;
   padding:5px 12px;font:inherit;font-size:.76rem;font-weight:600;cursor:pointer;
   position:fixed;top:14px;right:14px}
+
+/* ---------- the Apoyazo wordmark ---------- */
+.wm{font-family:Archivo,system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;
+  color:#EAF4FB;line-height:1;white-space:nowrap;font-size:28px}
+.wm em{font-style:normal;color:#22D3EE}
+.mark .wm{display:block}
+@media(max-width:560px){.mark .wm{font-size:23px}}
 </style>
 </head>
 <body>
@@ -62,7 +69,7 @@ footer a{color:var(--mute)}
 <button id="lang" onclick="flip()">ES</button>
 
 <nav><div class="wrap navin">
-  <a class="mark" href="index.html"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <a class="mark" href="index.html"><span class="wm">apoy<em>azo</em></span></a>
 </div></nav>
 
 <main><div class="wrap">
