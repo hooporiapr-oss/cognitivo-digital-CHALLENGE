@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The challenges — Cognitivo Digital</title>
+<title>The challenges — Apoyazo</title>
 <style>
 :root{
   /* Taken from the logo: deep blue-black, electric cyan, and a
@@ -224,6 +224,12 @@ input:focus{outline:none;border-color:var(--purple)}
 .try-link:active{background:rgba(34,211,238,.08)}
 
 footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-align:center;color:var(--mute);font-size:.8rem}
+
+/* ---------- the Apoyazo wordmark ---------- */
+.wm{font-family:Archivo,system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;
+  color:#EAF4FB;line-height:1;white-space:nowrap}
+.wm em{font-style:normal;color:#22D3EE}
+.wmhero{font-size:clamp(3rem,12vw,4.6rem);letter-spacing:-.05em;margin:0 auto 14px}
 </style>
 </head>
 <body>
@@ -268,7 +274,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 //  Shares its choice with the game through the same key.
 // ══════════════════════════════════════════════════════
 var STR = {
-  en:{ tagline:'A fundraiser that sharpens memory.',
+  en:{ tagline:'Memory challenges that raise money.',
     lede:'A fundraiser that sharpens memory. Padrinos pledge an amount for every point a participant scores, each participant gets one official run, and every dollar collected goes to the program.',
     howTitle:'How it works',
     s1h:'Padrinos pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
@@ -296,7 +302,7 @@ var STR = {
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.', freeNote:'Free to play. Nothing recorded.',
     haveLink:'Looking for a player or a team? Use the link they sent you.',
-    kick:'Cognitivo Digital',
+    kick:'Apoyazo',
     gradeWord:'Grade', noGrade:'No grade', participantsWord:'participants',
     gradeBoard:'How the grades are doing', gradeBoardNote:'Total points scored by everyone in each grade.',
     teamPoints:'Division points', runsDone:'Runs done',
@@ -337,7 +343,7 @@ var STR = {
     wordChallenge:'Challenge', wordPlayer:'Participant', wordTeam:'The division',
     footer:'Gostar Digital LLC — Puerto Rico'
   },
-  es:{ tagline:'Una recaudación que agudiza la memoria.',
+  es:{ tagline:'Retos de memoria para apoyar a tu programa.',
     lede:'Una recaudación que agudiza la memoria. Los padrinos prometen una cantidad por cada punto que anote el participante, cada participante tiene una corrida oficial, y cada dólar cobrado va al programa.',
     howTitle:'Cómo funciona',
     s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
@@ -365,7 +371,7 @@ var STR = {
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.', freeNote:'Gratis. No se guarda nada.',
     haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
-    kick:'Cognitivo Digital',
+    kick:'Apoyazo',
     gradeWord:'Grado', noGrade:'Sin grado', participantsWord:'participantes',
     gradeBoard:'Cómo van los grados', gradeBoardNote:'Puntos totales de todos los de cada grado.',
     teamPoints:'Puntos de la división', runsDone:'Corridas hechas',
@@ -499,7 +505,7 @@ function renderLanding(){
   app.innerHTML =
     langBtnHtml() +
     '<div class="brandhead">' +
-      '<img class="logo" src="cognitivo.png" alt="Cognitivo Digital">' +
+      '<div class="wm wmhero">apoy<em>azo</em></div>' +
       '<h1 class="tagline">' + T('tagline') + '</h1>' +
     '</div>' +
     '<p style="margin-top:14px;">' + T('lede') + '</p>' +
