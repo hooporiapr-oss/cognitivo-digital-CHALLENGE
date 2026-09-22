@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cognitivo Digital — the fundraiser that trains memory</title>
+<title>Apoyazo — memory challenges that raise money</title>
 <meta name="description" content="A pledge fundraiser built on memory training. Students practise working memory to raise more, padrinos pledge per point, and all collected pledges go to the program.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -211,12 +211,22 @@ h1 em{font-style:normal;color:var(--gold)}
 
 footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
 footer a{color:var(--mute)}
+
+/* ---------- the Apoyazo wordmark ---------- */
+.wm{font-family:Archivo,system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;
+  color:#EAF4FB;line-height:1;white-space:nowrap;font-size:28px}
+.wm em{font-style:normal;color:#22D3EE}
+.mark .wm{display:block}
+@media(max-width:560px){.mark .wm{font-size:23px}}
+.heromark{display:flex;flex-direction:column;align-items:center;gap:10px;width:auto!important}
+.wmbig{font-size:clamp(3.4rem,13vw,6rem);letter-spacing:-.05em}
+.brandtag{font-size:clamp(.72rem,2.2vw,.86rem);font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
 </style>
 </head>
 <body>
 
 <nav><div class="wrap navin">
-  <a class="mark" href="#top"><img src="cognitivo.png" alt="Cognitivo Digital"></a>
+  <a class="mark" href="#top"><span class="wm">apoy<em>azo</em></span></a>
   <div class="navr">
     <a href="challenges.html" data-t="navPlay">The challenges</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
@@ -237,7 +247,7 @@ footer a{color:var(--mute)}
 </nav>
 
 <header id="top"><div class="wrap">
-  <img class="heromark" src="cognitivo.png" alt="Cognitivo Digital">
+  <div class="heromark"><span class="wm wmbig">apoy<em>azo</em></span><span class="brandtag" data-t="brandTag">memory challenges that raise money</span></div>
   <h1 data-t="h1">The fundraiser where <em>practising is the point</em>.</h1>
   <p class="lede" data-t="lede">Memory challenges to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.</p>
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
@@ -364,6 +374,7 @@ footer a{color:var(--mute)}
 <script>
 var T = {
   en:{
+    brandTag:'memory challenges that raise money',
     playH:'Try a challenge now', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
     gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
@@ -408,6 +419,7 @@ var T = {
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    brandTag:'retos de memoria para apoyar a tu programa',
     playH:'Prueba un reto ahora', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
     gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
