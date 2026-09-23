@@ -268,6 +268,8 @@ var TRYOUT = params.get('tryout');
 // A one-run competition: the first score stands, and the game says so
 // rather than quietly keeping the better of two.
 var TRYOUT_ONCE = params.get('once') === '1';
+// A warm-up inside a competition: counted, but never scored.
+var TRYOUT_PRACTICE = params.get('practice') === '1';
 var IS_OFFICIAL = !TRYOUT && !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.get('official') === '1');
 var GAME = 'recognition';
 
@@ -302,6 +304,8 @@ var STR = {
     playAgain:'▶ PLAY AGAIN', statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
+    practiceCount:'Practice {D} of {N}. Go back and play again.',
+    practiceUnlocked:'✓ Practice done — your official run is unlocked. Go back to take it.',
     worthLine:'That is {P} points. In a fundraiser, every padrino backing you at 25¢ a point would be giving {M}.',
     tryoutAlready:'You have already used your run at this game.',
     confirmOnce:'One attempt only — whatever you score is your score. Ready?',
@@ -341,6 +345,8 @@ var STR = {
     playAgain:'▶ JUGAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
+    practiceCount:'Práctica {D} de {N}. Regresa y juega otra vez.',
+    practiceUnlocked:'✓ Práctica completa — tu corrida oficial está desbloqueada. Regresa para hacerla.',
     worthLine:'Son {P} puntos. En una recaudación, cada padrino que te apoye a 25¢ por punto estaría dando {M}.',
     tryoutAlready:'Ya usaste tu corrida en este juego.',
     confirmOnce:'Un solo intento — lo que anotes es tu puntuación. ¿Listo?',
@@ -834,7 +840,33 @@ function recordPractice(finalLevel){
 
 // Keeps this player's best for this game in this campaign. Only ever
 // moves upward, so a bad run never lowers what the team is judged on.
+// Warming up. The database counts it and says whether the official
+// run has unlocked yet, so the player is told where they stand.
+function recordCompetitionPractice(finalLevel, status){
+  fetch(SB_URL + '/rest/v1/rpc/record_practice', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      p_campaign: TRYOUT, p_player: PLAYER_ID, p_game: GAME, p_level: finalLevel
+    })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('practice'); return r.json(); })
+  .then(function(d){
+    status.style.color = d && d.unlocked ? '#00D9A5' : '#8AA4BD';
+    status.textContent = d && d.unlocked
+      ? T('practiceUnlocked')
+      : T('practiceCount').split('{D}').join(d ? d.runs : 0)
+                          .split('{N}').join(d ? d.need : 3);
+  })
+  .catch(function(e){
+    console.error('Practice:', e);
+    status.style.color = '#ff6b35';
+    status.textContent = T('tryoutFailed');
+  });
+}
+
 function recordTryout(finalLevel, status){
+  if (TRYOUT_PRACTICE) return recordCompetitionPractice(finalLevel, status);
   var base = SB_URL + '/rest/v1/campaign_tryouts';
   var headers = {
     'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
