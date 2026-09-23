@@ -293,6 +293,7 @@ var STR = {
     statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
+    worthLine:'That is {P} points. In a fundraiser, every padrino backing you at 25¢ a point would be giving {M}.',
     tryoutAlready:'You have already used your run at this game.',
     confirmOnce:'One attempt only — whatever you score is your score. Ready?',
     tryoutFailed:'Could not save that to the tryout — try again.',
@@ -332,6 +333,7 @@ var STR = {
     statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
+    worthLine:'Son {P} puntos. En una recaudación, cada padrino que te apoye a 25¢ por punto estaría dando {M}.',
     tryoutAlready:'Ya usaste tu corrida en este juego.',
     confirmOnce:'Un solo intento — lo que anotes es tu puntuación. ¿Listo?',
     tryoutFailed:'No se pudo guardar en la prueba — intenta otra vez.',
@@ -464,7 +466,11 @@ function recordTryout(finalLevel, status){
   })
   .then(function(){
     status.style.color = '#00D9A5';
-    status.textContent = T('tryoutSaved');
+    status.innerHTML = T('tryoutSaved') +
+      '<span style="display:block;margin-top:6px;color:#8AA4BD;font-weight:700;">' +
+      T('worthLine').split('{P}').join(pointsFor(finalLevel))
+                   .split('{M}').join('$' + (pointsFor(finalLevel) * 0.25).toFixed(2)) +
+      '</span>';
   })
   .catch(function(e){
     console.error('Tryout record:', e);
