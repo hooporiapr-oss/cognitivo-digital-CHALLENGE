@@ -284,6 +284,13 @@ var STR = {
     tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
     yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
     runUsed:'run used',
+    joinNote:'Type your name the way your teacher would write it, and pick your grade.',
+    joinNamePh:'Your name', joinGradePh:'Your grade…', joinBtn:'Start',
+    joinNeedName:'Please type your name.', joinNeedGrade:'Please pick your grade.',
+    joinWorking:'One moment…', joinFailed:'That did not work — please try again.',
+    practiceFirst:'Practise {N} more times to unlock your official run.',
+    practiceReady:'Your official run is unlocked.',
+    practiceOf:'{D} of {N} practice runs done',
     tryoutKick:'Competition',
     tryoutLede:'Play all three as often as you like. Nothing is recorded until you take your official run.',
     teamStanding:'How the program is doing', teamStandingNote:'Total points across everyone who has played.',
@@ -353,6 +360,13 @@ var STR = {
     tryoutOnce:'Una corrida cada uno. Juega cada juego una vez — tu puntuación es la que saques en ese intento, así que tómate tu tiempo.',
     yourTryoutOnce:'Un intento en cada uno. No hay segunda oportunidad, y no hay reloj en tu turno.',
     runUsed:'corrida usada',
+    joinNote:'Escribe tu nombre como lo escribiría tu maestro, y escoge tu grado.',
+    joinNamePh:'Tu nombre', joinGradePh:'Tu grado…', joinBtn:'Empezar',
+    joinNeedName:'Por favor escribe tu nombre.', joinNeedGrade:'Por favor escoge tu grado.',
+    joinWorking:'Un momento…', joinFailed:'No funcionó — intenta de nuevo.',
+    practiceFirst:'Practica {N} veces más para desbloquear tu corrida oficial.',
+    practiceReady:'Tu corrida oficial está desbloqueada.',
+    practiceOf:'{D} de {N} prácticas hechas',
     tryoutKick:'Competencia',
     tryoutLede:'Juega los tres todas las veces que quieras. No se guarda nada hasta que hagas tu corrida oficial.',
     teamStanding:'Cómo va el programa', teamStandingNote:'Puntos totales de todos los que han jugado.',
@@ -867,12 +881,16 @@ function loadTryout(campaignId){
   Promise.all([
     get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run,tryout_game'),
     get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
-    get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs')
+    get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs'),
+    get('campaign_practice?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,runs'),
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=practice_required')
   ])
   .then(function(res){
     var campaign = res[0] && res[0][0];
     if (!campaign) { notFound(T('wordTeam')); return; }
-    renderTryout(campaignId, campaign, res[1] || [], res[2] || []);
+    var need = (res[4] && res[4][0] && res[4][0].practice_required);
+    renderTryout(campaignId, campaign, res[1] || [], res[2] || [], res[3] || [],
+                 (need === 0 || need) ? need : 3);
   })
   .catch(function(e){
     console.error(e);
@@ -880,7 +898,7 @@ function loadTryout(campaignId){
   });
 }
 
-function renderTryout(campaignId, campaign, players, scores){
+function renderTryout(campaignId, campaign, players, scores, practice, practiceNeed){
   var oneRun = !!campaign.tryout_one_run;
   var picked = null;
   try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
@@ -906,6 +924,13 @@ function renderTryout(campaignId, campaign, players, scores){
 
   var myScores = {};
   if (me) scores.forEach(function(r){ if (r.player_id === me.id) myScores[r.game] = r; });
+
+  // Practice comes first: the official run stays shut until somebody
+  // has actually warmed up, so a first attempt is never a cold one.
+  var myPractice = {};
+  if (me) (practice || []).forEach(function(r){
+    if (r.player_id === me.id) myPractice[r.game] = r.runs || 0;
+  });
 
   app.innerHTML =
     langBtnHtml() +
@@ -947,26 +972,48 @@ function renderTryout(campaignId, campaign, players, scores){
                        '<span class="tp-score">' + label + ' · ' + T('runUsed') + '</span>' +
                      '</div>';
             }
+            var done = myPractice[g] || 0;
+            var left = Math.max(0, practiceNeed - done);
+
+            // Not warmed up yet: the link practises rather than counts.
+            if (left > 0){
+              return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
+                       '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
+                       '&practice=1">' +
+                       '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
+                       '<span class="tp-score">' +
+                         T('practiceOf').split('{D}').join(done).split('{N}').join(practiceNeed) +
+                       '</span>' +
+                       '<span class="tp-note">' + T('practiceFirst').split('{N}').join(left) + '</span>' +
+                     '</a>';
+            }
+
             return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
                      '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
                      (oneRun ? '&once=1' : '') + '">' +
                      '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
                      '<span class="tp-score">' + label + '</span>' +
+                     '<span class="tp-note">' + T('practiceReady') + '</span>' +
                    '</a>';
           }).join('') +
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
         '</div>'
       : '<div class="panel">' +
           '<h2>' + T('whoAreYou') + '</h2>' +
-          '<p class="mute">' + T('whoAreYouNote') + '</p>' +
-          '<div class="roster">' +
-            (players.length
-              ? players.map(function(p){
-                  return '<a href="#" onclick="pickMe(\'' + campaignId + '\',\'' + p.id + '\');return false;">' +
-                           '<span>' + esc(p.name) + '</span><span class="pts">→</span></a>';
-                }).join('')
-              : '<p class="mute">' + T('noPlayers') + '</p>') +
-          '</div>' +
+          '<p class="mute">' + T('joinNote') + '</p>' +
+          '<input id="joinName" type="text" maxlength="60" placeholder="' + T('joinNamePh') + '" ' +
+            'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
+            'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;margin-bottom:10px;">' +
+          '<select id="joinGrade" style="width:100%;padding:13px 14px;border-radius:10px;' +
+            'border:1px solid #ffffff1f;background:#08111C;color:#fff;font-family:inherit;font-size:1rem;">' +
+            '<option value="">' + T('joinGradePh') + '</option>' +
+            GRADES.map(function(g){
+              return '<option value="' + g + '">' + T('gradeWord') + ' ' + g + '</option>';
+            }).join('') +
+          '</select>' +
+          '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
+            'style="margin-top:12px;">' + T('joinBtn') + '</a>' +
+          '<p class="mute" id="joinMsg" style="margin-top:10px;"></p>' +
         '</div>') +
 
     footerHtml();
@@ -974,6 +1021,39 @@ function renderTryout(campaignId, campaign, players, scores){
 
 function gameLabelKey(g){
   return T(g === 'fortress' ? 'gFortress' : g === 'recall' ? 'gRecall' : 'gRecognition');
+}
+
+var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
+
+// A student adds themselves with a name and a grade. The database
+// makes the row, so the players table stays closed to the page — and
+// somebody returning on another device finds themselves again rather
+// than appearing twice.
+function joinCompetition(campaignId){
+  var name = (document.getElementById('joinName').value || '').trim();
+  var grade = document.getElementById('joinGrade').value || '';
+  var msg = document.getElementById('joinMsg');
+
+  if (name.length < 2){ msg.style.color = '#ff8fa3'; msg.textContent = T('joinNeedName'); return; }
+  if (!grade){ msg.style.color = '#ff8fa3'; msg.textContent = T('joinNeedGrade'); return; }
+
+  msg.style.color = ''; msg.textContent = T('joinWorking');
+
+  fetch(SB_URL + '/rest/v1/rpc/join_competition', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_campaign: campaignId, p_name: name, p_grade: grade })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('join'); return r.json(); })
+  .then(function(id){
+    if (!id) throw new Error('join');
+    pickMe(campaignId, id);
+  })
+  .catch(function(e){
+    console.error('Join:', e);
+    msg.style.color = '#ff8fa3';
+    msg.textContent = T('joinFailed');
+  });
 }
 
 function pickMe(campaignId, playerId){
