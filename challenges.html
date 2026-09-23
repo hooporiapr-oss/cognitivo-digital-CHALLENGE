@@ -865,7 +865,7 @@ function notFound(what){
 // ══════════════════════════════════════════════════════
 function loadTryout(campaignId){
   Promise.all([
-    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run'),
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run,tryout_game'),
     get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
     get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs')
   ])
@@ -895,7 +895,10 @@ function renderTryout(campaignId, campaign, players, scores){
     counts[r.game] += 1;
   });
 
-  var order = ['fortress','recall','recognition'];
+  // A competition may be run on one game rather than all three, in
+  // which case that is the only one anybody sees.
+  var onlyGame = campaign.tryout_game || '';
+  var order = onlyGame ? [onlyGame] : ['fortress','recall','recognition'];
   var leader = order.slice().sort(function(a,b){ return totals[b]-totals[a]; })[0];
   var anyScores = order.some(function(g){ return counts[g] > 0; });
 
