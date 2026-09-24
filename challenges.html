@@ -297,6 +297,10 @@ var STR = {
     myOfficialRun:'My official run', copied:'✓ Copied — now send it',
     copyPrompt:'Copy this link:',
     shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
+    signupKick:'Fundraiser', 
+    signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
+    yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
+    runDone:'official run done',
     joinNote:'Type your name the way your teacher would write it, and pick your grade.',
     joinNamePh:'Your name', joinGradePh:'Your grade…', joinBtn:'Start',
     joinNeedName:'Please type your name.', joinNeedGrade:'Please pick your grade.',
@@ -377,6 +381,10 @@ var STR = {
     myOfficialRun:'Mi corrida oficial', copied:'✓ Copiado — ahora mándalo',
     copyPrompt:'Copia este enlace:',
     shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
+    signupKick:'Recaudación',
+    signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
+    yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
+    runDone:'corrida oficial hecha',
     joinNote:'Escribe tu nombre como lo escribiría tu maestro, y escoge tu grado.',
     joinNamePh:'Tu nombre', joinGradePh:'Tu grado…', joinBtn:'Empezar',
     joinNeedName:'Por favor escribe tu nombre.', joinNeedGrade:'Por favor escoge tu grado.',
@@ -953,33 +961,18 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 
   app.innerHTML =
     langBtnHtml() +
-    '<div class="kick">' + T('tryoutKick') + '</div>' +
+    '<div class="kick">' + T('signupKick') + '</div>' +
     '<h1>' + esc(campaign.name) + '</h1>' +
-    '<p class="mute" style="margin-top:8px;">' + (oneRun ? T('tryoutOnce') : T('tryoutLede')) + '</p>' +
-
-    (anyScores
-      ? '<div class="panel">' +
-          '<h2>' + T('teamStanding') + '</h2>' +
-          '<p class="mute">' + T('teamStandingNote') + '</p>' +
-          order.map(function(g){
-            var lead = g === leader && totals[g] > 0;
-            return '<div class="tryout-row' + (lead ? ' lead' : '') + '">' +
-                     '<span>' + gameLabelKey(g) + (lead ? ' <b>' + T('bestFit') + '</b>' : '') + '</span>' +
-                     '<span class="pts">' + totals[g] + ' ' + T('pts') +
-                       '<span class="sub">' + counts[g] + ' ' + T('playersWord') + '</span></span>' +
-                   '</div>';
-          }).join('') +
-        '</div>'
-      : '') +
+    '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>' +
 
     (me
       ? '<div class="panel">' +
           '<h2>' + esc(me.name) + '</h2>' +
           '<div id="myLinks"></div>' +
-          '<p class="mute">' + (oneRun ? T('yourTryoutOnce') : T('yourTryout')) + '</p>' +
+          '<p class="mute">' + T('yourPage') + '</p>' +
           order.map(function(g){
             var r = myScores[g];
-            var spent = oneRun && r;
+            var spent = !!r;
             var label = r
               ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts')
               : T('notPlayed');
@@ -989,7 +982,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
             if (spent){
               return '<div class="tryout-play ' + g + ' spent">' +
                        '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
-                       '<span class="tp-score">' + label + ' · ' + T('runUsed') + '</span>' +
+                       '<span class="tp-score">' + label + ' · ' + T('runDone') + '</span>' +
                      '</div>';
             }
             var done = myPractice[g] || 0;
@@ -1010,7 +1003,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 
             return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
                      '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
-                     (oneRun ? '&once=1' : '') + '">' +
+                     '&once=1">' +
                      '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
                      '<span class="tp-score">' + label + '</span>' +
                      '<span class="tp-note">' + T('practiceReady') + '</span>' +
