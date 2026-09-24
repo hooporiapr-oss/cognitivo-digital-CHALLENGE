@@ -230,6 +230,15 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
   color:#EAF4FB;line-height:1;white-space:nowrap}
 .wm em{font-style:normal;color:#22D3EE}
 .wmhero{font-size:clamp(3rem,12vw,4.6rem);letter-spacing:-.05em;margin:0 auto 14px}
+
+/* a student's own links, once a fundraiser is live */
+.mylinks{background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.35);border-radius:14px;padding:16px 18px;margin:12px 0 16px}
+.ml-head{font-size:.8rem;color:var(--mute);margin-bottom:10px}
+.ml-head b{display:block;color:var(--paper);font-size:1rem;margin-top:2px}
+.ml-btn{display:block;text-align:center;padding:14px;border-radius:11px;background:var(--gold);color:#04121A;
+  font-weight:800;text-decoration:none;margin-bottom:8px}
+.ml-btn.alt{background:none;border:1px solid var(--line);color:var(--paper)}
+.ml-note{color:var(--mute);font-size:.82rem;margin:4px 0 0}
 </style>
 </head>
 <body>
@@ -284,6 +293,10 @@ var STR = {
     tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
     yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
     runUsed:'run used',
+    fundraiserOn:'Pledging is open for', shareWithPadrinos:'Copy my padrino link',
+    myOfficialRun:'My official run', copied:'✓ Copied — now send it',
+    copyPrompt:'Copy this link:',
+    shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
     joinNote:'Type your name the way your teacher would write it, and pick your grade.',
     joinNamePh:'Your name', joinGradePh:'Your grade…', joinBtn:'Start',
     joinNeedName:'Please type your name.', joinNeedGrade:'Please pick your grade.',
@@ -360,6 +373,10 @@ var STR = {
     tryoutOnce:'Una corrida cada uno. Juega cada juego una vez — tu puntuación es la que saques en ese intento, así que tómate tu tiempo.',
     yourTryoutOnce:'Un intento en cada uno. No hay segunda oportunidad, y no hay reloj en tu turno.',
     runUsed:'corrida usada',
+    fundraiserOn:'Las promesas están abiertas para', shareWithPadrinos:'Copiar mi enlace de padrinos',
+    myOfficialRun:'Mi corrida oficial', copied:'✓ Copiado — ahora mándalo',
+    copyPrompt:'Copia este enlace:',
+    shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
     joinNote:'Escribe tu nombre como lo escribiría tu maestro, y escoge tu grado.',
     joinNamePh:'Tu nombre', joinGradePh:'Tu grado…', joinBtn:'Empezar',
     joinNeedName:'Por favor escribe tu nombre.', joinNeedGrade:'Por favor escoge tu grado.',
@@ -899,6 +916,8 @@ function loadTryout(campaignId){
 }
 
 function renderTryout(campaignId, campaign, players, scores, practice, practiceNeed){
+  // filled in after the page draws, since it depends on the database
+  setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id); }, 0);
   var oneRun = !!campaign.tryout_one_run;
   var picked = null;
   try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
@@ -956,6 +975,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
     (me
       ? '<div class="panel">' +
           '<h2>' + esc(me.name) + '</h2>' +
+          '<div id="myLinks"></div>' +
           '<p class="mute">' + (oneRun ? T('yourTryoutOnce') : T('yourTryout')) + '</p>' +
           order.map(function(g){
             var r = myScores[g];
@@ -1029,6 +1049,47 @@ var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
 // makes the row, so the players table stays closed to the page — and
 // somebody returning on another device finds themselves again rather
 // than appearing twice.
+// A student's own two links, but only once a fundraiser has been
+// switched on for their campaign. Until then the box stays empty, so
+// nobody starts asking for pledges before there is anything to pledge
+// against.
+function showMyLinks(campaignId, playerId){
+  fetch(SB_URL + '/rest/v1/rpc/my_links', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_campaign: campaignId, p_player: playerId })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('links'); return r.json(); })
+  .then(function(d){
+    var box = document.getElementById('myLinks');
+    if (!box || !d || !d.ok || !d.live) return;
+
+    var base = GAMES[d.game] ? location.pathname : location.pathname;
+    var sponsor = location.origin + base + '?c=' + encodeURIComponent(d.challenge) +
+                  '&p=' + encodeURIComponent(playerId);
+    var run = sponsor + '&k=' + encodeURIComponent(d.key);
+
+    box.innerHTML =
+      '<div class="mylinks">' +
+        '<div class="ml-head">' + T('fundraiserOn') + '<b>' + esc(d.name) + '</b></div>' +
+        '<a class="ml-btn" href="#" onclick="copyMine(\'' + sponsor.replace(/'/g, "%27") + '\',this);return false;">' +
+          T('shareWithPadrinos') + '</a>' +
+        '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>' +
+        '<p class="ml-note">' + T('shareNote') + '</p>' +
+      '</div>';
+  })
+  .catch(function(e){ console.error('My links:', e); });
+}
+
+function copyMine(url, el){
+  var done = function(){ el.textContent = T('copied'); setTimeout(function(){ el.textContent = T('shareWithPadrinos'); }, 2000); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(function(){ prompt(T('copyPrompt'), url); });
+  } else {
+    prompt(T('copyPrompt'), url);
+  }
+}
+
 function joinCompetition(campaignId){
   var name = (document.getElementById('joinName').value || '').trim();
   var grade = document.getElementById('joinGrade').value || '';
