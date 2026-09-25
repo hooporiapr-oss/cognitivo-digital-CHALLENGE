@@ -268,21 +268,8 @@ var TRYOUT_ONCE = params.get('once') === '1';
 // A warm-up inside a competition: counted, but never scored.
 var TRYOUT_PRACTICE = params.get('practice') === '1';
 
-// The page a student came from signs itself out quickly, since a
-// school computer is shared. Playing is activity, so the session is
-// kept warm while they are here.
-if (TRYOUT) {
-  (function keepWarm(){
-    var touch = function(){
-      try { localStorage.setItem('fc-seen-' + TRYOUT, String(Date.now())); } catch(e){}
-    };
-    touch();
-    setInterval(touch, 30000);
-    document.addEventListener('visibilitychange', function(){
-      if (!document.hidden) touch();
-    });
-  })();
-}
+// Nothing to keep warm: the page a student came from does not
+// remember anybody between visits.
 var IS_OFFICIAL = !TRYOUT && !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.get('official') === '1');
 var GAME = 'recall';
 
