@@ -459,12 +459,10 @@ function recordCompetitionPractice(finalLevel, status){
     })
   })
   .then(function(r){ if (!r.ok) throw new Error('practice'); return r.json(); })
-  .then(function(d){
-    status.style.color = d && d.unlocked ? '#00D9A5' : '#8AA4BD';
-    status.textContent = d && d.unlocked
-      ? T('practiceUnlocked')
-      : T('practiceCount').split('{D}').join(d ? d.runs : 0)
-                          .split('{N}').join(d ? d.need : 3);
+  .then(function(){
+    // The run is counted; the score above already says how it went,
+    // so there is nothing worth adding underneath it.
+    status.textContent = '';
   })
   .catch(function(e){
     console.error('Practice:', e);
