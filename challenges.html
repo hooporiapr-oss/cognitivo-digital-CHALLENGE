@@ -301,6 +301,7 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
+    idleNote:'On a shared computer this page signs itself out after a few minutes of doing nothing. Your name, PIN and score are kept — just sign back in.',
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
     joinOrSignInBtn:'Continue',
@@ -392,6 +393,7 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
+    idleNote:'En una computadora compartida esta página se cierra sola después de unos minutos sin actividad. Tu nombre, tu PIN y tu puntuación se guardan — solo vuelve a entrar.',
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
     joinOrSignInBtn:'Continuar',
@@ -942,7 +944,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id); }, 0);
   var oneRun = !!campaign.tryout_one_run;
   var picked = null;
-  try { picked = localStorage.getItem('fc-tryout-' + campaignId); } catch(e){}
+  picked = currentStudent(campaignId);
 
   // Which game is the team actually best at. Totalling points rather
   // than levels, since points are what a padrino pays against.
@@ -1004,7 +1006,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 
             // Not warmed up yet: the link practises rather than counts.
             if (left > 0){
-              return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
+              return '<a class="tryout-play ' + g + '" onclick="touchStudent(\'' + campaignId + '\')" href="' + GAMES[g].file +
                        '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
                        '&practice=1">' +
                        '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
@@ -1015,7 +1017,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
                      '</a>';
             }
 
-            return '<a class="tryout-play ' + g + '" href="' + GAMES[g].file +
+            return '<a class="tryout-play ' + g + '" onclick="touchStudent(\'' + campaignId + '\')" href="' + GAMES[g].file +
                      '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
                      '&once=1">' +
                      '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
@@ -1024,6 +1026,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
                    '</a>';
           }).join('') +
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
+          '<p class="mute" style="font-size:.8rem;margin:8px 0 0;">' + T('idleNote') + '</p>' +
         '</div>'
       : '<div class="panel">' +
           '<h2>' + T('joinOrSignIn') + '</h2>' +
@@ -1148,15 +1151,51 @@ function joinCompetition(campaignId){
   });
 }
 
+// A shared school computer should not stay signed in to whoever used
+// it last. The session is remembered with a timestamp and expires
+// after a spell of doing nothing, so the next student gets a clean
+// page rather than somebody else's official run.
+var IDLE_MINUTES = 3;
+
 function pickMe(campaignId, playerId){
-  try { localStorage.setItem('fc-tryout-' + campaignId, playerId); } catch(e){}
+  try {
+    localStorage.setItem('fc-tryout-' + campaignId, playerId);
+    localStorage.setItem('fc-seen-' + campaignId, String(Date.now()));
+  } catch(e){}
   loadTryout(campaignId);
 }
 
 function forgetMe(campaignId){
-  try { localStorage.removeItem('fc-tryout-' + campaignId); } catch(e){}
+  try {
+    localStorage.removeItem('fc-tryout-' + campaignId);
+    localStorage.removeItem('fc-seen-' + campaignId);
+  } catch(e){}
   loadTryout(campaignId);
   return false;
+}
+
+// Who this device is signed in as, if the session is still fresh.
+function currentStudent(campaignId){
+  try {
+    var id = localStorage.getItem('fc-tryout-' + campaignId);
+    if (!id) return null;
+
+    var seen = parseInt(localStorage.getItem('fc-seen-' + campaignId) || '0', 10);
+    if (seen && (Date.now() - seen) > IDLE_MINUTES * 60000){
+      localStorage.removeItem('fc-tryout-' + campaignId);
+      localStorage.removeItem('fc-seen-' + campaignId);
+      return null;
+    }
+
+    localStorage.setItem('fc-seen-' + campaignId, String(Date.now()));
+    return id;
+  } catch(e){ return null; }
+}
+
+// Playing a game counts as activity, so a long practice does not time
+// somebody out mid-run.
+function touchStudent(campaignId){
+  try { localStorage.setItem('fc-seen-' + campaignId, String(Date.now())); } catch(e){}
 }
 
 // ---------- routing ----------
