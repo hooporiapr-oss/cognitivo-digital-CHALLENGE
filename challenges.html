@@ -311,7 +311,7 @@ var STR = {
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
-    idleNote:'Leaving this page signs you out, so nobody else can use it. Your PIN brings you straight back.',
+    idleNote:'This page signs you out when you close it, or after a few minutes of doing nothing. Your PIN brings you straight back.',
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
     joinOrSignInBtn:'Continue',
@@ -405,7 +405,7 @@ var STR = {
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
-    idleNote:'Salir de esta página te desconecta, para que nadie más la use. Tu PIN te trae de vuelta.',
+    idleNote:'Esta página te desconecta al cerrarla, o después de unos minutos sin actividad. Tu PIN te trae de vuelta.',
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
     joinOrSignInBtn:'Continuar',
@@ -1221,18 +1221,19 @@ function joinCompetition(campaignId){
   });
 }
 
-// Nothing is remembered between visits. A page left open on a school
-// computer is never somebody else's account waiting to be used, and
-// the PIN is four digits, so signing in again costs a moment.
-//
-// The session lives for this page only: it is held in memory, not in
-// storage, so closing the tab ends it.
-var SESSION_PLAYER = null;
+// The session belongs to this tab, not to the computer. It survives
+// stepping into a game and back, dies when the tab is closed, and
+// times out if the page is left sitting — so a machine is never left
+// open on somebody else's account.
+var IDLE_MINUTES = 3;
+
+function sessionKey(campaignId){ return 'fc-sess-' + campaignId; }
 
 function pickMe(campaignId, playerId){
-  SESSION_PLAYER = { campaign: campaignId, player: playerId };
   try {
-    // clear anything an earlier version left behind
+    sessionStorage.setItem(sessionKey(campaignId),
+      JSON.stringify({ p: playerId, t: Date.now() }));
+    // anything an earlier version left in long-term storage
     localStorage.removeItem('fc-tryout-' + campaignId);
     localStorage.removeItem('fc-seen-' + campaignId);
   } catch(e){}
@@ -1240,21 +1241,41 @@ function pickMe(campaignId, playerId){
 }
 
 function forgetMe(campaignId){
-  SESSION_PLAYER = null;
+  try { sessionStorage.removeItem(sessionKey(campaignId)); } catch(e){}
   loadTryout(campaignId);
   return false;
 }
 
-// Who this page is signed in as. Nothing outside this page knows.
+// Who this tab is signed in as, if the session has not gone stale.
 function currentStudent(campaignId){
-  return (SESSION_PLAYER && SESSION_PLAYER.campaign === campaignId)
-    ? SESSION_PLAYER.player
-    : null;
+  try {
+    var raw = sessionStorage.getItem(sessionKey(campaignId));
+    if (!raw) return null;
+
+    var sess = JSON.parse(raw);
+    if (!sess || !sess.p) return null;
+
+    if (Date.now() - (sess.t || 0) > IDLE_MINUTES * 60000){
+      sessionStorage.removeItem(sessionKey(campaignId));
+      return null;
+    }
+
+    sess.t = Date.now();
+    sessionStorage.setItem(sessionKey(campaignId), JSON.stringify(sess));
+    return sess.p;
+  } catch(e){ return null; }
 }
 
-// Kept so the game links can still call it; there is no longer a
-// clock to keep alive.
-function touchStudent(){}
+// Stepping into a game counts as being here.
+function touchStudent(campaignId){
+  try {
+    var raw = sessionStorage.getItem(sessionKey(campaignId));
+    if (!raw) return;
+    var sess = JSON.parse(raw);
+    sess.t = Date.now();
+    sessionStorage.setItem(sessionKey(campaignId), JSON.stringify(sess));
+  } catch(e){}
+}
 
 // ---------- routing ----------
 paintMenu();
