@@ -315,7 +315,7 @@ var STR = {
     nice:'✅ RECALLED', wrong:'WRONG ORDER',
     labelPractice:'Practice Run · Longest Sequence',
     labelOfficial:'Official Run · Longest Sequence',
-    playAgain:'▶ PLAY AGAIN', statPoints:'Points', statTime:'Time',
+    playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN', statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
     practiceCount:'Practice {D} of {N}. Go back and play again.',
@@ -356,7 +356,7 @@ var STR = {
     nice:'✅ RECORDADO', wrong:'ORDEN INCORRECTO',
     labelPractice:'Práctica · Secuencia más larga',
     labelOfficial:'Corrida Oficial · Secuencia más larga',
-    playAgain:'▶ JUGAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
+    playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
     practiceCount:'Práctica {D} de {N}. Regresa y juega otra vez.',
@@ -394,7 +394,7 @@ function applyLang(){
   $('lblTime').textContent = T('lblTime');
   $('statPointsLbl').textContent = T('statPoints');
   $('statTimeLbl').textContent = T('statTime');
-  $('againBtn').textContent = T('playAgain');
+  $('againBtn').textContent = TRYOUT_PRACTICE ? T('practiceAgain') : T('playAgain');
   $('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
   var linked = CHALLENGE_ID && PLAYER_ID;
   $('introBack').textContent = linked ? T('backToChallenge') : T('back');
