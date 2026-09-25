@@ -202,13 +202,15 @@ input:focus{outline:none;border-color:var(--purple)}
    its own line underneath — a note squeezed into a flex row is
    unreadable on a phone. */
 .tryout-play{
-  display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:4px 12px;
-  padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;
+  gap:4px 12px;padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;
   border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
 }
 .tryout-play:active{transform:scale(.99)}
-.tryout-play .tp-name{font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem;min-width:0}
-.tryout-play .tp-score{color:var(--mute);font-size:.85rem;text-align:right;white-space:nowrap}
+.tryout-play .tp-name{flex:1 1 auto;min-width:0;font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem}
+.tryout-play .tp-score{flex:0 0 auto;color:var(--mute);font-size:.85rem;text-align:right;white-space:nowrap}
+/* whatever the row has to explain gets its own line underneath */
+.tryout-play .tp-note{flex:1 0 100%;width:100%;margin-top:2px;font-size:.78rem;line-height:1.45;color:var(--mute)}
 .tryout-play.fortress{border-color:rgba(56,189,248,.4)} .tryout-play.fortress .tp-name{color:#7DD3FC}
 .tryout-play.recall{border-color:rgba(12,127,196,.4)} .tryout-play.recall .tp-name{color:#67E8F9}
 .tryout-play.recognition{border-color:rgba(34,211,238,.4)} .tryout-play.recognition .tp-name{color:#38BDF8}
