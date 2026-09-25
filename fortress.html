@@ -424,8 +424,28 @@ var TRYOUT_ONCE = params.get('once') === '1';
 // A warm-up inside a competition: counted, but never scored.
 var TRYOUT_PRACTICE = params.get('practice') === '1';
 
-// Nothing to keep warm: the page a student came from does not
-// remember anybody between visits.
+// The page a student came from holds their session for this tab and
+// lets it go stale if nothing happens. Playing is something
+// happening, so the clock is kept fresh while they are here.
+if (TRYOUT) {
+  (function keepWarm(){
+    var touch = function(){
+      try {
+        var k = 'fc-sess-' + TRYOUT;
+        var raw = sessionStorage.getItem(k);
+        if (!raw) return;
+        var sess = JSON.parse(raw);
+        sess.t = Date.now();
+        sessionStorage.setItem(k, JSON.stringify(sess));
+      } catch(e){}
+    };
+    touch();
+    setInterval(touch, 30000);
+    document.addEventListener('visibilitychange', function(){
+      if (!document.hidden) touch();
+    });
+  })();
+}
 var GAME = 'fortress';
 // An official run needs the player's own run key. Without it this is
 // practice, however the link was edited.
