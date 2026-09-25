@@ -315,6 +315,10 @@ var STR = {
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
     joinOrSignInBtn:'Continue',
+    haveAccount:'Already have a page? Just type your PIN.',
+    signBackIn:'Sign back in',
+    signInNoMatch:'No page matches that PIN. Check the digits, or add yourself above.',
+    whichName:'More than one student uses that PIN. What is your name?',
     joinPinPh:'4-digit PIN', 
     joinPinNote:'Pick four digits you will remember. They keep your page yours — you will need them on a shared computer.',
     joinNeedPin:'Please pick four digits.',
@@ -405,6 +409,10 @@ var STR = {
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
     joinOrSignInBtn:'Continuar',
+    haveAccount:'¿Ya tienes tu página? Solo escribe tu PIN.',
+    signBackIn:'Volver a entrar',
+    signInNoMatch:'Ningún página coincide con ese PIN. Revisa los dígitos, o añádete arriba.',
+    whichName:'Más de un estudiante usa ese PIN. ¿Cuál es tu nombre?',
     joinPinPh:'PIN de 4 dígitos',
     joinPinNote:'Escoge cuatro dígitos que recuerdes. Mantienen tu página tuya — los necesitarás en una computadora compartida.',
     joinNeedPin:'Por favor escoge cuatro dígitos.',
@@ -618,7 +626,7 @@ function renderLanding(){
 
 function footerHtml(){
   return '<footer>' + T('footer') + '<br>' +
-         '<a href="mailto:cashflowhoops@gmail.com" style="color:var(--mute)">cashflowhoops@gmail.com</a></footer>';
+         '<a href="mailto:gostardigital@gmail.com" style="color:var(--mute)">gostardigital@gmail.com</a></footer>';
 }
 
 // ---------- team page ----------
@@ -1062,6 +1070,18 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
           '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
             'style="margin-top:12px;">' + T('joinOrSignInBtn') + '</a>' +
           '<p class="mute" id="joinMsg" style="margin-top:10px;"></p>' +
+
+          '<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">' +
+            '<p class="mute" style="font-size:.86rem;margin:0 0 8px;">' + T('haveAccount') + '</p>' +
+            '<input id="backPin" type="tel" inputmode="numeric" maxlength="4" ' +
+              'placeholder="' + T('joinPinPh') + '" ' +
+              'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
+              'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;' +
+              'letter-spacing:.4em;text-align:center;">' +
+            '<a class="btn line" href="#" onclick="signBackIn(\'' + campaignId + '\');return false;" ' +
+              'style="margin-top:10px;">' + T('signBackIn') + '</a>' +
+            '<p class="mute" id="backMsg" style="margin-top:8px;"></p>' +
+          '</div>' +
         '</div>') +
 
     footerHtml();
@@ -1116,6 +1136,45 @@ function copyMine(url, el){
   } else {
     prompt(T('copyPrompt'), url);
   }
+}
+
+// Coming back on a shared computer. The PIN alone finds them, and
+// their name is only asked for if two students happen to share one.
+function signBackIn(campaignId, withName){
+  var pin = (document.getElementById('backPin').value || '').trim();
+  var msg = document.getElementById('backMsg');
+
+  if (!/^[0-9]{4}$/.test(pin)){
+    msg.style.color = '#ff8fa3'; msg.textContent = T('joinNeedPin'); return;
+  }
+
+  msg.style.color = ''; msg.textContent = T('joinWorking');
+
+  fetch(SB_URL + '/rest/v1/rpc/student_sign_in', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_campaign: campaignId, p_pin: pin, p_name: withName || null })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('signin'); return r.json(); })
+  .then(function(d){
+    if (d && d.ok){ pickMe(campaignId, d.id); return; }
+
+    if (d && d.reason === 'name'){
+      // two students share this PIN, so the name decides
+      var name = prompt(T('whichName'));
+      if (name && name.trim()) return signBackIn(campaignId, name.trim());
+      msg.textContent = '';
+      return;
+    }
+
+    msg.style.color = '#ff8fa3';
+    msg.textContent = T('signInNoMatch');
+  })
+  .catch(function(e){
+    console.error('Sign in:', e);
+    msg.style.color = '#ff8fa3';
+    msg.textContent = T('joinFailed');
+  });
 }
 
 function joinCompetition(campaignId){
