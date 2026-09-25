@@ -287,7 +287,7 @@ var STR = {
     held:'✅ CHAIN HELD', broken:'CHAIN BROKEN',
     labelPractice:'Practice Run · Longest Chain Held',
     labelOfficial:'Official Run · Longest Chain Held',
-    playAgain:'▶ PLAY AGAIN',
+    playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN',
     statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
@@ -329,7 +329,7 @@ var STR = {
     held:'✅ CADENA AGUANTADA', broken:'CADENA ROTA',
     labelPractice:'Práctica · Cadena más larga',
     labelOfficial:'Corrida Oficial · Cadena más larga',
-    playAgain:'▶ JUGAR OTRA VEZ',
+    playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ',
     statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
@@ -370,7 +370,7 @@ function applyLang(){
   $('lblTime').textContent = T('lblTime');
   $('statPointsLbl').textContent = T('statPoints');
   $('statTimeLbl').textContent = T('statTime');
-  $('againBtn').textContent = T('playAgain');
+  $('againBtn').textContent = TRYOUT_PRACTICE ? T('practiceAgain') : T('playAgain');
   $('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
   document.querySelector('.intro-back').textContent = (CHALLENGE_ID && PLAYER_ID) ? T('backToChallenge') : T('back');
   document.querySelector('#controls .ctrl-btn').textContent = (CHALLENGE_ID && PLAYER_ID) ? T('backToChallenge') : T('home');
