@@ -301,6 +301,9 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
+    joinOrSignIn:'Join, or sign back in',
+    returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
+    joinOrSignInBtn:'Continue',
     joinPinPh:'4-digit PIN', 
     joinPinNote:'Pick four digits you will remember. They keep your page yours — you will need them on a shared computer.',
     joinNeedPin:'Please pick four digits.',
@@ -389,6 +392,9 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
+    joinOrSignIn:'Únete, o vuelve a entrar',
+    returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
+    joinOrSignInBtn:'Continuar',
     joinPinPh:'PIN de 4 dígitos',
     joinPinNote:'Escoge cuatro dígitos que recuerdes. Mantienen tu página tuya — los necesitarás en una computadora compartida.',
     joinNeedPin:'Por favor escoge cuatro dígitos.',
@@ -1020,8 +1026,9 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
         '</div>'
       : '<div class="panel">' +
-          '<h2>' + T('whoAreYou') + '</h2>' +
+          '<h2>' + T('joinOrSignIn') + '</h2>' +
           '<p class="mute">' + T('joinNote') + '</p>' +
+          '<p class="mute" style="font-size:.84rem;margin:-4px 0 12px;">' + T('returningNote') + '</p>' +
           '<input id="joinName" type="text" maxlength="60" placeholder="' + T('joinNamePh') + '" ' +
             'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
             'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;margin-bottom:10px;">' +
@@ -1039,7 +1046,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
             'letter-spacing:.4em;text-align:center;">' +
           '<p class="mute" style="font-size:.82rem;margin:6px 0 0;">' + T('joinPinNote') + '</p>' +
           '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
-            'style="margin-top:12px;">' + T('joinBtn') + '</a>' +
+            'style="margin-top:12px;">' + T('joinOrSignInBtn') + '</a>' +
           '<p class="mute" id="joinMsg" style="margin-top:10px;"></p>' +
         '</div>') +
 
