@@ -426,6 +426,22 @@ var TRYOUT = params.get('tryout');
 var TRYOUT_ONCE = params.get('once') === '1';
 // A warm-up inside a competition: counted, but never scored.
 var TRYOUT_PRACTICE = params.get('practice') === '1';
+
+// The page a student came from signs itself out quickly, since a
+// school computer is shared. Playing is activity, so the session is
+// kept warm while they are here.
+if (TRYOUT) {
+  (function keepWarm(){
+    var touch = function(){
+      try { localStorage.setItem('fc-seen-' + TRYOUT, String(Date.now())); } catch(e){}
+    };
+    touch();
+    setInterval(touch, 30000);
+    document.addEventListener('visibilitychange', function(){
+      if (!document.hidden) touch();
+    });
+  })();
+}
 var GAME = 'fortress';
 // An official run needs the player's own run key. Without it this is
 // practice, however the link was edited.
