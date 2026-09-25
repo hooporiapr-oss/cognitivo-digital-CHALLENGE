@@ -301,6 +301,7 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
+    practiceDoneWaiting:'Practice complete — your official run opens when pledging starts.',
     idleNote:'On a shared computer this page signs itself out after a few minutes of doing nothing. Your name, PIN and score are kept — just sign back in.',
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
@@ -393,6 +394,7 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
+    practiceDoneWaiting:'Práctica completa — tu corrida oficial se abre cuando empiecen las promesas.',
     idleNote:'En una computadora compartida esta página se cierra sola después de unos minutos sin actividad. Tu nombre, tu PIN y tu puntuación se guardan — solo vuelve a entrar.',
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
@@ -1017,12 +1019,15 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
                      '</a>';
             }
 
+            // Warmed up, but nothing to run for until a challenge is
+            // live. The game stays open to practise; it simply is not
+            // called an official run, because it would not be one.
             return '<a class="tryout-play ' + g + '" onclick="touchStudent(\'' + campaignId + '\')" href="' + GAMES[g].file +
                      '?tryout=' + encodeURIComponent(campaignId) + '&p=' + encodeURIComponent(me.id) +
-                     '&once=1">' +
+                     '&practice=1">' +
                      '<span class="tp-name">' + gameLabelKey(g) + '</span>' +
                      '<span class="tp-score">' + label + '</span>' +
-                     '<span class="tp-note">' + T('practiceReady') + '</span>' +
+                     '<span class="tp-note">' + T('practiceDoneWaiting') + '</span>' +
                    '</a>';
           }).join('') +
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
