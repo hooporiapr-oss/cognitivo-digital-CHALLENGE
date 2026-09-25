@@ -198,10 +198,17 @@ input:focus{outline:none;border-color:var(--purple)}
 .tryout-row .pts{color:var(--gold);font-weight:900;text-align:right}
 .tryout-row .pts .sub{display:block;color:var(--mute);font-weight:700;font-size:.68rem}
 
-.tryout-play{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;border:1.5px solid var(--line);background:#0e0a14;color:var(--paper)}
+/* Name and score on one line, and whatever the row has to explain on
+   its own line underneath — a note squeezed into a flex row is
+   unreadable on a phone. */
+.tryout-play{
+  display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:4px 12px;
+  padding:14px;border-radius:12px;text-decoration:none;margin:7px 0;
+  border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
+}
 .tryout-play:active{transform:scale(.99)}
-.tryout-play .tp-name{font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem}
-.tryout-play .tp-score{color:var(--mute);font-size:.85rem;flex-shrink:0}
+.tryout-play .tp-name{font-weight:900;font-style:italic;text-transform:uppercase;font-size:.98rem;min-width:0}
+.tryout-play .tp-score{color:var(--mute);font-size:.85rem;text-align:right;white-space:nowrap}
 .tryout-play.fortress{border-color:rgba(56,189,248,.4)} .tryout-play.fortress .tp-name{color:#7DD3FC}
 .tryout-play.recall{border-color:rgba(12,127,196,.4)} .tryout-play.recall .tp-name{color:#67E8F9}
 .tryout-play.recognition{border-color:rgba(34,211,238,.4)} .tryout-play.recognition .tp-name{color:#38BDF8}
