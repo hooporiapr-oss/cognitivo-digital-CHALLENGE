@@ -311,7 +311,7 @@ var STR = {
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
-    idleNote:'On a shared computer this page signs itself out after a few minutes of doing nothing. Your name, PIN and score are kept — just sign back in.',
+    idleNote:'Leaving this page signs you out, so nobody else can use it. Your PIN brings you straight back.',
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
     joinOrSignInBtn:'Continue',
@@ -405,7 +405,7 @@ var STR = {
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
-    idleNote:'En una computadora compartida esta página se cierra sola después de unos minutos sin actividad. Tu nombre, tu PIN y tu puntuación se guardan — solo vuelve a entrar.',
+    idleNote:'Salir de esta página te desconecta, para que nadie más la use. Tu PIN te trae de vuelta.',
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
     joinOrSignInBtn:'Continuar',
@@ -1221,52 +1221,40 @@ function joinCompetition(campaignId){
   });
 }
 
-// A shared school computer should not stay signed in to whoever used
-// it last. The session is remembered with a timestamp and expires
-// after a spell of doing nothing, so the next student gets a clean
-// page rather than somebody else's official run.
-var IDLE_MINUTES = 3;
+// Nothing is remembered between visits. A page left open on a school
+// computer is never somebody else's account waiting to be used, and
+// the PIN is four digits, so signing in again costs a moment.
+//
+// The session lives for this page only: it is held in memory, not in
+// storage, so closing the tab ends it.
+var SESSION_PLAYER = null;
 
 function pickMe(campaignId, playerId){
+  SESSION_PLAYER = { campaign: campaignId, player: playerId };
   try {
-    localStorage.setItem('fc-tryout-' + campaignId, playerId);
-    localStorage.setItem('fc-seen-' + campaignId, String(Date.now()));
+    // clear anything an earlier version left behind
+    localStorage.removeItem('fc-tryout-' + campaignId);
+    localStorage.removeItem('fc-seen-' + campaignId);
   } catch(e){}
   loadTryout(campaignId);
 }
 
 function forgetMe(campaignId){
-  try {
-    localStorage.removeItem('fc-tryout-' + campaignId);
-    localStorage.removeItem('fc-seen-' + campaignId);
-  } catch(e){}
+  SESSION_PLAYER = null;
   loadTryout(campaignId);
   return false;
 }
 
-// Who this device is signed in as, if the session is still fresh.
+// Who this page is signed in as. Nothing outside this page knows.
 function currentStudent(campaignId){
-  try {
-    var id = localStorage.getItem('fc-tryout-' + campaignId);
-    if (!id) return null;
-
-    var seen = parseInt(localStorage.getItem('fc-seen-' + campaignId) || '0', 10);
-    if (seen && (Date.now() - seen) > IDLE_MINUTES * 60000){
-      localStorage.removeItem('fc-tryout-' + campaignId);
-      localStorage.removeItem('fc-seen-' + campaignId);
-      return null;
-    }
-
-    localStorage.setItem('fc-seen-' + campaignId, String(Date.now()));
-    return id;
-  } catch(e){ return null; }
+  return (SESSION_PLAYER && SESSION_PLAYER.campaign === campaignId)
+    ? SESSION_PLAYER.player
+    : null;
 }
 
-// Playing a game counts as activity, so a long practice does not time
-// somebody out mid-run.
-function touchStudent(campaignId){
-  try { localStorage.setItem('fc-seen-' + campaignId, String(Date.now())); } catch(e){}
-}
+// Kept so the game links can still call it; there is no longer a
+// clock to keep alive.
+function touchStudent(){}
 
 // ---------- routing ----------
 paintMenu();
