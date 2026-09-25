@@ -308,6 +308,7 @@ var STR = {
     shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
     signupKick:'Fundraiser', 
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
+    bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runDone:'official run done',
     idleNote:'On a shared computer this page signs itself out after a few minutes of doing nothing. Your name, PIN and score are kept — just sign back in.',
@@ -397,6 +398,7 @@ var STR = {
     shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
     signupKick:'Recaudación',
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
+    bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runDone:'corrida oficial hecha',
     idleNote:'En una computadora compartida esta página se cierra sola después de unos minutos sin actividad. Tu nombre, tu PIN y tu puntuación se guardan — solo vuelve a entrar.',
@@ -926,7 +928,7 @@ function loadTryout(campaignId){
     get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=name,logo_url,tryout_one_run,tryout_game'),
     get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
     get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs'),
-    get('campaign_practice?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,runs'),
+    get('campaign_practice?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,runs,best_level'),
     get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=practice_required')
   ])
   .then(function(res){
@@ -973,9 +975,11 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 
   // Practice comes first: the official run stays shut until somebody
   // has actually warmed up, so a first attempt is never a cold one.
-  var myPractice = {};
+  var myPractice = {}, myBest = {};
   if (me) (practice || []).forEach(function(r){
-    if (r.player_id === me.id) myPractice[r.game] = r.runs || 0;
+    if (r.player_id !== me.id) return;
+    myPractice[r.game] = r.runs || 0;
+    myBest[r.game] = r.best_level || 0;
   });
 
   app.innerHTML =
@@ -992,9 +996,14 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
           order.map(function(g){
             var r = myScores[g];
             var spent = !!r;
+            // Their best practice so far, since that is the only score
+            // this page has until an official run exists.
+            var best = myBest[g] || 0;
             var label = r
               ? 'L' + r.best_level + ' · ' + pointsFor(r.best_level) + ' ' + T('pts')
-              : T('notPlayed');
+              : (best
+                  ? T('bestSoFar') + ' ' + pointsFor(best) + ' ' + T('pts')
+                  : T('notPractisedYet'));
 
             // With one run each, a game already played is a result
             // rather than a link.
