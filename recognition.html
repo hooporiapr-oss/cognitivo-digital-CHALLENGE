@@ -200,8 +200,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
       </div>
     </div>
   </div>
-
-  <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off">
   <button class="big-btn" id="bigStart" onclick="handleStartClick()">▶ START</button>
   <div class="best-line" id="bestLine"></div>
 </div>
@@ -390,7 +388,6 @@ function applyLang(){
   ['cObjective','cScoring','cs1','cs2','cs3','cp1','cp2','cp3','cTipTitle','cTip','htpText']
     .forEach(function(id){ var el=$(id); if(el) el.innerHTML = T(id); });
   document.documentElement.lang = LANG;
-  $('playerNameInputMain').placeholder = T('namePh');
   $('obKick').textContent = T('officialKick');
   $('lblLevel').textContent = T('lblLevel');
   $('lblPoints').textContent = T('lblPoints');
@@ -413,6 +410,23 @@ function toggleLang(){
   applyLang();
   loadBest();
 }
+
+// A student practising arrived from their own page, so their name is
+// already known. Asking for it again invites somebody to type a
+// different one and think they have changed who they are.
+(function nameFromTheLink(){
+  if (!(TRYOUT && PLAYER_ID)) return;
+  fetch(SB_URL + '/rest/v1/players?id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=name', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(rows){
+    if (!rows || !rows.length) return;
+    var shown = $('obPlayer');
+    if (shown) shown.textContent = rows[0].name;
+  })
+  .catch(function(){});
+})();
 
 (function setBackLink(){
   if (TRYOUT){
@@ -445,8 +459,7 @@ function toggleLang(){
   .then(function(rows){
     if (rows && rows.length){
       $('obPlayer').textContent = rows[0].name;
-      $('playerNameInputMain').value = rows[0].name;
-      $('playerNameInputMain').style.display = 'none';
+
     }
   })
   .catch(function(){});
@@ -947,20 +960,11 @@ function handleStartClick(){
     startRun();
     return;
   }
-  var nameField=$('playerNameInputMain');
-  var name=nameField.value.trim();
-  if(!name){
-    nameField.focus();
-    nameField.style.borderColor='#FF1493';
-    setTimeout(function(){nameField.style.borderColor=''},600);
-    return;
-  }
+  // The name comes from the student's own page when they arrive
+  // from it, and is simply not needed for free play.
   startRun();
 }
 
-$('playerNameInputMain').addEventListener('keydown',function(e){
-  if(e.key==='Enter')handleStartClick();
-});
 
 $('againBtn').addEventListener('click',function(){
   phase='idle';
