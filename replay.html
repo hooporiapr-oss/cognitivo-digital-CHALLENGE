@@ -291,6 +291,43 @@ if (TRYOUT) {
   })();
 }
 var IS_OFFICIAL = !TRYOUT && !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.get('official') === '1');
+
+// ══════════════════════════════════════════════════════
+//  THE DEMO LIMIT
+//
+//  Anyone can try this from the site, but a visitor is not a student.
+//  A few rounds is enough to understand it; the programme itself is
+//  what a school licenses, and students in a campaign play without any
+//  limit at all.
+// ══════════════════════════════════════════════════════
+var DEMO_RUNS = 3;
+var DEMO_KEY = 'cp-demo-' + GAME;
+
+function isDemoPlay(){ return !TRYOUT && !CHALLENGE_ID; }
+
+function demoRunsUsed(){
+  try { return parseInt(localStorage.getItem(DEMO_KEY) || '0', 10) || 0; }
+  catch(e){ return 0; }
+}
+function noteDemoRun(){
+  try { localStorage.setItem(DEMO_KEY, String(demoRunsUsed() + 1)); } catch(e){}
+}
+function demoRunsLeft(){ return Math.max(0, DEMO_RUNS - demoRunsUsed()); }
+
+// Shown in place of the start button once the tries are gone.
+function showDemoEnd(){
+  var box = $('screen-intro');
+  if (!box) return;
+  var btn = $('bigStart');
+  if (btn){
+    btn.textContent = T('demoOver');
+    btn.dataset.locked = '1';
+    btn.onclick = function(){ window.location.href = 'contact.html'; };
+  }
+  var line = $('bestLine');
+  if (line) line.textContent = T('demoOverNote');
+}
+
 var GAME = 'replay';
 
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
@@ -325,6 +362,9 @@ var STR = {
     playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN', statPoints:'Points', statTime:'Time',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
+    demoLeft:'Free demo — {N} of 3 tries left.',
+    demoOver:'Talk to us →',
+    demoOverNote:'That is the demo. Students in a program play as much as they like — ask us how.',
     practiceCount:'Practice {D} of {N}. Go back and play again.',
     practiceUnlocked:'✓ Practice done. Go back to your page to see what is next.',
     worthLine:'That is {P} points. In a fundraiser, every padrino backing you at 25¢ a point would be giving {M}.',
@@ -366,6 +406,9 @@ var STR = {
     playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
+    demoLeft:'Demo gratis — te quedan {N} de 3 intentos.',
+    demoOver:'Habla con nosotros →',
+    demoOverNote:'Hasta ahí llega el demo. Los estudiantes de un programa juegan todo lo que quieran — preg\u00fantanos.',
     practiceCount:'Práctica {D} de {N}. Regresa y juega otra vez.',
     practiceUnlocked:'✓ Práctica completa. Regresa a tu página para ver qué sigue.',
     worthLine:'Son {P} puntos. En una recaudación, cada padrino que te apoye a 25¢ por punto estaría dando {M}.',
@@ -408,6 +451,17 @@ function applyLang(){
   $('homeBtn').textContent = linked ? T('backToChallenge') : T('home');
   $('backToPledge').textContent = linked ? T('backToChallenge') : T('back');
   if (!$('bigStart').dataset.locked) $('bigStart').textContent = IS_OFFICIAL ? T('startOfficial') : T('start');
+
+  // A visitor should know this is a demo before the tries run out.
+  if (isDemoPlay()){
+    var line = $('bestLine');
+    if (line){
+      line.textContent = demoRunsLeft() > 0
+        ? T('demoLeft').split('{N}').join(demoRunsLeft())
+        : T('demoOverNote');
+    }
+    if (demoRunsLeft() <= 0) showDemoEnd();
+  }
   if (!$('obNote').dataset.locked) $('obNote').textContent = T('officialNote');
 }
 
@@ -984,12 +1038,17 @@ function loadBest(){
 }
 function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
+
 function handleStartClick(){
   if (TRYOUT_ONCE && !confirm(T('confirmOnce'))) return;
   if(IS_OFFICIAL){
     if(!confirm(T('confirmOfficial'))) return;
     startRun();
     return;
+  }
+  if (isDemoPlay()){
+    if (demoRunsLeft() <= 0){ showDemoEnd(); return; }
+    noteDemoRun();
   }
   // The name comes from the student's own page when they arrive
   // from it, and is simply not needed for free play.
