@@ -374,6 +374,7 @@ var STR = {
     labelPractice:'Practice Run · Longest Sequence',
     labelOfficial:'Official Run · Longest Sequence',
     playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN', statPoints:'Points', statTime:'Time',
+    worthFree:'{P} points. One padrino at 25¢ a point would be giving {M} — ten of them, {T} for the program.',
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
     demoLeft:'Free demo — {N} of 3 tries left.',
@@ -418,6 +419,7 @@ var STR = {
     labelPractice:'Práctica · Secuencia más larga',
     labelOfficial:'Corrida Oficial · Secuencia más larga',
     playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
+    worthFree:'{P} puntos. Un padrino a 25¢ por punto estaría dando {M} — diez de ellos, {T} para el programa.',
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
     demoLeft:'Demo gratis — te quedan {N} de 3 intentos.',
@@ -866,7 +868,18 @@ function showFinal(finalLevel,finalTime){
   if(!IS_OFFICIAL){
     $('endLabel').textContent=T('labelPractice');
     status.style.color='#7d8ba3';
-    status.textContent=T('practiceOnly');
+
+    // Somebody playing from the site has just seen a number. This is
+    // the moment it means something — what that same run would have
+    // raised for a program.
+    if (isDemoPlay() && points > 0){
+      status.innerHTML = T('worthFree')
+        .split('{P}').join(points)
+        .split('{M}').join('$' + (points * 0.25).toFixed(2))
+        .split('{T}').join('$' + (points * 0.25 * 10).toFixed(2));
+    } else {
+      status.textContent=T('practiceOnly');
+    }
     if(CHALLENGE_ID && PLAYER_ID) recordPractice(finalLevel);
     return;
   }
