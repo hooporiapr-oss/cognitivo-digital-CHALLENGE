@@ -242,6 +242,7 @@ ol.hw li::before{content:counter(hw);position:absolute;left:14px;top:14px;width:
 ol.hw b{display:block;margin-bottom:2px}
 ol.hw span{color:var(--mute);font-size:.94rem}
 ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:.9rem}
+.hw-see{max-width:640px;margin:12px 0 0;color:var(--mute);font-size:.94rem;line-height:1.6}
 
 /* ---------- the one thing nobody else can say ---------- */
 .nosell{padding:0 0 clamp(34px,5vw,52px)}
@@ -323,6 +324,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
       <li><b data-t="hw3b">Padrinos pay, the program is paid.</b> <span data-t="hw3">Each padrino gets the score and a pay button.</span>
         <span class="hw-fee" data-t="hw3fee">Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.</span></li>
     </ol>
+    <p class="hw-see" data-t="hwSee">You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.</p>
   </section>
 
 
@@ -363,6 +365,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <script>
 var T = {
   en:{
+    hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
     nsH:'Nothing to sell. Nothing to deliver.',
     nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
     hwH:'How it runs',
@@ -391,6 +394,7 @@ var T = {
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
     nsH:'Nada que vender. Nada que entregar.',
     nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
     hwH:'Cómo funciona',
