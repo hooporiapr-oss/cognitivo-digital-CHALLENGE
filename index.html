@@ -130,6 +130,9 @@ h1 em{font-style:normal;color:var(--gold)}
 .game.recall{--glow:56,189,248;border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.07);animation-delay:2.5s}
 .game.recall::after{animation-delay:2.5s}
 .game.recall .gname,.game.recall .gplay{color:#38BDF8}
+.game.replay{--glow:167,139,250;border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.07)}
+
+.game.replay .gname,.game.replay .gplay{color:#A78BFA}
 .game.recognition{--glow:45,212,191;border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07);animation-delay:5s}
 .game.recognition::after{animation-delay:5s}
 .game.recognition .gname,.game.recognition .gplay{color:#2DD4BF}
@@ -267,9 +270,9 @@ footer a{color:var(--mute)}
       <span class="playnote" data-t="playNote">Free to play. Nothing is recorded.</span>
     </div>
     <div class="games">
-      <a class="game fortress" href="fortress.html">
-        <span class="gname" data-t="gFortress">The Fortress</span>
-        <span class="gdesc" data-t="gFortressDesc">Five circles, fixed in place. Watch the chain, tap it back, one more every round.</span>
+      <a class="game replay" href="replay.html">
+        <span class="gname" data-t="gReplay">The Replay</span>
+        <span class="gdesc" data-t="gReplayDesc">A chain lights up one cell at a time, each with its own note. Replay it back — one longer every round.</span>
         <span class="gplay" data-t="gPlay">Play →</span>
       </a>
       <a class="game recall" href="recall.html">
@@ -374,9 +377,9 @@ footer a{color:var(--mute)}
 <script>
 var T = {
   en:{
+    gReplay:'The Replay', gReplayDesc:'A chain lights up one cell at a time, each with its own note. Replay it back — one longer every round.',
     brandTag:'memory challenges that raise money',
     playH:'Try a challenge now', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
-    gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
     mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
@@ -419,9 +422,9 @@ var T = {
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    gReplay:'The Replay', gReplayDesc:'Una cadena se enciende celda por celda, cada una con su nota. Repítela — una más cada ronda.',
     brandTag:'retos de memoria para apoyar a tu programa',
     playH:'Prueba un reto ahora', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
-    gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
     mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
