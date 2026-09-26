@@ -230,6 +230,42 @@ footer a{color:var(--mute)}
   border-radius:14px;background:rgba(34,211,238,.06);text-align:left}
 .worth b{display:block;font-size:1rem;color:#22D3EE;margin-bottom:5px}
 .worth p{margin:0;color:var(--paper);font-size:.95rem;line-height:1.55}
+
+/* ---------- the pledge sheet, working ---------- */
+.sheet{padding:0 0 clamp(36px,6vw,56px)}
+.sheet h2{font-size:clamp(1.3rem,3.4vw,1.6rem);font-weight:800;letter-spacing:-.025em;margin:0 0 6px}
+.sheet .sub{color:var(--mute);margin:0 0 16px;max-width:52ch}
+.sheet-card{background:var(--panel);border:1.5px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,26px);max-width:560px}
+.sh-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}
+.sh-who{font-weight:900;font-size:1.05rem}
+.sh-tag{font-size:.64rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);
+  border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.sh-q{margin:0 0 10px;color:var(--mute);font-size:.9rem}
+.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.rate{padding:13px 4px;border-radius:12px;border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
+  font:inherit;font-weight:800;font-size:1rem;cursor:pointer}
+.rate.on{border-color:var(--gold);background:rgba(255,211,90,.12);color:var(--gold)}
+.sh-out{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.sh-out>div{background:#0e0a14;border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center}
+.sh-out .sh-hi{border-color:rgba(255,211,90,.5);background:rgba(255,211,90,.09)}
+.sh-lbl{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:5px}
+.sh-val{display:block;font-weight:900;font-size:1.15rem}
+.sh-hi .sh-val{color:var(--gold);font-size:1.4rem}
+.sh-range{width:100%;accent-color:var(--gold);margin:0 0 10px}
+.sh-note{margin:0;color:var(--mute);font-size:.88rem}
+@media(max-width:520px){.rates{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- how it runs ---------- */
+.how{padding:0 0 clamp(34px,5vw,52px)}
+.how h2{font-size:clamp(1.3rem,3.4vw,1.6rem);font-weight:800;letter-spacing:-.025em;margin:0 0 14px}
+ol.hw{counter-reset:hw;list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:640px}
+ol.hw li{counter-increment:hw;position:relative;padding:14px 16px 14px 52px;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;line-height:1.55}
+ol.hw li::before{content:counter(hw);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;
+  background:var(--gold);color:#0b0710;font-weight:900;font-size:.85rem;display:grid;place-content:center}
+ol.hw b{display:block;margin-bottom:2px}
+ol.hw span{color:var(--mute);font-size:.94rem}
+ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:.9rem}
 </style>
 </head>
 <body>
@@ -257,7 +293,7 @@ footer a{color:var(--mute)}
 
 <header id="top"><div class="wrap">
   <div class="heromark"><span class="wm wmbig">cada&nbsp;<em>punto</em></span><span class="brandtag" data-t="brandTag">memory challenges that raise money</span></div>
-  <h1 data-t="h1">The fundraiser where <em>practising is the point</em>.</h1>
+  <h1 data-t="h1">Play a challenge. See your points.<br><em>That is the fundraiser.</em></h1>
   <p class="lede" data-t="lede">Memory challenges to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.</p>
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
   <div class="actions">
@@ -294,75 +330,55 @@ footer a{color:var(--mute)}
     </div>
   </section>
 
-  <div class="angle">
-    <div>
-      <h2 data-t="anH">Every other fundraiser asks a participant to sell something.</h2>
-      <p data-t="anP1">Chocolate bars, wrapping paper, laps around a field. Nobody believes selling popcorn is good for a child — it is just the thing that justifies the ask.</p>
-      <p data-t="anP2"><b>Here the activity is the point.</b> To raise more, a participant has to hold a longer chain — and the only way to do that is to practise. What they are practising is working memory and focus, for a reason they actually care about.</p>
-      <p data-t="anP3">Nobody buys anything. Nobody knocks on a door. A participant is asked to get better at something, and the getting better is what raises the money.</p>
-    </div>
-    <div class="angle-box">
-      <div class="ab"><b data-t="ab1n">0</b><span data-t="ab1">Things to sell</span></div>
-      <div class="ab"><b data-t="ab2n">0</b><span data-t="ab2">Doors to knock on</span></div>
-      <div class="ab hi"><b data-t="ab3n">∞</b><span data-t="ab3">Practice runs, all free</span></div>
-    </div>
-  </div>
 
-  <div class="steps">
-    <div class="step">
-      <span class="n">1</span>
-      <b data-t="s1h">Participants find padrinos</b>
-      <span data-t="s1p">Each participant shares a link. Family and friends pledge any amount per point. Nothing is charged yet.</span>
-    </div>
-    <div class="step">
-      <span class="n">2</span>
-      <b data-t="s2h">Participants play, once</b>
-      <span data-t="s2p">Practice is free. Then one official run, scored by our software — twelve rounds is 78 points.</span>
-    </div>
-    <div class="step">
-      <span class="n">3</span>
-      <b data-t="s3h">Padrinos are invoiced</b>
-      <span data-t="s3p">Their pledge times the points scored, plus our 10% fee. Nobody is chased by the program, and all collected pledges go to it.</span>
-    </div>
-  </div>
+  <!-- A visitor does not read a fundraiser explained; they understand
+       one they can move. This is the padrino's own page, with the
+       arithmetic live. -->
+  <section class="sheet" aria-labelledby="shH">
+    <h2 id="shH" data-t="shH">Now pledge on those points.</h2>
+    <p class="sub" data-t="shSub">Pick an amount per point, then drag to see what a run would cost you. This is exactly what a padrino sees.</p>
 
-  <div class="padrino">
-    <h2 data-t="padH">What is a padrino?</h2>
-    <p data-t="padP1"><b>Someone who backs a participant personally.</b> A parent, an aunt, a neighbour, a former coach, a family friend. The word means godparent, and that is the idea.</p>
-    <p class="mute" data-t="padP2">Not a company buying its name on a banner. Most participants find five or six.</p>
-  </div>
+    <div class="sheet-card">
+      <div class="sh-top">
+        <span class="sh-who" data-t="shWho">María · Grade 7</span>
+        <span class="sh-tag" data-t="shTag">Example</span>
+      </div>
 
-  <div class="scoring">
-    <div class="sc-copy">
-      <h2 data-t="scH">Chain scoring.</h2>
-      <p data-t="scP1"><b>Each round adds one more, and each round is worth more than the last.</b> Round four banks four points, round nine banks nine. The score is the running total — an honest count of what the participant did.</p>
-      <p data-t="scP2">Which is why one more round matters so much. Ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that participant raises.</p>
-      <a class="sc-link" href="scoring.html" data-t="scMore">How chain scoring works →</a>
+      <p class="sh-q" data-t="shQ">How much per point?</p>
+      <div class="rates" id="rates"></div>
+
+      <div class="sh-out">
+        <div><span class="sh-lbl" data-t="shIf">If she reaches</span><span class="sh-val" id="shRounds">9 rounds</span></div>
+        <div><span class="sh-lbl" data-t="shPts">That is</span><span class="sh-val" id="shPoints">45 points</span></div>
+        <div class="sh-hi"><span class="sh-lbl" data-t="shPay">You pay</span><span class="sh-val" id="shPay">$11.25</span></div>
+      </div>
+
+      <input class="sh-range" id="shRange" type="range" min="4" max="15" value="9"
+             oninput="drawSheet()" aria-label="rounds">
+      <p class="sh-note" data-t="shNote">Nothing is charged until she takes her run. If she stops at four rounds, you pay for four.</p>
     </div>
-    <div class="sc-table">
-      <div class="sc-row sc-head"><span data-t="scRounds">Rounds</span><span data-t="scPts">Points</span><span data-t="scAt">At 25¢</span></div>
-      <div class="sc-row"><span>6</span><span>21</span><span>$5.25</span></div>
-      <div class="sc-row"><span>10</span><span>55</span><span>$13.75</span></div>
-      <div class="sc-row hi"><span>12</span><span>78</span><span>$19.50</span></div>
-      <div class="sc-row"><span>15</span><span>120</span><span>$30.00</span></div>
-      <div class="sc-row"><span>20</span><span>210</span><span>$52.50</span></div>
-      <p class="sc-note" data-t="scNote">Per padrino, on one official run.</p>
-    </div>
-  </div>
+  </section>
+
+
+  <!-- Only now, once somebody has played and seen what a score is
+       worth, is there any reason to read how it runs. Three lines. -->
+  <section class="how">
+    <h2 data-t="hwH">How it runs</h2>
+    <ol class="hw">
+      <li><b data-t="hw1b">Two weeks of pledging.</b> <span data-t="hw1">Each participant shares one link. Padrinos pick their amount per point. Nothing is charged.</span></li>
+      <li><b data-t="hw2b">One run day.</b> <span data-t="hw2">Practice all they like, then one official run. The software scores it.</span></li>
+      <li><b data-t="hw3b">Padrinos pay, the program is paid.</b> <span data-t="hw3">Each padrino gets the score and a pay button.</span>
+        <span class="hw-fee" data-t="hw3fee">Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.</span></li>
+    </ol>
+  </section>
 
   <div class="cost">
     <h2 data-t="costH">Free for your program.</h2>
     <p data-t="costP">No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.</p>
-    <div class="split">
-      <div><b data-t="spA">$25.00</b><span data-t="spAl">A padrino pledges</span></div>
-      <div><b data-t="spB">$27.50</b><span data-t="spBl">Their invoice, with our 10%</span></div>
-      <div class="hi"><b data-t="spC">$25.00</b><span data-t="spCl">The program receives</span></div>
-    </div>
     <div class="worth">
       <b data-t="worthH">The platform is a real product with a real price.</b>
       <p data-t="worthP">$2,400 a year, or $300 a month, for your whole school. Every campaign includes a month — so run one and your students play free.</p>
     </div>
-    <p class="fine" data-t="costFine">The 10% is added to their invoice and comes to us. It is never taken out of the pledge, so all collected pledges go to the program.</p>
   </div>
 
   <div class="close">
@@ -387,95 +403,65 @@ footer a{color:var(--mute)}
 <script>
 var T = {
   en:{
+    hwH:'How it runs',
+    hw1b:'Two weeks of pledging.', hw1:'Each participant shares one link. Padrinos pick their amount per point. Nothing is charged.',
+    hw2b:'One run day.', hw2:'Practice all they like, then one official run. The software scores it.',
+    hw3b:'Padrinos pay, the program is paid.', hw3:'Each padrino gets the score and a pay button.',
+    hw3fee:'Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.',
+    shH:'Now pledge on those points.',
+    shSub:'Pick an amount per point, then drag to see what a run would cost you. This is exactly what a padrino sees.',
+    shWho:'María · Grade 7', shTag:'Example', shQ:'How much per point?',
+    shIf:'If she reaches', shPts:'That is', shPay:'You pay',
+    shRoundsWord:'rounds', shPtsWord:'points',
+    shNote:'Nothing is charged until she takes her run. If she stops at four rounds, you pay for four.',
     worthH:'The platform is a real product with a real price.',
     worthP:'$2,400 a year, or $300 a month, for your whole school. Every campaign includes a month — so run one and your students play free.',
     gReplay:'The Replay', gReplayDesc:'A chain lights up one cell at a time, each with its own note. Replay it back — one longer every round.',
     brandTag:'memory challenges that raise money',
-    playH:'Try a challenge now', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
+    playH:'Try a challenge — see how many points you score', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
     mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
     mScoring:'Chain scoring', mTalk:'Talk to us →',
     navPlay:'The challenges', navPad:'Getting padrinos', navScoring:'Chain scoring',
-    h1:'The fundraiser where <em>practising is the point</em>.',
-    lede:'Memory challenges to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.',
-    anH:'Every other fundraiser asks a participant to sell something.',
-    anP1:'Chocolate bars, wrapping paper, laps around a field. Nobody believes selling popcorn is good for a child — it is just the thing that justifies the ask.',
-    anP2:'<b>Here the activity is the point.</b> To raise more, a participant has to hold a longer chain — and the only way to do that is to practise. What they are practising is working memory and focus, for a reason they actually care about.',
-    anP3:'Nobody buys anything. Nobody knocks on a door. A participant is asked to get better at something, and the getting better is what raises the money.',
-    ab1n:'0', ab1:'Things to sell',
-    ab2n:'0', ab2:'Doors to knock on',
-    ab3n:'∞', ab3:'Practice runs, all free',
+    h1:'Play a challenge. See your points.<br><em>That is the fundraiser.</em>',
+    lede:'Family and friends pledge a few cents for every point a participant scores. Score 45 points with ten padrinos at a quarter, and the program has $112.',
     forWho:'A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.',
     cta1:'Talk to us', cta2:'Try a challenge', cta1b:'Talk to us',
-    s1h:'Participants find padrinos',
-    s1p:'Each participant shares a link. Family and friends pledge any amount per point. Nothing is charged yet.',
-    s2h:'Participants play, once',
-    s2p:'Practice is free. Then one official run, scored by our software — twelve rounds is 78 points.',
-    s3h:'Padrinos are invoiced',
-    s3p:'Their pledge times the points scored, plus our 10% fee. Nobody is chased by the program, and all collected pledges go to it.',
-    padH:'What is a padrino?',
-    padP1:'<b>Someone who backs a participant personally.</b> A parent, an aunt, a neighbour, a former coach, a family friend. The word means godparent, and that is the idea.',
-    padP2:'Not a company buying its name on a banner. Most participants find five or six.',
-    scH:'Chain scoring.',
-    scP1:'<b>Each round adds one more, and each round is worth more than the last.</b> Round four banks four points, round nine banks nine. The score is the running total — an honest count of what the participant did.',
-    scP2:'Which is why one more round matters so much. Ten to twelve is not a fifth better — it is <b>55 points to 78</b>, a forty percent jump in what that participant raises.',
-    scMore:'How chain scoring works →',
-    scRounds:'Rounds', scPts:'Points', scAt:'At 25¢',
-    scNote:'Per padrino, on one official run.',
-    spA:'$25.00', spAl:'A padrino pledges',
-    spB:'$27.50', spBl:'Their invoice, with our 10%',
-    spC:'$25.00', spCl:'The program receives',
     costH:'Free for your program.',
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
-    costFine:'The 10% is added to their invoice and comes to us. It is never taken out of the pledge, so all collected pledges go to the program.',
     closeH:'We will set it up for you.',
     closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.',
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    hwH:'Cómo funciona',
+    hw1b:'Dos semanas de promesas.', hw1:'Cada participante comparte un enlace. Los padrinos escogen su cantidad por punto. No se cobra nada.',
+    hw2b:'Un día de corrida.', hw2:'Practican todo lo que quieran, y luego una corrida oficial. El programa la puntúa.',
+    hw3b:'Los padrinos pagan, el programa cobra.', hw3:'Cada padrino recibe la puntuación y un botón para pagar.',
+    hw3fee:'Nuestro cargo de plataforma de 10% se añade encima de su pago, nunca se saca de él. Una promesa de $25.00 es un pago de $27.50, y el programa recibe los $25.00 completos cobrados.',
+    shH:'Ahora promete por esos puntos.',
+    shSub:'Escoge una cantidad por punto y mueve la barra para ver cuánto te costaría una corrida. Esto es exactamente lo que ve un padrino.',
+    shWho:'María · Grado 7', shTag:'Ejemplo', shQ:'¿Cuánto por punto?',
+    shIf:'Si llega a', shPts:'Eso es', shPay:'Tú pagas',
+    shRoundsWord:'rondas', shPtsWord:'puntos',
+    shNote:'No se cobra nada hasta que haga su corrida. Si se queda en cuatro rondas, pagas por cuatro.',
     worthH:'La plataforma es un producto real con un precio real.',
     worthP:'$2,400 al año, o $300 al mes, para toda tu escuela. Cada campaña incluye un mes — haz una y tus estudiantes juegan gratis.',
     gReplay:'The Replay', gReplayDesc:'Una cadena se enciende celda por celda, cada una con su nota. Repítela — una más cada ronda.',
     brandTag:'retos de memoria para apoyar a tu programa',
-    playH:'Prueba un reto ahora', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
+    playH:'Prueba un reto — mira cuántos puntos anotas', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
     mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
     mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
     navPlay:'Los retos', navPad:'Conseguir padrinos', navScoring:'Puntuación en cadena',
-    h1:'La recaudación donde <em>practicar es el punto</em>.',
+    h1:'Juega un reto. Mira tus puntos.<br><em>Esa es la recaudación.</em>',
     lede:'Retos de memoria para recaudar más. Los padrinos prometen por cada punto anotado, y todas las promesas cobradas van al programa.',
-    anH:'Toda otra recaudación le pide al participante que venda algo.',
-    anP1:'Chocolates, papel de regalo, vueltas a la cancha. Nadie cree que vender popcorn le hace bien a un niño — es solo lo que justifica el pedido.',
-    anP2:'<b>Aquí la actividad es el punto.</b> Para recaudar más, hay que aguantar una cadena más larga — y la única forma es practicando. Lo que practica es memoria de trabajo y concentración, por una razón que de verdad le importa.',
-    anP3:'Nadie compra nada. Nadie toca puertas. Al participante se le pide que mejore en algo, y ese mejorar es lo que recauda el dinero.',
-    ab1n:'0', ab1:'Cosas que vender',
-    ab2n:'0', ab2:'Puertas que tocar',
-    ab3n:'∞', ab3:'Prácticas, todas gratis',
     forWho:'Una recaudación totalmente digital — nada que pedir, entregar, guardar ni devolver. Para escuelas, clubes, equipos y cualquier grupo sin fines de lucro que esté recaudando para algo que importa.',
     cta1:'Habla con nosotros', cta2:'Prueba un reto', cta1b:'Habla con nosotros',
-    s1h:'Los participantes consiguen padrinos',
-    s1p:'Cada participante comparte un enlace. Familia y amigos prometen lo que quieran por punto. Todavía no se cobra nada.',
-    s2h:'Los participantes juegan, una vez',
-    s2p:'La práctica es gratis. Después, una corrida oficial puntuada por nuestro programa — doce rondas son 78 puntos.',
-    s3h:'Se factura a los padrinos',
-    s3p:'Su promesa por los puntos anotados, más nuestro 10%. El programa no persigue a nadie, y todas las promesas cobradas van a él.',
-    padH:'¿Qué es un padrino?',
-    padP1:'<b>Alguien que apoya a un participante personalmente.</b> Una mamá, una tía, un vecino, un entrenador de antes, un amigo de la familia. La palabra quiere decir padrino de bautizo, y esa es la idea.',
-    padP2:'No una compañía comprando su nombre en un banner. La mayoría consigue cinco o seis.',
-    scH:'Puntuación en cadena.',
-    scP1:'<b>Cada ronda añade una más, y cada ronda vale más que la anterior.</b> La ronda cuatro suma cuatro puntos, la nueve suma nueve. La puntuación es el total acumulado — una cuenta honesta de lo que hizo el participante.',
-    scP2:'Por eso una ronda más importa tanto. De diez a doce no es un quinto mejor — es de <b>55 puntos a 78</b>, un salto de cuarenta por ciento en lo que recauda ese participante.',
-    scMore:'Cómo funciona la puntuación en cadena →',
-    scRounds:'Rondas', scPts:'Puntos', scAt:'A 25¢',
-    scNote:'Por padrino, en una corrida oficial.',
-    spA:'$25.00', spAl:'Un padrino promete',
-    spB:'$27.50', spBl:'Su factura, con nuestro 10%',
-    spC:'$25.00', spCl:'El programa recibe',
     costH:'Gratis para tu programa.',
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
-    costFine:'El 10% se le añade a su factura y viene a nosotros. Nunca se saca de la promesa, así que todas las promesas cobradas van al programa.',
     closeH:'Te lo montamos nosotros.',
     closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
     fScoring:'Puntuación en cadena', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
@@ -489,6 +475,34 @@ try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLow
 function toggleMenu(){
   document.getElementById('burger').classList.toggle('open');
   document.getElementById('menu').classList.toggle('open');
+}
+
+// The sheet: a rate, a run, and what it comes to. Chain scoring is
+// the same arithmetic the real page uses.
+var RATES = [0.10, 0.25, 0.50, 1.00];
+var shRate = 0.25;
+
+function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
+
+function drawRates(){
+  var box = document.getElementById('rates');
+  if (!box) return;
+  box.innerHTML = RATES.map(function(r, i){
+    var label = r < 1 ? Math.round(r * 100) + '¢' : '$1';
+    return '<button class="rate' + (r === shRate ? ' on' : '') + '" onclick="pickRate(' + i + ')">' + label + '</button>';
+  }).join('');
+}
+
+function pickRate(i){ shRate = RATES[i]; drawRates(); drawSheet(); }
+
+function drawSheet(){
+  var el = document.getElementById('shRange');
+  if (!el) return;
+  var rounds = parseInt(el.value, 10);
+  var pts = pointsFor(rounds);
+  document.getElementById('shRounds').textContent = rounds + ' ' + T('shRoundsWord');
+  document.getElementById('shPoints').textContent = pts + ' ' + T('shPtsWord');
+  document.getElementById('shPay').textContent = '$' + (pts * shRate).toFixed(2);
 }
 
 function paint(){
@@ -507,6 +521,8 @@ function flip(){
   lang = lang === 'en' ? 'es' : 'en';
   try { localStorage.setItem('cfh_lang', lang); } catch(e){}
   paint();
+drawRates();
+drawSheet();
 }
 
 paint();
