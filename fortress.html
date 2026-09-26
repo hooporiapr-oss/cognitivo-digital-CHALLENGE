@@ -292,8 +292,8 @@ var STR = {
     practiceOnly:'Practice run.',
     tryoutSaved:'✓ Saved to your team tryout.',
     demoLeft:'Free demo — {N} of 3 tries left.',
-    demoOver:'Talk to us →',
-    demoOverNote:'That is the demo. Students in a program play as much as they like — ask us how.',
+    demoOver:'Demo finished', demoTalk:'Bring this to my program →',
+    demoOverNote:'That is the demo. If your school or team runs Cada Punto, open your own link and play as much as you like.',
     practiceCount:'Practice {D} of {N}. Go back and play again.',
     practiceUnlocked:'✓ Practice done. Go back to your page to see what is next.',
     worthLine:'That is {P} points. In a fundraiser, every padrino backing you at 25¢ a point would be giving {M}.',
@@ -337,8 +337,8 @@ var STR = {
     practiceOnly:'Corrida de práctica.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
     demoLeft:'Demo gratis — te quedan {N} de 3 intentos.',
-    demoOver:'Habla con nosotros →',
-    demoOverNote:'Hasta ahí llega el demo. Los estudiantes de un programa juegan todo lo que quieran — preg\u00fantanos.',
+    demoOver:'Demo terminado', demoTalk:'Quiero esto en mi programa →',
+    demoOverNote:'Hasta ahí llega el demo. Si tu escuela o equipo usa Cada Punto, abre tu propio enlace y juega todo lo que quieras.',
     practiceCount:'Práctica {D} de {N}. Regresa y juega otra vez.',
     practiceUnlocked:'✓ Práctica completa. Regresa a tu página para ver qué sigue.',
     worthLine:'Son {P} puntos. En una recaudación, cada padrino que te apoye a 25¢ por punto estaría dando {M}.',
@@ -483,14 +483,28 @@ function demoRunsLeft(){ return Math.max(0, DEMO_RUNS - demoRunsUsed()); }
 function showDemoEnd(){
   var box = $('screen-intro');
   if (!box) return;
+
+  // Whoever hits this could be a student whose school runs a campaign,
+  // or a director deciding whether to. The first needs their own link;
+  // the second needs us. Say both, and send nobody to a sales page by
+  // surprise.
   var btn = $('bigStart');
   if (btn){
     btn.textContent = T('demoOver');
     btn.dataset.locked = '1';
-    btn.onclick = function(){ window.location.href = 'contact.html'; };
+    btn.onclick = function(e){ if (e) e.preventDefault(); };
+    btn.style.opacity = '.45';
+    btn.style.cursor = 'default';
   }
+
   var line = $('bestLine');
-  if (line) line.textContent = T('demoOverNote');
+  if (line){
+    line.innerHTML =
+      '<span style="display:block;margin-bottom:10px;">' + T('demoOverNote') + '</span>' +
+      '<a href="contact.html" style="display:inline-block;padding:11px 20px;border-radius:11px;' +
+        'border:1px solid var(--line);color:var(--paper);text-decoration:none;font-weight:800;">' +
+        T('demoTalk') + '</a>';
+  }
 }
 
 
