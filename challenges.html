@@ -213,6 +213,7 @@ input:focus{outline:none;border-color:var(--purple)}
 .tryout-play .tp-note{flex:1 0 100%;width:100%;margin-top:2px;font-size:.78rem;line-height:1.45;color:var(--mute)}
 .tryout-play.fortress{border-color:rgba(56,189,248,.4)} .tryout-play.fortress .tp-name{color:#7DD3FC}
 .tryout-play.replay{border-color:rgba(167,139,250,.4)} .tryout-play.replay .tp-name{color:#A78BFA}
+.tryout-play.rebound{border-color:rgba(255,122,24,.4)} .tryout-play.rebound .tp-name{color:#FF7A18}
 .tryout-play.recall{border-color:rgba(12,127,196,.4)} .tryout-play.recall .tp-name{color:#67E8F9}
 .tryout-play.recognition{border-color:rgba(34,211,238,.4)} .tryout-play.recognition .tp-name{color:#38BDF8}
 
@@ -345,6 +346,7 @@ var STR = {
     gFortress:'The Fortress', gFortressDesc:'Five circles, fixed in place. Watch the chain, tap it back, one more every round.',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
     gReplay:'The Replay', gReplayDesc:'A chain lights up one cell at a time, each with its own note. Replay it back — one longer every round.',
+    gRebound:'The Rebound', gReboundDesc:'Basketballs light up on a backboard. Every round is a brand new pattern, one ball longer.',
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.', freeNote:'Free to play. Nothing recorded.',
     haveLink:'Looking for a player or a team? Use the link they sent you.',
     kick:'Cada Punto',
@@ -440,6 +442,7 @@ var STR = {
     gFortress:'The Fortress', gFortressDesc:'Cinco círculos, fijos en su sitio. Observa la cadena y tócala de vuelta, una más cada ronda.',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
     gReplay:'The Replay', gReplayDesc:'Una cadena se enciende celda por celda, cada una con su nota. Repítela — una más cada ronda.',
+    gRebound:'The Rebound', gReboundDesc:'Balones se encienden en un tablero. Cada ronda es un patrón nuevo, con un balón más.',
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.', freeNote:'Gratis. No se guarda nada.',
     haveLink:'¿Buscas a un jugador o a un equipo? Usa el enlace que te enviaron.',
     kick:'Cada Punto',
@@ -547,6 +550,7 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 // own file — nothing else in this page needs to know the difference.
 var GAMES = {
   fortress:   { file:'fortress.html',    label:'The Fortress' },
+  rebound:    { file:'rebound.html',     label:'The Rebound' },
   recall:     { file:'recall.html',      label:'The Recall' },
   replay:     { file:'replay.html',      label:'The Replay' },
   recognition:{ file:'recognition.html', label:'Recognition' },
@@ -965,8 +969,8 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 
   // Which game is the team actually best at. Totalling points rather
   // than levels, since points are what a padrino pays against.
-  var totals = { fortress:0, replay:0, recall:0, recognition:0 };
-  var counts = { fortress:0, replay:0, recall:0, recognition:0 };
+  var totals = { fortress:0, rebound:0, replay:0, recall:0, recognition:0 };
+  var counts = { fortress:0, rebound:0, replay:0, recall:0, recognition:0 };
   scores.forEach(function(r){
     if (totals[r.game] === undefined) return;
     totals[r.game] += pointsFor(r.best_level);
@@ -1092,7 +1096,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
 }
 
 function gameLabelKey(g){
-  return T(g === 'fortress' ? 'gFortress' : g === 'recall' ? 'gRecall' : g === 'replay' ? 'gReplay' : 'gRecognition');
+  return T(g === 'fortress' ? 'gFortress' : g === 'rebound' ? 'gRebound' : g === 'recall' ? 'gRecall' : g === 'replay' ? 'gReplay' : 'gRecognition');
 }
 
 var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
