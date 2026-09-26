@@ -311,6 +311,7 @@ var STR = {
     copyPrompt:'Copy this link:',
     shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
     whoToAsk:'<b>Think past the house.</b> Family off the island can pledge from anywhere, and they often pledge more. So can a business your family knows — where your parents work, the shop on the corner, your coach.',
+    parentAsk:'<b>Show this to your mum or dad.</b> One message from their phone into the family group reaches everyone at once — and they know people you do not.',
     signupKick:'Fundraiser', 
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
@@ -408,6 +409,7 @@ var STR = {
     copyPrompt:'Copia este enlace:',
     shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
     whoToAsk:'<b>Piensa más allá de la casa.</b> La familia que vive fuera de la isla puede prometer desde donde esté, y casi siempre promete más. También un negocio que tu familia conozca — donde trabajan tus papás, la tienda de la esquina, tu coach.',
+    parentAsk:'<b>Enséñale esto a mami o papi.</b> Un mensaje desde su celular al grupo de la familia le llega a todos de una vez — y ellos conocen gente que tú no.',
     signupKick:'Recaudación',
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
@@ -1137,6 +1139,7 @@ function showMyLinks(campaignId, playerId){
         '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>' +
         '<p class="ml-note">' + T('shareNote') + '</p>' +
         '<p class="ml-note ml-ask">' + T('whoToAsk') + '</p>' +
+        '<p class="ml-note ml-ask">' + T('parentAsk') + '</p>' +
       '</div>';
   })
   .catch(function(e){ console.error('My links:', e); });
