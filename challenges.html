@@ -250,6 +250,8 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
   font-weight:800;text-decoration:none;margin-bottom:8px}
 .ml-btn.alt{background:none;border:1px solid var(--line);color:var(--paper)}
 .ml-note{color:var(--mute);font-size:.82rem;margin:4px 0 0}
+.ml-note.ml-ask{margin-top:10px;padding-top:10px;border-top:1px solid rgba(34,211,238,.25);color:var(--paper)}
+.ml-note.ml-ask b{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -308,6 +310,7 @@ var STR = {
     myOfficialRun:'My official run', copied:'✓ Copied — now send it',
     copyPrompt:'Copy this link:',
     shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
+    whoToAsk:'<b>Think past the house.</b> Family off the island can pledge from anywhere, and they often pledge more. So can a business your family knows — where your parents work, the shop on the corner, your coach.',
     signupKick:'Fundraiser', 
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
@@ -404,6 +407,7 @@ var STR = {
     myOfficialRun:'Mi corrida oficial', copied:'✓ Copiado — ahora mándalo',
     copyPrompt:'Copia este enlace:',
     shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
+    whoToAsk:'<b>Piensa más allá de la casa.</b> La familia que vive fuera de la isla puede prometer desde donde esté, y casi siempre promete más. También un negocio que tu familia conozca — donde trabajan tus papás, la tienda de la esquina, tu coach.',
     signupKick:'Recaudación',
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
@@ -1132,6 +1136,7 @@ function showMyLinks(campaignId, playerId){
           T('shareWithPadrinos') + '</a>' +
         '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>' +
         '<p class="ml-note">' + T('shareNote') + '</p>' +
+        '<p class="ml-note ml-ask">' + T('whoToAsk') + '</p>' +
       '</div>';
   })
   .catch(function(e){ console.error('My links:', e); });
