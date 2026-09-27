@@ -269,6 +269,9 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 .rate-picks .rp.usual{border-color:rgba(255,211,90,.55);background:rgba(255,211,90,.08)}
 .rate-picks .rp.usual span{color:var(--gold)}
 .rate-picks .rp.on{border-color:var(--gold);color:var(--gold)}
+
+.motto{margin:0 0 10px;font-size:1.05rem;font-weight:900;letter-spacing:.02em;color:var(--gold)}
+.freecap{margin:6px 0 14px;color:var(--gold);font-weight:700;font-size:.92rem}
 </style>
 </head>
 <body>
@@ -329,6 +332,8 @@ var STR = {
     shareNote:'Send the padrino link to family and friends. Each one pledges what they like per point. Your official run is the other button — you only get one.',
     whoToAsk:'<b>Think past the house.</b> Family off the island can pledge from anywhere, and they often pledge more. So can a business your family knows — where your parents work, the shop on the corner, your coach.',
     parentAsk:'<b>Show this to your mum or dad.</b> One message from their phone into the family group reaches everyone at once — and they know people you do not.',
+    motto:'Every Point Counts.',
+    freeCap:'Practice free up to three times per challenge. Nothing is recorded.',
     signupKick:'Fundraiser', 
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
@@ -431,6 +436,8 @@ var STR = {
     shareNote:'Mándale el enlace de padrinos a familia y amigos. Cada uno promete lo que quiera por punto. Tu corrida oficial es el otro botón — solo tienes una.',
     whoToAsk:'<b>Piensa más allá de la casa.</b> La familia que vive fuera de la isla puede prometer desde donde esté, y casi siempre promete más. También un negocio que tu familia conozca — donde trabajan tus papás, la tienda de la esquina, tu coach.',
     parentAsk:'<b>Enséñale esto a mami o papi.</b> Un mensaje desde su celular al grupo de la familia le llega a todos de una vez — y ellos conocen gente que tú no.',
+    motto:'Cada Punto Cuenta.',
+    freeCap:'Retos gratis hasta 3 ocasiones. No se guarda nada.',
     signupKick:'Recaudación',
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
@@ -634,8 +641,10 @@ function renderLanding(){
     // account — a kid can get good at any of these before a challenge
     // ever exists, which is the whole point of practice being free.
     '<div class="panel">' +
+      '<p class="motto">' + T('motto') + '</p>' +
       '<h2>' + T('practiceTitle') + '</h2>' +
       '<p class="mute">' + T('practiceNote') + '</p>' +
+      '<p class="freecap">' + T('freeCap') + '</p>' +
       '<div class="games">' +
         '<a class="game-card replay" href="replay.html">' +
           '<span class="game-name">' + T('gReplay') + '</span>' +
@@ -1067,6 +1076,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   app.innerHTML =
     langBtnHtml() +
     '<div class="kick">' + T('signupKick') + '</div>' +
+    '<p class="motto">' + T('motto') + '</p>' +
     '<h1>' + esc(campaign.name) + '</h1>' +
     '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>' +
 
