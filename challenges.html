@@ -259,6 +259,16 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 .runrow .rr-go{color:var(--gold)}
 .runrow.done{opacity:.72}
 .runrow.done .rr-pts{color:var(--gold)}
+
+/* suggested rates, so nobody faces an empty box */
+.rate-picks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.rate-picks .rp{padding:12px 6px;border-radius:11px;border:1.5px solid var(--line);background:#0e0a14;
+  color:var(--paper);font:inherit;font-weight:900;font-size:1.05rem;cursor:pointer;line-height:1.2}
+.rate-picks .rp span{display:block;font-size:.6rem;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mute);margin-top:3px}
+.rate-picks .rp.usual{border-color:rgba(255,211,90,.55);background:rgba(255,211,90,.08)}
+.rate-picks .rp.usual span{color:var(--gold)}
+.rate-picks .rp.on{border-color:var(--gold);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -390,6 +400,7 @@ var STR = {
     copyShare:'Copy my padrino link',
     shareCopied:'Link copied — send it to anyone who wants to back you:',
     copyPrompt:'Copy this link:',
+    mostPledge:'most pledge this',
     yourName:'Your name', yourEmail:'Your email', perPoint:'Amount per point ($)',
     previewEmpty:'Enter a rate to see what that could come to.',
     previewLine:'Level 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Level 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Level 20 (210 pts) → <b>{C}</b>',
@@ -491,6 +502,7 @@ var STR = {
     copyShare:'Copiar mi enlace de padrinos',
     shareCopied:'Enlace copiado — envíaselo a quien quiera apoyarte:',
     copyPrompt:'Copia este enlace:',
+    mostPledge:'lo más común',
     yourName:'Tu nombre', yourEmail:'Tu correo', perPoint:'Cantidad por punto ($)',
     previewEmpty:'Entra una tarifa para ver a cuánto llegaría.',
     previewLine:'Nivel 10 (55 pts) → <b>{A}</b> &nbsp;·&nbsp; Nivel 15 (120 pts) → <b>{B}</b> &nbsp;·&nbsp; Nivel 20 (210 pts) → <b>{C}</b>',
@@ -875,6 +887,17 @@ function deadlineHtml(ch){
 // the game this challenge actually runs.
 var PLEDGE_CH = null;
 
+// One tap rather than typing, and the preview updates with it.
+function setRate(v){
+  var el = document.getElementById('spRate');
+  if (!el) return;
+  el.value = v.toFixed(2);
+  document.querySelectorAll('.rate-picks .rp').forEach(function(b){
+    b.classList.toggle('on', Math.abs(parseFloat(b.dataset.v || '0') - v) < 0.001);
+  });
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 function pledgeFormHtml(player){
   return '' +
     '<label>' + T('yourName') + '</label>' +
@@ -882,6 +905,12 @@ function pledgeFormHtml(player){
     '<label>' + T('yourEmail') + '</label>' +
     '<input type="email" id="spEmail" maxlength="120" autocomplete="email">' +
     '<label>' + T('perPoint') + '</label>' +
+    '<div class="rate-picks">' +
+      '<button type="button" class="rp" data-v="0.10" onclick="setRate(0.10)">10&cent;</button>' +
+      '<button type="button" class="rp usual" data-v="0.25" onclick="setRate(0.25)">25&cent;' +
+        '<span>' + T('mostPledge') + '</span></button>' +
+      '<button type="button" class="rp" data-v="0.50" onclick="setRate(0.50)">50&cent;</button>' +
+    '</div>' +
     '<input type="number" id="spRate" step="0.01" min="0.01" placeholder="0.25">' +
     '<div class="pledge-preview" id="spPreview">' + T('previewEmpty') + '</div>' +
     '<p class="mute" style="font-size:.82rem;margin:8px 0 0;">' + T('feeNote') + '</p>' +
