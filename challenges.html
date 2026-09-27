@@ -282,6 +282,83 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 
 /* the mark says the whole line now */
 .wm i{font-style:normal;color:var(--mute)}
+
+/* ══════════════════════════════════════════════════════
+   PAPER
+   The two moments where somebody is deciding rather than
+   playing: a padrino choosing an amount, and a student
+   signing up. Read in daylight, often by an adult on a
+   phone, so they are set on white with the figure as the
+   loudest thing on the page. Everything else stays dark.
+   ══════════════════════════════════════════════════════ */
+body.paper{
+  --ink:#FFFFFF;
+  --panel:#F2F6F9;
+  --line:#D7E0E8;
+  --gold:#0C6E8C;
+  --purple:#0C6E8C;
+  --purple-deep:#0A5B74;
+  --paper:#1A2430;
+  --mute:#5A6B7C;
+  background:#FFFFFF;color:#1A2430;
+}
+body.paper .wrap{max-width:32rem}
+body.paper nav{background:#FFFFFFF2;border-bottom:1px solid var(--line)}
+body.paper .wm{color:#1A2430}
+body.paper .wm em{color:#0C6E8C}
+body.paper .wm i{color:#5A6B7C}
+
+body.paper .panel{
+  background:#FFFFFF;border:1px solid var(--line);border-radius:14px;
+  box-shadow:none;padding:clamp(18px,4vw,26px);
+}
+body.paper h1{color:#1A2430;letter-spacing:-.03em}
+body.paper h2{font-size:1.45rem;letter-spacing:-.025em;color:#1A2430}
+body.paper p,body.paper .mute{color:#5A6B7C}
+body.paper .kick{color:#0C6E8C}
+
+/* fields: tall, plain, and legible at arm's length */
+body.paper label{
+  display:block;margin:16px 0 6px;font-size:.92rem;font-weight:700;color:#1A2430;letter-spacing:0;
+}
+body.paper input,body.paper select,body.paper textarea{
+  width:100%;padding:14px 15px;border:1.5px solid var(--line);border-radius:11px;
+  background:#FFFFFF;color:#1A2430;font:inherit;font-size:1.05rem;
+}
+body.paper input:focus,body.paper select:focus{
+  outline:none;border-color:#0C6E8C;box-shadow:0 0 0 3px rgba(12,110,140,.14);
+}
+body.paper input::placeholder{color:#9AA8B5}
+
+/* the amount is the subject of the page */
+body.paper .rate-picks .rp{
+  background:#F2F6F9;border:1.5px solid var(--line);color:#1A2430;padding:15px 6px;font-size:1.15rem;
+}
+body.paper .rate-picks .rp.usual{border-color:#0C6E8C;background:rgba(12,110,140,.07)}
+body.paper .rate-picks .rp.usual span{color:#0C6E8C}
+body.paper .rate-picks .rp.on{border-color:#0C6E8C;color:#0C6E8C;background:rgba(12,110,140,.12)}
+/* the running total: the loudest thing on a page where somebody is
+   deciding how much to give */
+body.paper .pledge-preview{
+  margin-top:20px;padding:18px 0 0;border:none;border-top:1px solid var(--line);
+  border-radius:0;background:none;color:#1A2430;font-size:1.35rem;font-weight:800;
+  letter-spacing:-.02em;min-height:0;display:block;
+}
+body.paper .pledge-preview b,body.paper .pledge-preview strong{font-weight:900}
+
+body.paper .btn{
+  background:#0C6E8C;color:#FFFFFF;border:none;padding:16px;border-radius:11px;
+  font-weight:800;font-size:1.02rem;
+}
+body.paper .btn.line,body.paper .btn.alt{
+  background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430;
+}
+body.paper .btn:hover{background:#0A5B74}
+
+body.paper .runrow{background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430}
+body.paper .runrow .rr-go{color:#0C6E8C}
+body.paper footer,body.paper .foot{color:#5A6B7C;border-color:var(--line)}
+body.paper .motto{color:#0C6E8C}
 </style>
 </head>
 <body>
@@ -651,6 +728,7 @@ var app = document.getElementById('app');
 
 // ---------- landing ----------
 function renderLanding(){
+  paperMode(false);
   app.innerHTML =
     langBtnHtml() +
     '<div class="brandhead">' +
@@ -815,6 +893,9 @@ function renderTeam(ch, campaign, players, runs, practice){
 
 // ---------- player page ----------
 function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNeed){
+  // a padrino is deciding an amount, so white; a player with their run
+  // key is about to play, so dark
+  paperMode(!RUN_KEY);
   PLEDGE_CH = ch;
   var isMe = false;
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
@@ -1106,7 +1187,15 @@ function loadTryout(campaignId){
   });
 }
 
+
+// White for deciding, dark for playing.
+function paperMode(on){
+  try { document.body.classList.toggle('paper', !!on); } catch(e){}
+}
+
 function renderTryout(campaignId, campaign, players, scores, practice, practiceNeed){
+  // white while they are signing up; dark once they are in and playing
+  paperMode(!currentStudent(campaignId));
   // filled in after the page draws, since it depends on the database
   setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id); }, 0);
   var oneRun = !!campaign.tryout_one_run;
