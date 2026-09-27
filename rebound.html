@@ -470,7 +470,10 @@ var IS_OFFICIAL = !TRYOUT && !!(CHALLENGE_ID && PLAYER_ID && RUN_KEY && params.g
 var DEMO_RUNS = 3;
 var DEMO_KEY = 'cp-demo-' + GAME;
 
-function isDemoPlay(){ return !TRYOUT && !CHALLENGE_ID; }
+// A warm-up before signing up is part of a campaign, not a visitor
+// trying the site — it must never be refused, or a student cannot
+// join at all on a computer somebody else has already used.
+function isDemoPlay(){ return !TRYOUT && !CHALLENGE_ID && !(typeof WARM !== 'undefined' && WARM); }
 
 function demoRunsUsed(){
   try { return parseInt(localStorage.getItem(DEMO_KEY) || '0', 10) || 0; }
@@ -1140,7 +1143,10 @@ function showFinalScore(finalLevel,finalTime){
       p_key:RUN_KEY,
       p_level:finalLevel,
       p_points:points,
-      p_time:Number(finalTime.toFixed(2))
+      p_time:Number(finalTime.toFixed(2)),
+      // which challenge this run belongs to — a student takes one run
+      // in each, and the three add up to their score
+      p_game:GAME
     })
   })
   .then(function(r){
