@@ -259,6 +259,7 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 .runrow .rr-go{color:var(--gold)}
 .runrow.done{opacity:.72}
 .runrow.shut{opacity:.5;cursor:default}
+.runrow.warm .rr-go{color:var(--mute)}
 .runshut{margin:0 0 10px;padding:11px 13px;border-radius:11px;background:rgba(255,211,90,.09);
   border:1px solid rgba(255,211,90,.35);color:var(--gold);font-size:.92rem;font-weight:700}
 .runrow.done .rr-pts{color:var(--gold)}
@@ -347,6 +348,7 @@ var STR = {
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
     runsOpenOn:'Your official runs open on {D}. Until then, practise as much as you like — and keep asking padrinos.',
     runsClosedOn:'The run window closed on {D}.', locked:'Opens later',
+    warmUp:'Practise {N}× first →',
     threeNote:'Two challenges, one score. Take each one once — they add up to your total.',
     runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
     runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
@@ -456,6 +458,7 @@ var STR = {
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
     runsOpenOn:'Tus corridas oficiales abren el {D}. Hasta entonces practica todo lo que quieras — y sigue buscando padrinos.',
     runsClosedOn:'La ventana de corridas cerró el {D}.', locked:'Abre después',
+    warmUp:'Practica {N}× primero →',
     threeNote:'Dos retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
     runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
     runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
@@ -798,7 +801,7 @@ function renderTeam(ch, campaign, players, runs, practice){
 }
 
 // ---------- player page ----------
-function renderPlayer(ch, campaign, player, run, prac, comp){
+function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNeed){
   PLEDGE_CH = ch;
   var isMe = false;
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
@@ -851,6 +854,18 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
                        '<span>' + gameLabelKey(g) + '</span>' +
                        '<span class="rr-pts">' + T('locked') + '</span>' +
                      '</div>';
+            }
+
+            // Nobody takes their one scored run cold: the warm-up has
+            // to be done in that same challenge first.
+            var done = (donePer && donePer[g]) || 0;
+            var left = Math.max(0, (practiceNeed || 0) - done);
+            if (!taken && left > 0){
+              return '<a class="runrow warm" href="' + GAMES[g].file + '?c=' + encodeURIComponent(CHALLENGE) +
+                       '&p=' + encodeURIComponent(player.id) + '">' +
+                       '<span>' + gameLabelKey(g) + '</span>' +
+                       '<span class="rr-go">' + T('warmUp', { N: left }) + '</span>' +
+                     '</a>';
             }
             if (taken){
               return '<div class="runrow done">' +
@@ -1451,13 +1466,19 @@ if (TRYOUT){
         // can pledge against something that actually happened.
         get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
             '&game=eq.' + encodeURIComponent(ch.game || 'fortress') +
-            '&select=player_id,best_level')
+            '&select=player_id,best_level'),
+        get('campaign_practice?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
+            '&select=player_id,game,runs'),
+        get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=practice_required')
       ]).then(function(res){
         var campaign = res[0] && res[0][0];
         var players = res[1] || [];
         var runs = res[2] || [];
         var practice = res[3] || [];
         var comp = res[4] || [];
+        var campPractice = res[5] || [];
+        var needRaw = res[6] && res[6][0] ? res[6][0].practice_required : 3;
+        var practiceNeed = (needRaw === 0 || needRaw) ? needRaw : 3;
 
         if (!PLAYER){
           renderTeam(ch, campaign, players, runs, practice);
