@@ -262,6 +262,10 @@ var RUN_KEY = params.get('k');
 // is kept per player per game on the campaign rather than on any
 // challenge. Nothing official, no run key.
 var TRYOUT = params.get('tryout');
+// A warm-up taken before signing up: counted on the device only,
+// because there is no player to attach it to yet.
+var WARM = params.get('warm');
+var WARM_GAME = params.get('g') || '';
 // A one-run competition: the first score stands, and the game says so
 // rather than quietly keeping the better of two.
 var TRYOUT_ONCE = params.get('once') === '1';
@@ -376,6 +380,7 @@ var STR = {
     playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN', statPoints:'Points', statTime:'Time',
     worthFree:'{P} points. One padrino at 25¢ a point would be giving {M} — ten of them, {T} for the program.',
     practiceOnly:'Practice run.',
+    warmCounted:'✓ Warm-up counted. Go back to your page.',
     tryoutSaved:'✓ Saved to your team tryout.',
     demoLeft:'Free demo — {N} of 3 tries left.',
     demoOver:'Demo finished', demoTalk:'Bring this to my program →',
@@ -421,6 +426,7 @@ var STR = {
     playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
     worthFree:'{P} puntos. Un padrino a 25¢ por punto estaría dando {M} — diez de ellos, {T} para el programa.',
     practiceOnly:'Corrida de práctica.',
+    warmCounted:'✓ Calentamiento contado. Regresa a tu página.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
     demoLeft:'Demo gratis — te quedan {N} de 3 intentos.',
     demoOver:'Demo terminado', demoTalk:'Quiero esto en mi programa →',
@@ -508,6 +514,13 @@ function toggleLang(){
 })();
 
 (function setBackLink(){
+  if (WARM){
+    var w = 'challenges.html?tryout=' + encodeURIComponent(WARM);
+    ['introBack','homeBtn','backToPledge'].forEach(function(id){
+      var el = $(id); if (el) el.href = w;
+    });
+    return;
+  }
   if (TRYOUT){
     var t = 'challenges.html?tryout=' + encodeURIComponent(TRYOUT);
     ['introBack','homeBtn','backToPledge'].forEach(function(id){
@@ -896,6 +909,17 @@ function showFinal(finalLevel,finalTime){
     $('endLabel').textContent=T('labelPractice');
     status.style.color='#a7adba';
     recordTryout(finalLevel, status);
+    return;
+  }
+
+  if (WARM){
+    try {
+      var k = 'cp-warm-' + WARM + '-' + (WARM_GAME || GAME);
+      localStorage.setItem(k, String((parseInt(localStorage.getItem(k) || '0', 10) || 0) + 1));
+    } catch(e){}
+    $('endLabel').textContent = T('labelPractice');
+    status.style.color = '#8AA4BD';
+    status.textContent = T('warmCounted');
     return;
   }
 
