@@ -333,9 +333,9 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
-    threeNote:'Three challenges, one score. Take each one once — they add up to your total.',
+    threeNote:'Two challenges, one score. Take each one once — they add up to your total.',
     runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
-    runTotal:'{N} has taken {D} of 3 runs, for {P} points so far.',
+    runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
     runDone:'official run done',
     idleNote:'This page signs you out when you close it, or after a few minutes of doing nothing. Your PIN brings you straight back.',
     joinOrSignIn:'Join, or sign back in',
@@ -435,9 +435,9 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
-    threeNote:'Tres retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
+    threeNote:'Dos retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
     runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
-    runTotal:'{N} ha hecho {D} de 3 corridas, y lleva {P} puntos.',
+    runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
     runDone:'corrida oficial hecha',
     idleNote:'Esta página te desconecta al cerrarla, o después de unos minutos sin actividad. Tu PIN te trae de vuelta.',
     joinOrSignIn:'Únete, o vuelve a entrar',
@@ -580,7 +580,7 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 // A challenge names one game. Adding another is a row here plus its
 // own file — nothing else in this page needs to know the difference.
 // The three challenges a score is made of.
-var SCORED = ['replay','recall','recognition'];
+var SCORED = ['replay','recall'];
 
 var GAMES = {
   fortress:   { file:'fortress.html',    label:'The Fortress' },
@@ -645,10 +645,7 @@ function renderLanding(){
           '<span class="game-name">' + T('gRecall') + '</span>' +
           '<span class="game-desc">' + T('gRecallDesc') + '</span>' +
         '</a>' +
-        '<a class="game-card recognition" href="recognition.html">' +
-          '<span class="game-name">' + T('gRecognition') + '</span>' +
-          '<span class="game-desc">' + T('gRecognitionDesc') + '</span>' +
-        '</a>' +
+
       '</div>' +
       '<p class="mute" style="margin:14px 0 0;font-size:.85rem;">' + T('freeNote') + '</p>' +
     '</div>' +
@@ -1049,7 +1046,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   // A competition may be run on one game rather than all three, in
   // which case that is the only one anybody sees.
   var onlyGame = campaign.tryout_game || '';
-  var order = onlyGame ? [onlyGame] : ['replay','recall','recognition'];
+  var order = onlyGame ? [onlyGame] : ['replay','recall'];
   var leader = order.slice().sort(function(a,b){ return totals[b]-totals[a]; })[0];
   var anyScores = order.some(function(g){ return counts[g] > 0; });
 
