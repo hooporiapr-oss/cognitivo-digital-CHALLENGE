@@ -347,6 +347,8 @@ var STR = {
     runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
     runDone:'official run done',
     idleNote:'This page signs you out when you close it, or after a few minutes of doing nothing. Your PIN brings you straight back.',
+    whoAreYouQ:'First time here?', imNew:'Yes — sign me up', iHavePin:'No — I have a PIN',
+    newTitle:'Sign up', backTitle:'Welcome back', goBack:'← Back',
     joinOrSignIn:'Join, or sign back in',
     returningNote:'Been here before? Type the same name, grade and PIN and you will land back on your own page.',
     joinOrSignInBtn:'Continue',
@@ -452,6 +454,8 @@ var STR = {
     runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
     runDone:'corrida oficial hecha',
     idleNote:'Esta página te desconecta al cerrarla, o después de unos minutos sin actividad. Tu PIN te trae de vuelta.',
+    whoAreYouQ:'¿Primera vez aquí?', imNew:'Sí — quiero registrarme', iHavePin:'No — ya tengo PIN',
+    newTitle:'Registrarse', backTitle:'Bienvenido de vuelta', goBack:'← Atrás',
     joinOrSignIn:'Únete, o vuelve a entrar',
     returningNote:'¿Ya estuviste aquí? Escribe el mismo nombre, grado y PIN y volverás a tu propia página.',
     joinOrSignInBtn:'Continuar',
@@ -1136,42 +1140,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
           '<a class="btn line" onclick="forgetMe(\'' + campaignId + '\')" href="#" style="margin-top:12px;">' + T('notMe') + '</a>' +
           '<p class="mute" style="font-size:.8rem;margin:8px 0 0;">' + T('idleNote') + '</p>' +
         '</div>'
-      : '<div class="panel">' +
-          '<h2>' + T('joinOrSignIn') + '</h2>' +
-          '<p class="mute">' + T('joinNote') + '</p>' +
-          '<p class="mute" style="font-size:.84rem;margin:-4px 0 12px;">' + T('returningNote') + '</p>' +
-          '<input id="joinName" type="text" maxlength="60" placeholder="' + T('joinNamePh') + '" ' +
-            'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
-            'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;margin-bottom:10px;">' +
-          '<select id="joinGrade" style="width:100%;padding:13px 14px;border-radius:10px;' +
-            'border:1px solid #ffffff1f;background:#08111C;color:#fff;font-family:inherit;font-size:1rem;">' +
-            '<option value="">' + T('joinGradePh') + '</option>' +
-            GRADES.map(function(g){
-              return '<option value="' + g + '">' + T('gradeWord') + ' ' + g + '</option>';
-            }).join('') +
-          '</select>' +
-          '<input id="joinPin" type="tel" inputmode="numeric" maxlength="4" ' +
-            'placeholder="' + T('joinPinPh') + '" ' +
-            'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
-            'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;margin-top:10px;' +
-            'letter-spacing:.4em;text-align:center;">' +
-          '<p class="mute" style="font-size:.82rem;margin:6px 0 0;">' + T('joinPinNote') + '</p>' +
-          '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
-            'style="margin-top:12px;">' + T('joinOrSignInBtn') + '</a>' +
-          '<p class="mute" id="joinMsg" style="margin-top:10px;"></p>' +
-
-          '<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">' +
-            '<p class="mute" style="font-size:.86rem;margin:0 0 8px;">' + T('haveAccount') + '</p>' +
-            '<input id="backPin" type="tel" inputmode="numeric" maxlength="4" ' +
-              'placeholder="' + T('joinPinPh') + '" ' +
-              'style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
-              'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;' +
-              'letter-spacing:.4em;text-align:center;">' +
-            '<a class="btn line" href="#" onclick="signBackIn(\'' + campaignId + '\');return false;" ' +
-              'style="margin-top:10px;">' + T('signBackIn') + '</a>' +
-            '<p class="mute" id="backMsg" style="margin-top:8px;"></p>' +
-          '</div>' +
-        '</div>') +
+      : '<div class="panel">' + joinPanel(campaignId) + '</div>') +
 
     footerHtml();
 }
@@ -1266,6 +1235,63 @@ function signBackIn(campaignId, withName){
     msg.style.color = '#ff8fa3';
     msg.textContent = T('joinFailed');
   });
+}
+
+
+// Two doors rather than one crowded room. A student on a phone sees
+// one question, then the two or three fields that question needs.
+var JOIN_MODE = null;   // null = choose, 'new' = sign up, 'back' = sign in
+
+function joinPanel(campaignId){
+  if (JOIN_MODE === null){
+    return '<h2>' + T('whoAreYouQ') + '</h2>' +
+      '<a class="btn" href="#" onclick="joinMode(\'new\',\'' + campaignId + '\');return false;">' +
+        T('imNew') + '</a>' +
+      '<a class="btn line" href="#" onclick="joinMode(\'back\',\'' + campaignId + '\');return false;" ' +
+        'style="margin-top:10px;">' + T('iHavePin') + '</a>';
+  }
+
+  var field = 'width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
+              'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;';
+  var pinField = field + 'letter-spacing:.4em;text-align:center;';
+
+  if (JOIN_MODE === 'back'){
+    return '<h2>' + T('backTitle') + '</h2>' +
+      '<input id="backPin" type="tel" inputmode="numeric" maxlength="4" ' +
+        'placeholder="' + T('joinPinPh') + '" style="' + pinField + '">' +
+      '<a class="btn" href="#" onclick="signBackIn(\'' + campaignId + '\');return false;" ' +
+        'style="margin-top:12px;">' + T('signBackIn') + '</a>' +
+      '<p class="mute" id="backMsg" style="margin-top:10px;"></p>' +
+      backLink(campaignId);
+  }
+
+  return '<h2>' + T('newTitle') + '</h2>' +
+    '<input id="joinName" type="text" maxlength="60" placeholder="' + T('joinNamePh') + '" ' +
+      'style="' + field + 'margin-bottom:10px;">' +
+    '<select id="joinGrade" style="' + field + '">' +
+      '<option value="">' + T('joinGradePh') + '</option>' +
+      GRADES.map(function(g){
+        return '<option value="' + g + '">' + T('gradeWord') + ' ' + g + '</option>';
+      }).join('') +
+    '</select>' +
+    '<input id="joinPin" type="tel" inputmode="numeric" maxlength="4" ' +
+      'placeholder="' + T('joinPinPh') + '" style="' + pinField + 'margin-top:10px;">' +
+    '<p class="mute" style="font-size:.82rem;margin:6px 0 0;">' + T('joinPinNote') + '</p>' +
+    '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
+      'style="margin-top:12px;">' + T('joinOrSignInBtn') + '</a>' +
+    '<p class="mute" id="joinMsg" style="margin-top:10px;"></p>' +
+    backLink(campaignId);
+}
+
+function backLink(campaignId){
+  return '<a class="mute" href="#" onclick="joinMode(null,\'' + campaignId + '\');return false;" ' +
+    'style="display:block;text-align:center;margin-top:14px;font-size:.86rem;">' + T('goBack') + '</a>';
+}
+
+function joinMode(mode, campaignId){
+  JOIN_MODE = mode;
+  loadTryout(campaignId);
+  return false;
 }
 
 function joinCompetition(campaignId){
