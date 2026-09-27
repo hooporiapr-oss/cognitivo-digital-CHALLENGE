@@ -249,6 +249,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .nosell h2{font-size:clamp(1.4rem,4vw,1.9rem);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;
   max-width:20ch;text-wrap:balance}
 .nosell p{margin:0;color:var(--mute);max-width:56ch;font-size:1rem;line-height:1.65}
+
+.motto{margin:14px 0 18px;text-align:center;font-size:clamp(1.15rem,3.2vw,1.5rem);font-weight:900;letter-spacing:-.01em;color:var(--gold)}
+.playnote{color:var(--gold)!important;font-weight:700}
 </style>
 </head>
 <body>
@@ -276,6 +279,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
 <header id="top"><div class="wrap">
   <div class="heromark"><span class="wm wmbig">cada&nbsp;<em>punto</em></span><span class="brandtag" data-t="brandTag">memory challenges that raise money</span></div>
+  <p class="motto" data-t="motto">Every Point Counts.</p>
   <h1 data-t="h1">Play a challenge. See your points.<br><em>That is the fundraiser.</em></h1>
   <p class="lede" data-t="lede">Memory challenges to raise more. Padrinos pledge for every point scored, and all collected pledges go to the program.</p>
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
@@ -292,7 +296,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <section class="play" id="play" aria-labelledby="playH">
     <div class="playhead">
       <h2 id="playH" data-t="playH">Click into a challenge — every point you score is worth something</h2>
-      <span class="playnote" data-t="playNote">Free to play. Nothing is recorded.</span>
+      <span class="playnote" data-t="playNote">Practice free up to three times per challenge. Nothing is recorded.</span>
     </div>
     <div class="games">
       <a class="game replay" href="replay.html">
@@ -360,6 +364,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <script>
 var T = {
   en:{
+    motto:'Every Point Counts.',
     hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
     nsH:'Nothing to sell. Nothing to deliver.',
     nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
@@ -372,7 +377,7 @@ var T = {
     worthP:'Every campaign includes a full month of the platform for your whole program, at no cost and nothing to cancel. Programs that want it all year licence it for $2,400 — most never need to.',
     gReplay:'The Replay', gReplayDesc:'A chain lights up one cell at a time, each with its own note. Replay it back — one longer every round.',
     brandTag:'memory challenges that raise money',
-    playH:'Click into a challenge — every point you score is worth something', playNote:'Free to play. Nothing is recorded.', gPlay:'Play →',
+    playH:'Click into a challenge — every point you score is worth something', playNote:'Practice free up to three times per challenge. Nothing is recorded.', gPlay:'Play →',
     gRecall:'The Recall', gRecallDesc:'Numbered cells light up. Memorize them, then tap them back in order.',
     gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
     mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
@@ -389,6 +394,7 @@ var T = {
     fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    motto:'Cada Punto Cuenta.',
     hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
     nsH:'Nada que vender. Nada que entregar.',
     nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
@@ -401,7 +407,7 @@ var T = {
     worthP:'Cada campaña incluye un mes completo de la plataforma para todo tu programa, sin costo y sin nada que cancelar. Los programas que la quieren todo el año la licencian por $2,400 — casi ninguno lo necesita.',
     gReplay:'The Replay', gReplayDesc:'Una cadena se enciende celda por celda, cada una con su nota. Repítela — una más cada ronda.',
     brandTag:'retos de memoria para apoyar a tu programa',
-    playH:'Entra a un reto — cada punto que anotes vale algo', playNote:'Gratis. No se guarda nada.', gPlay:'Jugar →',
+    playH:'Entra a un reto — cada punto que anotes vale algo', playNote:'Retos gratis hasta 3 ocasiones. No se guarda nada.', gPlay:'Jugar →',
     gRecall:'The Recall', gRecallDesc:'Celdas numeradas se encienden. Memorízalas y tócalas en orden.',
     gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
     mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
