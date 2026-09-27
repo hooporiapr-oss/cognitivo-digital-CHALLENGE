@@ -337,6 +337,8 @@ var STR = {
     tryoutOnce:'One run each. Play every game once — your score is whatever you get on that attempt, so take your time.',
     yourTryoutOnce:'One attempt at each. There is no second try, and no clock on your turn.',
     runUsed:'run used',
+    shareWhatsApp:'Send on WhatsApp',
+    shareMsg:'I am raising money for my program with Cada Punto. I play a memory challenge and you pledge whatever you like for every point I score — ten cents, a quarter, whatever suits you. Nothing is charged until after my run.\n\nEstoy recaudando para mi programa con Cada Punto. Yo juego un reto de memoria y tú prometes lo que quieras por cada punto que anote — diez centavos, veinticinco, lo que te sirva. No se cobra nada hasta después de mi corrida.\n\n{U}',
     fundraiserOn:'Pledging is open for', shareWithPadrinos:'Copy my padrino link',
     myOfficialRun:'My official run', copied:'✓ Copied — now send it',
     copyPrompt:'Copy this link:',
@@ -450,6 +452,8 @@ var STR = {
     tryoutOnce:'Una corrida cada uno. Juega cada juego una vez — tu puntuación es la que saques en ese intento, así que tómate tu tiempo.',
     yourTryoutOnce:'Un intento en cada uno. No hay segunda oportunidad, y no hay reloj en tu turno.',
     runUsed:'corrida usada',
+    shareWhatsApp:'Mandar por WhatsApp',
+    shareMsg:'I am raising money for my program with Cada Punto. I play a memory challenge and you pledge whatever you like for every point I score — ten cents, a quarter, whatever suits you. Nothing is charged until after my run.\n\nEstoy recaudando para mi programa con Cada Punto. Yo juego un reto de memoria y tú prometes lo que quieras por cada punto que anote — diez centavos, veinticinco, lo que te sirva. No se cobra nada hasta después de mi corrida.\n\n{U}',
     fundraiserOn:'Las promesas están abiertas para', shareWithPadrinos:'Copiar mi enlace de padrinos',
     myOfficialRun:'Mi corrida oficial', copied:'✓ Copiado — ahora mándalo',
     copyPrompt:'Copia este enlace:',
@@ -1236,7 +1240,13 @@ function showMyLinks(campaignId, playerId){
     box.innerHTML =
       '<div class="mylinks">' +
         '<div class="ml-head">' + T('fundraiserOn') + '<b>' + esc(d.name) + '</b></div>' +
-        '<a class="ml-btn" href="#" onclick="copyMine(\'' + sponsor.replace(/'/g, "%27") + '\',this);return false;">' +
+        // WhatsApp is how a link actually travels here, so it is the
+        // first button rather than a copy the student then has to
+        // paste somewhere. Copy stays for anyone who wants it.
+        '<a class="ml-btn" href="#" onclick="shareMine(\'' + sponsor.replace(/'/g, "%27") +
+          '\',\'' + esc(player.name).replace(/'/g, "%27") + '\');return false;">' +
+          T('shareWhatsApp') + '</a>' +
+        '<a class="ml-btn alt" href="#" onclick="copyMine(\'' + sponsor.replace(/'/g, "%27") + '\',this);return false;">' +
           T('shareWithPadrinos') + '</a>' +
         (function(){
           // The same window the run page enforces, said here so a
@@ -1268,6 +1278,28 @@ function showMyLinks(campaignId, playerId){
       '</div>';
   })
   .catch(function(e){ console.error('My links:', e); });
+}
+
+
+// The message a padrino receives, with the link at the end. Built here
+// rather than left to the student, because most will send the bare
+// link and hope it explains itself.
+function shareMine(url, name){
+  var msg = T('shareMsg')
+    .split('{N}').join(name || '')
+    .split('{U}').join(decodeURIComponent(url));
+
+  // the native sheet where it exists, WhatsApp where it does not
+  if (navigator.share){
+    navigator.share({ text: msg }).catch(function(){ waShare(msg); });
+    return false;
+  }
+  waShare(msg);
+  return false;
+}
+
+function waShare(msg){
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function copyMine(url, el){
