@@ -258,6 +258,9 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
   text-decoration:none;margin:7px 0;font-weight:800}
 .runrow .rr-go{color:var(--gold)}
 .runrow.done{opacity:.72}
+.runrow.shut{opacity:.5;cursor:default}
+.runshut{margin:0 0 10px;padding:11px 13px;border-radius:11px;background:rgba(255,211,90,.09);
+  border:1px solid rgba(255,211,90,.35);color:var(--gold);font-size:.92rem;font-weight:700}
 .runrow.done .rr-pts{color:var(--gold)}
 
 /* suggested rates, so nobody faces an empty box */
@@ -342,6 +345,8 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
+    runsOpenOn:'Your official runs open on {D}. Until then, practise as much as you like — and keep asking padrinos.',
+    runsClosedOn:'The run window closed on {D}.', locked:'Opens later',
     threeNote:'Two challenges, one score. Take each one once — they add up to your total.',
     runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
     runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
@@ -449,6 +454,8 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
+    runsOpenOn:'Tus corridas oficiales abren el {D}. Hasta entonces practica todo lo que quieras — y sigue buscando padrinos.',
+    runsClosedOn:'La ventana de corridas cerró el {D}.', locked:'Abre después',
     threeNote:'Dos retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
     runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
     runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
@@ -832,8 +839,19 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
       ? '<div class="panel">' +
           '<h2>' + T('yourRunTitle') + '</h2>' +
           '<p class="mute">' + T('threeNote') + '</p>' +
+          (function(){ var w = runWindow(ch); return w.open ? '' :
+            '<p class="runshut">' +
+              (w.why === 'early' ? T('runsOpenOn', { D: esc(w.on) }) : T('runsClosedOn', { D: esc(w.on) })) +
+            '</p>'; })() +
           SCORED.map(function(g){
+            var w = runWindow(ch);
             var taken = run && run.parts && run.parts.filter(function(r){ return r.game === g; })[0];
+            if (!taken && !w.open){
+              return '<div class="runrow shut">' +
+                       '<span>' + gameLabelKey(g) + '</span>' +
+                       '<span class="rr-pts">' + T('locked') + '</span>' +
+                     '</div>';
+            }
             if (taken){
               return '<div class="runrow done">' +
                        '<span>' + gameLabelKey(g) + '</span>' +
@@ -888,6 +906,22 @@ function copyShare(e){
   } else {
     prompt(T('copyPrompt'), link);
   }
+}
+
+
+// Is the run window open? Before the pledge deadline it is not —
+// otherwise a player ends their own pledging early and loses every
+// padrino they had not asked yet.
+function runWindow(ch){
+  var today = new Date().toISOString().slice(0, 10);
+
+  if (ch.pledge_deadline && today <= ch.pledge_deadline){
+    return { open: false, why: 'early', on: ch.run_deadline || ch.pledge_deadline };
+  }
+  if (ch.run_deadline && today > ch.run_deadline){
+    return { open: false, why: 'late', on: ch.run_deadline };
+  }
+  return { open: true };
 }
 
 function deadlineHtml(ch){
