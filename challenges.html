@@ -272,6 +272,9 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 
 .motto{margin:0 0 10px;font-size:1.05rem;font-weight:900;letter-spacing:.02em;color:var(--gold)}
 .freecap{margin:6px 0 14px;color:var(--gold);font-weight:700;font-size:.92rem}
+
+/* the mark says the whole line now */
+.wm i{font-style:normal;color:var(--mute)}
 </style>
 </head>
 <body>
@@ -622,7 +625,7 @@ function renderLanding(){
   app.innerHTML =
     langBtnHtml() +
     '<div class="brandhead">' +
-      '<div class="wm wmhero">cada&nbsp;<em>punto</em></div>' +
+      '<div class="wm wmhero">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></div>' +
       '<h1 class="tagline">' + T('tagline') + '</h1>' +
     '</div>' +
     '<p style="margin-top:14px;">' + T('lede') + '</p>' +
