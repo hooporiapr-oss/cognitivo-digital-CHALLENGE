@@ -62,6 +62,14 @@ footer a{color:var(--mute)}
 .wm em{font-style:normal;color:#22D3EE}
 .mark .wm{display:block}
 @media(max-width:560px){.mark .wm{font-size:23px}}
+
+.payline{display:flex;align-items:center;gap:8px;margin:14px 0 10px;
+  border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:#08111C}
+.payline .cur{font-size:1.3rem;font-weight:900;color:var(--mute)}
+.payline input{flex:1;min-width:0;border:none;background:none;color:var(--paper);
+  font:inherit;font-size:1.5rem;font-weight:900;outline:none}
+button.pay{width:100%;border:none;cursor:pointer;font:inherit}
+button.pay:disabled{opacity:.6}
 </style>
 </head>
 <body>
@@ -109,6 +117,10 @@ var S = {
     scored:'{N} scored <em>{P} points</em>',
     youPledged:'You pledged {R} a point.',
     lPledge:'Your pledge', lFee:'Platform fee (10%)', lTotal:'Total to pay',
+    payMin:'Please enter at least $1.00.',
+    paySending:'Taking you to the payment page…',
+    payFailed:'That did not work — please try again.',
+    payFree:'Pay what you like. The amount above is what you pledged.',
     pay:'Pay {T}',
     goes:'The {A} you pledged goes to {G} in full. The fee is ours.',
     window:'This link stays open for thirty days after the run.',
@@ -134,6 +146,10 @@ var S = {
     scored:'{N} anotó <em>{P} puntos</em>',
     youPledged:'Prometiste {R} por punto.',
     lPledge:'Tu promesa', lFee:'Cargo de plataforma (10%)', lTotal:'Total a pagar',
+    payMin:'Escribe al menos $1.00.',
+    paySending:'Te llevamos a la página de pago…',
+    payFailed:'No funcionó — intenta de nuevo.',
+    payFree:'Paga lo que quieras. La cantidad de arriba es lo que prometiste.',
     pay:'Pagar {T}',
     goes:'Los {A} que prometiste van completos a {G}. El cargo es nuestro.',
     window:'Este enlace queda abierto treinta días después de la corrida.',
@@ -176,6 +192,40 @@ function paintChrome(){
 
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+// The chosen amount goes to the server, which makes the checkout —
+// the browser never decides what anything costs on its own.
+var PAY_API = 'https://basketball-money-payments.onrender.com';
+
+function payNow(pledgeId){
+  var el = document.getElementById('payAmt');
+  var btn = document.getElementById('payBtn');
+  var msg = document.getElementById('payMsg');
+  var amt = parseFloat(el.value);
+
+  if (!(amt >= 1)){
+    msg.textContent = T('payMin');
+    el.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  msg.textContent = T('paySending');
+
+  fetch(PAY_API + '/pay-pledge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pledge_id: pledgeId, amount: amt })
+  })
+  .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.error || 'failed'); return j; }); })
+  .then(function(j){ window.location.href = j.url; })
+  .catch(function(e){
+    console.error('Pay:', e);
+    btn.disabled = false;
+    msg.textContent = T('payFailed');
+  });
+}
+
 function money(n){ return '$' + Number(n || 0).toFixed(2); }
 
 var card = document.getElementById('card');
@@ -251,10 +301,18 @@ function render(d){
       '<div class="sum total"><span>' + T('lTotal') + '</span><b>' + money(d.total) + '</b></div>' +
     '</div>' +
 
-    (d.url
-      ? '<a class="pay" href="' + d.url + '">' + T('pay', { T: money(d.total) }) + '</a>'
-      : '') +
+    // A padrino may want to round up, or may be having a hard month.
+    // The pledged total is filled in and one tap pays it; the figure
+    // is theirs to change.
+    '<div class="payline">' +
+      '<span class="cur">$</span>' +
+      '<input id="payAmt" type="number" step="0.01" min="1" value="' + d.total.toFixed(2) + '">' +
+    '</div>' +
+    '<button class="pay" id="payBtn" onclick="payNow(\'' + PLEDGE + '\')">' +
+      T('pay', { T: money(d.total) }) + '</button>' +
+    '<p class="note mute" id="payMsg"></p>' +
 
+    '<p class="note">' + T('payFree') + '</p>' +
     '<p class="note">' + T('goes', { A: money(d.pledged), G: esc(d.program) }) + '</p>' +
     '<p class="note mute">' + T('window') + '</p>';
 }
