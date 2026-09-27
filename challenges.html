@@ -320,6 +320,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 // ══════════════════════════════════════════════════════
 var STR = {
   en:{ tagline:'Memory challenges that raise money.',
+    cuentaLine:'Memory challenges that raise money. Cada Punto Cuenta.',
     lede:'A fundraiser that sharpens memory. Padrinos pledge an amount for every point a participant scores, each participant gets one official run, and every dollar collected goes to the program.',
     howTitle:'How it works',
     s1h:'Padrinos pledge per point', s1p:'Family, neighbours and friends pledge any rate they choose. Nothing is charged when they pledge.',
@@ -424,6 +425,7 @@ var STR = {
     footer:'Gostar Digital LLC — Puerto Rico'
   },
   es:{ tagline:'Retos de memoria para apoyar a tu programa.',
+    cuentaLine:'Retos de memoria que recaudan. Cada Punto Cuenta.',
     lede:'Una recaudación que agudiza la memoria. Los padrinos prometen una cantidad por cada punto que anote el participante, cada participante tiene una corrida oficial, y cada dólar cobrado va al programa.',
     howTitle:'Cómo funciona',
     s1h:'Los padrinos prometen por punto', s1p:'La tarifa que quieran. No se cobra nada al prometer.',
@@ -625,8 +627,8 @@ function renderLanding(){
   app.innerHTML =
     langBtnHtml() +
     '<div class="brandhead">' +
-      '<div class="wm wmhero">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></div>' +
-      '<h1 class="tagline">' + T('tagline') + '</h1>' +
+      '<div class="wm wmhero">cada&nbsp;<em>punto</em></div>' +
+      '<h1 class="tagline">' + T('cuentaLine') + '</h1>' +
     '</div>' +
     '<p style="margin-top:14px;">' + T('lede') + '</p>' +
 
