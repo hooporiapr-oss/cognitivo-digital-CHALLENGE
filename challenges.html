@@ -250,6 +250,9 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
   font-weight:800;text-decoration:none;margin-bottom:8px}
 .ml-btn.alt{background:none;border:1px solid var(--line);color:var(--paper)}
 .ml-note{color:var(--mute);font-size:.82rem;margin:4px 0 0}
+.ml-btn.dead{background:none;border:1px dashed var(--line);color:var(--mute);cursor:default}
+.ml-when{margin:6px 0 0;color:var(--gold);font-size:.85rem;font-weight:700}
+.ml-dates{color:var(--paper);font-weight:700}
 .ml-note.ml-ask{margin-top:10px;padding-top:10px;border-top:1px solid rgba(34,211,238,.25);color:var(--paper)}
 .ml-note.ml-ask b{color:var(--gold)}
 
@@ -1235,7 +1238,30 @@ function showMyLinks(campaignId, playerId){
         '<div class="ml-head">' + T('fundraiserOn') + '<b>' + esc(d.name) + '</b></div>' +
         '<a class="ml-btn" href="#" onclick="copyMine(\'' + sponsor.replace(/'/g, "%27") + '\',this);return false;">' +
           T('shareWithPadrinos') + '</a>' +
-        '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>' +
+        (function(){
+          // The same window the run page enforces, said here so a
+          // student knows when their turn comes rather than tapping a
+          // link that turns them away.
+          var w = runWindow({ pledge_deadline: d.pledge_deadline, run_deadline: d.run_deadline });
+
+          if (w.open){
+            return '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>';
+          }
+
+          return '<div class="ml-btn alt dead">' + T('myOfficialRun') + '</div>' +
+                 '<p class="ml-when">' +
+                   (w.why === 'early'
+                     ? T('runsOpenOn', { D: esc(d.run_deadline ? d.pledge_deadline : w.on) })
+                     : T('runsClosedOn', { D: esc(w.on) })) +
+                 '</p>';
+        })() +
+        ((d.pledge_deadline || d.run_deadline)
+          ? '<p class="ml-note ml-dates">' +
+              (d.pledge_deadline ? T('pledgesClose') + ' ' + esc(d.pledge_deadline) : '') +
+              (d.pledge_deadline && d.run_deadline ? ' · ' : '') +
+              (d.run_deadline ? T('runsBy') + ' ' + esc(d.run_deadline) : '') +
+            '</p>'
+          : '') +
         '<p class="ml-note">' + T('shareNote') + '</p>' +
         '<p class="ml-note ml-ask">' + T('whoToAsk') + '</p>' +
         '<p class="ml-note ml-ask">' + T('parentAsk') + '</p>' +
