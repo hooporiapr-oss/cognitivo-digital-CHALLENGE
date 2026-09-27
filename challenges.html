@@ -252,6 +252,13 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 .ml-note{color:var(--mute);font-size:.82rem;margin:4px 0 0}
 .ml-note.ml-ask{margin-top:10px;padding-top:10px;border-top:1px solid rgba(34,211,238,.25);color:var(--paper)}
 .ml-note.ml-ask b{color:var(--gold)}
+
+.runrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;
+  border-radius:12px;border:1.5px solid var(--line);background:#0e0a14;color:var(--paper);
+  text-decoration:none;margin:7px 0;font-weight:800}
+.runrow .rr-go{color:var(--gold)}
+.runrow.done{opacity:.72}
+.runrow.done .rr-pts{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -316,6 +323,9 @@ var STR = {
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
+    threeNote:'Three challenges, one score. Take each one once — they add up to your total.',
+    runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
+    runTotal:'{N} has taken {D} of 3 runs, for {P} points so far.',
     runDone:'official run done',
     idleNote:'This page signs you out when you close it, or after a few minutes of doing nothing. Your PIN brings you straight back.',
     joinOrSignIn:'Join, or sign back in',
@@ -414,6 +424,9 @@ var STR = {
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
+    threeNote:'Tres retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
+    runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
+    runTotal:'{N} ha hecho {D} de 3 corridas, y lleva {P} puntos.',
     runDone:'corrida oficial hecha',
     idleNote:'Esta página te desconecta al cerrarla, o después de unos minutos sin actividad. Tu PIN te trae de vuelta.',
     joinOrSignIn:'Únete, o vuelve a entrar',
@@ -554,6 +567,9 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 
 // A challenge names one game. Adding another is a row here plus its
 // own file — nothing else in this page needs to know the difference.
+// The three challenges a score is made of.
+var SCORED = ['replay','recall','recognition'];
+
 var GAMES = {
   fortress:   { file:'fortress.html',    label:'The Fortress' },
   rebound:    { file:'rebound.html',     label:'The Rebound' },
@@ -647,7 +663,13 @@ function footerHtml(){
 function renderTeam(ch, campaign, players, runs, practice){
   PLEDGE_CH = ch;
   var byPlayer = {};
-  runs.forEach(function(r){ byPlayer[r.player_id] = r; });
+  runs.forEach(function(r){
+    var cur = byPlayer[r.player_id];
+    if (!cur) { byPlayer[r.player_id] = { points: r.points || 0, level_reached: r.level_reached || 0, done: 1 }; return; }
+    cur.points += r.points || 0;
+    cur.level_reached += r.level_reached || 0;
+    cur.done++;
+  });
   var practiceBy = {};
   practice.forEach(function(p){ practiceBy[p.player_id] = p; });
 
@@ -766,7 +788,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
     '</div>' +
 
     (run
-      ? '<p class="mute">' + T('runDone', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>'
+      ? '<p class="mute">' + T('runTotal', { N: esc(player.name), D: run.done, P: esc(run.points) }) + '</p>'
       : (comp
           ? '<p class="mute">' + T('compLine', { N: esc(player.name), L: esc(comp.best_level), P: pointsFor(comp.best_level) }) + '</p>'
           : (prac
@@ -781,17 +803,29 @@ function renderPlayer(ch, campaign, player, run, prac, comp){
     (RUN_KEY
 
       ? '<div class="panel">' +
-          '<h2>' + (run ? T('yourRunDone') : T('yourRunTitle')) + '</h2>' +
+          '<h2>' + T('yourRunTitle') + '</h2>' +
+          '<p class="mute">' + T('threeNote') + '</p>' +
+          SCORED.map(function(g){
+            var taken = run && run.parts && run.parts.filter(function(r){ return r.game === g; })[0];
+            if (taken){
+              return '<div class="runrow done">' +
+                       '<span>' + gameLabelKey(g) + '</span>' +
+                       '<span class="rr-pts">' + taken.points + ' ' + T('pts') + '</span>' +
+                     '</div>';
+            }
+            return '<a class="runrow" href="' + GAMES[g].file + '?c=' + encodeURIComponent(CHALLENGE) +
+                     '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
+                     '&official=1">' +
+                     '<span>' + gameLabelKey(g) + '</span>' +
+                     '<span class="rr-go">' + T('runIt') + '</span>' +
+                   '</a>';
+          }).join('') +
           (run
-            ? '<p class="mute">' + T('runDoneNote', { L: esc(run.level_reached), P: esc(run.points) }) + '</p>' +
-              '<a class="btn line" href="' + gameFile(ch) + '">' + T('practiceOnlyBtn') + '</a>'
-            : '<p class="mute">' + T('practiceNote') + '</p>' +
-              '<a class="btn line" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
-                '&p=' + encodeURIComponent(player.id) + '" style="margin-bottom:10px;">' + T('practiceBtn') + '</a>' +
-              '<a class="btn gold" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
-                '&p=' + encodeURIComponent(player.id) + '&k=' + encodeURIComponent(RUN_KEY) +
-                '&official=1">' + T('officialBtn') + '</a>') +
-          '</div>' +
+            ? '<p class="mute" style="margin-top:10px;">' + T('totalSoFar', { P: esc(run.points) }) + '</p>'
+            : '') +
+          '<a class="btn line" href="' + gameFile(ch) + '?c=' + encodeURIComponent(CHALLENGE) +
+            '&p=' + encodeURIComponent(player.id) + '" style="margin-top:10px;">' + T('practiceBtn') + '</a>' +
+        '</div>' +
           '<p class="mute" style="font-size:.82rem;">' + T('ownPage') + '</p>' +
           '<a class="btn line" onclick="copyShare(event)" href="#" style="margin-bottom:6px;">' + T('copyShare') + '</a>'
 
@@ -1309,7 +1343,7 @@ if (TRYOUT){
       return Promise.all([
         get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=name,logo_url'),
         get('players?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=id,name,grade&order=name.asc'),
-        get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,level_reached,points'),
+        get('challenge_runs?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,game,level_reached,points'),
         get('challenge_practice?challenge_id=eq.' + encodeURIComponent(ch.id) + '&select=player_id,best_level,runs'),
         // A score from an earlier competition on this campaign. It is
         // a real result rather than a practice number, so a padrino
@@ -1332,7 +1366,18 @@ if (TRYOUT){
         var player = players.filter(function(p){ return p.id === PLAYER; })[0];
         if (!player) { notFound(T('wordPlayer')); return; }
 
-        var run = runs.filter(function(r){ return r.player_id === PLAYER; })[0];
+        // A student takes one run in each of the three challenges, and
+        // the pledge is on what they add up to.
+        var mine = runs.filter(function(r){ return r.player_id === PLAYER; });
+        var run = null;
+        if (mine.length){
+          run = {
+            points: mine.reduce(function(n, r){ return n + (r.points || 0); }, 0),
+            level_reached: mine.reduce(function(n, r){ return n + (r.level_reached || 0); }, 0),
+            parts: mine,
+            done: mine.length
+          };
+        }
         var prac = practice.filter(function(r){ return r.player_id === PLAYER; })[0];
         var best = comp.filter(function(r){ return r.player_id === PLAYER; })[0];
         renderPlayer(ch, campaign, player, run, prac, best);
