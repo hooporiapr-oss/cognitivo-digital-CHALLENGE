@@ -467,6 +467,33 @@ body.paper footer{
 body.paper footer .f-name{color:#FFFFFF;font-weight:700}
 body.paper footer a{color:#4FD3F0;text-decoration:none}
 body.paper footer a:hover{color:#FFFFFF}
+
+/* the signed-in page, on paper */
+body.paper .mylinks{
+  background:#F4FAFC;border:1.5px solid #BFDCE6;border-radius:12px;padding:16px;
+}
+body.paper .ml-btn{
+  display:block;background:#12202E;color:#FFFFFF;border:2px solid #12202E;
+  border-radius:4px;padding:15px;text-align:center;font-weight:800;text-decoration:none;margin:8px 0;
+}
+body.paper .ml-btn.alt{background:#FFFFFF;color:#12202E}
+body.paper .ml-btn.alt:hover{background:#12202E;color:#FFFFFF}
+body.paper .ml-btn.dead{background:none;border:2px dashed #C3D2DD;color:#8A9AA8}
+body.paper .ml-note{color:#5A6B7C}
+body.paper .ml-note.ml-ask{border-top-color:#D7E0E8;color:#12202E}
+body.paper .ml-note.ml-ask b{color:#0C6E8C}
+body.paper .ml-dates{color:#12202E}
+body.paper .ml-when{color:#0C6E8C}
+body.paper .tryout-play{
+  background:#FFFFFF;border:2px solid #12202E;border-radius:4px;color:#12202E;
+}
+body.paper .tryout-play .tp-name{color:#12202E}
+body.paper .tryout-play .tp-score{color:#0C6E8C}
+body.paper .runrow{border-radius:4px;border-width:2px;border-color:#12202E}
+body.paper .runrow.done{opacity:1;border-color:#C3D2DD;color:#5A6B7C}
+body.paper .runrow.shut{border-style:dashed;border-color:#C3D2DD}
+body.paper .kick{color:#0C6E8C}
+body.paper .motto{color:#12202E}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
@@ -1340,8 +1367,9 @@ function paperMode(on){
 }
 
 function renderTryout(campaignId, campaign, players, scores, practice, practiceNeed){
-  // white while they are signing up; dark once they are in and playing
-  paperMode(!currentStudent(campaignId));
+  // white throughout: signing up, and their own page afterwards. The
+  // dark begins when a game does.
+  paperMode(true);
   // filled in after the page draws, since it depends on the database
   setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id, me.name); }, 0);
   var oneRun = !!campaign.tryout_one_run;
@@ -1382,18 +1410,12 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   var signedIn = !!me;
 
   app.innerHTML =
-    (signedIn ? langBtnHtml() : '') +
-    (signedIn
-      ? '<div class="kick">' + T('signupKick') + '</div>' +
-        '<p class="motto">' + T('motto') + '</p>' +
-        '<h1>' + esc(campaign.name) + '</h1>' +
-        '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>'
-      : paperNav() +
-        '<div class="paperscroll">' +
-        '<div class="paperhead">' +
-          '<h1>' + esc(campaign.name) + '</h1>' +
-          '<p class="mute">' + T('signupShort') + '</p>' +
-        '</div>') +
+    paperNav() +
+    '<div class="paperscroll">' +
+    '<div class="paperhead">' +
+      '<h1>' + esc(campaign.name) + '</h1>' +
+      '<p class="mute">' + (signedIn ? T('signupLede') : T('signupShort')) + '</p>' +
+    '</div>' +
 
     (me
       ? '<div class="panel">' +
@@ -1448,7 +1470,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
         '</div>'
       : '<div class="panel">' + joinPanel(campaignId, practiceNeed) + '</div>') +
 
-    (signedIn ? '' : '</div>') +   // closes .paperscroll
+    '</div>' +   // closes .paperscroll
 
     footerHtml();
 }
