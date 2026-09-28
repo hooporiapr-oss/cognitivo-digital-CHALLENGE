@@ -364,13 +364,19 @@ body.paper .btn.line:hover,body.paper .btn.alt:hover{border-color:#0C6E8C;color:
 /* Framing: the card is the page on a phone, so it gets a real edge
    rather than floating. */
 body.paper{
-  padding-bottom:0;
-  min-height:100dvh;                 /* the real height on a phone */
+  padding:0;margin:0;
+  height:100dvh;overflow:hidden;     /* the page itself never scrolls */
   display:flex;flex-direction:column;
 }
 body.paper #app{
-  display:flex;flex-direction:column;flex:1 0 auto;
-  padding-top:0;padding-bottom:0;    /* the bar is the top edge, the footer the bottom */
+  display:flex;flex-direction:column;
+  flex:1 1 auto;min-height:0;
+  width:100%;max-width:none;padding:0;
+}
+/* the only thing that moves */
+body.paper .paperscroll{
+  flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  width:min(620px,92vw);margin:0 auto;padding:0 0 26px;
 }
 /* Overscroll shows the page behind the content. Painting that navy
    means a bounce at either end reveals the bar's colour rather than a
@@ -403,7 +409,7 @@ body.paper label:first-of-type{margin-top:4px}
 /* the bar: full width, flush to the top, the page's own edge */
 body.paper{overflow-x:hidden}
 body.paper .pnav{
-  position:sticky;top:0;z-index:60;background:#12202E;border-bottom:1px solid #0B1724;
+  flex:0 0 auto;z-index:60;background:#12202E;border-bottom:1px solid #0B1724;
   width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
   padding-top:env(safe-area-inset-top,0px);
 }
@@ -453,8 +459,8 @@ body.paper .menu a:hover{background:#F7FAFC}
 body.paper footer{
   background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
   width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
-  margin-top:auto;
-  padding:22px 6vw calc(24px + env(safe-area-inset-bottom,0px));
+  flex:0 0 auto;margin-top:0;
+  padding:18px 6vw calc(18px + env(safe-area-inset-bottom,0px));
   text-align:center;font-size:.86rem;line-height:1.7;
 }
 body.paper footer .f-name{color:#FFFFFF;font-weight:700}
@@ -1382,6 +1388,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
         '<h1>' + esc(campaign.name) + '</h1>' +
         '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>'
       : paperNav() +
+        '<div class="paperscroll">' +
         '<div class="paperhead">' +
           '<h1>' + esc(campaign.name) + '</h1>' +
           '<p class="mute">' + T('signupShort') + '</p>' +
@@ -1439,6 +1446,8 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
           '<p class="mute" style="font-size:.8rem;margin:8px 0 0;">' + T('idleNote') + '</p>' +
         '</div>'
       : '<div class="panel">' + joinPanel(campaignId, practiceNeed) + '</div>') +
+
+    (signedIn ? '' : '</div>') +   // closes .paperscroll
 
     footerHtml();
 }
