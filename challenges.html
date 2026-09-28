@@ -368,7 +368,15 @@ body.paper{
   min-height:100dvh;                 /* the real height on a phone */
   display:flex;flex-direction:column;
 }
-body.paper #app{display:flex;flex-direction:column;flex:1 0 auto}
+body.paper #app{
+  display:flex;flex-direction:column;flex:1 0 auto;
+  padding-top:0;padding-bottom:0;    /* the bar is the top edge, the footer the bottom */
+}
+/* Overscroll shows the page behind the content. Painting that navy
+   means a bounce at either end reveals the bar's colour rather than a
+   white band. */
+html{background:#050A12}                       /* the dark pages */
+html:has(body.paper){background:#12202E}       /* the white ones, bar and footer navy */
 body.paper footer{margin-bottom:0}
 body.paper .panel{
   border:1.5px solid #D7E0E8;border-radius:16px;
