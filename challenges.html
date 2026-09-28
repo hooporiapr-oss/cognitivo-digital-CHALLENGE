@@ -1171,14 +1171,15 @@ function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNe
 
       : (run
           ? '<div class="panel"><h2>' + T('closedTitle') + '</h2>' +
-            '<p class="mute">' + T('closedNote') + '</p>' +
-            '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '">' + T('seeTeam') + '</a></div>'
+            '<p class="mute">' + T('closedNote') + '</p></div>'
           : '<div class="panel"><h2>' + T('pledgeTo', { N: esc(player.name) }) + '</h2>' +
             '<p class="mute">' + T('pledgeNote') + '</p>' +
             pledgeFormHtml(player) + '</div>')) +
 
-    '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
-      esc(campaign ? campaign.name : T('wordTeam')) + '</a>' +
+    (RUN_KEY
+      ? '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
+          esc(campaign ? campaign.name : T('wordTeam')) + '</a>'
+      : '') +
 
     footerHtml();
 
