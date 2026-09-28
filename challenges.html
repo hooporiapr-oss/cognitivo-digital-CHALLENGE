@@ -494,6 +494,19 @@ body.paper .runrow.done{opacity:1;border-color:#C3D2DD;color:#5A6B7C}
 body.paper .runrow.shut{border-style:dashed;border-color:#C3D2DD}
 body.paper .kick{color:#0C6E8C}
 body.paper .motto{color:#12202E}
+
+/* the scorecard: two plain boxes, the figures doing the work */
+body.paper .stat-row{gap:10px}
+body.paper .stat{
+  background:#FFFFFF;border:2px solid #12202E;border-radius:4px;
+  padding:16px 12px;text-align:center;
+}
+body.paper .stat-label{
+  color:#5A6B7C;font-size:.64rem;letter-spacing:.14em;margin-bottom:7px;
+}
+body.paper .stat-val{color:#12202E;font-size:2rem}
+body.paper .stat.gold .stat-val,
+body.paper .stat.purple .stat-val{color:#12202E}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
