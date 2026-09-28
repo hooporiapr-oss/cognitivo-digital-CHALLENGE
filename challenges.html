@@ -1378,11 +1378,10 @@ function shareMine(url, name){
     .split('{N}').join(name || '')
     .split('{U}').join(decodeURIComponent(url));
 
-  // the native sheet where it exists, WhatsApp where it does not
-  if (navigator.share){
-    navigator.share({ text: msg }).catch(function(){ waShare(msg); });
-    return false;
-  }
+  // Straight to WhatsApp. The native share sheet offers every app on
+  // the phone, and the extra choice is friction here — this is where
+  // these families actually are, and Copy is right below for anyone
+  // who wants somewhere else.
   waShare(msg);
   return false;
 }
