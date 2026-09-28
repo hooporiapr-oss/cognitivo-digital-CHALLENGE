@@ -385,8 +385,14 @@ body.paper label:first-of-type{margin-top:4px}
 
 
 /* the header above the sign-up card: the mark, the program, one line */
-body.paper .paperhead{margin:clamp(18px,5vw,34px) 0 2px;text-align:center}
-body.paper .paperhead .wm{font-size:1.45rem;display:block;margin-bottom:14px}
+body.paper .paperhead{margin:clamp(14px,4vw,26px) 0 2px;text-align:center}
+body.paper .paperhead .wm{
+  display:inline-block;font-size:1.3rem;margin:0 0 16px;
+  padding:11px 18px;border-radius:999px;
+  background:#12202E;color:#FFFFFF;
+}
+body.paper .paperhead .wm em{color:#4FD3F0}
+body.paper .paperhead .wm i{color:#9FB3C4}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
 body.paper .runrow{background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430}
@@ -1274,7 +1280,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
         '<h1>' + esc(campaign.name) + '</h1>' +
         '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>'
       : '<div class="paperhead">' +
-          '<span class="wm">cada&nbsp;<em>punto</em></span>' +
+          '<span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span>' +
           '<h1>' + esc(campaign.name) + '</h1>' +
           '<p class="mute">' + T('signupShort') + '</p>' +
         '</div>') +
