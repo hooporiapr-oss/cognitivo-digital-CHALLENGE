@@ -434,6 +434,17 @@ body.paper .menu{
 body.paper .menu a{color:#12202E;border-bottom:1px solid #EDF2F6}
 body.paper .menu a:last-child{border-bottom:none}
 body.paper .menu a:hover{background:#F7FAFC}
+
+/* the footer answers the bar: same navy, full width, closing the page */
+body.paper footer{
+  background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+  margin-top:clamp(28px,7vw,52px);
+  padding:22px 6vw calc(24px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem;line-height:1.7;
+}
+body.paper footer a{color:#4FD3F0;text-decoration:none}
+body.paper footer a:hover{color:#FFFFFF}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
@@ -902,7 +913,7 @@ function renderLanding(){
 
 function footerHtml(){
   return '<footer>' + T('footer') + '<br>' +
-         '<a href="mailto:gostardigital@gmail.com" style="color:var(--mute)">gostardigital@gmail.com</a></footer>';
+         '<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></footer>';
 }
 
 // ---------- team page ----------
