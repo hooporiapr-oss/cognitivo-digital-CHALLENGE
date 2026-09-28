@@ -329,6 +329,7 @@ body.paper input:focus,body.paper select:focus{
   outline:none;border-color:#0C6E8C;box-shadow:0 0 0 3px rgba(12,110,140,.14);
 }
 body.paper input::placeholder{color:#9AA8B5}
+.pinbox{letter-spacing:.4em;text-align:center}
 
 /* the amount is the subject of the page */
 body.paper .rate-picks .rp{
@@ -1609,14 +1610,10 @@ function joinPanel(campaignId, need){
         'style="margin-top:10px;">' + T('iHavePin') + '</a>';
   }
 
-  var field = 'width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
-              'background:#08111C;color:#fff;font-family:inherit;font-size:1rem;';
-  var pinField = field + 'letter-spacing:.4em;text-align:center;';
-
   if (JOIN_MODE === 'back'){
     return '<h2>' + T('backTitle') + '</h2>' +
       '<input id="backPin" type="tel" inputmode="numeric" maxlength="4" ' +
-        'placeholder="' + T('joinPinPh') + '" style="' + pinField + '">' +
+        'placeholder="' + T('joinPinPh') + '" class="pinbox">' +
       '<a class="btn" href="#" onclick="signBackIn(\'' + campaignId + '\');return false;" ' +
         'style="margin-top:12px;">' + T('signBackIn') + '</a>' +
       '<p class="mute" id="backMsg" style="margin-top:10px;"></p>' +
@@ -1625,15 +1622,15 @@ function joinPanel(campaignId, need){
 
   return '<h2>' + T('newTitle') + '</h2>' +
     '<input id="joinName" type="text" maxlength="60" placeholder="' + T('joinNamePh') + '" ' +
-      'style="' + field + 'margin-bottom:10px;">' +
-    '<select id="joinGrade" style="' + field + '">' +
+      'style="margin-bottom:10px;">' +
+    '<select id="joinGrade">' +
       '<option value="">' + T('joinGradePh') + '</option>' +
       GRADES.map(function(g){
         return '<option value="' + g + '">' + T('gradeWord') + ' ' + g + '</option>';
       }).join('') +
     '</select>' +
     '<input id="joinPin" type="tel" inputmode="numeric" maxlength="4" ' +
-      'placeholder="' + T('joinPinPh') + '" style="' + pinField + 'margin-top:10px;">' +
+      'placeholder="' + T('joinPinPh') + '" class="pinbox" style="margin-top:10px;">' +
     '<p class="mute" style="font-size:.82rem;margin:6px 0 0;">' + T('joinPinNote') + '</p>' +
     '<a class="btn" href="#" onclick="joinCompetition(\'' + campaignId + '\');return false;" ' +
       'style="margin-top:12px;">' + T('joinOrSignInBtn') + '</a>' +
