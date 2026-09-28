@@ -375,9 +375,11 @@ body.paper #app{
 }
 /* the only thing that moves */
 body.paper .paperscroll{
-  flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  width:min(620px,92vw);margin:0 auto;padding:0 0 26px;
+  flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;width:100%;
+  padding:0 0 26px;
 }
+body.paper .paperscroll > *{width:min(620px,92vw);margin-left:auto;margin-right:auto}
 /* Overscroll shows the page behind the content. Painting that navy
    means a bounce at either end reveals the bar's colour rather than a
    white band. */
@@ -410,8 +412,7 @@ body.paper label:first-of-type{margin-top:4px}
 body.paper{overflow-x:hidden}
 body.paper .pnav{
   flex:0 0 auto;z-index:60;background:#12202E;border-bottom:1px solid #0B1724;
-  width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
-  padding-top:env(safe-area-inset-top,0px);
+  width:100%;padding-top:env(safe-area-inset-top,0px);
 }
 body.paper .pnav-in{
   max-width:32rem;margin:0 auto;padding:13px 6vw;
@@ -458,8 +459,7 @@ body.paper .menu a:hover{background:#F7FAFC}
 /* the footer answers the bar: same navy, full width, closing the page */
 body.paper footer{
   background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
-  flex:0 0 auto;margin-top:0;
+  width:100%;flex:0 0 auto;margin:0;
   padding:18px 6vw calc(18px + env(safe-area-inset-bottom,0px));
   text-align:center;font-size:.86rem;line-height:1.7;
 }
