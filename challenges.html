@@ -1439,62 +1439,13 @@ function signBackIn(campaignId, withName){
 var JOIN_MODE = null;   // null = choose, 'new' = sign up, 'back' = sign in
 
 
-// ══════════════════════════════════════════════════════
-//  WARM UP FIRST
-//
-//  A new participant practises before they sign up. The count is kept
-//  on the device, because there is no player to attach it to yet —
-//  it is a warm-up gate, not a lock, and it exists so nobody signs up
-//  and immediately takes a scored run cold.
-// ══════════════════════════════════════════════════════
-function warmKey(campaignId, game){ return 'cp-warm-' + campaignId + '-' + game; }
-
-function warmDone(campaignId, game){
-  try { return parseInt(localStorage.getItem(warmKey(campaignId, game)) || '0', 10) || 0; }
-  catch(e){ return 0; }
-}
-
-function noteWarm(campaignId, game){
-  try { localStorage.setItem(warmKey(campaignId, game), String(warmDone(campaignId, game) + 1)); } catch(e){}
-}
-
-function warmLeft(campaignId, need){
-  var out = {};
-  SCORED.forEach(function(g){ out[g] = Math.max(0, need - warmDone(campaignId, g)); });
-  return out;
-}
-
-function warmReady(campaignId, need){
-  return SCORED.every(function(g){ return warmDone(campaignId, g) >= need; });
-}
-
-// The practice cards a newcomer sees before signing up.
-function warmPanel(campaignId, need){
-  var left = warmLeft(campaignId, need);
-
-  return '<h2>' + T('warmTitle') + '</h2>' +
-    '<p class="mute">' + T('warmBody', { N: need }) + '</p>' +
-    SCORED.map(function(g){
-      var l = left[g];
-      return '<a class="runrow' + (l === 0 ? ' done' : '') + '" href="' + GAMES[g].file +
-               '?warm=' + encodeURIComponent(campaignId) + '&g=' + encodeURIComponent(g) + '">' +
-               '<span>' + gameLabelKey(g) + '</span>' +
-               '<span class="' + (l === 0 ? 'rr-pts' : 'rr-go') + '">' +
-                 (l === 0 ? T('warmOk') : T('warmLeftN', { N: l })) +
-               '</span>' +
-             '</a>';
-    }).join('') +
-    (warmReady(campaignId, need)
-      ? '<a class="btn" href="#" onclick="joinMode(\'new\',\'' + campaignId + '\');return false;" ' +
-          'style="margin-top:14px;">' + T('warmSignUp') + '</a>'
-      : '<p class="mute" style="margin-top:12px;font-size:.88rem;">' + T('warmThen') + '</p>') +
-    '<a class="mute" href="#" onclick="joinMode(\'back\',\'' + campaignId + '\');return false;" ' +
-      'style="display:block;text-align:center;margin-top:14px;font-size:.86rem;">' + T('iHavePin') + '</a>';
-}
-
 function joinPanel(campaignId, need){
   if (JOIN_MODE === null){
-    return warmPanel(campaignId, need);
+    return '<h2>' + T('whoAreYouQ') + '</h2>' +
+      '<a class="btn" href="#" onclick="joinMode(\'new\',\'' + campaignId + '\');return false;">' +
+        T('imNew') + '</a>' +
+      '<a class="btn line" href="#" onclick="joinMode(\'back\',\'' + campaignId + '\');return false;" ' +
+        'style="margin-top:10px;">' + T('iHavePin') + '</a>';
   }
 
   var field = 'width:100%;padding:13px 14px;border-radius:10px;border:1px solid #ffffff1f;' +
