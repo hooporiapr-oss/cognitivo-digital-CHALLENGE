@@ -346,15 +346,49 @@ body.paper .pledge-preview{
 }
 body.paper .pledge-preview b,body.paper .pledge-preview strong{font-weight:900}
 
+/* Buttons: the ink of the page, not a tint of it. On white a deep
+   navy reads as the decision and the teal outline as the alternative,
+   which keeps one loud thing per screen. */
 body.paper .btn{
-  background:#0C6E8C;color:#FFFFFF;border:none;padding:16px;border-radius:11px;
-  font-weight:800;font-size:1.02rem;
+  background:#12202E;color:#FFFFFF;border:1.5px solid #12202E;
+  padding:17px 18px;border-radius:12px;font-weight:800;font-size:1.02rem;
+  box-shadow:0 1px 2px rgba(18,32,46,.18);
 }
+body.paper .btn:hover{background:#0B1724;border-color:#0B1724}
+body.paper .btn:active{transform:translateY(1px)}
 body.paper .btn.line,body.paper .btn.alt{
-  background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430;
+  background:#FFFFFF;border:1.5px solid #C3D2DD;color:#12202E;box-shadow:none;
 }
-body.paper .btn:hover{background:#0A5B74}
+body.paper .btn.line:hover,body.paper .btn.alt:hover{border-color:#0C6E8C;color:#0C6E8C;background:#FFFFFF}
 
+/* Framing: the card is the page on a phone, so it gets a real edge
+   rather than floating. */
+body.paper{padding-bottom:28px}
+body.paper .panel{
+  border:1.5px solid #D7E0E8;border-radius:16px;
+  box-shadow:0 1px 3px rgba(18,32,46,.06);
+  padding:clamp(20px,5vw,28px);margin-top:14px;
+}
+body.paper .panel h2{margin:0 0 4px;font-size:1.32rem}
+body.paper .panel > p.mute:first-of-type{margin:0 0 18px}
+body.paper .panel .btn + .btn{margin-top:10px}
+
+/* Fields sit in a tinted well so the white card still reads as paper */
+body.paper input,body.paper select{
+  background:#F7FAFC;border:1.5px solid #C3D2DD;
+}
+body.paper input:focus,body.paper select:focus{
+  background:#FFFFFF;border-color:#12202E;box-shadow:0 0 0 3px rgba(18,32,46,.10);
+}
+body.paper label{margin:18px 0 7px}
+body.paper label:first-of-type{margin-top:4px}
+
+
+/* the header above the sign-up card: the mark, the program, one line */
+body.paper .paperhead{margin:clamp(18px,5vw,34px) 0 2px;text-align:center}
+body.paper .paperhead .wm{font-size:1.45rem;display:block;margin-bottom:14px}
+body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
+body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
 body.paper .runrow{background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430}
 body.paper .runrow .rr-go{color:#0C6E8C}
 body.paper footer,body.paper .foot{color:#5A6B7C;border-color:var(--line)}
@@ -425,6 +459,7 @@ var STR = {
     motto:'Every Point Counts.',
     freeCap:'Practice free up to three times per challenge. Nothing is recorded.',
     signupKick:'Fundraiser', 
+    signupShort:'Sign up, practise, and take your official run. Padrinos pledge for every point you score.',
     signupLede:'Add yourself, practise as much as you like, and take one official run. Padrinos pledge for every point you score.',
     bestSoFar:'Best so far', notPractisedYet:'Not practised yet',
     yourPage:'This is your page. Practise as often as you want — only the official run counts, and you get one.',
@@ -540,6 +575,7 @@ var STR = {
     motto:'Cada Punto Cuenta.',
     freeCap:'Retos gratis hasta 3 ocasiones. No se guarda nada.',
     signupKick:'Recaudación',
+    signupShort:'Regístrate, practica, y haz tu corrida oficial. Los padrinos prometen por cada punto que anotes.',
     signupLede:'Añádete, practica todo lo que quieras, y haz una corrida oficial. Los padrinos prometen por cada punto que anotes.',
     bestSoFar:'Mejor hasta ahora', notPractisedYet:'Sin practicar',
     yourPage:'Esta es tu página. Practica cuantas veces quieras — solo cuenta la corrida oficial, y tienes una.',
@@ -1228,12 +1264,20 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
     myBest[r.game] = r.best_level || 0;
   });
 
+  var signedIn = !!me;
+
   app.innerHTML =
     langBtnHtml() +
-    '<div class="kick">' + T('signupKick') + '</div>' +
-    '<p class="motto">' + T('motto') + '</p>' +
-    '<h1>' + esc(campaign.name) + '</h1>' +
-    '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>' +
+    (signedIn
+      ? '<div class="kick">' + T('signupKick') + '</div>' +
+        '<p class="motto">' + T('motto') + '</p>' +
+        '<h1>' + esc(campaign.name) + '</h1>' +
+        '<p class="mute" style="margin-top:8px;">' + T('signupLede') + '</p>'
+      : '<div class="paperhead">' +
+          '<span class="wm">cada&nbsp;<em>punto</em></span>' +
+          '<h1>' + esc(campaign.name) + '</h1>' +
+          '<p class="mute">' + T('signupShort') + '</p>' +
+        '</div>') +
 
     (me
       ? '<div class="panel">' +
