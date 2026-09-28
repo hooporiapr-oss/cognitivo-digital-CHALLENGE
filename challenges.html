@@ -364,12 +364,16 @@ body.paper .btn.line:hover,body.paper .btn.alt:hover{border-color:#0C6E8C;color:
 
 /* Framing: the card is the page on a phone, so it gets a real edge
    rather than floating. */
-body.paper{
-  padding:0;margin:0;
-  height:100dvh;overflow:hidden;     /* the page itself never scrolls */
+body.paper{padding:0;margin:0}
+
+/* The fixed frame — bar and footer held, middle scrolling — applies
+   only where a scrolling region exists. Pages without one (the pledge
+   form, the division) scroll normally, or they cannot scroll at all. */
+body.paper:has(.paperscroll){
+  height:100dvh;overflow:hidden;
   display:flex;flex-direction:column;
 }
-body.paper #app{
+body.paper:has(.paperscroll) #app{
   display:flex;flex-direction:column;
   flex:1 1 auto;min-height:0;
   width:100%;max-width:none;padding:0;
@@ -507,6 +511,17 @@ body.paper .stat-label{
 body.paper .stat-val{color:#12202E;font-size:2rem}
 body.paper .stat.gold .stat-val,
 body.paper .stat.purple .stat-val{color:#12202E}
+
+/* on pages that scroll normally, the bar sticks rather than sits in
+   the flow */
+body.paper:not(:has(.paperscroll)) .pnav{
+  position:sticky;top:0;
+  width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+}
+body.paper:not(:has(.paperscroll)){overflow-x:hidden}
+body.paper:not(:has(.paperscroll)) footer{
+  width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);margin-top:32px;
+}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
@@ -1092,7 +1107,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNe
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
 
   app.innerHTML =
-    langBtnHtml() +
+    (RUN_KEY ? langBtnHtml() : paperNav()) +
     '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
     '<h1>' + esc(player.name) + '</h1>' +
     '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') +
