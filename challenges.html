@@ -437,6 +437,17 @@ body.paper .menu a:hover{background:#F7FAFC}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
+
+/* the first screen: one question, two answers, centred */
+body.paper .panel h2{text-align:center}
+body.paper .panel .btn{
+  display:block;width:100%;text-align:center;
+  border-radius:4px;                 /* square, not a capsule */
+}
+body.paper .panel .btn.line{
+  background:#FFFFFF;border:2px solid #12202E;color:#12202E;font-weight:800;
+}
+body.paper .panel .btn.line:hover{background:#12202E;color:#FFFFFF;border-color:#12202E}
 body.paper .runrow{background:#FFFFFF;border:1.5px solid var(--line);color:#1A2430}
 body.paper .runrow .rr-go{color:#0C6E8C}
 body.paper footer,body.paper .foot{color:#5A6B7C;border-color:var(--line)}
