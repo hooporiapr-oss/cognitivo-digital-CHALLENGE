@@ -1197,7 +1197,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   // white while they are signing up; dark once they are in and playing
   paperMode(!currentStudent(campaignId));
   // filled in after the page draws, since it depends on the database
-  setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id); }, 0);
+  setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id, me.name); }, 0);
   var oneRun = !!campaign.tryout_one_run;
   var picked = null;
   picked = currentStudent(campaignId);
@@ -1310,7 +1310,7 @@ var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
 // switched on for their campaign. Until then the box stays empty, so
 // nobody starts asking for pledges before there is anything to pledge
 // against.
-function showMyLinks(campaignId, playerId){
+function showMyLinks(campaignId, playerId, playerName){
   fetch(SB_URL + '/rest/v1/rpc/my_links', {
     method: 'POST',
     headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
@@ -1333,7 +1333,7 @@ function showMyLinks(campaignId, playerId){
         // first button rather than a copy the student then has to
         // paste somewhere. Copy stays for anyone who wants it.
         '<a class="ml-btn" href="#" onclick="shareMine(\'' + sponsor.replace(/'/g, "%27") +
-          '\',\'' + esc(player.name).replace(/'/g, "%27") + '\');return false;">' +
+          '\',\'' + esc(playerName || '').replace(/'/g, "%27") + '\');return false;">' +
           T('shareWhatsApp') + '</a>' +
         '<a class="ml-btn alt" href="#" onclick="copyMine(\'' + sponsor.replace(/'/g, "%27") + '\',this);return false;">' +
           T('shareWithPadrinos') + '</a>' +
