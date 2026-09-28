@@ -1107,7 +1107,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNe
   try { isMe = localStorage.getItem('fc-me') === player.id; } catch(e){}
 
   app.innerHTML =
-    (RUN_KEY ? langBtnHtml() : paperNav()) +
+    (RUN_KEY ? langBtnHtml() : paperNav() + '<div class="paperscroll">') +
     '<div class="kick">' + gameLabel(ch) + ' · ' + T('kick') + '</div>' +
     '<h1>' + esc(player.name) + '</h1>' +
     '<p class="mute" style="margin-top:8px;">' + esc(campaign ? campaign.name : '') +
@@ -1194,7 +1194,7 @@ function renderPlayer(ch, campaign, player, run, prac, comp, donePer, practiceNe
     (RUN_KEY
       ? '<a class="btn line" href="?c=' + encodeURIComponent(CHALLENGE) + '" style="margin-top:6px;">← ' +
           esc(campaign ? campaign.name : T('wordTeam')) + '</a>'
-      : '') +
+      : '</div>') +   // closes .paperscroll
 
     footerHtml();
 
