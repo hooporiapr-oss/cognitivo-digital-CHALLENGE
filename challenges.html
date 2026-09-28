@@ -405,6 +405,35 @@ body.paper .pnav-lang{
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer;
 }
 body.paper .pnav-lang:hover{border-color:#4FD3F0;color:#FFFFFF}
+
+body.paper .pnav-r{display:flex;align-items:center;gap:10px}
+body.paper .pnav-burger{
+  position:relative;width:38px;height:38px;border:1px solid #33465A;background:none;
+  border-radius:10px;cursor:pointer;padding:0;
+}
+body.paper .pnav-burger span{
+  position:absolute;left:10px;right:10px;height:2px;background:#C8D6E2;border-radius:2px;
+  transition:transform .18s,opacity .18s;
+}
+body.paper .pnav-burger span:nth-child(1){top:12px}
+body.paper .pnav-burger span:nth-child(2){top:18px}
+body.paper .pnav-burger span:nth-child(3){top:24px}
+body.paper .pnav-burger:hover{border-color:#4FD3F0}
+body.paper .pnav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+body.paper .pnav-burger.open span:nth-child(2){opacity:0}
+body.paper .pnav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* the page's own floating controls step aside while the bar is up */
+body.paper .burger{display:none}
+
+/* the dropdown, on paper */
+body.paper .menu{
+  background:#FFFFFF;border:1.5px solid #D7E0E8;
+  box-shadow:0 16px 36px rgba(18,32,46,.16);
+}
+body.paper .menu a{color:#12202E;border-bottom:1px solid #EDF2F6}
+body.paper .menu a:last-child{border-bottom:none}
+body.paper .menu a:hover{background:#F7FAFC}
 body.paper .paperhead{margin:clamp(20px,5vw,32px) 0 2px;text-align:center}
 body.paper .paperhead h1{font-size:clamp(1.5rem,5.2vw,1.9rem);margin:0 0 6px;line-height:1.15}
 body.paper .paperhead p{margin:0 auto;max-width:30ch;font-size:.97rem}
@@ -700,8 +729,14 @@ function T(key, vals){
 }
 
 function toggleMenu(){
-  document.getElementById('burger').classList.toggle('open');
-  document.getElementById('menu').classList.toggle('open');
+  // two buttons can open the same menu: the page's own, and the one in
+  // the bar on the sign-up page
+  var b = document.getElementById('burger');
+  if (b) b.classList.toggle('open');
+  var nb = document.querySelector('.pnav-burger');
+  if (nb) nb.classList.toggle('open');
+  var m = document.getElementById('menu');
+  if (m) m.classList.toggle('open');
 }
 
 // The menu sits outside the app, so its labels are painted once
@@ -729,9 +764,14 @@ function paperNav(){
   return '<div class="pnav">' +
            '<div class="pnav-in">' +
              '<span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span>' +
-             '<button onclick="toggleLang()" class="pnav-lang">' +
-               (LANG === 'en' ? 'ES' : 'EN') +
-             '</button>' +
+             '<div class="pnav-r">' +
+               '<button onclick="toggleLang()" class="pnav-lang">' +
+                 (LANG === 'en' ? 'ES' : 'EN') +
+               '</button>' +
+               '<button class="pnav-burger" onclick="toggleMenu()" aria-label="Menu">' +
+                 '<span></span><span></span><span></span>' +
+               '</button>' +
+             '</div>' +
            '</div>' +
          '</div>';
 }
