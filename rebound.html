@@ -156,7 +156,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .court{
   display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
   gap:2.2%;padding:2.2%;
-  aspect-ratio:1;width:min(92vw,min(92vw,62vh));height:auto;
   border:2px solid rgba(255,122,24,.4);border-radius:16px;
   background:#0D1826;
   box-shadow:0 0 60px rgba(255,122,24,.18),inset 0 0 40px rgba(255,122,24,.05),0 20px 60px rgba(0,0,0,.8);
@@ -862,6 +861,22 @@ function newBoardArrangement(){
   boardColors=shuffle(TARGET_COLORS);
 }
 
+// The court is square and sized to the space left over once the top
+// bar and the controls have taken theirs — measuring the viewport
+// instead would push the home button off the bottom.
+function resizeCourt(){
+  var area = document.querySelector('.court-area');
+  var court = $('court');
+  if (!area || !court) return;
+  var size = Math.min(area.clientWidth, area.clientHeight);
+  if (size < 80) { requestAnimationFrame(resizeCourt); return; }
+  court.style.width = size + 'px';
+  court.style.height = size + 'px';
+}
+window.addEventListener('resize', resizeCourt);
+window.addEventListener('orientationchange', function(){ setTimeout(resizeCourt, 220); });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resizeCourt);
+
 function buildBoard(){
   var court = $('court');
   if (!court) return;
@@ -900,6 +915,7 @@ function buildBoard(){
 
   // Restore whatever the run was in the middle of.
   targetEls.forEach(function(el){el.classList.toggle('ready',isReady)});
+  resizeCourt();
 }
 // The grid lays itself out, so a resize needs no rebuild — and
 // rebuilding mid-run would wipe whatever was lit.
