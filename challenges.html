@@ -902,7 +902,16 @@ function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 // A challenge names one game. Adding another is a row here plus its
 // own file — nothing else in this page needs to know the difference.
 // The three challenges a score is made of.
-var SCORED = ['replay','recall'];
+var SCORED = ['fortress','rebound'];
+
+// The campaign decides which two count. Called before anything that
+// renders a run row, so the page never shows a challenge the campaign
+// is not scoring.
+function setScored(camp){
+  if (camp && Array.isArray(camp.scored_games) && camp.scored_games.length){
+    SCORED = camp.scored_games;
+  }
+}
 
 var GAMES = {
   fortress:   { file:'fortress.html',    label:'The Fortress' },
@@ -962,13 +971,13 @@ function renderLanding(){
       '<p class="mute">' + T('practiceNote') + '</p>' +
       '<p class="freecap">' + T('freeCap') + '</p>' +
       '<div class="games">' +
-        '<a class="game-card replay" href="replay.html">' +
-          '<span class="game-name">' + T('gReplay') + '</span>' +
-          '<span class="game-desc">' + T('gReplayDesc') + '</span>' +
+        '<a class="game-card fortress" href="fortress.html">' +
+          '<span class="game-name">' + T('gFortress') + '</span>' +
+          '<span class="game-desc">' + T('gFortressDesc') + '</span>' +
         '</a>' +
-        '<a class="game-card recall" href="recall.html">' +
-          '<span class="game-name">' + T('gRecall') + '</span>' +
-          '<span class="game-desc">' + T('gRecallDesc') + '</span>' +
+        '<a class="game-card rebound" href="rebound.html">' +
+          '<span class="game-name">' + T('gRebound') + '</span>' +
+          '<span class="game-desc">' + T('gReboundDesc') + '</span>' +
         '</a>' +
 
       '</div>' +
@@ -1374,11 +1383,12 @@ function loadTryout(campaignId){
     get('players?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=id,name&order=name.asc'),
     get('campaign_tryouts?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,best_level,runs'),
     get('campaign_practice?campaign_id=eq.' + encodeURIComponent(campaignId) + '&select=player_id,game,runs,best_level'),
-    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=practice_required')
+    get('campaigns?id=eq.' + encodeURIComponent(campaignId) + '&select=practice_required,scored_games')
   ])
   .then(function(res){
     var campaign = res[0] && res[0][0];
     if (!campaign) { notFound(T('wordTeam')); return; }
+    setScored(res[4] && res[4][0]);
     var need = (res[4] && res[4][0] && res[4][0].practice_required);
     renderTryout(campaignId, campaign, res[1] || [], res[2] || [], res[3] || [],
                  (need === 0 || need) ? need : 3);
@@ -1418,7 +1428,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   // A competition may be run on one game rather than all three, in
   // which case that is the only one anybody sees.
   var onlyGame = campaign.tryout_game || '';
-  var order = onlyGame ? [onlyGame] : ['replay','recall'];
+  var order = onlyGame ? [onlyGame] : SCORED.slice();
   var leader = order.slice().sort(function(a,b){ return totals[b]-totals[a]; })[0];
   var anyScores = order.some(function(g){ return counts[g] > 0; });
 
@@ -1826,7 +1836,7 @@ if (TRYOUT){
             '&select=player_id,best_level'),
         get('campaign_practice?campaign_id=eq.' + encodeURIComponent(ch.campaign_id) +
             '&select=player_id,game,runs'),
-        get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=practice_required')
+        get('campaigns?id=eq.' + encodeURIComponent(ch.campaign_id) + '&select=practice_required,scored_games')
       ]).then(function(res){
         var campaign = res[0] && res[0][0];
         var players = res[1] || [];
@@ -1834,6 +1844,7 @@ if (TRYOUT){
         var practice = res[3] || [];
         var comp = res[4] || [];
         var campPractice = res[5] || [];
+        setScored(res[6] && res[6][0]);
         var needRaw = res[6] && res[6][0] ? res[6][0].practice_required : 3;
         var practiceNeed = (needRaw === 0 || needRaw) ? needRaw : 3;
 
