@@ -44,10 +44,8 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .demo-panel{
   position:relative;width:min(280px,72vw);aspect-ratio:520/340;
   background:
-    linear-gradient(to right,  rgba(255,122,24,.06) 0 100%) 0 40%/100% 20% no-repeat,
+    linear-gradient(to right,  rgba(255,122,24,.07) 0 100%) 0 40%/100% 20% no-repeat,
     linear-gradient(to bottom, rgba(255,122,24,.05) 0 100%) 40% 0/20% 100% no-repeat,
-    repeating-linear-gradient(to right,  rgba(255,255,255,.13) 0 1px, transparent 1px 20%),
-    repeating-linear-gradient(to bottom, rgba(255,255,255,.13) 0 1px, transparent 1px 20%),
     linear-gradient(180deg,#1B1026,#120B1A);
   border:3px solid #FF7A18;border-radius:6px;
 }
@@ -134,8 +132,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .court-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:6px}
 /* The ball layer is fixed to the viewport, so it must not be left
    sitting over other screens' buttons once a run is over. */
-#targetLayer{z-index:12}
-#keySvg{height:100%;max-height:100%;width:auto;max-width:96%}
 
 .fortress-ball{position:absolute;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%) scale(1);transition:filter .12s,box-shadow .12s,transform .12s;pointer-events:none;opacity:1;display:grid;place-content:center}
 /* The dollar sign rides on top of the ball art. Its own size is set
@@ -155,6 +151,35 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 #controls{display:flex;justify-content:center;gap:10px;padding:8px 16px 14px;flex-shrink:0}
 .ctrl-btn{height:46px;flex:0 1 170px;max-width:200px;border:2px solid rgba(12,127,196,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.92rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
+
+/* The court, exactly as The Recall builds it: a square 5x5 grid of
+   real cells. The 1-3-1 occupies five of them; the other twenty stay
+   empty, which is what makes the formation read. */
+.court-area{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:8px}
+.court{
+  display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
+  gap:2.2%;padding:2.2%;
+  aspect-ratio:1;width:min(92vw,min(92vw,62vh));height:auto;
+  border:2px solid rgba(255,122,24,.4);border-radius:16px;
+  background:#0D1826;
+  box-shadow:0 0 60px rgba(255,122,24,.18),inset 0 0 40px rgba(255,122,24,.05),0 20px 60px rgba(0,0,0,.8);
+}
+.court .cell{
+  border-radius:10px;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.07);
+}
+/* the five that are in play */
+.court .spot{
+  border-radius:50%;border:none;background-size:100% 100%;cursor:pointer;
+  transition:filter .12s,box-shadow .12s,transform .12s;
+  transform:scale(1);
+}
+.court .spot.lit{
+  filter:brightness(1.45) saturate(1.25);
+  box-shadow:0 0 34px currentColor,0 0 70px currentColor;
+  transform:scale(1.08);
+}
+.court .spot.correct{box-shadow:0 0 0 4px #00D9A5,0 0 22px rgba(0,217,165,.8)}
+.court .spot.wrong{box-shadow:0 0 0 4px #FF1493,0 0 22px rgba(255,20,147,.8)}
 </style>
 </head>
 <body>
@@ -220,53 +245,9 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="top-box"><div class="top-label" id="lblTime">Time</div><div class="top-val" id="hTime">0.0</div></div>
   </div>
   <div id="msg" class="watch"></div>
-  <div class="court-wrap">
-    <svg id="keySvg" viewBox="0 0 520 340" preserveAspectRatio="xMidYMid meet">
-      <!-- A plain field for the targets to sit on. It keeps the same
-           proportions the layout was built around, so nothing else
-           had to move. -->
-      <defs>
-        <linearGradient id="panelFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1B1026"/>
-          <stop offset="100%" stop-color="#120B1A"/>
-        </linearGradient>
-      </defs>
-      <!-- A 5x5 court. The five 1-3-1 positions sit on cells; the
-           other twenty are the floor. -->
-      <rect x="10" y="10" width="500" height="320" rx="8"
-            fill="url(#panelFill)" stroke="#FF7A18" stroke-width="6"/>
-      <rect x="20" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="116" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="212" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="308" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="404" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="20" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="116" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="212" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="308" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="404" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="20" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="116" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="212" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="308" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="404" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="20" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="116" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="212" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="308" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="404" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="20" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="116" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="212" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="308" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <rect x="404" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
-      <!-- the three that matter across the middle, and the two posts -->
-      <rect x="20" y="140" width="480" height="60" fill="rgba(255,122,24,.07)"
-            stroke="rgba(255,122,24,.35)" stroke-width="2"/>
-      <rect x="212" y="20" width="96" height="300" fill="rgba(255,122,24,.05)"
-            stroke="rgba(255,122,24,.28)" stroke-width="2"/>
-    </svg>
-    <div id="targetLayer"></div>
+  <div class="court-area">
+    <div class="court" id="court"></div>
+  </div>
   </div>
   <div id="controls">
     <a class="ctrl-btn" href="challenges.html" id="homeBtn">← Home</a>
@@ -662,13 +643,16 @@ function ballArt(color){
 // bottom. Three rows will not take the full-size ball on a landscape
 // board, so this formation plays with a smaller one — which also
 // makes it harder to read at a glance than the 2-1-2.
-// Cell centres on the 5x5: column centres are 10, 30, 50, 70, 90 and
-// row centres the same. The 1-3-1 takes the top middle cell, the three
-// across the middle row, and the bottom middle.
+// The 1-3-1 as cells of a 5x5, numbered left to right and top to
+// bottom: one at the top middle, three across the middle row, one at
+// the bottom middle.
+var SPOTS = [2, 10, 12, 14, 22];
+
+// Kept because the intro preview still lays its dots out by percentage.
 var LAYOUT=[
-  {x:50,y:20},
-  {x:14,y:50},{x:50,y:50},{x:86,y:50},
-  {x:50,y:80}
+  {x:50,y:10},
+  {x:10,y:50},{x:50,y:50},{x:90,y:50},
+  {x:50,y:90}
 ];
 
 // ══════════════════════════════════════════════════════
@@ -882,90 +866,46 @@ function newBoardArrangement(){
 }
 
 function buildBoard(){
-  var layer=$('targetLayer');
-  var court=$('keySvg').getBoundingClientRect();
+  var court = $('court');
+  if (!court) return;
 
-  // The court has to have actually been laid out before its box can be
-  // measured. Switching screens, entering fullscreen and rotating all
-  // change that box, and on a phone the change lands a frame or two
-  // after the code that caused it — measuring too early put every ball
-  // in the top-left corner. So: bail out and try again rather than
-  // building against a box that is not real yet.
-  if (court.width < 60 || court.height < 60){
-    requestAnimationFrame(buildBoard);
-    return;
+  // Twenty-five cells, five of them in play. The grid does the
+  // arranging, so there is nothing to measure and nothing to position
+  // by hand — which is why this cannot land in the wrong place while
+  // the page is still settling.
+  court.innerHTML = '';
+  targetEls = [];
+
+  if(!boardColors) newBoardArrangement();
+  var colors = boardColors;
+
+  for (var c = 0; c < 25; c++){
+    var el = document.createElement('div');
+    var t = SPOTS.indexOf(c);
+
+    if (t === -1){
+      el.className = 'cell';
+    } else {
+      el.className = 'spot';
+      el.style.backgroundImage = ballArt(colors[t]);
+      el.style.color = colors[t];
+      (function(idx){
+        el.addEventListener('pointerdown', function(e){
+          e.preventDefault();
+          handleTargetTap(idx);
+        });
+      })(t);
+      targetEls[t] = el;
+    }
+    court.appendChild(el);
   }
 
-  // On a first load the court can measure a plausible-but-wrong size
-  // while the page is still settling — the address bar has not
-  // collapsed yet, or fullscreen is mid-transition. Re-measuring a
-  // beat later and moving the balls costs nothing and catches it.
-  if (!buildBoard.settled){
-    buildBoard.settled = true;
-    setTimeout(function(){
-      buildBoard.settled = false;
-      // Moving the balls under someone's finger mid-tap is worse than
-      // a slightly misplaced board, so this waits for the sequence to
-      // be playing rather than interrupting the player's turn.
-      if (!isReady) buildBoard();
-    }, 350);
-  }
-
-  // Fixed, not absolute — these are viewport coordinates, and this
-  // page never scrolls.
-  layer.style.position='fixed';
-  layer.style.left=court.left+'px';
-  layer.style.top=court.top+'px';
-  layer.style.width=court.width+'px';
-  layer.style.height=court.height+'px';
-  layer.style.pointerEvents='';
-  layer.innerHTML='';
-  targetEls=[];
-  if(!boardPositions||!boardColors) newBoardArrangement();
-  var positions=boardPositions;
-  var colors=boardColors;
-  // A ball has to sit inside its cell, and a cell is shorter than it is
-  // wide on this board — so the row height decides the size, not the
-  // width.
-  var cell=Math.min(court.width/5, court.height/5);
-  var size=Math.max(40,Math.min(96,cell*0.86));
-  for(var i=0;i<NUM_TARGETS;i++){
-    var el=document.createElement('div');
-    el.className='fortress-ball';
-    el.style.left=positions[i].x+'%';
-    el.style.top=positions[i].y+'%';
-    el.style.width=size+'px';
-    el.style.height=size+'px';
-    el.style.backgroundImage=ballArt(colors[i]);
-    el.style.backgroundSize='100% 100%';
-    el.style.color=colors[i];
-
-    // The S curve and the bar are separate shapes, both stroked in
-    // gold over a dark outline, so the bar reads clearly on every one
-    // of the five ball colors.
-
-    (function(idx){
-      el.addEventListener('pointerdown',function(e){e.preventDefault();handleTargetTap(idx)});
-    })(i);
-    layer.appendChild(el);
-    targetEls.push(el);
-  }
 
   // Restore whatever the run was in the middle of.
   targetEls.forEach(function(el){el.classList.toggle('ready',isReady)});
 }
-// Any of these can resize or move the court under the balls: rotating
-// the phone, the address bar sliding away, entering or leaving
-// fullscreen. Rebuilding keeps the balls on the key.
-function rebuildIfPlaying(){
-  if($('screen-game').style.display==='flex') buildBoard();
-}
-window.addEventListener('resize',rebuildIfPlaying);
-window.addEventListener('orientationchange',function(){setTimeout(rebuildIfPlaying,220)});
-document.addEventListener('fullscreenchange',function(){setTimeout(rebuildIfPlaying,220)});
-if (window.visualViewport){
-  window.visualViewport.addEventListener('resize',rebuildIfPlaying);
-}
+// The grid lays itself out, so a resize needs no rebuild — and
+// rebuilding mid-run would wipe whatever was lit.
 
 var audioCtx=null;
 function ensureAudio(){ if(!audioCtx){ try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){} } }
@@ -1122,8 +1062,8 @@ function handleTargetTap(idx){
 function endDrill(){
   if(phase==='done')return;
   phase='done';clrT();setReady(false);
-  var layer=$('targetLayer');
-  if(layer) layer.style.pointerEvents='none';
+  var court=$('court');
+  if(court) court.style.pointerEvents='none';
 
   // The level being attempted when the run ended was never completed,
   // so the score is the last level actually held. Same rule for
