@@ -39,15 +39,21 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 /* The same five positions the game uses, on a panel the same shape
    as the real one — so what a student learns here is what they see. */
+/* the same 5x5 court as the game, drawn with gradients rather than
+   twenty-five elements */
 .demo-panel{
   position:relative;width:min(280px,72vw);aspect-ratio:520/340;
-  background:linear-gradient(180deg,#1B1026,#120B1A);
-  border:4px solid #FF7A18;border-radius:8px;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.8);
+  background:
+    linear-gradient(to right,  rgba(255,122,24,.06) 0 100%) 0 40%/100% 20% no-repeat,
+    linear-gradient(to bottom, rgba(255,122,24,.05) 0 100%) 40% 0/20% 100% no-repeat,
+    repeating-linear-gradient(to right,  rgba(255,255,255,.13) 0 1px, transparent 1px 20%),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,.13) 0 1px, transparent 1px 20%),
+    linear-gradient(180deg,#1B1026,#120B1A);
+  border:3px solid #FF7A18;border-radius:6px;
 }
 .demo-dot{
   position:absolute;transform:translate(-50%,-50%);
-  width:23%;aspect-ratio:1;border-radius:50%;
+  width:16%;aspect-ratio:1;border-radius:50%;
   transition:all .14s;
 }
 .demo-dot.lit{filter:brightness(1.4);box-shadow:0 0 22px rgba(255,255,255,.35);transform:translate(-50%,-50%) scale(1.14)}
@@ -225,12 +231,40 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
           <stop offset="100%" stop-color="#120B1A"/>
         </linearGradient>
       </defs>
-      <!-- A backboard: the outer board, its trim, and the shooter's
-           square. No rim and no net — the board is the thing here. -->
-      <rect x="10" y="10" width="500" height="320" rx="10"
-            fill="url(#panelFill)" stroke="#FF7A18" stroke-width="7"/>
-      <rect x="20" y="20" width="480" height="300" rx="6"
-            fill="none" stroke="rgba(255,255,255,.85)" stroke-width="3"/>
+      <!-- A 5x5 court. The five 1-3-1 positions sit on cells; the
+           other twenty are the floor. -->
+      <rect x="10" y="10" width="500" height="320" rx="8"
+            fill="url(#panelFill)" stroke="#FF7A18" stroke-width="6"/>
+      <rect x="20" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="116" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="212" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="308" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="404" y="20" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="20" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="116" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="212" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="308" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="404" y="80" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="20" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="116" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="212" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="308" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="404" y="140" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="20" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="116" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="212" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="308" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="404" y="200" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="20" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="116" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="212" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="308" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <rect x="404" y="260" width="96" height="60" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <!-- the three that matter across the middle, and the two posts -->
+      <rect x="20" y="140" width="480" height="60" fill="rgba(255,122,24,.07)"
+            stroke="rgba(255,122,24,.35)" stroke-width="2"/>
+      <rect x="212" y="20" width="96" height="300" fill="rgba(255,122,24,.05)"
+            stroke="rgba(255,122,24,.28)" stroke-width="2"/>
     </svg>
     <div id="targetLayer"></div>
   </div>
@@ -268,7 +302,7 @@ var STR = {
     demoWatch:'👀 Watch the chain…', demoTap:'Tap it back in order', demoHeld:'✅ Chain held!',
     htpText:'How to play',
     cObjective:'🎯 What to do',
-    cs1:'<b>Watch</b> the basketballs light up, one after another.',
+    cs1:'<b>Watch</b> the balls light up on the 1-3-1, one after another.',
     cs2:'<b>Remember the order</b> — every round is a brand new pattern, one ball longer.',
     cs3:'<b>Tap them back</b> in the same order. Nothing carries over, so nothing can be guessed.',
     cScoring:'⭐ Chain scoring',
@@ -313,7 +347,7 @@ var STR = {
     demoWatch:'👀 Observa la cadena…', demoTap:'Tócala de vuelta en orden', demoHeld:'✅ ¡Cadena aguantada!',
     htpText:'Cómo jugar',
     cObjective:'🎯 Qué hacer',
-    cs1:'<b>Observa</b> los balones encenderse, uno tras otro.',
+    cs1:'<b>Observa</b> los balones encenderse en el 1-3-1, uno tras otro.',
     cs2:'<b>Recuerda el orden</b> — cada ronda es un patrón nuevo, con un balón más.',
     cs3:'<b>Tócalos de vuelta</b> en el mismo orden. Nada se arrastra, así que nada se puede adivinar.',
     cScoring:'⭐ Puntuación en cadena',
@@ -624,10 +658,17 @@ function ballArt(color){
   return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
 }
 
+// A true 1-3-1: one at the top, three across the middle, one at the
+// bottom. Three rows will not take the full-size ball on a landscape
+// board, so this formation plays with a smaller one — which also
+// makes it harder to read at a glance than the 2-1-2.
+// Cell centres on the 5x5: column centres are 10, 30, 50, 70, 90 and
+// row centres the same. The 1-3-1 takes the top middle cell, the three
+// across the middle row, and the bottom middle.
 var LAYOUT=[
-  {x:75,y:24},{x:75,y:76},
-  {x:51,y:50},
-  {x:25,y:24},{x:25,y:76}
+  {x:50,y:20},
+  {x:14,y:50},{x:50,y:50},{x:86,y:50},
+  {x:50,y:80}
 ];
 
 // ══════════════════════════════════════════════════════
@@ -883,7 +924,11 @@ function buildBoard(){
   if(!boardPositions||!boardColors) newBoardArrangement();
   var positions=boardPositions;
   var colors=boardColors;
-  var size=Math.max(78,Math.min(136,court.width*.25));
+  // A ball has to sit inside its cell, and a cell is shorter than it is
+  // wide on this board — so the row height decides the size, not the
+  // width.
+  var cell=Math.min(court.width/5, court.height/5);
+  var size=Math.max(40,Math.min(96,cell*0.86));
   for(var i=0;i<NUM_TARGETS;i++){
     var el=document.createElement('div');
     el.className='fortress-ball';
