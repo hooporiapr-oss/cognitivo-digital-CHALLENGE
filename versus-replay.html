@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Replay · Head to Head</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;background:#05080C;color:#EAF4FB;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+
+/* ---------- intro ---------- */
+#intro{
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;padding:24px;
+  background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%);
+}
+.title{font-size:clamp(2rem,6vw,3.4rem);font-weight:900;font-style:italic;
+  letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.05}
+.title span{color:#A78BFA}
+.sub{font-size:clamp(.8rem,1.6vw,1rem);letter-spacing:.28em;text-transform:uppercase;
+  color:#8AA4BD;text-align:center}
+.names{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:min(760px,92vw)}
+.namebox{flex:1 1 300px;min-width:260px;border:2px solid;border-radius:14px;padding:16px}
+.namebox.left{border-color:#A78BFA}
+.namebox.right{border-color:#22D3EE}
+.namebox label{display:block;font-size:.66rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:8px}
+.namebox.left label{color:#A78BFA}
+.namebox.right label{color:#22D3EE}
+.namebox input{
+  width:100%;padding:14px;border-radius:10px;border:2px solid rgba(255,255,255,.18);
+  background:#0D1826;color:#fff;font:inherit;font-size:1.1rem;text-align:center;
+}
+.namebox input:focus{outline:none;border-color:currentColor}
+.go{
+  width:min(420px,88vw);height:68px;border:none;border-radius:16px;cursor:pointer;
+  background:linear-gradient(135deg,#A78BFA,#7DD3FC);color:#04121A;
+  font:inherit;font-size:1.15rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  box-shadow:0 0 40px rgba(167,139,250,.5);
+}
+.go:active{transform:translateY(1px)}
+.rules{color:#8AA4BD;font-size:.9rem;text-align:center;max-width:52ch;line-height:1.6}
+.back{position:fixed;top:16px;left:16px;padding:9px 16px;border:2px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.4);color:#fff;border-radius:999px;font:inherit;font-size:.78rem;
+  font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+
+/* ---------- the two courts ---------- */
+#game{position:fixed;inset:0;display:none;flex-direction:column;background:#05080C}
+.hud{display:flex;justify-content:center;gap:10px;padding:10px;flex-shrink:0}
+.hud .box{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 14px;
+  text-align:center;min-width:86px;background:rgba(255,255,255,.03)}
+.hud .lbl{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA4BD}
+.hud .val{font-size:1.2rem;font-weight:900}
+.msg{text-align:center;padding:6px;font-size:1rem;font-weight:900;letter-spacing:.08em;
+  text-transform:uppercase;flex-shrink:0;min-height:32px}
+.msg.watch{color:#22D3EE}
+.msg.go{color:#00D9A5}
+.msg.miss{color:#FF1493}
+
+.floor{flex:1 1 auto;min-height:0;display:flex;gap:10px;padding:0 10px 10px}
+.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.side .who{font-size:.8rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.side.left .who{color:#A78BFA}
+.side.right .who{color:#22D3EE}
+.side .state{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA4BD;min-height:14px}
+
+.court{
+  display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
+  gap:2.2%;padding:2.2%;border-radius:16px;background:#0D1826;border:2px solid;
+}
+.side.left .court{border-color:rgba(167,139,250,.45);
+  box-shadow:0 0 50px rgba(167,139,250,.15),inset 0 0 40px rgba(167,139,250,.04)}
+.side.right .court{border-color:rgba(34,211,238,.45);
+  box-shadow:0 0 50px rgba(34,211,238,.15),inset 0 0 40px rgba(34,211,238,.04)}
+.court.out{opacity:.3}
+.court.won{box-shadow:0 0 70px rgba(0,217,165,.6)}
+
+.cell{
+  border-radius:9px;background:rgba(167,139,250,.05);border:2px solid rgba(167,139,250,.26);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-weight:900;font-size:clamp(.7rem,2.2vw,1.1rem);color:transparent;transition:all .08s;
+}
+.cell.lit{background:#A78BFA!important;border-color:#7DD3FC!important;color:#04121A!important;
+  box-shadow:0 0 22px rgba(167,139,250,.9)!important;transform:scale(1.04)}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;color:#04211A!important;
+  box-shadow:0 0 16px rgba(0,217,165,.7)!important}
+.cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important}
+@keyframes tapPop{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.16);box-shadow:0 0 0 6px #00D9A5,0 0 34px rgba(0,217,165,1)}
+  100%{transform:scale(1)}
+}
+@keyframes tapMiss{
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
+
+.bar{display:flex;justify-content:center;gap:10px;padding:0 10px 12px;flex-shrink:0}
+.btn{height:52px;flex:0 1 200px;border:2px solid rgba(167,139,250,.5);border-radius:12px;
+  background:rgba(0,0,0,.4);color:#fff;font:inherit;font-size:.95rem;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,#A78BFA,#7DD3FC);color:#04121A;border-color:#A78BFA}
+
+/* ---------- result ---------- */
+#countdown{
+  position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;
+  background:rgba(5,8,12,.86);font-size:clamp(5rem,20vw,12rem);font-weight:900;
+  font-style:italic;color:#A78BFA;text-shadow:0 0 60px rgba(167,139,250,.8);pointer-events:none;
+}
+
+
+/* the scoreboard */
+.rs-kick{font-size:.72rem;font-weight:900;letter-spacing:.34em;text-transform:uppercase;color:#8AA4BD}
+.board{display:flex;align-items:stretch;gap:clamp(10px,3vw,26px);
+  width:min(760px,94vw);margin:6px 0 4px}
+.board .col{
+  flex:1 1 0;min-width:0;border:2px solid;border-radius:16px;padding:clamp(14px,3vw,22px) 10px;
+  background:rgba(255,255,255,.02);text-align:center;transition:transform .2s;
+}
+.board .col.left{border-color:rgba(167,139,250,.5)}
+.board .col.right{border-color:rgba(34,211,238,.5)}
+.board .col.win{transform:translateY(-6px)}
+.board .col.left.win{border-color:#A78BFA;box-shadow:0 0 46px rgba(167,139,250,.35)}
+.board .col.right.win{border-color:#22D3EE;box-shadow:0 0 46px rgba(34,211,238,.35)}
+.board .col.lose{opacity:.62}
+.board .crown{font-size:1.4rem;line-height:1;margin-bottom:6px;opacity:0}
+.board .col.win .crown{opacity:1}
+.board .col.left .crown{color:#A78BFA}
+.board .col.right .crown{color:#22D3EE}
+.board .nm{font-size:clamp(.95rem,2.4vw,1.3rem);font-weight:900;letter-spacing:.02em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px}
+.board .col.left .nm{color:#A78BFA}
+.board .col.right .nm{color:#22D3EE}
+.board .pts{font-size:clamp(2.6rem,9vw,4.4rem);font-weight:900;line-height:1;letter-spacing:-.03em}
+.board .cap{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:#8AA4BD;margin-top:2px}
+.board .chain{font-size:.8rem;color:#8AA4BD;margin-top:10px}
+.board .vs{align-self:center;font-size:.8rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;color:#5A6B7C}
+
+#result{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;
+  background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%)}
+#result .winner{font-size:clamp(2rem,7vw,3.6rem);font-weight:900;font-style:italic;
+  text-transform:uppercase;letter-spacing:.03em}
+#result .line{color:#8AA4BD;font-size:1rem}
+#result .score{font-size:1.4rem;font-weight:900}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <a class="back" href="versus.html">← Back</a>
+  <div class="sub">One chain, one note each · two players</div>
+  <div class="title">The <span>Replay</span><br>Head to Head</div>
+
+  <div class="names">
+    <div class="namebox left">
+      <label>Left player</label>
+      <input id="nameL" maxlength="14" placeholder="Name" autocomplete="off">
+    </div>
+    <div class="namebox right">
+      <label>Right player</label>
+      <input id="nameR" maxlength="14" placeholder="Name" autocomplete="off">
+    </div>
+  </div>
+
+  <button class="go" id="startBtn">Tip off</button>
+  <p class="rules">The same chain lights one cell at a time on both courts, each with its own
+    note. Play it back in order. A wrong tap ends that player's run — the other plays on, and
+    the longest chain wins.</p>
+</div>
+
+<div id="game">
+  <div class="hud">
+    <div class="box"><div class="lbl">Round</div><div class="val" id="hRound">1</div></div>
+    <div class="box"><div class="lbl">Chain</div><div class="val" id="hChain">2</div></div>
+    <div class="box"><div class="lbl">Points</div><div class="val" id="hPoints">0</div></div>
+  </div>
+
+  <div class="msg watch" id="msg">Watch the chain</div>
+  <div id="countdown"></div>
+
+  <div class="floor">
+    <div class="side left">
+      <div class="who" id="whoL">Left</div>
+      <div class="court" id="courtL"></div>
+      <div class="state" id="stateL"></div>
+    </div>
+    <div class="side right">
+      <div class="who" id="whoR">Right</div>
+      <div class="court" id="courtR"></div>
+      <div class="state" id="stateR"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button class="btn" id="quitBtn">← End</button>
+  </div>
+</div>
+
+<div id="result">
+  <div class="rs-kick" id="resultKick">Final</div>
+  <div class="winner" id="winner">—</div>
+
+  <div class="board">
+    <div class="col left" id="colL">
+      <div class="crown" id="crownL">★</div>
+      <div class="nm" id="rsNameL">Left</div>
+      <div class="pts" id="rsPtsL">0</div>
+      <div class="cap">points</div>
+      <div class="chain" id="rsChainL">chain of 0</div>
+    </div>
+    <div class="vs">vs</div>
+    <div class="col right" id="colR">
+      <div class="crown" id="crownR">★</div>
+      <div class="nm" id="rsNameR">Right</div>
+      <div class="pts" id="rsPtsR">0</div>
+      <div class="cap">points</div>
+      <div class="chain" id="rsChainR">chain of 0</div>
+    </div>
+  </div>
+
+  <div class="line" id="resultLine"></div>
+
+  <button class="go" id="againBtn" style="margin-top:10px">Run it back</button>
+  <a class="back" href="versus.html" style="position:static;margin-top:4px">← Back</a>
+</div>
+
+<script>
+var $ = function(id){ return document.getElementById(id); };
+
+// The Replay is played on the whole grid: any of the twenty-five
+// cells can be in the chain, and each has its own note.
+var CELLS = 25;
+
+// Rising notes, so a longer chain climbs — a tune rather than a list.
+var NOTES = [262,294,330,349,392,440,494,523,587,659,698,784,880,988,1047,
+             1175,1319,1397,1568,1760,1976,2093,2349,2637,2794];
+
+var audio = null;
+function beep(freq, ms){
+  try {
+    if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+    var o = audio.createOscillator(), g = audio.createGain();
+    o.type = 'sine';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, audio.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.22, audio.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + (ms || 300) / 1000);
+    o.connect(g); g.connect(audio.destination);
+    o.start(); o.stop(audio.currentTime + (ms || 300) / 1000 + 0.02);
+  } catch(e){}
+}
+
+// Chain scoring, the same as every other challenge — so a head-to-head
+// result means the same thing as a solo run.
+function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+
+
+// Each player gets their own court, their own five balls, and their own
+// place in the chain — but the chain itself is shared, which is what
+// makes the result a fair comparison rather than two separate games.
+function Player(side, courtId, whoId, stateId){
+  this.side = side;
+  this.court = $(courtId);
+  this.whoEl = $(whoId);
+  this.stateEl = $(stateId);
+  this.name = side === 'L' ? 'Left' : 'Right';
+  this.spots = [];
+  this.idx = 0;
+  this.out = false;
+  this.level = 0;
+}
+
+Player.prototype.build = function(){
+  this.court.innerHTML = '';
+  this.spots = [];
+  var self = this;
+
+  for (var c = 0; c < CELLS; c++){
+    var el = document.createElement('div');
+    el.className = 'cell';
+    (function(target){
+      el.addEventListener('pointerdown', function(e){
+        e.preventDefault();
+        tap(self, target);
+      });
+    })(c);
+    this.spots[c] = el;
+    this.court.appendChild(el);
+  }
+};
+
+Player.prototype.clear = function(){
+  this.spots.forEach(function(el){ el.className = 'cell'; el.textContent = ''; });
+};
+
+Player.prototype.show = function(t, cls, label){
+  var el = this.spots[t];
+  if (!el) return;
+  el.className = 'cell ' + cls;
+  el.textContent = (label === undefined || label === null) ? '' : label;
+  if (cls === 'correct' || cls === 'wrong'){
+    el.style.animation = 'none';
+    void el.offsetWidth;                       // forces the restart
+    el.style.animation = cls === 'correct' ? 'tapPop .22s ease-out' : 'tapMiss .3s';
+  }
+};
+
+var L, R, chain = [], phase = 'idle', round = 0, timers = [];
+
+// Never the same ball twice running: it lights, clears and lights
+// again in the same place, which reads as one flash rather than two.
+function nextBall(){
+  var n, last = chain.length ? chain[chain.length - 1] : -1;
+  do { n = Math.floor(Math.random() * CELLS); } while (n === last);
+  return n;
+}
+
+function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
+
+function msg(text, cls){
+  var el = $('msg');
+  el.textContent = text;
+  el.className = 'msg ' + (cls || 'watch');
+}
+
+function bothCourts(fn){ [L, R].forEach(fn); }
+
+// ---- a round ----
+function nextRound(){
+  round++;
+  chain.push(nextBall());
+
+  $('hRound').textContent = round;
+  $('hChain').textContent = chain.length;
+  $('hPoints').textContent = pointsFor(chain.length - 1);
+
+  bothCourts(function(p){
+    p.idx = 0;
+    p.clear();
+    p.stateEl.textContent = p.out
+      ? 'Out · ' + pointsFor(p.level) + ' pts'
+      : '';
+  });
+
+  phase = 'showing';
+  msg('Watch — ' + chain.length + ' in the chain', 'watch');
+  later(function(){ flash(0); }, 1100);
+}
+
+// The chain plays on both courts at once, so neither player sees it first.
+function flash(i){
+  if (phase !== 'showing') return;
+
+  if (i > 0){
+    bothCourts(function(p){ p.show(chain[i - 1], '', ''); });
+  }
+
+  if (i < chain.length){
+    beep(NOTES[i % NOTES.length], 300);
+    bothCourts(function(p){ if (!p.out) p.show(chain[i], 'lit', i + 1); });
+    later(function(){ flash(i + 1); }, 620);
+    return;
+  }
+
+  bothCourts(function(p){
+    p.clear();
+    if (!p.out) p.stateEl.textContent = 'Your turn';
+  });
+  phase = 'playing';
+  msg('Play it back — both of you', 'go');
+}
+
+function tap(p, target){
+  if (phase !== 'playing' || p.out) return;
+
+  if (chain[p.idx] !== target){
+    p.show(target, 'wrong', '');
+    p.out = true;
+    p.level = chain.length - 1;
+    p.stateEl.textContent = 'Out · ' + pointsFor(p.level) + ' pts';
+    p.court.classList.add('out');
+    waiting();
+    checkRound();
+    return;
+  }
+
+  p.show(target, 'correct', p.idx + 1);
+  beep(NOTES[p.idx % NOTES.length], 180);
+  p.idx++;
+  if (p.idx < chain.length) p.stateEl.textContent = p.idx + ' / ' + chain.length;
+
+  if (p.idx >= chain.length){
+    p.stateEl.textContent = 'Held ' + chain.length + ' ✓';
+    waiting();
+    checkRound();
+  }
+}
+
+function done(p){ return p.out || p.idx >= chain.length; }
+
+// One player finishing first is the normal case, and without this the
+// screen looks frozen while the other is still going.
+function waiting(){
+  if (phase !== 'playing') return;
+  if (done(L) && !done(R)) msg('Waiting for ' + R.name, 'watch');
+  else if (done(R) && !done(L)) msg('Waiting for ' + L.name, 'watch');
+}
+
+function checkRound(){
+  if (!done(L) || !done(R)) return;
+
+  phase = 'idle';
+
+  // The match ends when nobody is left. One player going out does not
+  // stop the other — the survivor plays on alone, so their score is
+  // how far they could actually go rather than wherever the other
+  // person happened to break.
+  if (L.out && R.out){
+    return finish();
+  }
+
+  var alive = L.out ? R : L;
+  alive.level = chain.length;
+
+  msg(L.out || R.out
+        ? alive.name + ' plays on'
+        : 'Both through — one longer', 'go');
+
+  later(nextRound, 900);
+}
+
+function finish(){
+  clearTimers();
+  $('game').style.display = 'none';
+  $('result').style.display = 'flex';
+
+  // both columns always show, so the loser's number is on the board
+  // rather than described in a sentence
+  $('rsNameL').textContent = L.name;
+  $('rsNameR').textContent = R.name;
+  $('rsPtsL').textContent = pointsFor(L.level);
+  $('rsPtsR').textContent = pointsFor(R.level);
+  $('rsChainL').textContent = 'chain of ' + L.level;
+  $('rsChainR').textContent = 'chain of ' + R.level;
+
+  $('colL').className = 'col left';
+  $('colR').className = 'col right';
+
+  if (L.level === R.level){
+    $('resultKick').textContent = 'Final';
+    $('winner').textContent = 'Dead heat';
+    $('winner').style.color = '#EAF4FB';
+    $('resultLine').textContent = '';
+    return;
+  }
+
+  var winner = L.level > R.level ? L : R;
+  var loser  = winner === L ? R : L;
+  winner.court.classList.add('won');
+
+  $(winner.side === 'L' ? 'colL' : 'colR').classList.add('win');
+  $(loser.side  === 'L' ? 'colL' : 'colR').classList.add('lose');
+
+  $('resultKick').textContent = 'Final';
+  $('winner').textContent = winner.name + ' wins';
+  $('winner').style.color = winner.side === 'L' ? '#A78BFA' : '#22D3EE';
+  $('resultLine').textContent = '';
+}
+
+// ---- starting and restarting ----
+function begin(){
+  L = new Player('L', 'courtL', 'whoL', 'stateL');
+  R = new Player('R', 'courtR', 'whoR', 'stateR');
+
+  L.name = ($('nameL').value.trim() || 'Left').slice(0, 14);
+  R.name = ($('nameR').value.trim() || 'Right').slice(0, 14);
+  L.whoEl.textContent = L.name;
+  R.whoEl.textContent = R.name;
+
+  L.build();
+  R.build();
+
+  chain = [];
+  round = 0;
+  phase = 'idle';
+  clearTimers();
+
+  $('intro').style.display = 'none';
+  $('result').style.display = 'none';
+  $('game').style.display = 'flex';
+
+  bothCourts(function(p){ p.court.classList.remove('out', 'won'); });
+
+  sizeCourts();
+
+  // the first round starts at two, as the solo game does
+  chain.push(nextBall());
+  countIn(3);
+}
+
+// A real 3-2-1 before the first chain, so both players are looking at
+// their own court when it starts rather than at each other.
+function countIn(n){
+  var box = $('countdown');
+  if (n > 0){
+    box.style.display = 'flex';
+    box.textContent = n;
+    msg('Get ready', 'watch');
+    later(function(){ countIn(n - 1); }, 800);
+    return;
+  }
+  box.textContent = 'GO';
+  later(function(){
+    box.style.display = 'none';
+    nextRound();
+  }, 500);
+}
+
+// Square courts, sized to whatever the floor leaves them — on a panel
+// that is most of the screen, on a laptop it is still square.
+function sizeCourts(){
+  var floor = document.querySelector('.floor');
+  if (!floor) return;
+  var each = (floor.clientWidth - 30) / 2;
+  var tall = floor.clientHeight - 44;
+  var size = Math.max(120, Math.min(each, tall));
+  [L, R].forEach(function(p){
+    if (!p) return;
+    p.court.style.width = size + 'px';
+    p.court.style.height = size + 'px';
+  });
+}
+window.addEventListener('resize', sizeCourts);
+window.addEventListener('orientationchange', function(){ setTimeout(sizeCourts, 220); });
+
+$('startBtn').onclick = function(){
+  begin();
+  try {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  } catch(e){}
+};
+$('againBtn').onclick = begin;
+$('quitBtn').onclick = function(){
+  clearTimers();
+  $('game').style.display = 'none';
+  $('intro').style.display = 'flex';
+};
+
+[$('nameL'), $('nameR')].forEach(function(el){
+  el.addEventListener('keydown', function(e){ if (e.key === 'Enter') $('startBtn').click(); });
+});
+</script>
+</body>
+</html>
