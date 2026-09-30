@@ -459,7 +459,7 @@ function finish(){
     $('resultKick').textContent = 'Final';
     $('winner').textContent = 'Dead heat';
     $('winner').style.color = '#EAF4FB';
-    $('resultLine').textContent = 'Both held a chain of ' + L.level + '. Run it back.';
+    $('resultLine').textContent = '';
     return;
   }
 
@@ -470,13 +470,10 @@ function finish(){
   $(winner.side === 'L' ? 'colL' : 'colR').classList.add('win');
   $(loser.side  === 'L' ? 'colL' : 'colR').classList.add('lose');
 
-  var margin = pointsFor(winner.level) - pointsFor(loser.level);
-
   $('resultKick').textContent = 'Final';
   $('winner').textContent = winner.name + ' wins';
   $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#22D3EE';
-  $('resultLine').textContent = 'By ' + margin + ' point' + (margin === 1 ? '' : 's') +
-    ' · ' + winner.level + ' rounds held.';
+  $('resultLine').textContent = '';
 }
 
 // ---- starting and restarting ----
