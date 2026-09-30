@@ -251,6 +251,14 @@ Player.prototype.show = function(t, cls){
 
 var L, R, chain = [], phase = 'idle', round = 0, timers = [];
 
+// Never the same ball twice running: it lights, clears and lights
+// again in the same place, which reads as one flash rather than two.
+function nextBall(){
+  var n, last = chain.length ? chain[chain.length - 1] : -1;
+  do { n = Math.floor(Math.random() * SPOTS.length); } while (n === last);
+  return n;
+}
+
 function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
 function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
 
@@ -265,7 +273,7 @@ function bothCourts(fn){ [L, R].forEach(fn); }
 // ---- a round ----
 function nextRound(){
   round++;
-  chain.push(Math.floor(Math.random() * SPOTS.length));
+  chain.push(nextBall());
 
   $('hRound').textContent = round;
   $('hChain').textContent = chain.length;
@@ -313,6 +321,7 @@ function tap(p, target){
     p.level = chain.length - 1;
     p.stateEl.textContent = 'Out · ' + pointsFor(p.level) + ' pts';
     p.court.classList.add('out');
+    waiting();
     checkRound();
     return;
   }
@@ -321,12 +330,21 @@ function tap(p, target){
   p.idx++;
 
   if (p.idx >= chain.length){
-    p.stateEl.textContent = 'Held ' + chain.length;
+    p.stateEl.textContent = 'Held ' + chain.length + ' ✓';
+    waiting();
     checkRound();
   }
 }
 
 function done(p){ return p.out || p.idx >= chain.length; }
+
+// One player finishing first is the normal case, and without this the
+// screen looks frozen while the other is still going.
+function waiting(){
+  if (phase !== 'playing') return;
+  if (done(L) && !done(R)) msg('Waiting for ' + R.name, 'watch');
+  else if (done(R) && !done(L)) msg('Waiting for ' + L.name, 'watch');
+}
 
 function checkRound(){
   if (!done(L) || !done(R)) return;
@@ -395,7 +413,7 @@ function begin(){
   sizeCourts();
 
   // the first round starts at two, as the solo game does
-  chain.push(Math.floor(Math.random() * SPOTS.length));
+  chain.push(nextBall());
   countIn(3);
 }
 
