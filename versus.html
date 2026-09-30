@@ -85,6 +85,15 @@ html,body{
 .spot.lit{filter:brightness(1.45) saturate(1.25);
   box-shadow:0 0 34px currentColor,0 0 70px currentColor;transform:scale(1.08)}
 .spot.correct{box-shadow:0 0 0 4px #00D9A5,0 0 22px rgba(0,217,165,.8)}
+@keyframes tapPop{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.16);box-shadow:0 0 0 6px #00D9A5,0 0 34px rgba(0,217,165,1)}
+  100%{transform:scale(1)}
+}
+@keyframes tapMiss{
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
 .spot.wrong{box-shadow:0 0 0 4px #FF1493,0 0 22px rgba(255,20,147,.8)}
 
 .bar{display:flex;justify-content:center;gap:10px;padding:0 10px 12px;flex-shrink:0}
@@ -296,7 +305,14 @@ Player.prototype.clear = function(){
 };
 
 Player.prototype.show = function(t, cls){
-  if (this.spots[t]) this.spots[t].className = 'spot ' + cls;
+  var el = this.spots[t];
+  if (!el) return;
+  el.className = 'spot ' + cls;
+  if (cls === 'correct' || cls === 'wrong'){
+    el.style.animation = 'none';
+    void el.offsetWidth;                       // forces the restart
+    el.style.animation = cls === 'correct' ? 'tapPop .22s ease-out' : 'tapMiss .3s';
+  }
 };
 
 var L, R, chain = [], phase = 'idle', round = 0, timers = [];
@@ -380,6 +396,7 @@ function tap(p, target){
 
   p.show(target, 'correct');
   p.idx++;
+  if (p.idx < chain.length) p.stateEl.textContent = p.idx + ' / ' + chain.length;
 
   if (p.idx >= chain.length){
     p.stateEl.textContent = 'Held ' + chain.length + ' ✓';
