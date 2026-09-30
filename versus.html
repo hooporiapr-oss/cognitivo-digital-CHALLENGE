@@ -94,6 +94,12 @@ html,body{
 .btn.primary{background:linear-gradient(135deg,#FF7A18,#ff9d52);color:#0A0500;border-color:#FF7A18}
 
 /* ---------- result ---------- */
+#countdown{
+  position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;
+  background:rgba(5,8,12,.86);font-size:clamp(5rem,20vw,12rem);font-weight:900;
+  font-style:italic;color:#FF7A18;text-shadow:0 0 60px rgba(255,122,24,.8);pointer-events:none;
+}
+
 #result{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
   align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;
   background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%)}
@@ -135,6 +141,7 @@ html,body{
   </div>
 
   <div class="msg watch" id="msg">Watch the chain</div>
+  <div id="countdown"></div>
 
   <div class="floor">
     <div class="side left">
@@ -271,8 +278,8 @@ function nextRound(){
   });
 
   phase = 'showing';
-  msg('Watch the chain', 'watch');
-  later(function(){ flash(0); }, 600);
+  msg('Watch — ' + chain.length + ' in the chain', 'watch');
+  later(function(){ flash(0); }, 1100);
 }
 
 // The chain plays on both courts at once, so neither player sees it first.
@@ -289,9 +296,12 @@ function flash(i){
     return;
   }
 
-  bothCourts(function(p){ p.clear(); });
+  bothCourts(function(p){
+    p.clear();
+    if (!p.out) p.stateEl.textContent = 'Your turn';
+  });
   phase = 'playing';
-  msg('Play it back', 'go');
+  msg('Play it back — both of you', 'go');
 }
 
 function tap(p, target){
@@ -386,7 +396,25 @@ function begin(){
 
   // the first round starts at two, as the solo game does
   chain.push(Math.floor(Math.random() * SPOTS.length));
-  nextRound();
+  countIn(3);
+}
+
+// A real 3-2-1 before the first chain, so both players are looking at
+// their own court when it starts rather than at each other.
+function countIn(n){
+  var box = $('countdown');
+  if (n > 0){
+    box.style.display = 'flex';
+    box.textContent = n;
+    msg('Get ready', 'watch');
+    later(function(){ countIn(n - 1); }, 800);
+    return;
+  }
+  box.textContent = 'GO';
+  later(function(){
+    box.style.display = 'none';
+    nextRound();
+  }, 500);
 }
 
 // Square courts, sized to whatever the floor leaves them — on a panel
