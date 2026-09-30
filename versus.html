@@ -100,6 +100,36 @@ html,body{
   font-style:italic;color:#FF7A18;text-shadow:0 0 60px rgba(255,122,24,.8);pointer-events:none;
 }
 
+
+/* the scoreboard */
+.rs-kick{font-size:.72rem;font-weight:900;letter-spacing:.34em;text-transform:uppercase;color:#8AA4BD}
+.board{display:flex;align-items:stretch;gap:clamp(10px,3vw,26px);
+  width:min(760px,94vw);margin:6px 0 4px}
+.board .col{
+  flex:1 1 0;min-width:0;border:2px solid;border-radius:16px;padding:clamp(14px,3vw,22px) 10px;
+  background:rgba(255,255,255,.02);text-align:center;transition:transform .2s;
+}
+.board .col.left{border-color:rgba(255,122,24,.5)}
+.board .col.right{border-color:rgba(34,211,238,.5)}
+.board .col.win{transform:translateY(-6px)}
+.board .col.left.win{border-color:#FF7A18;box-shadow:0 0 46px rgba(255,122,24,.35)}
+.board .col.right.win{border-color:#22D3EE;box-shadow:0 0 46px rgba(34,211,238,.35)}
+.board .col.lose{opacity:.62}
+.board .crown{font-size:1.4rem;line-height:1;margin-bottom:6px;opacity:0}
+.board .col.win .crown{opacity:1}
+.board .col.left .crown{color:#FF7A18}
+.board .col.right .crown{color:#22D3EE}
+.board .nm{font-size:clamp(.95rem,2.4vw,1.3rem);font-weight:900;letter-spacing:.02em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px}
+.board .col.left .nm{color:#FF7A18}
+.board .col.right .nm{color:#22D3EE}
+.board .pts{font-size:clamp(2.6rem,9vw,4.4rem);font-weight:900;line-height:1;letter-spacing:-.03em}
+.board .cap{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:#8AA4BD;margin-top:2px}
+.board .chain{font-size:.8rem;color:#8AA4BD;margin-top:10px}
+.board .vs{align-self:center;font-size:.8rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;color:#5A6B7C}
+
 #result{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
   align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;
   background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%)}
@@ -162,9 +192,29 @@ html,body{
 </div>
 
 <div id="result">
+  <div class="rs-kick" id="resultKick">Final</div>
   <div class="winner" id="winner">—</div>
-  <div class="score" id="resultScore"></div>
+
+  <div class="board">
+    <div class="col left" id="colL">
+      <div class="crown" id="crownL">★</div>
+      <div class="nm" id="rsNameL">Left</div>
+      <div class="pts" id="rsPtsL">0</div>
+      <div class="cap">points</div>
+      <div class="chain" id="rsChainL">chain of 0</div>
+    </div>
+    <div class="vs">vs</div>
+    <div class="col right" id="colR">
+      <div class="crown" id="crownR">★</div>
+      <div class="nm" id="rsNameR">Right</div>
+      <div class="pts" id="rsPtsR">0</div>
+      <div class="cap">points</div>
+      <div class="chain" id="rsChainR">chain of 0</div>
+    </div>
+  </div>
+
   <div class="line" id="resultLine"></div>
+
   <button class="go" id="againBtn" style="margin-top:10px">Run it back</button>
   <a class="back" href="challenges.html" style="position:static;margin-top:4px">← Back</a>
 </div>
@@ -376,11 +426,23 @@ function finish(){
   $('game').style.display = 'none';
   $('result').style.display = 'flex';
 
+  // both columns always show, so the loser's number is on the board
+  // rather than described in a sentence
+  $('rsNameL').textContent = L.name;
+  $('rsNameR').textContent = R.name;
+  $('rsPtsL').textContent = pointsFor(L.level);
+  $('rsPtsR').textContent = pointsFor(R.level);
+  $('rsChainL').textContent = 'chain of ' + L.level;
+  $('rsChainR').textContent = 'chain of ' + R.level;
+
+  $('colL').className = 'col left';
+  $('colR').className = 'col right';
+
   if (L.level === R.level){
+    $('resultKick').textContent = 'Final';
     $('winner').textContent = 'Dead heat';
     $('winner').style.color = '#EAF4FB';
-    $('resultScore').textContent = pointsFor(L.level) + ' points each';
-    $('resultLine').textContent = 'Both held a chain of ' + L.level + '.';
+    $('resultLine').textContent = 'Both held a chain of ' + L.level + '. Run it back.';
     return;
   }
 
@@ -388,11 +450,16 @@ function finish(){
   var loser  = winner === L ? R : L;
   winner.court.classList.add('won');
 
+  $(winner.side === 'L' ? 'colL' : 'colR').classList.add('win');
+  $(loser.side  === 'L' ? 'colL' : 'colR').classList.add('lose');
+
+  var margin = pointsFor(winner.level) - pointsFor(loser.level);
+
+  $('resultKick').textContent = 'Final';
   $('winner').textContent = winner.name + ' wins';
   $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#22D3EE';
-  $('resultScore').textContent = pointsFor(winner.level) + ' points · chain of ' + winner.level;
-  $('resultLine').textContent =
-    loser.name + ' held ' + loser.level + ' for ' + pointsFor(loser.level) + ' points.';
+  $('resultLine').textContent = 'By ' + margin + ' point' + (margin === 1 ? '' : 's') +
+    ' · ' + winner.level + ' rounds held.';
 }
 
 // ---- starting and restarting ----
