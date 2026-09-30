@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Fortress · Head to Head</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;height:100%;background:#05080C;color:#EAF4FB;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+
+/* ---------- intro ---------- */
+#intro{
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;padding:24px;
+  background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%);
+}
+.title{font-size:clamp(2rem,6vw,3.4rem);font-weight:900;font-style:italic;
+  letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.05}
+.title span{color:#FF7A18}
+.sub{font-size:clamp(.8rem,1.6vw,1rem);letter-spacing:.28em;text-transform:uppercase;
+  color:#8AA4BD;text-align:center}
+.names{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:min(760px,92vw)}
+.namebox{flex:1 1 300px;min-width:260px;border:2px solid;border-radius:14px;padding:16px}
+.namebox.left{border-color:#FF7A18}
+.namebox.right{border-color:#22D3EE}
+.namebox label{display:block;font-size:.66rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:8px}
+.namebox.left label{color:#FF7A18}
+.namebox.right label{color:#22D3EE}
+.namebox input{
+  width:100%;padding:14px;border-radius:10px;border:2px solid rgba(255,255,255,.18);
+  background:#0D1826;color:#fff;font:inherit;font-size:1.1rem;text-align:center;
+}
+.namebox input:focus{outline:none;border-color:currentColor}
+.go{
+  width:min(420px,88vw);height:68px;border:none;border-radius:16px;cursor:pointer;
+  background:linear-gradient(135deg,#FF7A18,#ff9d52);color:#0A0500;
+  font:inherit;font-size:1.15rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  box-shadow:0 0 40px rgba(255,122,24,.5);
+}
+.go:active{transform:translateY(1px)}
+.rules{color:#8AA4BD;font-size:.9rem;text-align:center;max-width:52ch;line-height:1.6}
+.back{position:fixed;top:16px;left:16px;padding:9px 16px;border:2px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.4);color:#fff;border-radius:999px;font:inherit;font-size:.78rem;
+  font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+
+/* ---------- the two courts ---------- */
+#game{position:fixed;inset:0;display:none;flex-direction:column;background:#05080C}
+.hud{display:flex;justify-content:center;gap:10px;padding:10px;flex-shrink:0}
+.hud .box{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 14px;
+  text-align:center;min-width:86px;background:rgba(255,255,255,.03)}
+.hud .lbl{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA4BD}
+.hud .val{font-size:1.2rem;font-weight:900}
+.msg{text-align:center;padding:6px;font-size:1rem;font-weight:900;letter-spacing:.08em;
+  text-transform:uppercase;flex-shrink:0;min-height:32px}
+.msg.watch{color:#22D3EE}
+.msg.go{color:#00D9A5}
+.msg.miss{color:#FF1493}
+
+.floor{flex:1 1 auto;min-height:0;display:flex;gap:10px;padding:0 10px 10px}
+.side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.side .who{font-size:.8rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.side.left .who{color:#FF7A18}
+.side.right .who{color:#22D3EE}
+.side .state{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA4BD;min-height:14px}
+
+.court{
+  display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
+  gap:2.2%;padding:2.2%;border-radius:16px;background:#0D1826;border:2px solid;
+}
+.side.left .court{border-color:rgba(255,122,24,.45);
+  box-shadow:0 0 50px rgba(255,122,24,.15),inset 0 0 40px rgba(255,122,24,.04)}
+.side.right .court{border-color:rgba(34,211,238,.45);
+  box-shadow:0 0 50px rgba(34,211,238,.15),inset 0 0 40px rgba(34,211,238,.04)}
+.court.out{opacity:.3}
+.court.won{box-shadow:0 0 70px rgba(0,217,165,.6)}
+
+.cell{border-radius:10px;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.07)}
+.spot{border-radius:50%;border:none;background-size:100% 100%;cursor:pointer;
+  transition:filter .12s,box-shadow .12s,transform .12s}
+.spot.lit{filter:brightness(1.45) saturate(1.25);
+  box-shadow:0 0 34px currentColor,0 0 70px currentColor;transform:scale(1.08)}
+.spot.correct{box-shadow:0 0 0 4px #00D9A5,0 0 22px rgba(0,217,165,.8)}
+.spot.wrong{box-shadow:0 0 0 4px #FF1493,0 0 22px rgba(255,20,147,.8)}
+
+.bar{display:flex;justify-content:center;gap:10px;padding:0 10px 12px;flex-shrink:0}
+.btn{height:52px;flex:0 1 200px;border:2px solid rgba(255,122,24,.5);border-radius:12px;
+  background:rgba(0,0,0,.4);color:#fff;font:inherit;font-size:.95rem;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,#FF7A18,#ff9d52);color:#0A0500;border-color:#FF7A18}
+
+/* ---------- result ---------- */
+#result{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;
+  background:radial-gradient(ellipse at center,#0D1826 0%,#05080C 70%)}
+#result .winner{font-size:clamp(2rem,7vw,3.6rem);font-weight:900;font-style:italic;
+  text-transform:uppercase;letter-spacing:.03em}
+#result .line{color:#8AA4BD;font-size:1rem}
+#result .score{font-size:1.4rem;font-weight:900}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <a class="back" href="challenges.html">← Back</a>
+  <div class="sub">2-1-2 zone · one chain, two players</div>
+  <div class="title">The <span>Fortress</span><br>Head to Head</div>
+
+  <div class="names">
+    <div class="namebox left">
+      <label>Left player</label>
+      <input id="nameL" maxlength="14" placeholder="Name" autocomplete="off">
+    </div>
+    <div class="namebox right">
+      <label>Right player</label>
+      <input id="nameR" maxlength="14" placeholder="Name" autocomplete="off">
+    </div>
+  </div>
+
+  <button class="go" id="startBtn">Tip off</button>
+  <p class="rules">Both players watch the same chain, then play it back on their own court.
+    One wrong tap and that player is out. Last one standing wins — and if you both survive,
+    the chain gets one longer.</p>
+</div>
+
+<div id="game">
+  <div class="hud">
+    <div class="box"><div class="lbl">Round</div><div class="val" id="hRound">1</div></div>
+    <div class="box"><div class="lbl">Chain</div><div class="val" id="hChain">2</div></div>
+    <div class="box"><div class="lbl">Points</div><div class="val" id="hPoints">0</div></div>
+  </div>
+
+  <div class="msg watch" id="msg">Watch the chain</div>
+
+  <div class="floor">
+    <div class="side left">
+      <div class="who" id="whoL">Left</div>
+      <div class="court" id="courtL"></div>
+      <div class="state" id="stateL"></div>
+    </div>
+    <div class="side right">
+      <div class="who" id="whoR">Right</div>
+      <div class="court" id="courtR"></div>
+      <div class="state" id="stateR"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button class="btn" id="quitBtn">← End</button>
+  </div>
+</div>
+
+<div id="result">
+  <div class="winner" id="winner">—</div>
+  <div class="score" id="resultScore"></div>
+  <div class="line" id="resultLine"></div>
+  <button class="go" id="againBtn" style="margin-top:10px">Run it back</button>
+  <a class="back" href="challenges.html" style="position:static;margin-top:4px">← Back</a>
+</div>
+
+<script>
+var $ = function(id){ return document.getElementById(id); };
+
+// The 2-1-2, as cells of a 5x5: two high, one in the middle, two low.
+var SPOTS  = [0, 4, 12, 20, 24];
+var COLORS = ['#ff1e3c', '#ffd35a', '#00D9A5', '#3b82f6', '#ff6b35'];
+
+// Chain scoring, the same as every other challenge — so a head-to-head
+// result means the same thing as a solo run.
+function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
+
+function ballArt(color){
+  var svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+      '<defs><radialGradient id="g" cx="34%" cy="30%">' +
+        '<stop offset="0%" stop-color="#ffffff" stop-opacity=".45"/>' +
+        '<stop offset="55%" stop-color="' + color + '" stop-opacity="0"/>' +
+      '</radialGradient></defs>' +
+      '<circle cx="50" cy="50" r="49" fill="' + color + '"/>' +
+      '<circle cx="50" cy="50" r="49" fill="url(#g)"/>' +
+      '<g fill="none" stroke="rgba(0,0,0,.62)" stroke-width="3.4" stroke-linecap="round">' +
+        '<line x1="50" y1="1" x2="50" y2="99"/>' +
+        '<line x1="1" y1="50" x2="99" y2="50"/>' +
+        '<path d="M16,8 Q40,50 16,92"/>' +
+        '<path d="M84,8 Q60,50 84,92"/>' +
+      '</g>' +
+    '</svg>';
+  return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+}
+
+// Each player gets their own court, their own five balls, and their own
+// place in the chain — but the chain itself is shared, which is what
+// makes the result a fair comparison rather than two separate games.
+function Player(side, courtId, whoId, stateId){
+  this.side = side;
+  this.court = $(courtId);
+  this.whoEl = $(whoId);
+  this.stateEl = $(stateId);
+  this.name = side === 'L' ? 'Left' : 'Right';
+  this.spots = [];
+  this.idx = 0;
+  this.out = false;
+  this.level = 0;
+}
+
+Player.prototype.build = function(){
+  this.court.innerHTML = '';
+  this.spots = [];
+  var self = this;
+
+  for (var c = 0; c < 25; c++){
+    var el = document.createElement('div');
+    var t = SPOTS.indexOf(c);
+
+    if (t === -1){
+      el.className = 'cell';
+    } else {
+      el.className = 'spot';
+      el.style.backgroundImage = ballArt(COLORS[t]);
+      el.style.color = COLORS[t];
+      (function(target){
+        el.addEventListener('pointerdown', function(e){
+          e.preventDefault();
+          tap(self, target);
+        });
+      })(t);
+      this.spots[t] = el;
+    }
+    this.court.appendChild(el);
+  }
+};
+
+Player.prototype.clear = function(){
+  this.spots.forEach(function(el){ el.className = 'spot'; });
+};
+
+Player.prototype.show = function(t, cls){
+  if (this.spots[t]) this.spots[t].className = 'spot ' + cls;
+};
+
+var L, R, chain = [], phase = 'idle', round = 0, timers = [];
+
+function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
+
+function msg(text, cls){
+  var el = $('msg');
+  el.textContent = text;
+  el.className = 'msg ' + (cls || 'watch');
+}
+
+function bothCourts(fn){ [L, R].forEach(fn); }
+
+// ---- a round ----
+function nextRound(){
+  round++;
+  chain.push(Math.floor(Math.random() * SPOTS.length));
+
+  $('hRound').textContent = round;
+  $('hChain').textContent = chain.length;
+  $('hPoints').textContent = pointsFor(chain.length - 1);
+
+  bothCourts(function(p){
+    p.idx = 0;
+    p.clear();
+    p.stateEl.textContent = p.out ? 'Out' : '';
+  });
+
+  phase = 'showing';
+  msg('Watch the chain', 'watch');
+  later(function(){ flash(0); }, 600);
+}
+
+// The chain plays on both courts at once, so neither player sees it first.
+function flash(i){
+  if (phase !== 'showing') return;
+
+  if (i > 0){
+    bothCourts(function(p){ p.show(chain[i - 1], ''); });
+  }
+
+  if (i < chain.length){
+    bothCourts(function(p){ if (!p.out) p.show(chain[i], 'lit'); });
+    later(function(){ flash(i + 1); }, 620);
+    return;
+  }
+
+  bothCourts(function(p){ p.clear(); });
+  phase = 'playing';
+  msg('Play it back', 'go');
+}
+
+function tap(p, target){
+  if (phase !== 'playing' || p.out) return;
+
+  if (chain[p.idx] !== target){
+    p.show(target, 'wrong');
+    p.out = true;
+    p.level = chain.length - 1;
+    p.stateEl.textContent = 'Out · ' + pointsFor(p.level) + ' pts';
+    p.court.classList.add('out');
+    checkRound();
+    return;
+  }
+
+  p.show(target, 'correct');
+  p.idx++;
+
+  if (p.idx >= chain.length){
+    p.stateEl.textContent = 'Held ' + chain.length;
+    checkRound();
+  }
+}
+
+function done(p){ return p.out || p.idx >= chain.length; }
+
+function checkRound(){
+  if (!done(L) || !done(R)) return;
+
+  phase = 'idle';
+
+  // both gone in the same round — the chain they shared is the score
+  if (L.out && R.out){
+    L.level = R.level = chain.length - 1;
+    return finish(null);
+  }
+  if (L.out) { R.level = chain.length; return finish(R); }
+  if (R.out) { L.level = chain.length; return finish(L); }
+
+  // both survived: one longer
+  msg('Both through — one longer', 'go');
+  later(nextRound, 900);
+}
+
+function finish(winner){
+  clearTimers();
+  $('game').style.display = 'none';
+  $('result').style.display = 'flex';
+
+  if (!winner){
+    $('winner').textContent = 'Dead heat';
+    $('winner').style.color = '#EAF4FB';
+    $('resultScore').textContent = pointsFor(L.level) + ' points each';
+    $('resultLine').textContent = 'Both broke on a chain of ' + chain.length + '.';
+    return;
+  }
+
+  var loser = winner === L ? R : L;
+  winner.court.classList.add('won');
+
+  $('winner').textContent = winner.name + ' wins';
+  $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#22D3EE';
+  $('resultScore').textContent = pointsFor(winner.level) + ' points · chain of ' + winner.level;
+  $('resultLine').textContent = loser.name + ' broke at ' + pointsFor(loser.level) + ' points.';
+}
+
+// ---- starting and restarting ----
+function begin(){
+  L = new Player('L', 'courtL', 'whoL', 'stateL');
+  R = new Player('R', 'courtR', 'whoR', 'stateR');
+
+  L.name = ($('nameL').value.trim() || 'Left').slice(0, 14);
+  R.name = ($('nameR').value.trim() || 'Right').slice(0, 14);
+  L.whoEl.textContent = L.name;
+  R.whoEl.textContent = R.name;
+
+  L.build();
+  R.build();
+
+  chain = [];
+  round = 0;
+  phase = 'idle';
+  clearTimers();
+
+  $('intro').style.display = 'none';
+  $('result').style.display = 'none';
+  $('game').style.display = 'flex';
+
+  bothCourts(function(p){ p.court.classList.remove('out', 'won'); });
+
+  sizeCourts();
+
+  // the first round starts at two, as the solo game does
+  chain.push(Math.floor(Math.random() * SPOTS.length));
+  nextRound();
+}
+
+// Square courts, sized to whatever the floor leaves them — on a panel
+// that is most of the screen, on a laptop it is still square.
+function sizeCourts(){
+  var floor = document.querySelector('.floor');
+  if (!floor) return;
+  var each = (floor.clientWidth - 30) / 2;
+  var tall = floor.clientHeight - 44;
+  var size = Math.max(120, Math.min(each, tall));
+  [L, R].forEach(function(p){
+    if (!p) return;
+    p.court.style.width = size + 'px';
+    p.court.style.height = size + 'px';
+  });
+}
+window.addEventListener('resize', sizeCourts);
+window.addEventListener('orientationchange', function(){ setTimeout(sizeCourts, 220); });
+
+$('startBtn').onclick = function(){
+  begin();
+  try {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  } catch(e){}
+};
+$('againBtn').onclick = begin;
+$('quitBtn').onclick = function(){
+  clearTimers();
+  $('game').style.display = 'none';
+  $('intro').style.display = 'flex';
+};
+
+[$('nameL'), $('nameR')].forEach(function(el){
+  el.addEventListener('keydown', function(e){ if (e.key === 'Enter') $('startBtn').click(); });
+});
+</script>
+</body>
+</html>
