@@ -300,6 +300,19 @@ Player.prototype.build = function(){
   }
 };
 
+// Back to plain after the pop, so nothing of the sequence is readable
+// from the other side of the panel.
+Player.prototype.fade = function(t){
+  var el = this.spots[t];
+  if (!el) return;
+  var self = this;
+  later(function(){
+    if (el.className.indexOf('wrong') !== -1) return;   // a miss stays visible
+    el.className = 'spot';
+    el.style.animation = 'none';
+  }, 320);
+};
+
 Player.prototype.clear = function(){
   this.spots.forEach(function(el){ el.className = 'spot'; });
 };
@@ -394,7 +407,10 @@ function tap(p, target){
     return;
   }
 
+  // The tap flashes and then clears. Leaving it lit turns a finished
+  // board into a cheat sheet for whoever is still playing beside you.
   p.show(target, 'correct');
+  p.fade(target);
   p.idx++;
   if (p.idx < chain.length) p.stateEl.textContent = p.idx + ' / ' + chain.length;
 
