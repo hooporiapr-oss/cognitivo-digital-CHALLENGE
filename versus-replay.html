@@ -296,6 +296,19 @@ Player.prototype.build = function(){
   }
 };
 
+// Back to plain after the pop, so nothing of the sequence is readable
+// from the other side of the panel.
+Player.prototype.fade = function(t){
+  var el = this.spots[t];
+  if (!el) return;
+  later(function(){
+    if (el.className.indexOf('wrong') !== -1) return;   // a miss stays visible
+    el.className = 'cell';
+    el.textContent = '';
+    el.style.animation = 'none';
+  }, 320);
+};
+
 Player.prototype.clear = function(){
   this.spots.forEach(function(el){ el.className = 'cell'; el.textContent = ''; });
 };
@@ -392,8 +405,11 @@ function tap(p, target){
     return;
   }
 
+  // The tap flashes and then clears — number and all. A finished board
+  // left lit is a cheat sheet for whoever is still playing beside you.
   p.show(target, 'correct', p.idx + 1);
   beep(NOTES[p.idx % NOTES.length], 180);
+  p.fade(target);
   p.idx++;
   if (p.idx < chain.length) p.stateEl.textContent = p.idx + ' / ' + chain.length;
 
