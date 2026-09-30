@@ -282,7 +282,9 @@ function nextRound(){
   bothCourts(function(p){
     p.idx = 0;
     p.clear();
-    p.stateEl.textContent = p.out ? 'Out' : '';
+    p.stateEl.textContent = p.out
+      ? 'Out · ' + pointsFor(p.level) + ' pts'
+      : '';
   });
 
   phase = 'showing';
@@ -351,39 +353,46 @@ function checkRound(){
 
   phase = 'idle';
 
-  // both gone in the same round — the chain they shared is the score
+  // The match ends when nobody is left. One player going out does not
+  // stop the other — the survivor plays on alone, so their score is
+  // how far they could actually go rather than wherever the other
+  // person happened to break.
   if (L.out && R.out){
-    L.level = R.level = chain.length - 1;
-    return finish(null);
+    return finish();
   }
-  if (L.out) { R.level = chain.length; return finish(R); }
-  if (R.out) { L.level = chain.length; return finish(L); }
 
-  // both survived: one longer
-  msg('Both through — one longer', 'go');
+  var alive = L.out ? R : L;
+  alive.level = chain.length;
+
+  msg(L.out || R.out
+        ? alive.name + ' plays on'
+        : 'Both through — one longer', 'go');
+
   later(nextRound, 900);
 }
 
-function finish(winner){
+function finish(){
   clearTimers();
   $('game').style.display = 'none';
   $('result').style.display = 'flex';
 
-  if (!winner){
+  if (L.level === R.level){
     $('winner').textContent = 'Dead heat';
     $('winner').style.color = '#EAF4FB';
     $('resultScore').textContent = pointsFor(L.level) + ' points each';
-    $('resultLine').textContent = 'Both broke on a chain of ' + chain.length + '.';
+    $('resultLine').textContent = 'Both held a chain of ' + L.level + '.';
     return;
   }
 
-  var loser = winner === L ? R : L;
+  var winner = L.level > R.level ? L : R;
+  var loser  = winner === L ? R : L;
   winner.court.classList.add('won');
 
   $('winner').textContent = winner.name + ' wins';
   $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#22D3EE';
   $('resultScore').textContent = pointsFor(winner.level) + ' points · chain of ' + winner.level;
-  $('resultLine').textContent = loser.name + ' broke at ' + pointsFor(loser.level) + ' points.';
+  $('resultLine').textContent =
+    loser.name + ' held ' + loser.level + ' for ' + pointsFor(loser.level) + ' points.';
 }
 
 // ---- starting and restarting ----
