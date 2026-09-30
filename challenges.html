@@ -252,6 +252,7 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding-top:20px;text-al
 .ml-note{color:var(--mute);font-size:.82rem;margin:4px 0 0}
 .ml-btn.dead{background:none;border:1px dashed var(--line);color:var(--mute);cursor:default}
 .ml-when{margin:6px 0 0;color:var(--gold);font-size:.85rem;font-weight:700}
+.ml-ready{margin:0 0 8px;color:#0B7A5A;font-size:.88rem;font-weight:800;line-height:1.5}
 .ml-dates{color:var(--paper);font-weight:700}
 .ml-note.ml-ask{margin-top:10px;padding-top:10px;border-top:1px solid rgba(34,211,238,.25);color:var(--paper)}
 .ml-note.ml-ask b{color:var(--gold)}
@@ -614,7 +615,9 @@ var STR = {
     runsClosedOn:'The run window closed on {D}.', locked:'Opens later',
     warmUp:'Practise {N}× first →',
     threeNote:'Two challenges, one score. Take each one once — they add up to your total.',
-    warmFirst:'Practise {N} more time(s) below, then your official run opens.',
+    warmDone:'✓ Practice complete — your official run is now available. You only get one, so take it when you are ready.',
+    warmRule:'{N} practice run(s) in each challenge are required before your official run opens.',
+    warmFirst:'Please complete {N} more practice run(s) below to continue.',
     runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
     runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
     runDone:'official run done',
@@ -732,7 +735,9 @@ var STR = {
     runsClosedOn:'La ventana de corridas cerró el {D}.', locked:'Abre después',
     warmUp:'Practica {N}× primero →',
     threeNote:'Dos retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
-    warmFirst:'Practica {N} vez/veces más abajo, y se abre tu corrida oficial.',
+    warmDone:'✓ Práctica completa — tu corrida oficial ya está disponible. Solo tienes una, así que hazla cuando estés listo.',
+    warmRule:'Se requieren {N} práctica(s) en cada reto antes de que abra tu corrida oficial.',
+    warmFirst:'Completa {N} práctica(s) más abajo para continuar.',
     runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
     runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
     runDone:'corrida oficial hecha',
@@ -1577,11 +1582,20 @@ function showMyLinks(campaignId, playerId, playerName, donePer, practiceNeed){
 
           if (w.open && short > 0){
             return '<div class="ml-btn alt dead">' + T('myOfficialRun') + '</div>' +
-                   '<p class="ml-when">' + T('warmFirst', { N: short }) + '</p>';
+                   '<p class="ml-when">' +
+                     T('warmRule', { N: practiceNeed }) + '<br>' +
+                     T('warmFirst', { N: short }) +
+                   '</p>';
           }
 
           if (w.open){
-            return '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>';
+            // Practice done: say so, because the button changing from
+            // grey to live is easy to miss on a phone.
+            var ready = (donePer && practiceNeed)
+              ? '<p class="ml-ready">' + T('warmDone') + '</p>'
+              : '';
+            return ready +
+                   '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>';
           }
 
           return '<div class="ml-btn alt dead">' + T('myOfficialRun') + '</div>' +
