@@ -614,6 +614,7 @@ var STR = {
     runsClosedOn:'The run window closed on {D}.', locked:'Opens later',
     warmUp:'Practise {N}× first →',
     threeNote:'Two challenges, one score. Take each one once — they add up to your total.',
+    warmFirst:'Practise {N} more time(s) below, then your official run opens.',
     runIt:'Take it →', totalSoFar:'Your total so far: {P} points.',
     runTotal:'{N} has taken {D} of 2 runs, for {P} points so far.',
     runDone:'official run done',
@@ -731,6 +732,7 @@ var STR = {
     runsClosedOn:'La ventana de corridas cerró el {D}.', locked:'Abre después',
     warmUp:'Practica {N}× primero →',
     threeNote:'Dos retos, una puntuación. Haz cada uno una vez — se suman a tu total.',
+    warmFirst:'Practica {N} vez/veces más abajo, y se abre tu corrida oficial.',
     runIt:'Hacerlo →', totalSoFar:'Tu total hasta ahora: {P} puntos.',
     runTotal:'{N} ha hecho {D} de 2 corridas, y lleva {P} puntos.',
     runDone:'corrida oficial hecha',
@@ -1413,7 +1415,7 @@ function renderTryout(campaignId, campaign, players, scores, practice, practiceN
   // dark begins when a game does.
   paperMode(true);
   // filled in after the page draws, since it depends on the database
-  setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id, me.name); }, 0);
+  setTimeout(function(){ if (typeof me !== 'undefined' && me) showMyLinks(campaignId, me.id, me.name, myPractice, practiceNeed); }, 0);
   var oneRun = !!campaign.tryout_one_run;
   var picked = null;
   picked = currentStudent(campaignId);
@@ -1531,7 +1533,7 @@ var GRADES = ['PK','K','1','2','3','4','5','6','7','8','9','10','11','12'];
 // switched on for their campaign. Until then the box stays empty, so
 // nobody starts asking for pledges before there is anything to pledge
 // against.
-function showMyLinks(campaignId, playerId, playerName){
+function showMyLinks(campaignId, playerId, playerName, donePer, practiceNeed){
   fetch(SB_URL + '/rest/v1/rpc/my_links', {
     method: 'POST',
     headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
@@ -1563,6 +1565,20 @@ function showMyLinks(campaignId, playerId, playerName){
           // student knows when their turn comes rather than tapping a
           // link that turns them away.
           var w = runWindow({ pledge_deadline: d.pledge_deadline, run_deadline: d.run_deadline });
+
+          // the warm-up the campaign asks for, in the challenge the
+          // run is on — the same rule the practice rows use
+          var short = 0;
+          if (donePer && practiceNeed){
+            SCORED.forEach(function(g){
+              short += Math.max(0, practiceNeed - (donePer[g] || 0));
+            });
+          }
+
+          if (w.open && short > 0){
+            return '<div class="ml-btn alt dead">' + T('myOfficialRun') + '</div>' +
+                   '<p class="ml-when">' + T('warmFirst', { N: short }) + '</p>';
+          }
 
           if (w.open){
             return '<a class="ml-btn alt" href="' + run + '">' + T('myOfficialRun') + '</a>';
