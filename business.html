@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Back a basketball program — Cada Punto</title>
+<meta name="description" content="Back a local basketball program for a season. You pay for points actually scored, your name sits on the team page, and every dollar collected goes to the program.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;--ball:#C2410C}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#FFFFFF;line-height:1.6}
+.wrap{width:min(680px,92vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0}
+header .mark{font-weight:900;font-size:1.1rem;color:#FFFFFF;letter-spacing:-.02em}
+header .mark em{font-style:normal;color:#4FD3F0}
+header .mark i{font-style:normal;color:#9FB3C4}
+header .lang{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(22px,5vw,38px) 0 34px}
+
+h1{font-size:clamp(1.6rem,4.8vw,2.3rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);font-size:1.02rem;margin:0 0 24px;max-width:54ch}
+h2{font-size:clamp(1.15rem,3vw,1.45rem);letter-spacing:-.025em;margin:28px 0 8px;font-weight:900}
+p{margin:0 0 12px}
+
+.steps{list-style:none;margin:0 0 6px;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:13px 16px 13px 50px;margin-bottom:9px;
+  border:1.5px solid var(--line);border-radius:4px;line-height:1.55}
+.steps li::before{content:counter(s);position:absolute;left:14px;top:13px;width:24px;height:24px;
+  border-radius:50%;background:var(--ink);color:#fff;font-weight:900;font-size:.82rem;
+  display:grid;place-content:center}
+.steps b{display:block}
+.steps span{color:var(--mute);font-size:.94rem}
+
+table{width:100%;border-collapse:collapse;margin:8px 0 10px;font-size:.96rem}
+th{text-align:left;padding:9px 0;border-bottom:2px solid var(--ink);font-size:.66rem;
+  font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+td{padding:11px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+td:last-child,th:last-child{text-align:right}
+tr.hi td{background:rgba(12,110,140,.06);font-weight:800}
+.note{color:var(--mute);font-size:.88rem;margin:4px 0 0}
+
+.gets{border:2px solid var(--ink);border-radius:4px;padding:18px 20px;margin:10px 0 4px}
+.gets ul{margin:0;padding-left:18px}
+.gets li{margin-bottom:7px}
+.gets li:last-child{margin-bottom:0}
+
+.flag{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:16px 0}
+.flag b{color:var(--accent)}
+
+.cta{display:block;text-align:center;background:var(--ink);color:#fff;border:2px solid var(--ink);
+  border-radius:4px;padding:17px;font-weight:800;font-size:1.02rem;text-decoration:none;margin-top:22px}
+.cta.line{background:#fff;color:var(--ink);margin-top:10px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:17px 0 calc(17px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.85rem}
+footer .f-name{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <span class="mark">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span>
+    <button class="lang" id="langBtn" onclick="toggleLang()">ES</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1 data-t="h1">Back a basketball program for a season.</h1>
+    <p class="lede" data-t="lede">Not a donation and not an advert. You pledge an amount for every
+      point a team scores, and you pay for the points they actually score — nothing before that.</p>
+
+    <h2 data-t="h2how">How it works</h2>
+    <ol class="steps">
+      <li><b data-t="s1b">The team plays.</b>
+          <span data-t="s1">Every player takes two memory challenges, scored by our software.
+          Two weeks of practice first, then one official run each. Nobody counts by hand.</span></li>
+      <li><b data-t="s2b">You pledge per point.</b>
+          <span data-t="s2">Pick an amount. Nothing is charged while the campaign runs.</span></li>
+      <li><b data-t="s3b">You pay what was scored.</b>
+          <span data-t="s3">When the runs are done you get the total and a pay link. If the team
+          scores less than expected, you pay less.</span></li>
+    </ol>
+
+    <h2 data-t="h2cost">What it costs</h2>
+    <p data-t="costP">A player usually totals around 90 points across the two challenges. So the
+      bill depends on the size of the roster and the rate you choose.</p>
+
+    <table>
+      <tr><th data-t="thRate">Per point</th><th data-t="thSmall">15 players</th><th data-t="thMid">30 players</th><th data-t="thBig">60 players</th></tr>
+      <tr><td>5¢</td><td>$68</td><td>$135</td><td>$270</td></tr>
+      <tr class="hi"><td>10¢</td><td>$135</td><td>$270</td><td>$540</td></tr>
+      <tr><td>25¢</td><td>$338</td><td>$675</td><td>$1,350</td></tr>
+    </table>
+    <p class="note" data-t="costNote">Most businesses pledge a dime. You can also set a ceiling —
+      say a dime a point up to $500 — and we stop there.</p>
+
+    <h2 data-t="h2gets">What you get</h2>
+    <div class="gets">
+      <ul>
+        <li data-t="g1"><b>Your name on the team page</b>, where every family in the program
+          goes to follow their own child through the campaign.</li>
+        <li data-t="g2"><b>The result in writing.</b> What the team scored, what you paid, and
+          what the program bought with it.</li>
+        <li data-t="g3"><b>A receipt from a real payment</b>, not a cash handover. Everything
+          runs through Stripe.</li>
+        <li data-t="g4"><b>First refusal next season.</b> Programs run two or three campaigns a
+          year, and backers are asked first.</li>
+      </ul>
+    </div>
+
+    <div class="flag">
+      <p style="margin:0"><b data-t="whyB">Why this and not a banner.</b>
+        <span data-t="why">A sign on a fence is seen by whoever walks past. This reaches every
+        family in the program by name, at the moment they are watching their own child's total
+        go up — and it funds something they can point at afterwards.</span></p>
+    </div>
+
+    <h2 data-t="h2what">What the money buys</h2>
+    <p data-t="whatP">Programs raise for things that finish: a backboard at $2,400 installed,
+      a tournament trip, uniforms for a roster, entry fees for a season. Never for running costs
+      a family cannot see. You will know which before you pledge.</p>
+
+    <h2 data-t="h2who">Where it goes</h2>
+    <p data-t="whoP">Every dollar collected goes to the program. Our 10% platform fee is added
+      on top of your payment, never taken out of it — a $200 pledge is a $220 payment, and the
+      program receives the full $200. The program sees every pledge and payment in its own panel.</p>
+
+    <a class="cta" href="mailto:gostardigital@gmail.com?subject=Backing%20a%20basketball%20program"
+       data-t="cta1">Talk to us</a>
+    <a class="cta line" href="index.html" data-t="cta2">See how the challenges work</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">Gostar Digital LLC · Puerto Rico</span><br>
+    <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+var STR = {
+  en:{
+    h1:'Back a basketball program for a season.',
+    lede:'Not a donation and not an advert. You pledge an amount for every point a team scores, and you pay for the points they actually score — nothing before that.',
+    h2how:'How it works',
+    s1b:'The team plays.',
+    s1:'Every player takes two memory challenges, scored by our software. Two weeks of practice first, then one official run each. Nobody counts by hand.',
+    s2b:'You pledge per point.',
+    s2:'Pick an amount. Nothing is charged while the campaign runs.',
+    s3b:'You pay what was scored.',
+    s3:'When the runs are done you get the total and a pay link. If the team scores less than expected, you pay less.',
+    h2cost:'What it costs',
+    costP:'A player usually totals around 90 points across the two challenges. So the bill depends on the size of the roster and the rate you choose.',
+    thRate:'Per point', thSmall:'15 players', thMid:'30 players', thBig:'60 players',
+    costNote:'Most businesses pledge a dime. You can also set a ceiling — say a dime a point up to $500 — and we stop there.',
+    h2gets:'What you get',
+    g1:'<b>Your name on the team page</b>, where every family in the program goes to follow their own child through the campaign.',
+    g2:'<b>The result in writing.</b> What the team scored, what you paid, and what the program bought with it.',
+    g3:'<b>A receipt from a real payment</b>, not a cash handover. Everything runs through Stripe.',
+    g4:'<b>First refusal next season.</b> Programs run two or three campaigns a year, and backers are asked first.',
+    whyB:'Why this and not a banner.',
+    why:'A sign on a fence is seen by whoever walks past. This reaches every family in the program by name, at the moment they are watching their own child\u2019s total go up — and it funds something they can point at afterwards.',
+    h2what:'What the money buys',
+    whatP:'Programs raise for things that finish: a backboard at $2,400 installed, a tournament trip, uniforms for a roster, entry fees for a season. Never for running costs a family cannot see. You will know which before you pledge.',
+    h2who:'Where it goes',
+    whoP:'Every dollar collected goes to the program. Our 10% platform fee is added on top of your payment, never taken out of it — a $200 pledge is a $220 payment, and the program receives the full $200. The program sees every pledge and payment in its own panel.',
+    cta1:'Talk to us', cta2:'See how the challenges work'
+  },
+  es:{
+    h1:'Apoya un programa de baloncesto por una temporada.',
+    lede:'No es una donación ni un anuncio. Prometes una cantidad por cada punto que anota un equipo, y pagas por los puntos que de verdad anoten — nada antes de eso.',
+    h2how:'Cómo funciona',
+    s1b:'El equipo juega.',
+    s1:'Cada jugador hace dos retos de memoria, puntuados por nuestro programa. Primero dos semanas de práctica, y luego una corrida oficial cada uno. Nadie cuenta a mano.',
+    s2b:'Prometes por punto.',
+    s2:'Escoge una cantidad. No se cobra nada mientras corre la campaña.',
+    s3b:'Pagas lo que anotaron.',
+    s3:'Terminadas las corridas recibes el total y un enlace para pagar. Si el equipo anota menos de lo esperado, pagas menos.',
+    h2cost:'Cuánto cuesta',
+    costP:'Un jugador suele llegar a unos 90 puntos entre los dos retos. Así que la cuenta depende del tamaño de la lista y de la tarifa que escojas.',
+    thRate:'Por punto', thSmall:'15 jugadores', thMid:'30 jugadores', thBig:'60 jugadores',
+    costNote:'La mayoría de los negocios prometen diez centavos. También puedes poner un tope — diez centavos por punto hasta $500, por ejemplo — y ahí paramos.',
+    h2gets:'Qué recibes',
+    g1:'<b>Tu nombre en la página del equipo</b>, donde cada familia del programa entra a seguir a su propio hijo durante la campaña.',
+    g2:'<b>El resultado por escrito.</b> Lo que anotó el equipo, lo que pagaste, y lo que el programa compró con eso.',
+    g3:'<b>Un recibo de un pago real</b>, no dinero en mano. Todo pasa por Stripe.',
+    g4:'<b>Primera opción la próxima temporada.</b> Los programas hacen dos o tres campañas al año, y a quien apoyó se le pregunta primero.',
+    whyB:'Por qué esto y no un banner.',
+    why:'Un rótulo en una verja lo ve quien pase por ahí. Esto le llega por nombre a cada familia del programa, justo cuando están viendo subir el total de su propio hijo — y paga algo que después pueden señalar.',
+    h2what:'Para qué es el dinero',
+    whatP:'Los programas recaudan para cosas que terminan: un tablero a $2,400 instalado, un viaje a un torneo, uniformes para la lista, inscripciones de una temporada. Nunca para gastos que una familia no puede ver. Sabrás cuál antes de prometer.',
+    h2who:'A dónde va',
+    whoP:'Cada dólar cobrado va al programa. Nuestro cargo de plataforma de 10% se añade encima de tu pago, nunca se saca de él — una promesa de $200 es un pago de $220, y el programa recibe los $200 completos. El programa ve cada promesa y cada pago en su propio panel.',
+    cta1:'Habla con nosotros', cta2:'Mira cómo son los retos'
+  }
+};
+
+var LANG = 'en';
+try {
+  LANG = localStorage.getItem('cp-lang') ||
+    ((navigator.language || '').toLowerCase().indexOf('es') === 0 ? 'es' : 'en');
+} catch(e){}
+
+function T(k){ return (STR[LANG] && STR[LANG][k]) || STR.en[k] || ''; }
+
+function paint(){
+  document.documentElement.lang = LANG;
+  var nodes = document.querySelectorAll('[data-t]');
+  for (var i = 0; i < nodes.length; i++){
+    var v = T(nodes[i].getAttribute('data-t'));
+    if (v.indexOf('<') !== -1) nodes[i].innerHTML = v;
+    else nodes[i].textContent = v;
+  }
+  document.getElementById('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  try { localStorage.setItem('cp-lang', LANG); } catch(e){}
+  paint();
+}
+
+paint();
+</script>
+</body>
+</html>
