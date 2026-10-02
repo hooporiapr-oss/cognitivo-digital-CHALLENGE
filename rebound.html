@@ -484,7 +484,7 @@ var DEMO_KEY = 'cp-demo-' + GAME;
 // A warm-up before signing up is part of a campaign, not a visitor
 // trying the site — it must never be refused, or a student cannot
 // join at all on a computer somebody else has already used.
-function isDemoPlay(){ return !TRYOUT && !CHALLENGE_ID && !(typeof WARM !== 'undefined' && WARM); }
+function isDemoPlay(){ return false; }   // juego libre: sin tope
 
 function demoRunsUsed(){
   try { return parseInt(localStorage.getItem(DEMO_KEY) || '0', 10) || 0; }
