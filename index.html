@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cada Punto — fundraising for basketball programs</title>
-<meta name="description" content="Fundraising for basketball programs. Padrinos pledge per point, players score, and every dollar collected goes to the program.">
+<meta name="description" content="Fundraising for basketball programs. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
@@ -255,6 +255,18 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
 /* the mark says the whole line now */
 .wm i{font-style:normal;color:var(--mute)}
+
+/* El fundraiser va primero: tres pasos y el tablero. */
+.season{margin:34px 0}
+.steps3{display:grid;gap:12px;margin-top:14px}
+@media(min-width:760px){.steps3{grid-template-columns:repeat(3,1fr)}}
+.steps3 .st{border:2px solid var(--line,#D7E0E8);border-radius:4px;padding:16px 18px}
+.steps3 .st b{display:block;font-size:1.02rem;margin-bottom:4px}
+.steps3 .st span{color:var(--mute,#5A6B7C);font-size:.94rem}
+.seasonnote{color:var(--mute,#5A6B7C);font-size:.9rem;margin-top:12px}
+.board{margin:30px 0;border-left:4px solid #0C6E8C;padding:4px 0 4px 16px}
+.board h2{margin:0 0 6px}
+.board p{color:var(--mute,#5A6B7C);margin:0;max-width:60ch}
 </style>
 </head>
 <body>
@@ -284,7 +296,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <div class="heromark"><span class="wm wmbig">cada&nbsp;<em>punto</em></span><span class="brandtag" data-t="brandTag">fundraising for basketball programs</span></div>
   <p class="motto" data-t="motto">Every Point Counts.</p>
   <h1 data-t="h1">Play a challenge. See your points.<br><em>That is the fundraiser.</em></h1>
-  <p class="lede" data-t="lede">Padrinos pledge per point. Players score. Every dollar collected goes to the program.</p>
+  <p class="lede" data-t="lede">Padrinos pledge a few cents for every point your team scores — the final score, not any one player.</p>
   <p class="forwho" data-t="forWho">A fully digital fundraiser — nothing to order, deliver, store or hand back. For schools, clubs, teams and any non-profit group raising money for something that matters.</p>
   <div class="actions">
     <a class="btn btn-solid" href="contact.html" data-t="cta1">Talk to us</a>
@@ -294,41 +306,62 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
 <div class="wrap">
 
-  <!-- The challenges come first: a visitor who plays one for thirty
-       seconds understands most of what follows before reading it. -->
+  <!-- The fundraiser itself, before anything else: a coach should
+       understand the whole thing from this one section. -->
+  <section class="season" aria-labelledby="seasonH">
+    <h2 id="seasonH" data-t="seasonH">Pledge by the game, all season.</h2>
+    <div class="steps3">
+      <div class="st"><b data-t="st1b">You post your schedule.</b>
+        <span data-t="st1">Add a game in ten seconds from your phone — opponent, date, home or away. Add them as they come.</span></div>
+      <div class="st"><b data-t="st2b">Padrinos pick their games.</b>
+        <span data-t="st2">A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.</span></div>
+      <div class="st"><b data-t="st3b">You enter the score.</b>
+        <span data-t="st3">That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.</span></div>
+    </div>
+    <p class="seasonnote" data-t="seasonNote">Nothing is charged before a game is played. A padrino can cap what they pay, and a cancelled game moves their pledge to the next one.</p>
+  </section>
+
+  <!-- The public board is the part that keeps families coming back. -->
+  <section class="board">
+    <h2 data-t="boardH">One page your families will actually check.</h2>
+    <p data-t="boardP">Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.</p>
+  </section>
+
+  <!-- What the three steps above do not cover: what it costs a
+       padrino, and what the program can see. -->
+  <section class="how">
+    <h2 data-t="hwH">What it costs, and what you see</h2>
+    <ol class="hw">
+      <li><b data-t="hw1b">Nothing until a game is played.</b> <span data-t="hw1">A pledge is a promise. No card is charged until you enter a score.</span></li>
+      <li><b data-t="hw2b">The padrino pays, the program is paid.</b> <span data-t="hw2">After each game they get the score and a pay button. Minimum $5 a pledge.</span></li>
+      <li><b data-t="hw3b">You watch the money as it arrives.</b> <span data-t="hw3">Every pledge, payment and payout, listed per game in your own panel.</span>
+        <span class="hw-fee" data-t="hw3fee">Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.</span></li>
+    </ol>
+    <p class="hw-see" data-t="hwSee">You see all of it as it happens — every pledge, every payment, every payout, listed for you and for the program.</p>
+  </section>
+
+
+  <!-- Secondary now: a reason the platform is more than a donate
+       button, and something to run between seasons. -->
   <section class="play" id="play" aria-labelledby="playH">
     <div class="playhead">
-      <h2 id="playH" data-t="playH">Click into a challenge — every point you score is worth something</h2>
-      <span class="playnote" data-t="playNote">Practice free up to three times per challenge. Nothing is recorded.</span>
+      <h2 id="playH" data-t="playH">Memory Basketball — included with your campaign</h2>
+      <span class="playnote" data-t="playNote">Two zone challenges your players can run between games, with their own competitions. Free to try, three times each.</span>
     </div>
     <div class="games">
       <a class="game fortress" href="fortress.html">
-        <span class="gname" data-t="gFortress">The Fortress</span>
-        <span class="gdesc" data-t="gFortressDesc">Five basketballs on a backboard.</span>
+        <span class="gname" data-t="gFortress">The Fortress · 2-1-2</span>
+        <span class="gdesc" data-t="gFortressDesc">Beat the 2-1-2.</span>
         <span class="gplay" data-t="gPlay">Play →</span>
       </a>
       <a class="game rebound" href="rebound.html">
-        <span class="gname" data-t="gRebound">The Rebound</span>
-        <span class="gdesc" data-t="gReboundDesc">Every round a new pattern.</span>
+        <span class="gname" data-t="gRebound">The Rebound · 1-3-1</span>
+        <span class="gdesc" data-t="gReboundDesc">Beat the 1-3-1.</span>
         <span class="gplay" data-t="gPlay">Play →</span>
       </a>
-          </div>
+    </div>
+    <p class="playnote" data-t="playAlso">Or run a whole campaign on them, scored on points held rather than points scored — useful for a program between seasons.</p>
   </section>
-
-
-  <!-- Only now, once somebody has played and seen what a score is
-       worth, is there any reason to read how it runs. Three lines. -->
-  <section class="how">
-    <h2 data-t="hwH">How it runs</h2>
-    <ol class="hw">
-      <li><b data-t="hw1b">Two weeks of pledging.</b> <span data-t="hw1">Each participant shares one link. Padrinos pick their amount per point. Nothing is charged.</span></li>
-      <li><b data-t="hw2b">One run day.</b> <span data-t="hw2">Practice all they like, then one official run. The software scores it.</span></li>
-      <li><b data-t="hw3b">Padrinos pay, the program is paid.</b> <span data-t="hw3">Each padrino gets the score and a pay button.</span>
-        <span class="hw-fee" data-t="hw3fee">Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.</span></li>
-    </ol>
-    <p class="hw-see" data-t="hwSee">You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.</p>
-  </section>
-
 
   <!-- The one argument every other fundraiser cannot make. -->
   <section class="nosell">
@@ -373,20 +406,31 @@ var T = {
     hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
     nsH:'Nothing to sell. Nothing to deliver.',
     nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
-    hwH:'How it runs',
-    hw1b:'Two weeks of pledging.', hw1:'Each participant shares one link. Padrinos pick their amount per point. Nothing is charged.',
-    hw2b:'One run day.', hw2:'Practice all they like, then one official run. The software scores it.',
-    hw3b:'Padrinos pay, the program is paid.', hw3:'Each padrino gets the score and a pay button.',
+    hwH:'What it costs, and what you see',
+    hw1b:'Nothing until a game is played.', hw1:'A pledge is a promise. No card is charged until you enter a score.',
+    hw2b:'The padrino pays, the program is paid.', hw2:'After each game they get the score and a pay button. Minimum $5 a pledge.',
+    hw3b:'You watch the money as it arrives.', hw3:'Every pledge, payment and payout, listed per game in your own panel.',
     hw3fee:'Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.',
     worthH:'The Cada Punto platform comes with your campaign — free for a month. A $300 value.',
     worthP:'Every campaign includes a full month of the platform for your whole program, at no cost and nothing to cancel. Programs that want it all year licence it for $2,400 — most never need to.',
     brandTag:'fundraising for basketball programs',
-    playH:'Play a challenge — every point you score is worth something', playNote:'Practice free up to three times per challenge. Nothing is recorded.', gPlay:'Play →',
-    gRecognition:'The Recognition', gRecognitionDesc:'A pattern appears, then returns with one cell moved. Find the one that moved.',
+    playH:'Memory Basketball — included with your campaign',
+    playNote:'Two zone challenges your players can run between games, with their own competitions. Free to try, three times each.',
+    playAlso:'Or run a whole campaign on them, scored on points held rather than points scored — useful for a program between seasons.',
+    seasonH:'Pledge by the game, all season.',
+    st1b:'You post your schedule.',
+    st1:'Add a game in ten seconds from your phone — opponent, date, home or away. Add them as they come.',
+    st2b:'Padrinos pick their games.',
+    st2:'A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.',
+    st3b:'You enter the score.',
+    st3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
+    seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a cancelled game moves their pledge to the next one.',
+    boardH:'One page your families will actually check.',
+    boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.', gPlay:'Play →',
     mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
     mScoring:'Chain scoring', mTalk:'Talk to us →',
     navPlay:'The challenges', navPad:'Getting padrinos', navScoring:'Chain scoring',
-    h1:'Play the challenge. Score the points.<br><em>That is the fundraiser.</em>',
+    h1:'Your team scores.<br><em>Your program gets paid.</em>',
     lede:'Family and friends pledge a few cents for every point a player scores. Score 45 points with ten padrinos at a quarter, and the program has $112. No products, no selling, nothing to hand back.',
     forWho:'For basketball programs — teams, clubs, leagues and school programs. Nothing to order, deliver or hand back.',
     cta1:'Talk to us', cta2:'Click into a challenge', cta1b:'Talk to us',
@@ -403,21 +447,32 @@ var T = {
     hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
     nsH:'Nada que vender. Nada que entregar.',
     nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
-    hwH:'Cómo funciona',
-    hw1b:'Dos semanas de promesas.', hw1:'Cada participante comparte un enlace. Los padrinos escogen su cantidad por punto. No se cobra nada.',
-    hw2b:'Un día de corrida.', hw2:'Practican todo lo que quieran, y luego una corrida oficial. El programa la puntúa.',
-    hw3b:'Los padrinos pagan, el programa cobra.', hw3:'Cada padrino recibe la puntuación y un botón para pagar.',
+    hwH:'Lo que cuesta, y lo que ves',
+    hw1b:'Nada hasta que se juegue.', hw1:'Una promesa es una promesa. No se cobra nada hasta que pones el marcador.',
+    hw2b:'El padrino paga, el programa cobra.', hw2:'Después de cada juego reciben el marcador y un botón para pagar. Mínimo $5 por promesa.',
+    hw3b:'Ves el dinero según entra.', hw3:'Cada promesa, cada pago y cada desembolso, por juego, en tu propio panel.',
     hw3fee:'Nuestro cargo de plataforma de 10% se añade encima de su pago, nunca se saca de él. Una promesa de $25.00 es un pago de $27.50, y el programa recibe los $25.00 completos cobrados.',
     worthH:'La plataforma Cada Punto viene con tu campaña — gratis por un mes. Un valor de $300.',
     worthP:'Cada campaña incluye un mes completo de la plataforma para todo tu programa, sin costo y sin nada que cancelar. Los programas que la quieren todo el año la licencian por $2,400 — casi ninguno lo necesita.',
     brandTag:'recaudación para programas de baloncesto',
-    playH:'Entra a un reto — cada punto que anotes vale algo', playNote:'Retos gratis hasta 3 ocasiones. No se guarda nada.', gPlay:'Jugar →',
-    gRecognition:'The Recognition', gRecognitionDesc:'Aparece un patrón y vuelve con una celda movida. Encuentra la que se movió.',
+    playH:'Memory Basketball — incluido con tu campaña',
+    playNote:'Dos retos de zona que tus jugadores pueden correr entre juegos, con sus propias competencias. Gratis, tres veces cada uno.',
+    playAlso:'O corre una campaña completa con ellos, puntuada por la cadena que aguanten en vez de los puntos del juego — útil para un programa entre temporadas.',
+    seasonH:'Promesas juego por juego, toda la temporada.',
+    st1b:'Pones tu calendario.',
+    st1:'Añade un juego en diez segundos desde el teléfono — contra quién, cuándo, casa o visita. Los vas añadiendo según salen.',
+    st2b:'Los padrinos escogen sus juegos.',
+    st2:'Diez centavos por punto el sábado. Veinticinco para el torneo. La familia, los vecinos, el negocio de la esquina — cada uno escoge lo que le sirve.',
+    st3b:'Pones el marcador.',
+    st3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
+    seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y si se cancela un juego su promesa pasa al próximo.',
+    boardH:'Una página que tus familias sí van a mirar.',
+    boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.', gPlay:'Jugar →',
     mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
     mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
     navPlay:'Los retos', navPad:'Conseguir padrinos', navScoring:'Puntuación en cadena',
-    h1:'Juega el reto. Anota los puntos.<br><em>Esa es la recaudación.</em>',
-    lede:'Los padrinos prometen por punto. Los jugadores anotan. Cada dólar cobrado va al programa.',
+    h1:'Tu equipo anota.<br><em>Tu programa cobra.</em>',
+    lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo — el marcador final, no el de un jugador. Juegas tus juegos, pones el marcador, y ellos pagan lo que el equipo ganó.',
     forWho:'Para programas de baloncesto — equipos, clubes, ligas y programas escolares. Nada que pedir, entregar ni devolver.',
     cta1:'Habla con nosotros', cta2:'Entra a un reto', cta1b:'Habla con nosotros',
     costH:'Gratis para tu programa.',
