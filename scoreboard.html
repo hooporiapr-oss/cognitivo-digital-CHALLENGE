@@ -65,7 +65,9 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 label{display:block;font-size:.84rem;font-weight:700;margin:12px 0 5px}
 input{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;
   background:#fff;color:var(--ink);font:inherit;font-size:1rem}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1rem}
 .rates{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
 .rate{flex:1 1 90px;padding:12px 8px;border:2px solid var(--line);border-radius:4px;background:#fff;
   font:inherit;font-weight:900;cursor:pointer;color:var(--ink);text-align:center}
@@ -137,6 +139,7 @@ var S = {
     errWho:'Your name and email, please.',
     errClosed:'That game is closed for pledges.',
     errGen:'Could not record the pledge. Try again.',
+    whoAsked:'Who asked you? (optional)', nobody:'Nobody in particular',
     notDonation:'Your pledge is a donation to the program. Nothing is won or paid out.',
     feeNote:'Payment processing and the 10% platform fee are added on top — the program receives your full pledge.'
   },
@@ -166,6 +169,7 @@ var S = {
     errWho:'Tu nombre y tu correo, por favor.',
     errClosed:'Ese juego ya no acepta promesas.',
     errGen:'No se pudo registrar la promesa. Intenta otra vez.',
+    whoAsked:'¿Quién te invitó? (opcional)', nobody:'Nadie en particular',
     notDonation:'Tu promesa es un donativo al programa. No se gana ni se paga nada a cambio.',
     feeNote:'El procesamiento del pago y el 10% de plataforma se añaden encima — el programa recibe tu promesa completa.'
   }
@@ -187,7 +191,10 @@ function toggleLang(){
   draw();
 }
 
-var CAMPAIGN = new URLSearchParams(location.search).get('c');
+var PARAMS = new URLSearchParams(location.search);
+var CAMPAIGN = PARAMS.get('c');
+var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
+var ROSTER = [];
 var BOARD = null, PICKED = null, RATE = 0.10;
 var app = document.getElementById('app');
 
@@ -207,9 +214,16 @@ function when(g){
 
 function load(){
   if (!CAMPAIGN){ app.innerHTML = '<p style="color:var(--mute)">No campaign.</p>'; return; }
-  rpc('game_board', { p_campaign: CAMPAIGN })
-    .then(function(b){ BOARD = b; draw(); })
-    .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
+  Promise.all([
+    rpc('game_board', { p_campaign: CAMPAIGN }),
+    rpc('game_roster', { p_campaign: CAMPAIGN })
+  ])
+  .then(function(r){
+    BOARD = r[0];
+    ROSTER = r[1] || [];
+    draw();
+  })
+  .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
 }
 
 function gameCard(g, isNext){
@@ -302,6 +316,17 @@ function drawPledge(){
     '<label for="pc">' + T('capLabel') + '</label>' +
     '<input id="pc" type="number" step="1" min="5" placeholder="—">' +
 
+    (ROSTER.length
+      ? '<label for="pp">' + T('whoAsked') + '</label>' +
+        '<select id="pp">' +
+          '<option value="">' + T('nobody') + '</option>' +
+          ROSTER.map(function(pl){
+            return '<option value="' + pl.id + '"' +
+                   (pl.id === FROM_PLAYER ? ' selected' : '') + '>' + esc(pl.name) + '</option>';
+          }).join('') +
+        '</select>'
+      : '') +
+
     '<button class="btn" onclick="send()">' + T('send') + '</button>' +
     '<p class="msg" id="msg"></p>' +
     '<p class="fine">' + T('minNote') + ' ' + T('feeNote') + '</p>' +
@@ -319,12 +344,15 @@ function send(){
   var email = (document.getElementById('pe').value || '').trim();
   var capEl = document.getElementById('pc').value;
   var cap = capEl ? Number(capEl) : null;
+  var ppEl = document.getElementById('pp');
+  var player = ppEl && ppEl.value ? ppEl.value : null;
 
   if (!name || !email || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
 
   say('…');
   rpc('pledge_game', {
-    p_game: PICKED.id, p_name: name, p_email: email, p_rate: RATE, p_cap: cap
+    p_game: PICKED.id, p_name: name, p_email: email, p_rate: RATE,
+    p_cap: cap, p_player: player
   })
   .then(function(r){
     if (!r || !r.ok){
