@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Memory Basketball — Cada Punto</title>
+<meta name="description" content="Two basketball memory games built on real zone defenses. Beat the 2-1-2 and the 1-3-1. Free to play, and included with every Cada Punto campaign.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;
+      --ball:#FF7A18;--cyan:#22D3EE;--violet:#A78BFA}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,4vw,32px) 0 30px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer b{color:#fff;display:block;font-weight:800}
+footer a{color:#4FD3F0;text-decoration:none}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.6vw,2.1rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 24px;max-width:56ch}
+h2{font-size:clamp(1.1rem,3vw,1.35rem);letter-spacing:-.025em;margin:28px 0 8px;font-weight:900}
+p{margin:0 0 12px}
+
+.games{display:grid;gap:14px}
+@media(min-width:680px){.games{grid-template-columns:1fr 1fr}}
+.game{display:block;border:2px solid var(--ink);border-radius:4px;padding:20px;
+  text-decoration:none;color:var(--ink);background:#fff}
+.game:hover{background:var(--tint)}
+.game .zone{font-size:.62rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+  padding:4px 9px;border-radius:3px;display:inline-block;margin-bottom:10px}
+.game.fortress .zone{background:var(--ball);color:#1A0C00}
+.game.rebound .zone{background:var(--cyan);color:#04121A}
+.game .nm{display:block;font-size:1.2rem;font-weight:900;letter-spacing:-.02em}
+.game .ds{display:block;color:var(--mute);font-size:.94rem;margin:4px 0 12px}
+.game .go{display:block;font-weight:800;color:var(--accent)}
+
+.more{display:grid;gap:10px;margin-top:10px}
+.more a{display:block;border:1.5px solid var(--line);border-radius:4px;padding:13px 15px;
+  text-decoration:none;color:var(--ink)}
+.more a:hover{border-color:var(--ink)}
+.more b{display:block}
+.more span{color:var(--mute);font-size:.9rem}
+
+.withcamp{border-left:4px solid var(--accent);background:var(--tint);padding:16px 18px;margin:26px 0}
+.withcamp b{display:block;margin-bottom:4px}
+.withcamp p{margin:0;color:var(--mute);font-size:.95rem}
+.withcamp ul{margin:10px 0 0;padding-left:18px;color:var(--mute);font-size:.95rem}
+.withcamp li{margin-bottom:5px}
+
+.cta{display:block;text-align:center;background:var(--ink);color:#fff;border:2px solid var(--ink);
+  border-radius:4px;padding:16px;font-weight:800;text-decoration:none;margin-top:18px}
+.cta.line{background:#fff;color:var(--ink);margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">ES</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="kick" data-t="kick">Memory Basketball</div>
+    <h1 data-t="h1">Beat the zone from memory.</h1>
+    <p class="lede" data-t="lede">Two games built on the defenses your players already face. The zone
+      lights up one spot at a time and grows by one every round — read it, then play it back. Free to
+      play, right here, as much as you like.</p>
+
+    <div class="games">
+      <a class="game fortress" href="fortress.html">
+        <span class="zone">2-1-2</span>
+        <span class="nm" data-t="n1">The Fortress</span>
+        <span class="ds" data-t="d1">The zone holds its shape. The chain grows by one every round.</span>
+        <span class="go" data-t="play">Play →</span>
+      </a>
+      <a class="game rebound" href="rebound.html">
+        <span class="zone">1-3-1</span>
+        <span class="nm" data-t="n2">The Rebound</span>
+        <span class="ds" data-t="d2">A brand new look every round, one longer. Nothing carries over.</span>
+        <span class="go" data-t="play">Play →</span>
+      </a>
+    </div>
+
+    <h2 data-t="h2more">Two players, one screen</h2>
+    <p data-t="pmore">On a panel in the gym, two players take the same chain on their own half of the
+      screen. Whoever holds it longest wins — and the one who goes out first watches the other play on.</p>
+    <div class="more">
+      <a href="versus.html"><b data-t="vs1">The Fortress · head to head</b><span data-t="vs1d">Two 2-1-2 courts, one chain.</span></a>
+      <a href="versus-replay.html"><b data-t="vs2">The Replay · head to head</b><span data-t="vs2d">The full grid, with a note on every cell.</span></a>
+    </div>
+
+    <div class="withcamp">
+      <b data-t="wcH">What comes with a campaign</b>
+      <p data-t="wcP">The games are free for anyone to play. Running a Cada Punto campaign adds the
+        parts a program needs:</p>
+      <ul>
+        <li data-t="wc1">Practice counts and best scores for every player, in your coach panel.</li>
+        <li data-t="wc2">Competitions on the gym panel, with a result at the end.</li>
+        <li data-t="wc3">And if your program has no schedule to pledge on, a whole campaign can be scored on these instead of on game scores.</li>
+      </ul>
+    </div>
+
+    <a class="cta" href="index.html" data-t="cta1">See the fundraiser →</a>
+    <a class="cta line" href="contact.html" data-t="cta2">Bring this to my program</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>Gostar Digital LLC · Puerto Rico</b>
+    <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+var S = {
+  en:{
+    kick:'Memory Basketball',
+    h1:'Beat the zone from memory.',
+    lede:'Two games built on the defenses your players already face. The zone lights up one spot at a time and grows by one every round — read it, then play it back. Free to play, right here, as much as you like.',
+    n1:'The Fortress', d1:'The zone holds its shape. The chain grows by one every round.',
+    n2:'The Rebound', d2:'A brand new look every round, one longer. Nothing carries over.',
+    play:'Play →',
+    h2more:'Two players, one screen',
+    pmore:'On a panel in the gym, two players take the same chain on their own half of the screen. Whoever holds it longest wins — and the one who goes out first watches the other play on.',
+    vs1:'The Fortress · head to head', vs1d:'Two 2-1-2 courts, one chain.',
+    vs2:'The Replay · head to head', vs2d:'The full grid, with a note on every cell.',
+    wcH:'What comes with a campaign',
+    wcP:'The games are free for anyone to play. Running a Cada Punto campaign adds the parts a program needs:',
+    wc1:'Practice counts and best scores for every player, in your coach panel.',
+    wc2:'Competitions on the gym panel, with a result at the end.',
+    wc3:'And if your program has no schedule to pledge on, a whole campaign can be scored on these instead of on game scores.',
+    cta1:'See the fundraiser →', cta2:'Bring this to my program'
+  },
+  es:{
+    kick:'Memory Basketball',
+    h1:'Vence la zona de memoria.',
+    lede:'Dos juegos hechos sobre las defensas que tus jugadores ya enfrentan. La zona se enciende punto por punto y crece uno cada ronda — léela y repítela. Gratis, aquí mismo, todo lo que quieras.',
+    n1:'The Fortress', d1:'La zona mantiene su forma. La cadena crece uno cada ronda.',
+    n2:'The Rebound', d2:'Algo nuevo cada ronda, uno más. Nada se arrastra.',
+    play:'Jugar →',
+    h2more:'Dos jugadores, una pantalla',
+    pmore:'En una pantalla del gimnasio, dos jugadores toman la misma cadena cada uno en su mitad. Gana quien la aguante más — y el que falla primero ve al otro seguir.',
+    vs1:'The Fortress · uno contra uno', vs1d:'Dos canchas 2-1-2, una cadena.',
+    vs2:'The Replay · uno contra uno', vs2d:'La cuadrícula completa, con una nota en cada celda.',
+    wcH:'Qué viene con una campaña',
+    wcP:'Los juegos son gratis para cualquiera. Correr una campaña Cada Punto añade lo que un programa necesita:',
+    wc1:'Prácticas y mejores puntuaciones de cada jugador, en tu panel de coach.',
+    wc2:'Competencias en la pantalla del gimnasio, con un resultado al final.',
+    wc3:'Y si tu programa no tiene calendario para prometer, se puede correr una campaña completa con estos en vez de con los marcadores.',
+    cta1:'Ver la recaudación →', cta2:'Tráelo a mi programa'
+  }
+};
+
+var LANG='en';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function paint(){
+  document.documentElement.lang = LANG;
+  var n = document.querySelectorAll('[data-t]');
+  for (var i=0;i<n.length;i++){
+    var v = (S[LANG] && S[LANG][n[i].getAttribute('data-t')]) || '';
+    if (v) n[i].textContent = v;
+  }
+  document.getElementById('langBtn').textContent = LANG==='en' ? 'ES':'EN';
+}
+function toggleLang(){
+  LANG = LANG==='en' ? 'es':'en';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  paint();
+}
+paint();
+</script>
+</body>
+</html>
