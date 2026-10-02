@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scoreboard — Cada Punto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;
+      --ball:#FF7A18;--good:#0B7A5A}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(18px,4vw,30px) 0 28px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer b{color:#fff;display:block;font-weight:800}
+
+/* the running total, which is the point of the page */
+.total{border:2px solid var(--ink);border-radius:4px;padding:clamp(18px,4vw,26px);
+  text-align:center;margin-bottom:18px;background:var(--tint)}
+.total .cap{font-size:.66rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.total .big{font-size:clamp(3rem,15vw,5.5rem);font-weight:900;line-height:1;letter-spacing:-.04em}
+.total .sub{color:var(--mute);font-size:.94rem;margin-top:4px}
+h1{font-size:clamp(1.35rem,4.2vw,1.85rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 18px}
+h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
+
+.game{border:2px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:10px}
+.game.next{border-color:var(--ink)}
+.game.played{background:var(--tint)}
+.game .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.game .opp{font-weight:900;font-size:1.05rem}
+.game .when{color:var(--mute);font-size:.86rem;white-space:nowrap}
+.game .meta{color:var(--mute);font-size:.86rem;margin-top:2px}
+.game .score{font-size:1.5rem;font-weight:900;margin-top:6px}
+.game .score span{color:var(--mute);font-weight:800;font-size:1rem}
+.game .score .w{color:var(--good)}
+.tagn{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--ball);color:#1A0C00;border-radius:3px;padding:3px 8px;margin-bottom:6px}
+
+.btn{display:block;width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;
+  text-align:center;text-decoration:none;margin-top:10px}
+.btn.line{background:#fff;color:var(--ink)}
+.btn.small{padding:11px;font-size:.92rem;margin-top:8px}
+
+label{display:block;font-size:.84rem;font-weight:700;margin:12px 0 5px}
+input{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1rem}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+.rates{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.rate{flex:1 1 90px;padding:12px 8px;border:2px solid var(--line);border-radius:4px;background:#fff;
+  font:inherit;font-weight:900;cursor:pointer;color:var(--ink);text-align:center}
+.rate.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.rate small{display:block;font-size:.62rem;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;opacity:.75;margin-top:2px}
+.est{border-left:4px solid var(--accent);background:var(--tint);padding:12px 14px;margin:14px 0;font-size:.93rem}
+.est b{display:block}
+.msg{margin-top:10px;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:#A8323F}
+.msg.ok{color:var(--good)}
+.fine{color:var(--mute);font-size:.82rem;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">ES</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"><p style="color:var(--mute)">…</p></div>
+</main>
+
+<footer>
+  <b>Gostar Digital LLC · Puerto Rico</b>
+  <a href="mailto:gostardigital@gmail.com" style="color:#4FD3F0;text-decoration:none">gostardigital@gmail.com</a>
+</footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+
+var S = {
+  en:{
+    pointsCap:'Points this season',
+    gamesPlayed:'{N} game(s) played',
+    noGames:'No games on the schedule yet.',
+    lede:'Padrinos pledge an amount for every point the team scores. Pick a game, pick a rate, and pay only what they actually score.',
+    next:'Next up',
+    upcoming:'Coming up',
+    results:'Results',
+    home:'Home', away:'Away',
+    pledgeOn:'Pledge on this game',
+    pledged:'{N} padrino(s)',
+    final:'Final',
+    pickRate:'Your rate, per point',
+    yourName:'Your name',
+    yourEmail:'Your email',
+    capLabel:'Most you want to pay (optional)',
+    estTitle:'If they score 60',
+    estBody:'You would pay about {A}. You are billed after the game, on the points they actually score.',
+    minNote:'Minimum $5 per pledge.',
+    send:'Pledge',
+    back:'← Back to the schedule',
+    thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
+    errMin:'That comes to less than $5. Choose a higher rate.',
+    errWho:'Your name and email, please.',
+    errClosed:'That game is closed for pledges.',
+    errGen:'Could not record the pledge. Try again.',
+    notDonation:'Your pledge is a donation to the program. Nothing is won or paid out.',
+    feeNote:'Payment processing and the 10% platform fee are added on top — the program receives your full pledge.'
+  },
+  es:{
+    pointsCap:'Puntos esta temporada',
+    gamesPlayed:'{N} juego(s) jugado(s)',
+    noGames:'Todavía no hay juegos en el calendario.',
+    lede:'Los padrinos prometen una cantidad por cada punto que anota el equipo. Escoge un juego, escoge tu tarifa, y pagas sólo lo que de verdad anoten.',
+    next:'Próximo juego',
+    upcoming:'Vienen',
+    results:'Resultados',
+    home:'Casa', away:'Visita',
+    pledgeOn:'Prometer en este juego',
+    pledged:'{N} padrino(s)',
+    final:'Final',
+    pickRate:'Tu tarifa, por punto',
+    yourName:'Tu nombre',
+    yourEmail:'Tu correo',
+    capLabel:'Lo máximo que quieres pagar (opcional)',
+    estTitle:'Si anotan 60',
+    estBody:'Pagarías unos {A}. Se te cobra después del juego, por los puntos que de verdad anoten.',
+    minNote:'Mínimo $5 por promesa.',
+    send:'Prometer',
+    back:'← Volver al calendario',
+    thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
+    errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
+    errWho:'Tu nombre y tu correo, por favor.',
+    errClosed:'Ese juego ya no acepta promesas.',
+    errGen:'No se pudo registrar la promesa. Intenta otra vez.',
+    notDonation:'Tu promesa es un donativo al programa. No se gana ni se paga nada a cambio.',
+    feeNote:'El procesamiento del pago y el 10% de plataforma se añaden encima — el programa recibe tu promesa completa.'
+  }
+};
+
+var LANG='en';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function T(k,v){
+  var s = (S[LANG] && S[LANG][k]) || S.en[k] || '';
+  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
+  return s;
+}
+function toggleLang(){
+  LANG = LANG==='en' ? 'es' : 'en';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='en' ? 'ES':'EN';
+  draw();
+}
+
+var CAMPAIGN = new URLSearchParams(location.search).get('c');
+var BOARD = null, PICKED = null, RATE = 0.10;
+var app = document.getElementById('app');
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+function money(n){ return '$' + Number(n||0).toFixed(2); }
+
+function when(g){
+  if (!g.plays_on) return '';
+  var d = new Date(g.plays_on + 'T12:00:00');
+  var s = d.toLocaleDateString(LANG==='es'?'es-PR':'en-US', { weekday:'short', day:'numeric', month:'short' });
+  return s + (g.tip_time ? ' · ' + esc(g.tip_time) : '');
+}
+
+function load(){
+  if (!CAMPAIGN){ app.innerHTML = '<p style="color:var(--mute)">No campaign.</p>'; return; }
+  rpc('game_board', { p_campaign: CAMPAIGN })
+    .then(function(b){ BOARD = b; draw(); })
+    .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
+}
+
+function gameCard(g, isNext){
+  var played = g.status === 'played';
+  var won = played && g.opp_points != null && g.team_points > g.opp_points;
+
+  return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') + '">' +
+    (isNext ? '<div class="tagn">' + T('next') + '</div>' : '') +
+    '<div class="top">' +
+      '<div class="opp">' + (g.home ? '' : '@ ') + esc(g.opponent) + '</div>' +
+      '<div class="when">' + when(g) + '</div>' +
+    '</div>' +
+    (g.note ? '<div class="meta">' + esc(g.note) + '</div>' : '') +
+    (played
+      ? '<div class="score"><span class="' + (won ? 'w' : '') + '">' + T('final') + '</span> ' +
+          g.team_points + (g.opp_points != null ? ' <span>–</span> ' + g.opp_points : '') + '</div>'
+      : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
+        '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
+  '</div>';
+}
+
+function draw(){
+  if (!BOARD) return;
+  if (PICKED) return drawPledge();
+
+  var games = BOARD.games || [];
+  var upcoming = games.filter(function(g){ return g.status === 'scheduled'; });
+  var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
+
+  app.innerHTML =
+    '<h1>' + esc(BOARD.campaign || '') + '</h1>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+
+    '<div class="total">' +
+      '<div class="cap">' + T('pointsCap') + '</div>' +
+      '<div class="big">' + (BOARD.points || 0) + '</div>' +
+      '<div class="sub">' + T('gamesPlayed', { N: BOARD.played || 0 }) + '</div>' +
+    '</div>' +
+
+    (upcoming.length
+      ? upcoming.map(function(g, i){ return gameCard(g, i === 0); }).join('')
+      : '<p style="color:var(--mute)">' + T('noGames') + '</p>') +
+
+    (results.length
+      ? '<h2>' + T('results') + '</h2>' + results.map(function(g){ return gameCard(g, false); }).join('')
+      : '');
+}
+
+function pick(id){
+  PICKED = (BOARD.games || []).filter(function(g){ return g.id === id; })[0] || null;
+  RATE = 0.10;
+  draw();
+  try { document.querySelector('main').scrollTop = 0; } catch(e){}
+}
+
+function setRate(r){
+  RATE = r;
+  var est = document.getElementById('estLine');
+  if (est) est.innerHTML = T('estBody', { A: money(r * 60) });
+  var btns = document.querySelectorAll('.rate');
+  for (var i = 0; i < btns.length; i++){
+    btns[i].className = 'rate' + (Number(btns[i].dataset.r) === r ? ' on' : '');
+  }
+}
+
+function drawPledge(){
+  var g = PICKED;
+  app.innerHTML =
+    '<h1>' + (g.home ? '' : '@ ') + esc(g.opponent) + '</h1>' +
+    '<p class="lede">' + when(g) + (g.note ? ' · ' + esc(g.note) : '') + '</p>' +
+
+    '<label>' + T('pickRate') + '</label>' +
+    '<div class="rates">' +
+      [[0.10,'10¢'],[0.25,'25¢'],[0.50,'50¢'],[1.00,'$1']].map(function(r){
+        return '<button class="rate' + (r[0] === RATE ? ' on' : '') + '" data-r="' + r[0] + '" ' +
+               'onclick="setRate(' + r[0] + ')">' + r[1] +
+               '<small>' + money(r[0] * 60) + '</small></button>';
+      }).join('') +
+    '</div>' +
+
+    '<div class="est">' +
+      '<b>' + T('estTitle') + '</b>' +
+      '<span id="estLine">' + T('estBody', { A: money(RATE * 60) }) + '</span>' +
+    '</div>' +
+
+    '<label for="pn">' + T('yourName') + '</label>' +
+    '<input id="pn" type="text" maxlength="60" autocomplete="name">' +
+    '<label for="pe">' + T('yourEmail') + '</label>' +
+    '<input id="pe" type="email" maxlength="80" autocomplete="email">' +
+    '<label for="pc">' + T('capLabel') + '</label>' +
+    '<input id="pc" type="number" step="1" min="5" placeholder="—">' +
+
+    '<button class="btn" onclick="send()">' + T('send') + '</button>' +
+    '<p class="msg" id="msg"></p>' +
+    '<p class="fine">' + T('minNote') + ' ' + T('feeNote') + '</p>' +
+    '<p class="fine">' + T('notDonation') + '</p>' +
+    '<button class="btn line" onclick="PICKED=null;draw()">' + T('back') + '</button>';
+}
+
+function say(t, c){
+  var el = document.getElementById('msg');
+  if (el){ el.textContent = t; el.className = 'msg ' + (c || ''); }
+}
+
+function send(){
+  var name = (document.getElementById('pn').value || '').trim();
+  var email = (document.getElementById('pe').value || '').trim();
+  var capEl = document.getElementById('pc').value;
+  var cap = capEl ? Number(capEl) : null;
+
+  if (!name || !email || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
+
+  say('…');
+  rpc('pledge_game', {
+    p_game: PICKED.id, p_name: name, p_email: email, p_rate: RATE, p_cap: cap
+  })
+  .then(function(r){
+    if (!r || !r.ok){
+      if (r && r.reason === 'min')    return say(T('errMin'), 'bad');
+      if (r && r.reason === 'closed') return say(T('errClosed'), 'bad');
+      if (r && r.reason === 'who')    return say(T('errWho'), 'bad');
+      return say(T('errGen'), 'bad');
+    }
+    say(T('thanks'), 'ok');
+    setTimeout(function(){ PICKED = null; load(); }, 2200);
+  })
+  .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+document.getElementById('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
+load();
+</script>
+</body>
+</html>
