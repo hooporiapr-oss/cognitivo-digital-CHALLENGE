@@ -143,6 +143,11 @@ footer a:hover{color:#FFFFFF}
   border-radius:999px;padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer;
 }
 #lang:hover{border-color:#4FD3F0;color:#FFFFFF}
+
+/* El marcador del juego, que es por lo que paga el padrino. */
+.scored{border:2px solid var(--ink,#12202E);border-radius:4px;padding:16px;text-align:center;margin:0 0 16px}
+.scored-n{font-size:clamp(2.6rem,12vw,3.6rem);font-weight:900;line-height:1;letter-spacing:-.04em}
+.scored-l{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#5A6B7C;margin-top:4px}
 </style>
 </head>
 <body>
@@ -178,6 +183,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 // ══════════════════════════════════════════════════════
 var params = new URLSearchParams(location.search);
 var PLEDGE = params.get('p');
+var GAME_PLEDGE = params.get('g');   // una promesa por juego
 var JUST_PAID = params.get('paid') === '1';
 
 var LANG = 'en';
@@ -189,6 +195,11 @@ var S = {
     scored:'{N} scored <em>{P} points</em>',
     youPledged:'You pledged {R} a point.',
     lPledge:'Your pledge', lFee:'Platform fee (10%)', lTotal:'Total to pay',
+    gKick:'Your pledge', gPoints:'points scored',
+    gYourPledge:'Your pledge at {R} a point', gNoLink:'No payment link yet. Contact the program.',
+    gFull:'The program receives your full {A} — our fee is added on top, never taken out of it.',
+    gThanksH:'Thank you.', gThanksP:'{P} {V} — {N} points.',
+    gGoes:'Your {A} goes to the program.',
     payMin:'Please enter at least $1.00.',
     paySending:'Taking you to the payment page…',
     payFailed:'That did not work — please try again.',
@@ -218,6 +229,11 @@ var S = {
     scored:'{N} anotó <em>{P} puntos</em>',
     youPledged:'Prometiste {R} por punto.',
     lPledge:'Tu promesa', lFee:'Cargo de plataforma (10%)', lTotal:'Total a pagar',
+    gKick:'Tu promesa', gPoints:'puntos anotados',
+    gYourPledge:'Tu promesa a {R} por punto', gNoLink:'Todavía no hay enlace de pago. Habla con el programa.',
+    gFull:'El programa recibe tus {A} completos — nuestro cargo se añade encima, nunca se saca de ahí.',
+    gThanksH:'Gracias.', gThanksP:'{P} {V} — {N} puntos.',
+    gGoes:'Tus {A} van al programa.',
     payMin:'Escribe al menos $1.00.',
     paySending:'Te llevamos a la página de pago…',
     payFailed:'No funcionó — intenta de nuevo.',
@@ -298,6 +314,55 @@ function payNow(pledgeId){
   });
 }
 
+
+// La página de una promesa por juego.
+function renderGame(d){
+  if (!d || !d.ok){
+    card.innerHTML = '<div class="state"><div class="icon">🔍</div>' +
+      '<h1>' + T('goneH') + '</h1><p class="mute">' + T('goneP') + '</p></div>';
+    return;
+  }
+
+  var paid = (JUST_PAID && d.status !== 'void') || d.status === 'paid';
+  var vs = (d.home ? 'vs ' : '@ ') + esc(d.opponent || '');
+
+  if (paid){
+    card.innerHTML =
+      '<div class="state">' +
+        '<div class="icon">✓</div>' +
+        '<h1>' + T('gThanksH') + '</h1>' +
+        '<p class="mute">' + T('gThanksP', { P: esc(d.program || ''), V: vs, N: d.points }) + '</p>' +
+        '<p class="mute" style="margin-top:14px">' + T('gGoes', { A: money(d.pledged) }) + '</p>' +
+      '</div>';
+    return;
+  }
+
+  card.innerHTML =
+    '<div class="kick">' + T('gKick') + '</div>' +
+    '<h1 style="margin:0 0 2px">' + esc(d.program || '') + '</h1>' +
+    '<p class="mute" style="margin:0 0 16px">' + vs +
+      (d.plays_on ? ' · ' + esc(d.plays_on) : '') + '</p>' +
+
+    '<div class="scored">' +
+      '<div class="scored-n">' + d.points + '</div>' +
+      '<div class="scored-l">' + T('gPoints') + '</div>' +
+    '</div>' +
+
+    '<table class="bits">' +
+      '<tr><td>' + T('gYourPledge', { R: money(d.rate) }) + '</td>' +
+          '<td>' + money(d.pledged) + '</td></tr>' +
+      '<tr><td class="mute">' + T('lFee') + '</td>' +
+          '<td class="mute">' + money(d.fee) + '</td></tr>' +
+      '<tr class="sum"><td>' + T('lTotal') + '</td><td>' + money(d.total) + '</td></tr>' +
+    '</table>' +
+
+    (d.url
+      ? '<a class="pay" href="' + d.url + '">' + T('pay', { T: money(d.total) }) + '</a>'
+      : '<p class="mute">' + T('gNoLink') + '</p>') +
+
+    '<p class="note mute">' + T('gFull', { A: money(d.pledged) }) + '</p>';
+}
+
 function money(n){ return '$' + Number(n || 0).toFixed(2); }
 
 var card = document.getElementById('card');
@@ -305,7 +370,22 @@ var DATA = null;
 
 paintChrome();
 
-if (!PLEDGE){
+if (GAME_PLEDGE){
+  // Promesa por juego: el marcador ya cerró el juego, así que aquí
+  // sólo queda pagar o confirmar que ya se pagó.
+  fetch(SB_URL + '/rest/v1/rpc/game_pledge_for_payment', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_id: GAME_PLEDGE })
+  })
+  .then(function(r){ if (!r.ok) throw new Error('bad'); return r.json(); })
+  .then(function(d){ renderGame(d); })
+  .catch(function(e){
+    console.error('Game pledge:', e);
+    card.innerHTML = '<div class="state"><div class="icon">⚠️</div>' +
+      '<h1>' + T('failH') + '</h1><p class="mute">' + T('failP') + '</p></div>';
+  });
+} else if (!PLEDGE){
   card.innerHTML = '<div class="state"><div class="icon">🔍</div>' +
     '<h1>' + T('goneH') + '</h1><p class="mute">' + T('goneP') + '</p></div>';
 } else {
