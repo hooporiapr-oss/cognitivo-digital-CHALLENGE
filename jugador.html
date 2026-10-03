@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mi enlace — Cada Punto</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;--good:#0B7A5A;--bad:#A8323F}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(560px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 30px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+
+.crest{display:block;max-height:72px;max-width:160px;margin:0 auto 14px;object-fit:contain}
+h1{font-size:clamp(1.4rem,4.4vw,1.9rem);letter-spacing:-.03em;margin:0 0 6px;font-weight:900;text-align:center}
+.lede{color:var(--mute);margin:0 0 22px;text-align:center}
+
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
+input,select{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.05rem}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:16px}
+.btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em;text-align:center}
+.msg.bad{color:var(--bad)}
+.msg.ok{color:var(--good)}
+
+.done .tick{font-size:2.6rem;text-align:center;line-height:1;margin-bottom:8px}
+.linkbox{border:2px solid var(--ink);border-radius:4px;background:var(--tint);
+  padding:14px;margin:16px 0 0;word-break:break-all;font-size:.86rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.how{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:20px 0 0}
+.how b{display:block;margin-bottom:4px}
+.how p{margin:0;font-size:.93rem;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"><p class="lede">…</p></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+  </div>
+</footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+
+var S = {
+  es:{
+    h1:'Tu enlace de padrinos',
+    lede:'Pon tu nombre y tu categoría. Te damos un enlace para mandarle a tu familia — lo que prometan queda apuntado a tu nombre.',
+    nameL:'Tu nombre', namePh:'Nombre y apellido',
+    squadL:'Tu categoría o equipo', squadPh:'Mini, Juniors, Senior Silver…',
+    go:'Dame mi enlace',
+    errName:'Escribe tu nombre completo.',
+    errGen:'No se pudo. Intenta otra vez.',
+    doneH:'Listo, {N}',
+    doneP:'Este es tu enlace. Mándaselo a tu familia por WhatsApp.',
+    backH:'Ya estabas en la lista, {N}',
+    share:'Mandar por WhatsApp',
+    copy:'Copiar el enlace',
+    copied:'✓ Copiado',
+    seeBoard:'Ver el tablero del equipo',
+    howH:'Cómo funciona',
+    howP:'Quien abra tu enlace escoge un juego y promete unos centavos por cada punto que anote el equipo. Después del juego se le cobra lo que de verdad anotaron, y todo va al programa.',
+    msg:'¡Apoya a mi equipo! Prometes unos centavos por cada punto que anotemos, y pagas sólo después del juego. Todo va al programa.'
+  },
+  en:{
+    h1:'Your padrino link',
+    lede:'Put your name and your squad. We give you a link to send your family — whatever they pledge is credited to you.',
+    nameL:'Your name', namePh:'First and last name',
+    squadL:'Your squad or category', squadPh:'Mini, Juniors, Senior Silver…',
+    go:'Give me my link',
+    errName:'Write your full name.',
+    errGen:'That did not work. Try again.',
+    doneH:'Done, {N}',
+    doneP:'This is your link. Send it to your family on WhatsApp.',
+    backH:'You were already on the roster, {N}',
+    share:'Send on WhatsApp',
+    copy:'Copy the link',
+    copied:'✓ Copied',
+    seeBoard:'See the team board',
+    howH:'How it works',
+    howP:'Whoever opens your link picks a game and pledges a few cents for every point the team scores. After the game they are billed for what the team actually scored, and all of it goes to the program.',
+    msg:'Back my team! You pledge a few cents for every point we score, and you only pay after the game. All of it goes to the program.'
+  }
+};
+
+var LANG='es';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function T(k,v){
+  var s = (S[LANG] && S[LANG][k]) || S.es[k] || '';
+  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
+  return s;
+}
+function toggleLang(){
+  LANG = LANG==='es' ? 'en':'es';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+  draw();
+}
+
+var CAMPAIGN = new URLSearchParams(location.search).get('c');
+var BOARD = null, ME = null;
+var app = document.getElementById('app');
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+
+function myLink(){
+  return location.origin + '/scoreboard.html?c=' + CAMPAIGN + '&p=' + ME.id;
+}
+
+function draw(){
+  if (!CAMPAIGN){ app.innerHTML = '<p class="lede">—</p>'; return; }
+
+  var crest = (BOARD && BOARD.logo)
+    ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" onerror="this.style.display=\'none\'">'
+    : '';
+  var team = (BOARD && BOARD.campaign) ? '<p class="lede" style="margin-bottom:6px">' + esc(BOARD.campaign) + '</p>' : '';
+
+  if (ME){
+    var link = myLink();
+    app.innerHTML =
+      crest + team +
+      '<div class="done">' +
+        '<div class="tick">✓</div>' +
+        '<h1>' + T(ME.existing ? 'backH' : 'doneH', { N: esc(ME.name) }) + '</h1>' +
+        '<p class="lede">' + T('doneP') + '</p>' +
+        '<div class="linkbox">' + esc(link) + '</div>' +
+        '<a class="btn" href="https://wa.me/?text=' +
+          encodeURIComponent(T('msg') + '\n\n' + link) + '">' + T('share') + '</a>' +
+        '<button class="btn line" onclick="copyLink()">' + T('copy') + '</button>' +
+        '<a class="btn line" href="scoreboard.html?c=' + CAMPAIGN + '">' + T('seeBoard') + '</a>' +
+        '<p class="msg" id="msg"></p>' +
+        '<div class="how"><b>' + T('howH') + '</b><p>' + T('howP') + '</p></div>' +
+      '</div>';
+    return;
+  }
+
+  app.innerHTML =
+    crest + team +
+    '<h1>' + T('h1') + '</h1>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+    '<label for="nm">' + T('nameL') + '</label>' +
+    '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
+    '<label for="sq">' + T('squadL') + '</label>' +
+    '<input id="sq" type="text" maxlength="30" placeholder="' + T('squadPh') + '">' +
+    '<button class="btn" onclick="join()">' + T('go') + '</button>' +
+    '<p class="msg" id="msg"></p>';
+}
+
+function say(t,c){
+  var el = document.getElementById('msg');
+  if (el){ el.textContent = t; el.className = 'msg ' + (c||''); }
+}
+
+function join(){
+  var name = (document.getElementById('nm').value || '').trim();
+  var squad = (document.getElementById('sq').value || '').trim();
+  if (name.length < 2) return say(T('errName'), 'bad');
+
+  say('…');
+  rpc('join_roster', { p_campaign: CAMPAIGN, p_name: name, p_squad: squad })
+    .then(function(r){
+      if (!r || !r.ok) return say(T('errGen'), 'bad');
+      ME = r;
+      try { localStorage.setItem('cp-me-' + CAMPAIGN, JSON.stringify(r)); } catch(e){}
+      draw();
+    })
+    .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+function copyLink(){
+  var link = myLink();
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(function(){ say(T('copied'), 'ok'); })
+      .catch(function(){ say(link); });
+    return;
+  }
+  say(link);
+}
+
+// Si ya se añadió en este teléfono, no hace falta otra vez.
+try {
+  var saved = JSON.parse(localStorage.getItem('cp-me-' + CAMPAIGN) || 'null');
+  if (saved && saved.id) { ME = saved; ME.existing = true; }
+} catch(e){}
+
+document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+
+if (CAMPAIGN){
+  rpc('game_board', { p_campaign: CAMPAIGN })
+    .then(function(b){ BOARD = b; draw(); })
+    .catch(function(e){ console.error(e); draw(); });
+} else {
+  draw();
+}
+</script>
+</body>
+</html>
