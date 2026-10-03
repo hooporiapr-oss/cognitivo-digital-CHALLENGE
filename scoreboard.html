@@ -60,6 +60,11 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .game .score{font-size:1.5rem;font-weight:900;margin-top:6px}
 .game .score span{color:var(--mute);font-weight:800;font-size:1rem}
 .game .score .w{color:var(--good)}
+.playerlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
+  margin-top:18px;text-decoration:none;color:var(--ink)}
+.playerlink:hover{border-color:var(--ink);border-style:solid}
+.playerlink b{display:block}
+.playerlink span{color:var(--mute);font-size:.88rem}
 .tagn{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
   background:var(--ball);color:#1A0C00;border-radius:3px;padding:3px 8px;margin-bottom:6px}
 
@@ -139,6 +144,7 @@ var S = {
     upcoming:'Coming up',
     results:'Results',
     home:'Home', away:'Away',
+    iPlay:'I play for this team', iPlayP:'Get your own link to send your family.',
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
     final:'Final',
@@ -169,6 +175,7 @@ var S = {
     upcoming:'Vienen',
     results:'Resultados',
     home:'Casa', away:'Visita',
+    iPlay:'Yo juego en este equipo', iPlayP:'Consigue tu propio enlace para mandarle a tu familia.',
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
     final:'Final',
@@ -290,7 +297,12 @@ function draw(){
 
     (results.length
       ? '<h2>' + T('results') + '</h2>' + results.map(function(g){ return gameCard(g, false); }).join('')
-      : '');
+      : '') +
+
+    // Para un jugador que llega aquí: su propio enlace está a un toque.
+    '<a class="playerlink" href="jugador.html?c=' + CAMPAIGN + '">' +
+      '<b>' + T('iPlay') + '</b><span>' + T('iPlayP') + '</span>' +
+    '</a>';
 }
 
 function pick(id){
