@@ -2,97 +2,278 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Terms of Use — Cash Flow Hoops</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Terms of Use — Cada Punto</title>
+<meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#160E1C;--line:#3A2647;--gold:#E8B23A;--paper:#F7F3EF;--mute:#B7A8C2}
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.65}
-.wrap{width:min(720px,92vw);margin:0 auto}
-nav{border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.mark{font-weight:800;letter-spacing:-.02em;text-decoration:none}
-.mark em{font-style:normal;color:var(--gold)}
-.navin a.back{color:var(--mute);text-decoration:none;font-size:.9rem}
-.navin a.back:hover{color:var(--paper)}
-main{padding:54px 0 80px}
-h1{font-size:clamp(2.1rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:0 0 .4em}
-h2{font-size:1.14rem;font-weight:800;letter-spacing:-.02em;margin:2.4em 0 .5em}
-p,li{color:#E4DCEA}
-p{margin:0 0 1em}
-ul{padding-left:20px;margin:0 0 1em}
-li{margin:.35em 0}
-.date{color:var(--mute);font-size:.9rem;margin-bottom:2.4em}
-a{color:var(--gold)}
-footer{border-top:1px solid var(--line);padding:26px 0 46px;color:var(--mute);font-size:.85rem;text-align:center}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,4vw,32px) 0 34px}
+
+h1{font-size:clamp(1.5rem,4.4vw,2rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
+.updated{color:var(--mute);font-size:.86rem;margin:0 0 22px}
+h2{font-size:1.08rem;margin:26px 0 6px;font-weight:900;letter-spacing:-.02em}
+p{margin:0 0 12px}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:6px}
+.lead{color:var(--mute);margin:0 0 20px}
+strong{font-weight:800}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap navin">
-  <a class="mark" href="teams.html">Cash Flow <em>Hoops</em></a>
-  <a class="back" href="teams.html">Back to home</a>
-</div></nav>
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">ES</button>
+  </div>
+</header>
 
-<main class="wrap">
-  <h1>Terms of Use</h1>
-  <p class="date">Last updated 10 September 2026 · <a href="terms-es.html">Español</a></p>
-
-  <p>Cash Flow Hoops is operated by Gostar Digital LLC, PO Box 1980-345, Loíza, Puerto Rico 00772. By buying or using a card, you agree to these terms. If you do not agree, do not buy a card.</p>
-
-  <h2>What you are buying</h2>
-  <p>A digital card containing a set number of coupons from a participating business. Each coupon entitles the holder to the offer described on the card, most often buy one, get one free.</p>
-  <p>Cards are sold by basketball teams and programs to raise funds. Half the price of every card goes to the team; the other half runs the platform. The participating business pays nothing and receives nothing from the sale.</p>
-
-  <h2>All sales are final</h2>
-  <p>Each purchase supports a team, and every purchase is final. We do not offer refunds, exchanges or partial credits, whether or not any coupons have been used.</p>
-
-  <h2>Using your coupons</h2>
-  <ul>
-    <li>One coupon per visit. Coupons may not be combined in a single transaction.</li>
-    <li>Coupons are valid only at the participating locations listed by the business.</li>
-    <li>Coupons are redeemed on your own device. You open your card, peel a coupon, and show it to staff to mark it redeemed.</li>
-    <li>A peeled or redeemed coupon cannot be restored.</li>
-    <li>Coupons are not valid with other offers unless the business allows it.</li>
-    <li>Cards expire one year from the date of purchase, or on the date set by the business, whichever comes first. The expiry date is shown on your card.</li>
-  </ul>
-
-  <h2>Access to your card</h2>
-  <p>Your card is reached through a private link sent to the email address you gave at checkout. There is no account and no password. Anyone holding that link can peel and redeem your coupons, so treat it as you would a gift card. Keep the email. We can help you find your card again using the email address or card code from your receipt.</p>
-
-  <h2>Participating businesses</h2>
-  <p>Coupons are offers made by independent businesses, not by us. We do not own, operate or control them. Gostar Digital LLC is not responsible for the quality, availability or conduct of any participating business.</p>
-  <p>If a business closes, changes ownership, stops participating or declines to honor a coupon, we have no obligation to refund, replace or substitute your card or any unused coupons. We will make reasonable efforts to keep the businesses listed on our site accurate, and to tell teams when a business leaves the program.</p>
-
-  <h2>Teams, coaches and players</h2>
-  <p>Teams and coaches are responsible for the information they enter, including player names, and for using the platform only for the fundraiser it was provided for. We may remove a campaign or suspend access if the platform is used in a way that misleads supporters or harms a participating business.</p>
-
-  <h2>Payments</h2>
-  <p>Payments are processed by Stripe. We never see or store your card number. Your purchase is also subject to Stripe's own terms.</p>
-
-  <h2>Fair use</h2>
-  <p>Do not attempt to create coupons or cards you did not pay for, redeem coupons you do not hold, interfere with the service, or access parts of it you were not given a link to.</p>
-
-  <h2>Liability</h2>
-  <p>The service is provided as is. To the extent permitted by law, Gostar Digital LLC is not liable for indirect or consequential losses. Where liability cannot be excluded, it is limited to the amount you paid for the card in question.</p>
-
-  <h2>Changes</h2>
-  <p>We may update these terms. The version in force when you bought your card is the one that applies to that card. Material changes will be noted by the date at the top of this page.</p>
-
-  <h2>Governing law</h2>
-  <p>These terms are governed by the laws of the Commonwealth of Puerto Rico.</p>
-
-  <h2>Contact</h2>
-  <p>Gostar Digital LLC, PO Box 1980-345, Loíza, Puerto Rico 00772<br>
-  <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a></p>
+<main>
+  <div class="wrap" id="app"></div>
 </main>
 
-<footer><div class="wrap">
-  Gostar Digital LLC — Puerto Rico · <a href="privacy.html">Privacy Policy</a>
-</div></footer>
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Terms</a><span class="f-dot">·</span><a href="privacy.html">Privacy</a>
+    </p>
+  </div>
+</footer>
 
+<script>
+var BODY = {
+  en: `
+<h1>Terms of Use</h1>
+<p class="updated">Last updated 3 October 2026</p>
+
+<p class="lead">Cada Punto is operated by Gostar Digital LLC, a limited liability company in
+Puerto Rico. By using this site you agree to what follows. If you do not agree, please do not
+use it.</p>
+
+<h2>What Cada Punto does</h2>
+<p>Cada Punto lets a basketball program raise money from its own schedule. A supporter — a
+<em>padrino</em> — pledges an amount for every point the team scores in a game they choose. After
+the game is played and its score is entered, the padrino is billed for what the team actually
+scored.</p>
+
+<h2>A pledge is a donation</h2>
+<p><strong>Nothing is won, and nothing is paid out to a padrino.</strong> A pledge is a voluntary
+contribution to the program. It is not a wager, a bet, a game of chance, an investment, or a
+purchase of goods or services. The amount varies with the team's score; the money goes to the
+program either way, whether the team wins or loses.</p>
+
+<h2>What a padrino agrees to</h2>
+<ul>
+  <li>A pledge is a commitment to pay once the game is played and scored.</li>
+  <li>Nothing is charged before the game. The amount is not known until the score is entered.</li>
+  <li>A padrino may set a maximum. We will never bill above it.</li>
+  <li>The minimum pledge is $5.</li>
+  <li>If a game is cancelled, an open pledge moves to the program's next scheduled game.</li>
+</ul>
+
+<h2>Fees</h2>
+<p>Our platform fee is 10% of the pledge, <strong>added on top of it</strong> and never taken out
+of it. Payment processing charges are added in the same way. The program receives the full amount
+pledged. Every figure is shown before payment is made.</p>
+
+<h2>What a program agrees to</h2>
+<ul>
+  <li>To enter true scores. Entering a score that did not happen is grounds for closing the
+      campaign and refunding padrinos.</li>
+  <li>To be accurate about what the money is for.</li>
+  <li>To hold any permission required to raise money on behalf of its school, club or league.</li>
+  <li>That funds collected are paid out to the program named in the campaign, and to nobody else.</li>
+</ul>
+
+<h2>Payments and payouts</h2>
+<p>Payments are processed by Stripe, Inc. We do not see or store card numbers. Money collected is
+paid out to the program after a campaign's games are billed, less nothing — our fee having been
+added to the padrino's payment rather than deducted from the program's share.</p>
+
+<h2>Refunds</h2>
+<p>A padrino who believes they were billed in error should write to us at the address below.
+Where a score was entered wrongly, or a game did not take place, we refund. Beyond that, a
+completed donation to a program is not generally refundable, since the money has been passed on.</p>
+
+<h2>The games</h2>
+<p>Memory Basketball — The Fortress, The Rebound, The Replay, The Recall and their head-to-head
+versions — is free to play. No account is needed and nothing is recorded unless you are signed in
+to a campaign. We may change or withdraw the games at any time.</p>
+
+<h2>What belongs to us</h2>
+<p>All software, text, wording, layouts, designs and the names Cada Punto, Cada Punto Cuenta and
+Memory Basketball are the property of Gostar Digital LLC. Nothing on this site grants any licence
+to copy, reproduce or reuse them. Content supplied by a program — its name, its schedule, its
+scores — remains that program's own.</p>
+
+<h2>What we do not promise</h2>
+<p>The site is provided as it is. We do not promise it will be uninterrupted or free of error, and
+we are not liable for any indirect or consequential loss arising from its use. Nothing here limits
+any liability that cannot lawfully be limited.</p>
+
+<h2>Minors</h2>
+<p>Players on a roster may be minors; they do not pledge and do not pay. Padrinos must be 18 or
+over. A program is responsible for any permission it needs before naming a player on a page.</p>
+
+<h2>Ending use</h2>
+<p>We may suspend or close a campaign that breaks these terms, misstates scores, or raises money
+for something other than what it says. Where we do, open pledges are cancelled and payments
+collected are refunded or paid to the program, as the circumstances require.</p>
+
+<h2>Law</h2>
+<p>These terms are governed by the laws of the Commonwealth of Puerto Rico, and any dispute
+belongs to its courts.</p>
+
+<h2>Changes</h2>
+<p>We may update these terms. The date at the top says when they last changed. Continuing to use
+the site after a change means accepting it.</p>
+
+<h2>Contact</h2>
+<p>Gostar Digital LLC<br>
+PO Box 1980-345, Loíza, Puerto Rico 00772<br>
+<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+`,
+  es: `
+<h1>Términos de Uso</h1>
+<p class="updated">Última actualización: 3 de octubre de 2026</p>
+
+<p class="lead">Cada Punto es operado por Gostar Digital LLC, una compañía de responsabilidad
+limitada en Puerto Rico. Al usar este sitio aceptas lo que sigue. Si no estás de acuerdo, por
+favor no lo uses.</p>
+
+<h2>Qué hace Cada Punto</h2>
+<p>Cada Punto le permite a un programa de baloncesto recaudar dinero con su propio calendario. Un
+padrino promete una cantidad por cada punto que anota el equipo en el juego que él escoja. Después
+de que se juega y se registra el marcador, se le cobra por los puntos que de verdad anotaron.</p>
+
+<h2>Una promesa es un donativo</h2>
+<p><strong>No se gana nada y no se le paga nada al padrino.</strong> Una promesa es una
+contribución voluntaria al programa. No es una apuesta, ni un juego de azar, ni una inversión, ni
+la compra de bienes o servicios. La cantidad varía con el marcador; el dinero va al programa de
+todas formas, gane o pierda el equipo.</p>
+
+<h2>Lo que acepta un padrino</h2>
+<ul>
+  <li>Una promesa es un compromiso de pagar una vez jugado el juego y registrado el marcador.</li>
+  <li>No se cobra nada antes del juego. La cantidad no se sabe hasta que entra el marcador.</li>
+  <li>El padrino puede poner un máximo. Nunca cobramos por encima de eso.</li>
+  <li>La promesa mínima es $5.</li>
+  <li>Si se cancela un juego, la promesa abierta pasa al próximo juego del calendario.</li>
+</ul>
+
+<h2>Cargos</h2>
+<p>Nuestro cargo de plataforma es 10% de la promesa, <strong>añadido encima de ella</strong> y
+nunca sacado de ella. Los cargos de procesamiento de pago se añaden igual. El programa recibe la
+cantidad prometida completa. Todas las cifras se muestran antes de pagar.</p>
+
+<h2>Lo que acepta un programa</h2>
+<ul>
+  <li>Registrar marcadores verdaderos. Registrar un marcador que no ocurrió es causa para cerrar
+      la campaña y devolverle el dinero a los padrinos.</li>
+  <li>Ser exacto sobre para qué es el dinero.</li>
+  <li>Tener el permiso que haga falta para recaudar en nombre de su escuela, club o liga.</li>
+  <li>Que lo cobrado se le paga al programa nombrado en la campaña, y a nadie más.</li>
+</ul>
+
+<h2>Pagos y desembolsos</h2>
+<p>Los pagos los procesa Stripe, Inc. Nosotros no vemos ni guardamos números de tarjeta. Lo
+cobrado se le paga al programa después de facturar los juegos de la campaña, sin descuentos —
+nuestro cargo se añadió al pago del padrino, no se restó de lo del programa.</p>
+
+<h2>Reembolsos</h2>
+<p>Un padrino que crea que se le cobró por error debe escribirnos a la dirección de abajo. Si se
+registró mal un marcador, o el juego no se dio, devolvemos el dinero. Fuera de eso, un donativo ya
+completado a un programa no suele ser reembolsable, porque el dinero ya se entregó.</p>
+
+<h2>Los juegos</h2>
+<p>Memory Basketball — The Fortress, The Rebound, The Replay, The Recall y sus versiones uno
+contra uno — es gratis. No hace falta cuenta y no se guarda nada a menos que hayas entrado a una
+campaña. Podemos cambiarlos o retirarlos en cualquier momento.</p>
+
+<h2>Lo que nos pertenece</h2>
+<p>Todo el programa, los textos, la redacción, los diseños y los nombres Cada Punto, Cada Punto
+Cuenta y Memory Basketball son propiedad de Gostar Digital LLC. Nada en este sitio da licencia
+para copiarlos, reproducirlos ni reutilizarlos. El contenido que pone un programa — su nombre, su
+calendario, sus marcadores — sigue siendo de ese programa.</p>
+
+<h2>Lo que no prometemos</h2>
+<p>El sitio se ofrece tal como está. No prometemos que esté siempre disponible ni libre de
+errores, y no respondemos por pérdidas indirectas que surjan de su uso. Nada aquí limita
+responsabilidades que la ley no permite limitar.</p>
+
+<h2>Menores</h2>
+<p>Los jugadores de una lista pueden ser menores; ellos no prometen ni pagan. Los padrinos tienen
+que ser mayores de 18. El programa es responsable de cualquier permiso que necesite antes de
+poner el nombre de un jugador en una página.</p>
+
+<h2>Terminar el uso</h2>
+<p>Podemos suspender o cerrar una campaña que incumpla estos términos, falsee marcadores, o
+recaude para algo distinto de lo que dice. Si lo hacemos, las promesas abiertas se cancelan y lo
+cobrado se devuelve o se le paga al programa, según el caso.</p>
+
+<h2>Ley</h2>
+<p>Estos términos se rigen por las leyes del Estado Libre Asociado de Puerto Rico, y cualquier
+disputa corresponde a sus tribunales.</p>
+
+<h2>Cambios</h2>
+<p>Podemos actualizar estos términos. La fecha de arriba dice cuándo cambiaron por última vez.
+Seguir usando el sitio después de un cambio significa aceptarlo.</p>
+
+<h2>Contacto</h2>
+<p>Gostar Digital LLC<br>
+PO Box 1980-345, Loíza, Puerto Rico 00772<br>
+<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+`
+};
+</script>
+
+<script>
+var LANG='en';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function draw(){
+  document.documentElement.lang = LANG;
+  document.getElementById('app').innerHTML = BODY[LANG] || BODY.en;
+  document.getElementById('langBtn').textContent = LANG==='en' ? 'ES':'EN';
+  try{ document.querySelector('main').scrollTop = 0; }catch(e){}
+}
+function toggleLang(){
+  LANG = LANG==='en' ? 'es':'en';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  draw();
+}
+draw();
+</script>
 </body>
 </html>
