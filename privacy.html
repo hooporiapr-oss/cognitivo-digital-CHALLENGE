@@ -2,99 +2,258 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Privacy Policy — Cash Flow Hoops</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy Policy — Cada Punto</title>
+<meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#160E1C;--line:#3A2647;--gold:#E8B23A;--paper:#F7F3EF;--mute:#B7A8C2}
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.65}
-.wrap{width:min(720px,92vw);margin:0 auto}
-nav{border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.mark{font-weight:800;letter-spacing:-.02em;text-decoration:none}
-.mark em{font-style:normal;color:var(--gold)}
-.navin a.back{color:var(--mute);text-decoration:none;font-size:.9rem}
-.navin a.back:hover{color:var(--paper)}
-main{padding:54px 0 80px}
-h1{font-size:clamp(2.1rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:0 0 .4em}
-h2{font-size:1.14rem;font-weight:800;letter-spacing:-.02em;margin:2.4em 0 .5em}
-p,li{color:#E4DCEA}
-p{margin:0 0 1em}
-ul{padding-left:20px;margin:0 0 1em}
-li{margin:.35em 0}
-.date{color:var(--mute);font-size:.9rem;margin-bottom:2.4em}
-a{color:var(--gold)}
-table{width:100%;border-collapse:collapse;margin:0 0 1.4em;font-size:.95rem}
-th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--mute);font-weight:600;font-size:.85rem}
-footer{border-top:1px solid var(--line);padding:26px 0 46px;color:var(--mute);font-size:.85rem;text-align:center}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,4vw,32px) 0 34px}
+
+h1{font-size:clamp(1.5rem,4.4vw,2rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
+.updated{color:var(--mute);font-size:.86rem;margin:0 0 22px}
+h2{font-size:1.08rem;margin:26px 0 6px;font-weight:900;letter-spacing:-.02em}
+p{margin:0 0 12px}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:6px}
+.lead{color:var(--mute);margin:0 0 20px}
+strong{font-weight:800}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap navin">
-  <a class="mark" href="teams.html">Cash Flow <em>Hoops</em></a>
-  <a class="back" href="teams.html">Back to home</a>
-</div></nav>
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">ES</button>
+  </div>
+</header>
 
-<main class="wrap">
-  <h1>Privacy Policy</h1>
-  <p class="date">Last updated 10 September 2026 · <a href="privacy-es.html">Español</a></p>
-
-  <p>This explains what Cash Flow Hoops collects and why. The service is operated by Gostar Digital LLC, PO Box 1980-345, Loíza, Puerto Rico 00772.</p>
-  <p>We keep as little as possible. There are no accounts for supporters, no passwords, no advertising and no tracking across other websites.</p>
-
-  <h2>What we collect</h2>
-  <table>
-    <tr><th>Information</th><th>Where it comes from</th><th>Why</th></tr>
-    <tr><td>Your name and email address</td><td>You, at checkout</td><td>To send you your card and let the team see who supported them</td></tr>
-    <tr><td>Purchase record: card code, price, date, expiry</td><td>Created when you buy</td><td>To issue your card and keep an accurate record for the team</td></tr>
-    <tr><td>Which coupons you peeled or redeemed, and when</td><td>Your use of the card</td><td>To stop a coupon being used twice and to report totals to the business</td></tr>
-    <tr><td>Player first and last name</td><td>Entered by the coach</td><td>To show the roster and credit each player's sales</td></tr>
-    <tr><td>Coach and business contact details</td><td>Provided when a team or business joins</td><td>To run the program and pay teams their share</td></tr>
-  </table>
-
-  <h2>What we never see</h2>
-  <p>Card numbers and payment details go directly to Stripe. We do not receive them, and we could not store them if we wanted to.</p>
-
-  <h2>Who else handles this information</h2>
-  <p>We use a small number of service providers, and only for the purposes above. We do not sell personal information, and we do not share it for advertising.</p>
-  <ul>
-    <li><strong>Stripe</strong> — processes payments and gives us your name and email so we can send your card.</li>
-    <li><strong>Supabase</strong> — stores the platform's data.</li>
-    <li><strong>Resend</strong> — sends the email containing your card link.</li>
-    <li><strong>Render</strong> — hosts the site and the payment server.</li>
-  </ul>
-  <p>We may also disclose information where the law requires it.</p>
-
-  <h2>Players and children</h2>
-  <p>Players on a team roster are often under 18. For each player we store only a name, entered by their coach, together with the total raised through their link. We do not collect a player's email address, phone number, photograph, date of birth or address, and players do not create accounts.</p>
-  <p>A player's name and total appear on that team's public page. Coaches decide what name to enter and may use a first name and last initial. A coach or parent can ask us to change or remove a player's name at any time by emailing us, and we will do it promptly.</p>
-
-  <h2>How long we keep it</h2>
-  <p>Purchase and coupon records are kept while your card is valid and for a reasonable period afterwards for accounting and to settle disputes with teams and businesses. Player and roster information is kept while the campaign is running and removed when a team leaves the program or asks us to remove it.</p>
-
-  <h2>Your card link</h2>
-  <p>Your card is reached by a private link, not a password. Anyone with the link can use the coupons. Treat that email the way you would treat a gift card.</p>
-
-  <h2>Your choices</h2>
-  <p>Email us to ask what we hold about you, to correct it, or to have it deleted. We will respond within a reasonable time. Deleting a purchase record may make the associated card unusable, so we will tell you before doing that.</p>
-  <p>Emails we send are about a purchase you made. We do not send marketing email, so there is nothing to unsubscribe from.</p>
-
-  <h2>Changes</h2>
-  <p>If this policy changes, the date at the top of this page changes with it.</p>
-
-  <h2>Contact</h2>
-  <p>Gostar Digital LLC, PO Box 1980-345, Loíza, Puerto Rico 00772<br>
-  <a href="mailto:cashflowhoops@gmail.com">cashflowhoops@gmail.com</a></p>
+<main>
+  <div class="wrap" id="app"></div>
 </main>
 
-<footer><div class="wrap">
-  Gostar Digital LLC — Puerto Rico · <a href="terms.html">Terms of Use</a>
-</div></footer>
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Terms</a><span class="f-dot">·</span><a href="privacy.html">Privacy</a>
+    </p>
+  </div>
+</footer>
 
+<script>
+var BODY = {
+  en: `
+<h1>Privacy Policy</h1>
+<p class="updated">Last updated 3 October 2026</p>
+
+<p class="lead">This explains what Cada Punto collects, why, and what we do with it. Cada Punto is
+operated by Gostar Digital LLC in Puerto Rico.</p>
+
+<h2>What we collect</h2>
+<p><strong>From a padrino.</strong> Your name, your email address, the rate you pledge and the
+game you pledged on. If you pay, Stripe handles the payment and tells us only that it succeeded
+and for how much.</p>
+<p><strong>From a program.</strong> The program's name, the coach's email, the schedule, the
+scores entered, and the roster of player names the program chooses to add.</p>
+<p><strong>From anyone visiting.</strong> Nothing beyond what your browser sends in the ordinary
+course. We do not use advertising trackers and we do not sell anything about you.</p>
+
+<h2>What we never see</h2>
+<p>Card numbers. Payments are processed by <strong>Stripe, Inc.</strong>, and card details go
+straight to them. We never receive them and they are never stored on our systems.</p>
+
+<h2>Why we hold it</h2>
+<ul>
+  <li>To bill a pledge after a game is scored, and to email you the amount and a payment link.</li>
+  <li>To show a program what it has raised, and to pay it out.</li>
+  <li>To show the public scoreboard: the schedule, the scores and the team's running points.</li>
+  <li>To answer you when you write to us.</li>
+</ul>
+
+<h2>What is public</h2>
+<p>The scoreboard shows the program's name, its schedule, its scores and its points total. It
+shows how many padrinos have pledged on a game. <strong>It does not show a padrino's name, email
+or amount.</strong> A program's coach can see the pledges on their own campaign; nobody else can.</p>
+
+<h2>Players and minors</h2>
+<p>A roster holds a player's name, and nothing else — no address, no date of birth, no contact
+details. Players do not pledge and do not pay. A program decides who appears on its roster and is
+responsible for having any permission required to name a child. A program or a parent may ask us
+to remove a name and we will do it.</p>
+
+<h2>Who else handles it</h2>
+<ul>
+  <li><strong>Supabase</strong> — stores the database.</li>
+  <li><strong>Stripe</strong> — processes payments.</li>
+  <li><strong>Resend</strong> — sends the emails.</li>
+  <li><strong>Render</strong> — hosts the site and the payment server.</li>
+</ul>
+<p>Each holds data only to do that job. We do not sell, rent or trade personal information to
+anyone, for any purpose.</p>
+
+<h2>Email</h2>
+<p>We email a padrino about their own pledge: the score, the amount, a payment link, and a
+thank-you once paid. We do not send marketing email and we do not add anyone to a list.</p>
+
+<h2>How long we keep it</h2>
+<p>Pledge and payment records are kept while a campaign runs and afterwards for as long as
+accounting and tax rules require. A roster is kept while the program's campaign exists. You may
+ask for your own records to be deleted, subject to records we must keep for tax.</p>
+
+<h2>Your choices</h2>
+<p>Write to us and you may ask what we hold about you, ask for it to be corrected, or ask for it
+to be deleted. We will answer.</p>
+
+<h2>What is stored on your device</h2>
+<p>We keep a small amount in your browser's own storage: your language choice, and — on a
+program's pages — who is signed in on that device. These are not advertising cookies and they are
+not shared with anyone. Clearing your browser data removes them.</p>
+
+<h2>Security</h2>
+<p>Connections are encrypted. Payment data never reaches us. Access to pledge records requires a
+sign-in. No system is perfect, and we will tell affected people promptly if something goes wrong.</p>
+
+<h2>Changes</h2>
+<p>We may update this policy. The date at the top says when it last changed.</p>
+
+<h2>Contact</h2>
+<p>Gostar Digital LLC<br>
+PO Box 1980-345, Loíza, Puerto Rico 00772<br>
+<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+`,
+  es: `
+<h1>Política de Privacidad</h1>
+<p class="updated">Última actualización: 3 de octubre de 2026</p>
+
+<p class="lead">Esto explica qué recoge Cada Punto, por qué, y qué hacemos con ello. Cada Punto es
+operado por Gostar Digital LLC en Puerto Rico.</p>
+
+<h2>Qué recogemos</h2>
+<p><strong>De un padrino.</strong> Tu nombre, tu correo, la tarifa que prometes y el juego en que
+prometiste. Si pagas, Stripe maneja el pago y sólo nos dice que salió bien y por cuánto.</p>
+<p><strong>De un programa.</strong> El nombre del programa, el correo del coach, el calendario,
+los marcadores, y la lista de nombres de jugadores que el programa decida añadir.</p>
+<p><strong>De quien visita.</strong> Nada más allá de lo que manda tu navegador normalmente. No
+usamos rastreadores de publicidad y no vendemos nada sobre ti.</p>
+
+<h2>Lo que nunca vemos</h2>
+<p>Números de tarjeta. Los pagos los procesa <strong>Stripe, Inc.</strong>, y los datos de la
+tarjeta van directo a ellos. Nunca nos llegan y nunca se guardan en nuestros sistemas.</p>
+
+<h2>Por qué lo guardamos</h2>
+<ul>
+  <li>Para cobrar una promesa después de registrar el marcador, y mandarte la cantidad y un
+      enlace de pago.</li>
+  <li>Para enseñarle a un programa lo que ha recaudado, y pagárselo.</li>
+  <li>Para mostrar el tablero público: el calendario, los marcadores y los puntos del equipo.</li>
+  <li>Para contestarte cuando nos escribes.</li>
+</ul>
+
+<h2>Qué es público</h2>
+<p>El tablero muestra el nombre del programa, su calendario, sus marcadores y su total de puntos.
+Muestra cuántos padrinos prometieron en un juego. <strong>No muestra el nombre, el correo ni la
+cantidad de ningún padrino.</strong> El coach del programa ve las promesas de su propia campaña;
+nadie más.</p>
+
+<h2>Jugadores y menores</h2>
+<p>Una lista guarda el nombre del jugador y nada más — sin dirección, sin fecha de nacimiento, sin
+datos de contacto. Los jugadores no prometen ni pagan. El programa decide quién aparece en su
+lista y es responsable de tener el permiso que haga falta para nombrar a un menor. Un programa o
+un padre puede pedirnos que quitemos un nombre y lo hacemos.</p>
+
+<h2>Quién más lo maneja</h2>
+<ul>
+  <li><strong>Supabase</strong> — guarda la base de datos.</li>
+  <li><strong>Stripe</strong> — procesa los pagos.</li>
+  <li><strong>Resend</strong> — manda los correos.</li>
+  <li><strong>Render</strong> — aloja el sitio y el servidor de pagos.</li>
+</ul>
+<p>Cada uno guarda datos sólo para hacer ese trabajo. No vendemos, alquilamos ni intercambiamos
+información personal con nadie, para ningún fin.</p>
+
+<h2>Correo</h2>
+<p>Le escribimos a un padrino sobre su propia promesa: el marcador, la cantidad, un enlace de
+pago, y un gracias cuando paga. No mandamos correo de publicidad y no metemos a nadie en una
+lista.</p>
+
+<h2>Cuánto tiempo lo guardamos</h2>
+<p>Los registros de promesas y pagos se guardan mientras corre la campaña y después por el tiempo
+que exijan las reglas de contabilidad e impuestos. Una lista se guarda mientras exista la campaña
+del programa. Puedes pedir que borremos tus registros, salvo lo que tengamos que guardar por
+impuestos.</p>
+
+<h2>Tus opciones</h2>
+<p>Escríbenos y puedes preguntar qué tenemos sobre ti, pedir que lo corrijamos, o pedir que lo
+borremos. Te contestamos.</p>
+
+<h2>Qué se guarda en tu aparato</h2>
+<p>Guardamos poco en el almacenamiento de tu navegador: tu idioma, y — en las páginas de un
+programa — quién entró en ese aparato. No son cookies de publicidad y no se comparten con nadie.
+Borrar los datos del navegador los elimina.</p>
+
+<h2>Seguridad</h2>
+<p>Las conexiones van cifradas. Los datos de pago nunca nos llegan. Ver los registros de promesas
+requiere entrar con credenciales. Ningún sistema es perfecto, y si algo sale mal avisamos pronto a
+quien le afecte.</p>
+
+<h2>Cambios</h2>
+<p>Podemos actualizar esta política. La fecha de arriba dice cuándo cambió por última vez.</p>
+
+<h2>Contacto</h2>
+<p>Gostar Digital LLC<br>
+PO Box 1980-345, Loíza, Puerto Rico 00772<br>
+<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+`
+};
+</script>
+
+<script>
+var LANG='en';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function draw(){
+  document.documentElement.lang = LANG;
+  document.getElementById('app').innerHTML = BODY[LANG] || BODY.en;
+  document.getElementById('langBtn').textContent = LANG==='en' ? 'ES':'EN';
+  try{ document.querySelector('main').scrollTop = 0; }catch(e){}
+}
+function toggleLang(){
+  LANG = LANG==='en' ? 'es':'en';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  draw();
+}
+draw();
+</script>
 </body>
 </html>
