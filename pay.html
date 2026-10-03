@@ -148,6 +148,12 @@ footer a:hover{color:#FFFFFF}
 .scored{border:2px solid var(--ink,#12202E);border-radius:4px;padding:16px;text-align:center;margin:0 0 16px}
 .scored-n{font-size:clamp(2.6rem,12vw,3.6rem);font-weight:900;line-height:1;letter-spacing:-.04em}
 .scored-l{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#5A6B7C;margin-top:4px}
+
+footer p{margin:0 0 7px}
+footer .f-co{font-weight:700}
+footer .f-nav{margin-top:12px}
+footer .f-legal{margin:7px 0 0;font-size:.8rem}
+footer .f-dot{padding:0 7px;opacity:.5}
 </style>
 </head>
 <body>
@@ -164,9 +170,12 @@ footer a:hover{color:#FFFFFF}
 </div></main>
 
 <footer><div class="wrap">
-  © 2026 Gostar Digital LLC — Puerto Rico ·
-  <a href="terms.html" id="fTerms">Terms</a> ·
-  <a href="privacy.html" id="fPrivacy">Privacy</a>
+  <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+  <p class="f-legal">
+    <a href="terms.html" data-t="fTerms">Terms</a>
+    <span class="f-dot">·</span>
+    <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+  </p>
 </div></footer>
 
 <script>
