@@ -541,6 +541,10 @@ body.paper .runrow{background:#FFFFFF;border:1.5px solid var(--line);color:#1A24
 body.paper .runrow .rr-go{color:#0C6E8C}
 body.paper footer,body.paper .foot{color:#5A6B7C;border-color:var(--line)}
 body.paper .motto{color:#0C6E8C}
+footer p{margin:0 0 7px}
+footer .f-co{font-weight:700}
+footer .f-legal{margin:7px 0 0;font-size:.8rem}
+footer .f-dot{padding:0 7px;opacity:.5}
 </style>
 </head>
 <body>
@@ -703,6 +707,7 @@ var STR = {
     notFound:'{W} not found', notFoundNote:'Check the link, or ask whoever sent it for a new one.',
     backHome:'← The challenges', loadFail:'Could not load this page. Please try again.',
     wordChallenge:'Challenge', wordPlayer:'Participant', wordTeam:'The division',
+    fTerms:'Terms', fPrivacy:'Privacy',
     footer:'© 2026 Gostar Digital LLC — Puerto Rico'
   },
   es:{ tagline:'Recaudación para programas de baloncesto.',
@@ -823,6 +828,7 @@ var STR = {
     notFound:'{W} no encontrado', notFoundNote:'Verifica el enlace o pide uno nuevo a quien te lo envió.',
     backHome:'← The challenges', loadFail:'No se pudo cargar esta página. Intenta de nuevo.',
     wordChallenge:'Reto', wordPlayer:'Participante', wordTeam:'La división',
+    fTerms:'Términos', fPrivacy:'Privacidad',
     footer:'© 2026 Gostar Digital LLC — Puerto Rico'
   }
 };
@@ -1008,8 +1014,15 @@ function renderLanding(){
 }
 
 function footerHtml(){
-  return '<footer><span class="f-name">' + T('footer') + '</span><br>' +
-         '<a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></footer>';
+  return '<footer>' +
+           '<p class="f-co">' + T('footer') + '</p>' +
+           '<p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>' +
+           '<p class="f-legal">' +
+             '<a href="terms.html">' + T('fTerms') + '</a>' +
+             '<span class="f-dot">·</span>' +
+             '<a href="privacy.html">' + T('fPrivacy') + '</a>' +
+           '</p>' +
+         '</footer>';
 }
 
 // ---------- team page ----------
