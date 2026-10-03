@@ -60,6 +60,7 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .game .score{font-size:1.5rem;font-weight:900;margin-top:6px}
 .game .score span{color:var(--mute);font-weight:800;font-size:1rem}
 .game .score .w{color:var(--good)}
+.game .shut{margin-top:8px;font-size:.86rem;font-weight:800;color:var(--mute)}
 .playerlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
   margin-top:18px;text-decoration:none;color:var(--ink)}
 .playerlink:hover{border-color:var(--ink);border-style:solid}
@@ -160,6 +161,8 @@ var S = {
     thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
     errMin:'That comes to less than $5. Choose a higher rate.',
     errWho:'Your name and email, please.',
+    inPlay:'Pledging closed — the game has started.',
+    errStarted:'That game has started. Pick another one.',
     errClosed:'That game is closed for pledges.',
     errGen:'Could not record the pledge. Try again.',
     whoAsked:'Who asked you? (optional)', nobody:'Nobody in particular',
@@ -191,6 +194,8 @@ var S = {
     thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
     errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
     errWho:'Tu nombre y tu correo, por favor.',
+    inPlay:'Promesas cerradas — el juego ya empezó.',
+    errStarted:'Ese juego ya empezó. Escoge otro.',
     errClosed:'Ese juego ya no acepta promesas.',
     errGen:'No se pudo registrar la promesa. Intenta otra vez.',
     whoAsked:'¿Quién te invitó? (opcional)', nobody:'Nadie en particular',
@@ -252,6 +257,7 @@ function load(){
 
 function gameCard(g, isNext){
   var played = g.status === 'played';
+  var started = !played && g.started;
   var won = played && g.opp_points != null && g.team_points > g.opp_points;
 
   return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') + '">' +
@@ -264,8 +270,11 @@ function gameCard(g, isNext){
     (played
       ? '<div class="score"><span class="' + (won ? 'w' : '') + '">' + T('final') + '</span> ' +
           g.team_points + (g.opp_points != null ? ' <span>–</span> ' + g.opp_points : '') + '</div>'
-      : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
-        '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
+      : started
+        ? (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
+          '<div class="shut">' + T('inPlay') + '</div>'
+        : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
+          '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
   '</div>';
 }
 
@@ -275,6 +284,7 @@ function draw(){
 
   var games = BOARD.games || [];
   var upcoming = games.filter(function(g){ return g.status === 'scheduled'; });
+  var open = upcoming.filter(function(g){ return !g.started; });
   var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
 
   app.innerHTML =
@@ -292,7 +302,7 @@ function draw(){
     '</div>' +
 
     (upcoming.length
-      ? upcoming.map(function(g, i){ return gameCard(g, i === 0); }).join('')
+      ? upcoming.map(function(g){ return gameCard(g, g === open[0]); }).join('')
       : '<p style="color:var(--mute)">' + T('noGames') + '</p>') +
 
     (results.length
@@ -390,7 +400,8 @@ function send(){
   .then(function(r){
     if (!r || !r.ok){
       if (r && r.reason === 'min')    return say(T('errMin'), 'bad');
-      if (r && r.reason === 'closed') return say(T('errClosed'), 'bad');
+      if (r && r.reason === 'closed')  return say(T('errClosed'), 'bad');
+      if (r && r.reason === 'started') return say(T('errStarted'), 'bad');
       if (r && r.reason === 'who')    return say(T('errWho'), 'bad');
       return say(T('errGen'), 'bad');
     }
