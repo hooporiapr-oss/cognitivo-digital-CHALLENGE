@@ -80,6 +80,11 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
 .msg.bad{color:#A8323F}
 .msg.ok{color:var(--good)}
 .fine{color:var(--mute);font-size:.82rem;margin-top:10px}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+footer a{color:#4FD3F0;text-decoration:none}
 </style>
 </head>
 <body>
@@ -96,8 +101,13 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
 </main>
 
 <footer>
-  <b>© 2026 Gostar Digital LLC · Puerto Rico</b>
-  <a href="mailto:gostardigital@gmail.com" style="color:#4FD3F0;text-decoration:none">gostardigital@gmail.com</a>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Terms</a><span class="f-dot">·</span><a href="privacy.html">Privacy</a>
+    </p>
+  </div>
 </footer>
 
 <script>
