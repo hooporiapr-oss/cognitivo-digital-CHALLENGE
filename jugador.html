@@ -110,6 +110,9 @@ var S = {
     seeBoard:'Ver el tablero del equipo',
     howH:'Cómo funciona',
     howP:'Quien abra tu enlace escoge un juego y promete unos centavos por cada punto que anote el equipo. Después del juego se le cobra lo que de verdad anotaron, y todo va al programa.',
+    noCampH:'Te falta el enlace de tu equipo',
+    noCampP:'Esta página te da tu propio enlace de padrinos, pero tiene que venir del enlace que manda tu coach al grupo del equipo. Pídeselo.',
+    backHome:'← Volver',
     msg:'¡Apoya a mi equipo! Prometes unos centavos por cada punto que anotemos, y pagas sólo después del juego. Todo va al programa.'
   },
   en:{
@@ -129,6 +132,9 @@ var S = {
     seeBoard:'See the team board',
     howH:'How it works',
     howP:'Whoever opens your link picks a game and pledges a few cents for every point the team scores. After the game they are billed for what the team actually scored, and all of it goes to the program.',
+    noCampH:'You need your team\u2019s link',
+    noCampP:'This page gives you your own padrino link, but it has to come from the link your coach sends to the team group. Ask them for it.',
+    backHome:'← Back',
     msg:'Back my team! You pledge a few cents for every point we score, and you only pay after the game. All of it goes to the program.'
   }
 };
@@ -164,7 +170,14 @@ function myLink(){
 }
 
 function draw(){
-  if (!CAMPAIGN){ app.innerHTML = '<p class="lede">—</p>'; return; }
+  if (!CAMPAIGN){
+    app.innerHTML =
+      '<h1>' + T('noCampH') + '</h1>' +
+      '<p class="lede">' + T('noCampP') + '</p>' +
+      '<div class="how"><b>' + T('howH') + '</b><p>' + T('howP') + '</p></div>' +
+      '<a class="btn line" href="index.html">' + T('backHome') + '</a>';
+    return;
+  }
 
   var crest = (BOARD && BOARD.logo)
     ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" onerror="this.style.display=\'none\'">'
