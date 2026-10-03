@@ -63,7 +63,7 @@ header{padding:clamp(40px,7vw,64px) 0 26px}
 h1{font-size:clamp(1.9rem,5.5vw,2.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:0 0 .4em;max-width:16ch}
 .lede{color:#CFE3F2;max-width:52ch;margin:0}
 
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3.5vw,32px);margin-bottom:40px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3.5vw,32px);margin-bottom:22px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 .full{grid-column:1/-1}
@@ -72,15 +72,15 @@ input,textarea{width:100%;padding:13px 14px;border-radius:10px;border:1px solid 
 textarea{height:110px;resize:vertical}
 input:focus,textarea:focus{outline:none;border-color:var(--gold)}
 
-.send{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px}
-.btn{flex:1 1 220px;padding:16px 22px;border:none;border-radius:12px;font-family:inherit;font-size:.95rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;background:var(--gold);color:#04121A}
+.send{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:24px;text-align:center}
+.btn{flex:0 0 auto;min-width:240px;padding:16px 22px;border:none;border-radius:12px;font-family:inherit;font-size:.95rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;background:var(--gold);color:#04121A}
 .btn:disabled{opacity:.55;cursor:default}
 .msg{flex:1 1 220px;font-size:.93rem;font-weight:600;min-height:22px}
 
-.direct{color:var(--mute);font-size:.95rem;text-align:center;margin:0 0 44px}
+.direct{color:var(--mute);font-size:.95rem;text-align:center;margin:0 0 22px}
 .direct a{color:var(--gold)}
 
-footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
+footer{border-top:1px solid var(--line);padding:20px 0 28px;text-align:center;color:var(--mute);font-size:.85rem}
 footer a{color:var(--mute)}
 
 /* ---------- the Cada Punto wordmark ---------- */
@@ -92,6 +92,12 @@ footer a{color:var(--mute)}
 
 /* the mark says the whole line now */
 .wm i{font-style:normal;color:var(--mute)}
+
+footer p{margin:0 0 7px}
+footer .f-co{font-weight:700}
+footer .f-nav{margin-top:12px}
+footer .f-legal{margin:7px 0 0;font-size:.8rem}
+footer .f-dot{padding:0 7px;opacity:.5}
 </style>
 </head>
 <body>
@@ -160,11 +166,13 @@ footer a{color:var(--mute)}
 </div>
 
 <footer><div class="wrap">
-  © 2026 Gostar Digital LLC — Puerto Rico ·
-  <a href="scoring.html" data-t="fScoring">Chain scoring</a> ·
-  <a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a> ·
-  <a href="terms.html" data-t="fTerms">Terms</a> ·
-  <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+  <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+  <p class="f-nav"><a href="scoring.html" data-t="fScoring">Chain scoring</a><span class="f-dot">·</span><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
+  <p class="f-legal">
+    <a href="terms.html" data-t="fTerms">Terms</a>
+    <span class="f-dot">·</span>
+    <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+  </p>
 </div></footer>
 
 <script>
