@@ -40,6 +40,13 @@ footer b{color:#fff;display:block;font-weight:800}
 .total .big{font-size:clamp(3rem,15vw,5.5rem);font-weight:900;line-height:1;letter-spacing:-.04em}
 .total .sub{color:var(--mute);font-size:.94rem;margin-top:4px}
 h1{font-size:clamp(1.35rem,4.2vw,1.85rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
+/* Un escudo puede venir en cualquier forma, así que se le da una caja
+   y se encaja dentro sin recortarlo. Si la dirección falla, desaparece
+   en vez de dejar un icono roto. */
+.crest{display:block;max-height:96px;max-width:200px;width:auto;height:auto;
+  margin:0 auto 12px;object-fit:contain}
+h1.withcrest{text-align:center}
+h1.withcrest + .lede{text-align:center;margin-left:auto;margin-right:auto}
 .lede{color:var(--mute);margin:0 0 18px}
 h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 
@@ -264,7 +271,11 @@ function draw(){
   var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
 
   app.innerHTML =
-    '<h1>' + esc(BOARD.campaign || '') + '</h1>' +
+    (BOARD.logo
+      ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" ' +
+        'onerror="this.style.display=\'none\'">'
+      : '') +
+    '<h1' + (BOARD.logo ? ' class="withcrest"' : '') + '>' + esc(BOARD.campaign || '') + '</h1>' +
     '<p class="lede">' + T('lede') + '</p>' +
 
     '<div class="total">' +
