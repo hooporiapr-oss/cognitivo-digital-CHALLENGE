@@ -58,6 +58,11 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
   background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
   cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
 .btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
+  font-size:.88rem;font-weight:400;color:var(--mute)}
+.ok span{cursor:pointer}
+.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+.ok a{color:var(--accent)}
 .msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
 .msg.bad{color:var(--bad)}
 .msg.ok{color:var(--good)}
@@ -122,6 +127,8 @@ var S = {
     nameL:'Tu nombre', namePh:'Nombre y apellido',
     emailL:'Tu correo', emailPh:'Ahí te escribimos y por ahí entras',
     phoneL:'Tu teléfono (opcional)', phonePh:'787…',
+    terms:'He leído y acepto los <a href="terms.html" target="_blank">Términos de Uso</a> y la <a href="privacy.html" target="_blank">Política de Privacidad</a>.',
+    errTerms:'Tienes que aceptar los términos para seguir.',
     go:'Inscribir mi equipo',
     errTeam:'Escribe el nombre del equipo.',
     errProg:'Escribe el nombre del programa.',
@@ -152,6 +159,8 @@ var S = {
     nameL:'Your name', namePh:'First and last name',
     emailL:'Your email', emailPh:'We write here, and you sign in with it',
     phoneL:'Your phone (optional)', phonePh:'787…',
+    terms:'I have read and accept the <a href="terms.html" target="_blank">Terms of Use</a> and the <a href="privacy.html" target="_blank">Privacy Policy</a>.',
+    errTerms:'You have to accept the terms to continue.',
     go:'Sign up my team',
     errTeam:'Write the team name.',
     errProg:'Write the program name.',
@@ -229,6 +238,10 @@ function draw(){
     '<label for="ph">' + T('phoneL') + '</label>' +
     '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" autocomplete="tel">' +
 
+    '<div class="ok">' +
+      '<input id="tc" type="checkbox">' +
+      '<span onclick="document.getElementById(\'tc\').click()">' + T('terms') + '</span>' +
+    '</div>' +
     '<button class="btn" onclick="send()">' + T('go') + '</button>' +
     '<p class="msg" id="msg"></p>' +
 
@@ -251,9 +264,13 @@ function send(){
   if (!prog) return say(T('errProg'), 'bad');
   if (!name || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
 
+  var ok = document.getElementById('tc');
+  if (!ok || !ok.checked) return say(T('errTerms'), 'bad');
+
   say('…');
   rpc('bw_request_team', {
-    p_team: team, p_program: prog, p_name: name, p_email: email, p_phone: phone
+    p_team: team, p_program: prog, p_name: name, p_email: email,
+    p_phone: phone, p_terms: true
   })
   .then(function(r){
     if (!r || !r.ok){
