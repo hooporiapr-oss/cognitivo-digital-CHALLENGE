@@ -105,9 +105,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <nav><div class="wrap navin">
   <a class="mark" href="index.html"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
-    <a href="challenges.html" data-t="navPlay">The challenges</a>
-    <a href="scoring.html" data-t="navScoring">Chain scoring</a>
-    <button id="lang" onclick="flip()">ES</button>
+    <a href="challenges.html" data-t="navPlay">The challenges</a><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -116,9 +114,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
   <a href="challenges.html" data-t="mPlay">The challenges</a>
-  <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
-  <a href="scoring.html" data-t="mScoring">Chain scoring</a>
-  <a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
+  <a href="padrinos.html" data-t="mPad">Getting padrinos</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
 
@@ -167,7 +163,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
 <footer><div class="wrap">
   <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
-  <p class="f-nav"><a href="scoring.html" data-t="fScoring">Chain scoring</a><span class="f-dot">·</span><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
+  <p class="f-nav"><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
   <p class="f-legal">
     <a href="terms.html" data-t="fTerms">Terms</a>
     <span class="f-dot">·</span>
@@ -182,9 +178,8 @@ var SERVER='https://basketball-money-payments.onrender.com';
 
 var T = {
   en:{
-    mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
-    mScoring:'Chain scoring', mTalk:'Talk to us →',
-    navPlay:'The challenges', navScoring:'Chain scoring',
+    mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos', mTalk:'Talk to us →',
+    navPlay:'The challenges',
     h1:'Talk to us.',
     lede:'Tell us about your program and we will build the whole thing — your roster, a link for every participant — and send it over to look at. Nothing goes live until you say so.',
     lSchool:'School, club or group', lName:'Your name', lPhone:'Phone', lEmail:'Email',
@@ -197,13 +192,11 @@ var T = {
     needEmail:'Please enter a valid email — that is how we reach you.',
     sending:'Sending…',
     sent:'✓ Thank you. We have your details and will be in touch within a day.',
-    failed:'Could not send that — please try again, or email us.',
-    fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
+    failed:'Could not send that — please try again, or email us.', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
-    mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
-    navPlay:'Los retos', navScoring:'Puntuación en cadena',
+    mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
+    navPlay:'Los retos',
     h1:'Habla con nosotros.',
     lede:'Cuéntanos de tu programa y lo armamos todo — tu lista, un enlace para cada participante — y te lo mandamos para que lo veas. Nada sale al aire hasta que tú lo digas.',
     lSchool:'Escuela, club o grupo', lName:'Tu nombre', lPhone:'Teléfono', lEmail:'Correo',
@@ -216,8 +209,7 @@ var T = {
     needEmail:'Por favor entra un correo válido — así te contactamos.',
     sending:'Enviando…',
     sent:'✓ Gracias. Tenemos tus datos y te contactamos en un día.',
-    failed:'No se pudo enviar — intenta de nuevo o escríbenos.',
-    fScoring:'Puntuación en cadena', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
+    failed:'No se pudo enviar — intenta de nuevo o escríbenos.', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
