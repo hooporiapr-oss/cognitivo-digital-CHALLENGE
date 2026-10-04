@@ -265,6 +265,9 @@ function toggleLang(){
 var PARAMS = new URLSearchParams(location.search);
 var CAMPAIGN = PARAMS.get('c');
 var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
+var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
+var WANT_VS = PARAMS.get('vs') || null;        // y contra quién
+var JUMPED = false;
 var ROSTER = [];
 var BOARD = null, PICKED = null, RATE = 0.10;
 var app = document.getElementById('app');
@@ -411,6 +414,20 @@ function gameCard(g, isNext, hidden){
 
 function draw(){
   if (!BOARD) return;
+
+  // Si vinieron desde el calendario del torneo pidiendo un juego, se
+  // abre ése directamente. Una sola vez: después se navega normal.
+  if (!JUMPED && WANT_ON && WANT_VS && !PICKED){
+    JUMPED = true;
+    var hit = (BOARD.games || []).filter(function(g){
+      return g.status === 'scheduled' && !g.started &&
+             g.plays_on === WANT_ON &&
+             String(g.opponent || '').trim().toLowerCase() ===
+               WANT_VS.trim().toLowerCase();
+    })[0];
+    if (hit){ PICKED = hit; }
+  }
+
   if (PICKED) return drawPledge();
 
   var games = BOARD.games || [];
