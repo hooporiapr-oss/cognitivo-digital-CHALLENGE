@@ -71,6 +71,11 @@ h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.03em;margin:0 0 4px;font-
   text-decoration:none;background:#fff}
 .pl b{font-weight:900}
 .pl:hover{background:var(--accent);color:#fff}
+.pl.want{border-style:dashed;border-color:var(--line);color:var(--mute);
+  font-family:inherit;cursor:pointer}
+.pl.want:hover{border-color:var(--accent);color:var(--accent);background:#fff}
+.pl.waiting{border-style:dashed;border-color:var(--line);color:#9AA8B5;cursor:default}
+.pl.waiting:hover{background:#fff;color:#9AA8B5}
 .r{cursor:default}
 .r.done{background:var(--tint)}
 .r.done.p{background:rgba(255,122,24,.1)}
@@ -301,6 +306,69 @@ var SCORES = {};
 // ══════════════════════════════════════════════════════
 var TEAMS = {};
 
+// ══════════════════════════════════════════════════════
+//  Un equipo sin campaña enseña cómo conseguir una. El
+//  coach pide; se aprueba a mano, porque pedir un equipo
+//  es pedir el derecho a cobrar en su nombre.
+// ══════════════════════════════════════════════════════
+var ASKED = {};
+
+function loadAsked(){
+  return rpc('bw_request_states')
+    .then(function(r){ ASKED = r || {}; })
+    .catch(function(e){ console.error('asked', e); });
+}
+
+function askTeam(name){
+  var team = resolve(name);
+  if (placeholderFor(team)) return;
+
+  var program = prompt(ASK.program, team);
+  if (program === null) return;
+  if (!program.trim()) return;
+
+  var coach = prompt(ASK.coach);
+  if (coach === null || !coach.trim()) return;
+
+  var email = prompt(ASK.email);
+  if (email === null || email.indexOf('@') === -1) return;
+
+  var phone = prompt(ASK.phone) || '';
+
+  if (!confirm(ASK.terms)) return;
+
+  rpc('bw_request_team', {
+    p_team: team, p_program: program.trim(), p_name: coach.trim(),
+    p_email: email.trim(), p_phone: phone.trim(), p_terms: true
+  }).then(function(r){
+    if (!r || !r.ok){
+      if (r && r.reason === 'taken')   return alert(ASK.taken);
+      if (r && r.reason === 'pending') return alert(ASK.already);
+      return alert(ASK.failed);
+    }
+    ASKED[team.toLowerCase()] = 'pending';
+    alert(ASK.thanks);
+    paintPledges();
+  }).catch(function(e){ console.error(e); alert(ASK.failed); });
+}
+
+var ASK = {
+  program:'¿Cómo se llama el programa? (lo que verán las familias)',
+  coach:'¿Tu nombre?',
+  email:'¿Tu correo? Ahí te escribimos.',
+  phone:'¿Tu teléfono? (opcional)',
+  terms:'¿Aceptas los Términos de Uso y la Política de Privacidad de Cada Punto?\n\n' +
+        'cadapunto.com/terms.html',
+  thanks:'Pedido. Te escribimos para confirmar y abrirte la campaña.',
+  taken:'Ese equipo ya tiene campaña.',
+  already:'Ya hay una petición para ese equipo. Te escribimos pronto.',
+  failed:'No se pudo enviar. Intenta otra vez.',
+  want:' — recaudar con este equipo',
+  waiting:' — pedido'
+};
+
+
+
 function teamKey(n){ return norm(n); }
 
 function teamOf(name){
@@ -319,7 +387,19 @@ function pledgeBits(row){
     var real = resolve(side);
     if (placeholderFor(real)) return;          // todavía es un hueco
     var t = TEAMS[teamKey(real)];
-    if (!t) return;
+
+    if (!t){
+      // Sin campaña: se ofrece pedirla, o se dice que ya está pedida.
+      if (ASKED[real.toLowerCase()]){
+        out.push('<span class="pl waiting"><b>' + real + '</b>' + ASK.waiting + '</span>');
+      } else {
+        out.push('<button class="pl want" onclick="askTeam(\'' +
+                   real.replace(/'/g, "\\'") + '\')">' +
+                   '<b>' + real + '</b>' + ASK.want +
+                 '</button>');
+      }
+      return;
+    }
 
     // Para ese equipo, el rival es el otro lado — que es como está
     // puesto el juego en su propia campaña.
@@ -432,7 +512,7 @@ function paint(){
 }
 
 function load(){
-  Promise.all([ rpc('bw_board'), loadTeams() ])
+  Promise.all([ rpc('bw_board'), loadTeams(), loadAsked() ])
     .then(function(r){ SCORES = r[0] || {}; paint(); paintPledges(); })
     .catch(function(e){ console.error(e); });
 }
