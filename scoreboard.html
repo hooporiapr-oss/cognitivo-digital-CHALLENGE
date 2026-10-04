@@ -400,10 +400,10 @@ function gameCard(g, isNext, hidden){
             '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
 
     // El camino que sigue, si lo hay y si no se está mostrando ya.
-    (g._rounds > 1 && g._depth <= 1
-      ? '<button class="more" data-label="' + esc(T('showPath', { N: g._rounds - 1 })) + '" ' +
+    (g._rounds > 0 && g._depth === 0
+      ? '<button class="more" data-label="' + esc(T('showPath', { N: g._rounds })) + '" ' +
           'onclick="moreRounds(this,\'' + g.id + '\')">' +
-          T('showPath', { N: g._rounds - 1 }) +
+          T('showPath', { N: g._rounds }) +
         '</button>'
       : '') +
   '</div>';
@@ -467,7 +467,7 @@ function draw(){
 
     (upcoming.length
       ? upcoming.map(function(g){
-          var hidden = g._depth > 1;        // la primera ronda se ve; el resto no
+          var hidden = g._depth > 0;        // cualquier juego del cuadro va plegado
           return gameCard(g, g === open[0], hidden);
         }).join('')
       : '<p style="color:var(--mute)">' + T('noGames') + '</p>') +
