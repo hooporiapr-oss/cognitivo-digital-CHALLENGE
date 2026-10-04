@@ -265,6 +265,33 @@ function esc(s){
 }
 function money(n){ return '$' + Number(n||0).toFixed(2); }
 
+
+// Cada cadena, seguida: el juego de partida y debajo todo lo que
+// cuelga de él, antes de pasar a la siguiente.
+function chainOrder(list){
+  var kids = {}, roots = [];
+
+  list.forEach(function(g){
+    if (g.unlocks_from && list.some(function(x){ return x.id === g.unlocks_from; })){
+      (kids[g.unlocks_from] = kids[g.unlocks_from] || []).push(g);
+    } else {
+      roots.push(g);
+    }
+  });
+
+  var out = [];
+  function walk(g, depth){
+    if (depth > 8) return;                      // por si dos se apuntan entre sí
+    out.push(g);
+    (kids[g.id] || []).forEach(function(k){ walk(k, depth + 1); });
+  }
+  roots.forEach(function(r){ walk(r, 0); });
+
+  // Por si algo quedó fuera, que no desaparezca.
+  list.forEach(function(g){ if (out.indexOf(g) === -1) out.push(g); });
+  return out;
+}
+
 function needDate(g){
   if (!g.needs_win_on) return '';
   var d = new Date(g.needs_win_on + 'T12:00:00');
@@ -332,6 +359,11 @@ function draw(){
   var upcoming = games.filter(function(g){
     return g.status === 'scheduled' || g.status === 'conditional';
   });
+
+  // Un juego del cuadro tiene que ir justo debajo del que depende, no
+  // al final por su fecha — si no, la línea que los une apunta a otro
+  // juego y no se entiende nada.
+  upcoming = chainOrder(upcoming);
   var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
   var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
 
