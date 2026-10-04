@@ -48,20 +48,23 @@ h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.03em;margin:0 0 4px;font-
 .day h2 span{float:right;font-size:.7rem;font-weight:800;color:var(--mute);
   letter-spacing:.1em;text-transform:uppercase;padding-top:4px}
 .rows{display:grid;gap:4px}
-.r{display:grid;grid-template-columns:62px 42px minmax(0,1fr) auto auto;gap:8px;align-items:center;
+/* Flex en vez de rejilla: con una rejilla de cinco columnas fijas, una
+   categoría larga como "Juvenil Masculino" se salía del borde en vez
+   de bajar de línea. Así cada pieza se acomoda sola. */
+.r{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;
   padding:8px 10px;border:1px solid var(--line);border-radius:4px;font-size:.88rem}
 .r.p{border-color:var(--ball);background:rgba(255,122,24,.06)}
-.r .t{font-weight:800;font-variant-numeric:tabular-nums}
-.r .c{color:var(--mute);font-size:.78rem;font-weight:800}
-.r .m{min-width:0}
+.r .t{font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 58px}
+.r .c{color:var(--mute);font-size:.78rem;font-weight:800;flex:0 0 32px}
+.r .m{flex:1 1 180px;min-width:0}
 .r .m b{font-weight:800}
 .r .m i{font-style:normal;color:var(--mute);font-size:.8rem;padding:0 3px}
-.r .j{color:var(--mute);font-size:.72rem;font-variant-numeric:tabular-nums}
+.r .j{color:var(--mute);font-size:.72rem;font-variant-numeric:tabular-nums;flex:0 0 auto}
 .r .k{font-size:.58rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
   color:#fff;background:var(--k);border-radius:3px;padding:3px 8px;white-space:nowrap;
   flex-shrink:0}
 .r.hide{display:none}
-.r .pls{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.r .pls{flex:1 1 100%;display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
 .r .pls:empty{display:none}
 .pl{display:inline-block;border:1px solid var(--accent);border-radius:999px;
   padding:4px 11px;font-size:.74rem;font-weight:800;color:var(--accent);
@@ -101,11 +104,10 @@ h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.03em;margin:0 0 4px;font-
 .lock button{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 @media(max-width:620px){
-  .r{grid-template-columns:54px 1fr;gap:4px 8px}
-  .r .c{grid-column:1;font-size:.7rem}
-  .r .m{grid-column:2}
-  .r .j{grid-column:1;font-size:.68rem}
-  .r .k{grid-column:2;justify-self:start;margin-top:2px}
+  .r .t{flex:0 0 52px}
+  .r .c{flex:0 0 28px;font-size:.72rem}
+  .r .m{flex:1 1 100%}
+  .r .j{font-size:.68rem}
 }
 
 .courts{display:grid;gap:6px;margin:0 0 22px;font-size:.84rem;color:var(--mute)}
