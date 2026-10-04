@@ -66,6 +66,13 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
    prometer en él. La línea de la izquierda lo ata al de arriba, que
    es lo que hace que se lea como un cuadro. */
 .game.locked{border-style:dashed;border-color:var(--line);background:#fff;position:relative}
+.game.tucked{display:none}
+.game.tucked.shown{display:block}
+.more{display:block;width:100%;margin-top:8px;padding:8px;border:1px dashed var(--line);
+  border-radius:4px;background:#fff;color:var(--accent);font:inherit;font-size:.8rem;
+  font-weight:800;cursor:pointer}
+.more:hover{border-color:var(--accent)}
+.more.open{color:var(--mute)}
 .game.d1{margin-left:18px}
 .game.d2{margin-left:34px}
 .game.d3{margin-left:50px}
@@ -188,6 +195,8 @@ var S = {
     thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
     errMin:'That comes to less than $5. Choose a higher rate.',
     errWho:'Your name and email, please.',
+    showPath:'See the path to the final · {N} more',
+    hidePath:'Hide the rest',
     ifTheyWin:'If they win',
     needsWin:'Opens if they beat {O} on {D}.',
     inPlay:'Pledging closed — the game has started.',
@@ -223,6 +232,8 @@ var S = {
     thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
     errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
     errWho:'Tu nombre y tu correo, por favor.',
+    showPath:'Ver el camino a la final · {N} más',
+    hidePath:'Esconder el resto',
     ifTheyWin:'Si ganan',
     needsWin:'Se abre si le ganan a {O} el {D}.',
     inPlay:'Promesas cerradas — el juego ya empezó.',
@@ -268,6 +279,43 @@ function money(n){ return '$' + Number(n||0).toFixed(2); }
 
 // Cada cadena, seguida: el juego de partida y debajo todo lo que
 // cuelga de él, antes de pasar a la siguiente.
+
+
+// ══════════════════════════════════════════════════════
+//  El camino completo de una cadena se guarda plegado: el
+//  próximo juego se ve siempre, y lo que viene después está
+//  a un toque. Una cadena de cuatro rondas ocupaba media
+//  pantalla por escuadra.
+// ══════════════════════════════════════════════════════
+function moreRounds(btn, rootId){
+  var opening = !btn.classList.contains('open');
+  btn.classList.toggle('open', opening);
+
+  // Quién cuelga de quién, leído del propio tablero.
+  var cards = document.querySelectorAll('.game[data-id]');
+  var parent = {};
+  for (var i = 0; i < cards.length; i++){
+    parent[cards[i].dataset.id] = cards[i].dataset.chain || null;
+  }
+
+  function descends(id){
+    var up = parent[id], hops = 0;
+    while (up && hops < 8){
+      if (up === rootId) return true;
+      up = parent[up];
+      hops++;
+    }
+    return false;
+  }
+
+  for (var j = 0; j < cards.length; j++){
+    if (!cards[j].classList.contains('tucked')) continue;
+    if (descends(cards[j].dataset.id)) cards[j].classList.toggle('shown', opening);
+  }
+
+  btn.textContent = opening ? T('hidePath') : btn.dataset.label;
+}
+
 function chainOrder(list){
   var kids = {}, roots = [];
 
@@ -320,14 +368,16 @@ function load(){
   .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
 }
 
-function gameCard(g, isNext){
+function gameCard(g, isNext, hidden){
   var played = g.status === 'played';
   var locked = g.status === 'conditional';
   var started = !played && !locked && g.started;
   var won = played && g.opp_points != null && g.team_points > g.opp_points;
 
   return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') +
-         (locked ? ' locked' : '') + (g._depth ? ' d' + g._depth : '') + '">' +
+         (locked ? ' locked' : '') + (g._depth ? ' d' + g._depth : '') +
+         (hidden ? ' tucked' : '') + '"' +
+         ' data-id="' + g.id + '" data-chain="' + (g.unlocks_from || '') + '">' +
     (isNext ? '<div class="tagn">' + T('next') + '</div>' : '') +
     (locked ? '<div class="tagl">' + T('ifTheyWin') + '</div>' : '') +
     '<div class="top">' +
@@ -348,6 +398,14 @@ function gameCard(g, isNext){
             '<div class="shut">' + T('inPlay') + '</div>'
           : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
             '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
+
+    // El camino que sigue, si lo hay y si no se está mostrando ya.
+    (g._rounds > 1 && g._depth <= 1
+      ? '<button class="more" data-label="' + esc(T('showPath', { N: g._rounds - 1 })) + '" ' +
+          'onclick="moreRounds(this,\'' + g.id + '\')">' +
+          T('showPath', { N: g._rounds - 1 }) +
+        '</button>'
+      : '') +
   '</div>';
 }
 
@@ -379,6 +437,20 @@ function draw(){
   }
   games.forEach(function(g){ g._depth = Math.min(depth(g), 4); });
 
+  // Cuántas rondas más hay colgando de cada juego, para poder decirlo
+  // en el botón que las abre.
+  var kidsOf = {};
+  games.forEach(function(g){
+    if (g.unlocks_from) (kidsOf[g.unlocks_from] = kidsOf[g.unlocks_from] || []).push(g);
+  });
+  function rounds(id, d){
+    d = d || 0;
+    if (d > 8) return 0;
+    var k = kidsOf[id] || [];
+    return k.reduce(function(n, c){ return n + 1 + rounds(c.id, d + 1); }, 0);
+  }
+  games.forEach(function(g){ g._rounds = rounds(g.id); });
+
   app.innerHTML =
     (BOARD.logo
       ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" ' +
@@ -394,7 +466,10 @@ function draw(){
     '</div>' +
 
     (upcoming.length
-      ? upcoming.map(function(g){ return gameCard(g, g === open[0]); }).join('')
+      ? upcoming.map(function(g){
+          var hidden = g._depth > 1;        // la primera ronda se ve; el resto no
+          return gameCard(g, g === open[0], hidden);
+        }).join('')
       : '<p style="color:var(--mute)">' + T('noGames') + '</p>') +
 
     (results.length
