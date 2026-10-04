@@ -57,6 +57,21 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .game .opp{font-weight:900;font-size:1.05rem}
 .game .when{color:var(--mute);font-size:.86rem;white-space:nowrap}
 .game .meta{color:var(--mute);font-size:.86rem;margin-top:2px}
+
+/* La división, marcada en la tarjeta: con seis escuadras hace falta
+   saber de un vistazo cuál es la tuya. */
+.dtag{display:inline-block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;background:var(--ink);color:#fff;border-radius:3px;
+  padding:3px 8px;margin-top:6px}
+.game.played .dtag{background:var(--mute)}
+.game.locked .dtag{background:#fff;color:var(--mute);border:1px solid var(--line)}
+
+/* El filtro por escuadra */
+.divs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
+.dv{border:1.5px solid var(--line);background:#fff;color:var(--mute);border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
+.dv:hover{border-color:var(--ink);color:var(--ink)}
+.dv.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .game .score{font-size:1.5rem;font-weight:900;margin-top:6px}
 .game .score span{color:var(--mute);font-weight:800;font-size:1rem}
 .game .score .w{color:var(--good)}
@@ -179,6 +194,7 @@ var S = {
     upcoming:'Coming up',
     results:'Results',
     home:'Home', away:'Away',
+    allDivs:'All squads',
     iPlay:'I play for this team', iPlayP:'Get your own link to send your family.',
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
@@ -216,6 +232,7 @@ var S = {
     upcoming:'Vienen',
     results:'Resultados',
     home:'Casa', away:'Visita',
+    allDivs:'Todas',
     iPlay:'Yo juego en este equipo', iPlayP:'Consigue tu propio enlace para mandarle a tu familia.',
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
@@ -319,6 +336,49 @@ function moreRounds(btn, rootId){
   btn.textContent = opening ? T('hidePath') : btn.dataset.label;
 }
 
+
+// ══════════════════════════════════════════════════════
+//  Las divisiones salen de la nota de cada juego: lo que
+//  hay antes del primer "·". Un programa con seis escuadras
+//  manda un enlace, y cada familia filtra la suya.
+// ══════════════════════════════════════════════════════
+var DIV = null;        // null = todas
+
+function divOf(g){
+  var n = String(g.note || '').split('·')[0].trim();
+  return n || null;
+}
+
+function divisions(games){
+  var seen = [], out = [];
+  games.forEach(function(g){
+    var d = divOf(g);
+    if (d && seen.indexOf(d) === -1){ seen.push(d); out.push(d); }
+  });
+  return out;
+}
+
+function setDiv(d){
+  DIV = d || null;
+  draw();
+  try { document.querySelector('main').scrollTop = 0; } catch(e){}
+}
+
+function divBar(games){
+  var ds = divisions(games);
+  if (ds.length < 2) return '';      // con una sola no hace falta filtrar
+
+  return '<div class="divs">' +
+    '<button class="dv' + (DIV === null ? ' on' : '') + '" onclick="setDiv(null)">' +
+      T('allDivs') + '</button>' +
+    ds.map(function(d){
+      return '<button class="dv' + (DIV === d ? ' on' : '') + '" ' +
+             'onclick="setDiv(' + JSON.stringify(d).replace(/"/g, '&quot;') + ')">' +
+             esc(d) + '</button>';
+    }).join('') +
+  '</div>';
+}
+
 function chainOrder(list){
   var kids = {}, roots = [];
 
@@ -387,6 +447,7 @@ function gameCard(g, isNext, hidden){
       '<div class="opp">' + (g.home ? '' : '@ ') + esc(g.opponent) + '</div>' +
       '<div class="when">' + when(g) + '</div>' +
     '</div>' +
+    (divOf(g) ? '<div class="dtag">' + esc(divOf(g)) + '</div>' : '') +
     (g.note ? '<div class="meta">' + esc(g.note) + '</div>' : '') +
     (played
       ? '<div class="score"><span class="' + (won ? 'w' : '') + '">' + T('final') + '</span> ' +
@@ -431,7 +492,11 @@ function draw(){
   if (PICKED) return drawPledge();
 
   var games = BOARD.games || [];
-  var upcoming = games.filter(function(g){
+  var shown = DIV
+    ? games.filter(function(g){ return divOf(g) === DIV; })
+    : games;
+
+  var upcoming = shown.filter(function(g){
     return g.status === 'scheduled' || g.status === 'conditional';
   });
 
@@ -440,7 +505,7 @@ function draw(){
   // juego y no se entiende nada.
   upcoming = chainOrder(upcoming);
   var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
-  var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
+  var results  = shown.filter(function(g){ return g.status === 'played'; }).reverse();
 
   // Qué tan adentro del cuadro está cada juego, para indentarlo.
   var byId = {};
@@ -481,6 +546,8 @@ function draw(){
       '<div class="big">' + (BOARD.points || 0) + '</div>' +
       '<div class="sub">' + T('gamesPlayed', { N: BOARD.played || 0 }) + '</div>' +
     '</div>' +
+
+    divBar(games) +
 
     (upcoming.length
       ? upcoming.map(function(g){
