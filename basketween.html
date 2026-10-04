@@ -65,8 +65,20 @@ h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.03em;margin:0 0 4px;font-
 .r .sc{display:block;font-size:.8rem;font-weight:900;color:var(--mute);
   font-variant-numeric:tabular-nums;margin-top:1px}
 .r .sc b{color:var(--ink)}
-.r .won{color:#0B7A5A}
-.r .lost{color:var(--mute);font-weight:500}
+.r .won{color:#0B7A5A;font-weight:900}
+.r .won::after{content:' ✓';font-size:.8em}
+.r .lost{color:#9AA8B5;font-weight:500}
+
+/* el marcador: el que ganó, grande y oscuro; el otro, apagado */
+.r .sc{display:block;margin-top:2px;font-variant-numeric:tabular-nums}
+.r .sc .hi{font-size:1.05rem;font-weight:900;color:var(--ink)}
+.r .sc .lo{font-size:.9rem;font-weight:700;color:#9AA8B5}
+.r .sc .d{padding:0 5px;color:#C3D2DD;font-weight:700}
+.r .sc b{font-size:1rem;font-weight:800}
+
+/* y la fila entera se nota jugada */
+.r.done{background:var(--tint);border-color:#C3D2DD}
+.r.done.p{background:rgba(255,122,24,.1);border-color:var(--ball)}
 .r.live{cursor:pointer}
 .r.live:hover{border-color:var(--ink)}
 
@@ -279,9 +291,16 @@ function paint(){
     if (!s){ r.classList.remove('done'); sc.textContent = ''; continue; }
 
     r.classList.add('done');
-    sc.innerHTML = '<b>' + s.a + '</b> – <b>' + s.b + '</b>';
-    if (s.a > s.b){ sa.className = 'sa won'; sb.className = 'sb lost'; }
-    else if (s.b > s.a){ sb.className = 'sb won'; sa.className = 'sa lost'; }
+
+    if (s.a > s.b){
+      sa.className = 'sa won'; sb.className = 'sb lost';
+      sc.innerHTML = '<b class="hi">' + s.a + '</b><span class="d">–</span><b class="lo">' + s.b + '</b>';
+    } else if (s.b > s.a){
+      sb.className = 'sb won'; sa.className = 'sa lost';
+      sc.innerHTML = '<b class="lo">' + s.a + '</b><span class="d">–</span><b class="hi">' + s.b + '</b>';
+    } else {
+      sc.innerHTML = '<b>' + s.a + '</b><span class="d">–</span><b>' + s.b + '</b>';
+    }
   }
 }
 
