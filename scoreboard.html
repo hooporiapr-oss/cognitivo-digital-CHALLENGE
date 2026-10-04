@@ -61,6 +61,23 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .game .score span{color:var(--mute);font-weight:800;font-size:1rem}
 .game .score .w{color:var(--good)}
 .game .shut{margin-top:8px;font-size:.86rem;font-weight:800;color:var(--mute)}
+
+/* Un juego que todavía no existe: se ve, se entiende, y no se puede
+   prometer en él. La línea de la izquierda lo ata al de arriba, que
+   es lo que hace que se lea como un cuadro. */
+.game.locked{border-style:dashed;border-color:var(--line);background:#fff;
+  margin-left:18px;position:relative}
+.game.locked::before{
+  content:'';position:absolute;left:-18px;top:-12px;bottom:50%;width:14px;
+  border-left:2px dashed var(--line);border-bottom:2px dashed var(--line);
+  border-bottom-left-radius:6px;
+}
+.game.locked .opp,.game.locked .when{color:var(--mute)}
+.tagl{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;
+  text-transform:uppercase;background:var(--tint);color:var(--accent);
+  border:1px solid var(--line);border-radius:3px;padding:3px 8px;margin-bottom:6px}
+.game .need{margin-top:8px;font-size:.86rem;color:var(--mute)}
+.btn.small.dead{background:#fff;color:#9AA8B5;border-color:var(--line);cursor:not-allowed}
 .playerlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
   margin-top:18px;text-decoration:none;color:var(--ink)}
 .playerlink:hover{border-color:var(--ink);border-style:solid}
@@ -161,6 +178,8 @@ var S = {
     thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
     errMin:'That comes to less than $5. Choose a higher rate.',
     errWho:'Your name and email, please.',
+    ifTheyWin:'If they win',
+    needsWin:'Opens if they beat {O} on {D}.',
     inPlay:'Pledging closed — the game has started.',
     errStarted:'That game has started. Pick another one.',
     errClosed:'That game is closed for pledges.',
@@ -194,6 +213,8 @@ var S = {
     thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
     errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
     errWho:'Tu nombre y tu correo, por favor.',
+    ifTheyWin:'Si ganan',
+    needsWin:'Se abre si le ganan a {O} el {D}.',
     inPlay:'Promesas cerradas — el juego ya empezó.',
     errStarted:'Ese juego ya empezó. Escoge otro.',
     errClosed:'Ese juego ya no acepta promesas.',
@@ -234,6 +255,13 @@ function esc(s){
 }
 function money(n){ return '$' + Number(n||0).toFixed(2); }
 
+function needDate(g){
+  if (!g.needs_win_on) return '';
+  var d = new Date(g.needs_win_on + 'T12:00:00');
+  return d.toLocaleDateString(LANG === 'es' ? 'es-PR' : 'en-US',
+    { weekday:'short', day:'numeric', month:'short' });
+}
+
 function when(g){
   if (!g.plays_on) return '';
   var d = new Date(g.plays_on + 'T12:00:00');
@@ -257,11 +285,14 @@ function load(){
 
 function gameCard(g, isNext){
   var played = g.status === 'played';
-  var started = !played && g.started;
+  var locked = g.status === 'conditional';
+  var started = !played && !locked && g.started;
   var won = played && g.opp_points != null && g.team_points > g.opp_points;
 
-  return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') + '">' +
+  return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') +
+         (locked ? ' locked' : '') + '">' +
     (isNext ? '<div class="tagn">' + T('next') + '</div>' : '') +
+    (locked ? '<div class="tagl">' + T('ifTheyWin') + '</div>' : '') +
     '<div class="top">' +
       '<div class="opp">' + (g.home ? '' : '@ ') + esc(g.opponent) + '</div>' +
       '<div class="when">' + when(g) + '</div>' +
@@ -270,11 +301,16 @@ function gameCard(g, isNext){
     (played
       ? '<div class="score"><span class="' + (won ? 'w' : '') + '">' + T('final') + '</span> ' +
           g.team_points + (g.opp_points != null ? ' <span>–</span> ' + g.opp_points : '') + '</div>'
-      : started
-        ? (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
-          '<div class="shut">' + T('inPlay') + '</div>'
-        : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
-          '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
+      : locked
+        ? '<div class="need">' +
+            T('needsWin', { O: esc(g.needs_win_vs || ''), D: needDate(g) }) +
+          '</div>' +
+          '<button class="btn small dead" disabled>' + T('pledgeOn') + '</button>'
+        : started
+          ? (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
+            '<div class="shut">' + T('inPlay') + '</div>'
+          : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
+            '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
   '</div>';
 }
 
@@ -283,8 +319,10 @@ function draw(){
   if (PICKED) return drawPledge();
 
   var games = BOARD.games || [];
-  var upcoming = games.filter(function(g){ return g.status === 'scheduled'; });
-  var open = upcoming.filter(function(g){ return !g.started; });
+  var upcoming = games.filter(function(g){
+    return g.status === 'scheduled' || g.status === 'conditional';
+  });
+  var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
   var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
 
   app.innerHTML =
