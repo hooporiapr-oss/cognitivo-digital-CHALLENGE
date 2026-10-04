@@ -139,7 +139,7 @@ var S = {
     errGen:'No se pudo enviar. Intenta otra vez.',
     doneH:'Recibido.',
     doneP:'Te escribimos a {E} para confirmarlo y abrirte la campaña. Normalmente el mismo día.',
-    doneMore:'Mientras tanto, mira cómo se ve un tablero de equipo.',
+    doneMore:'Mientras tanto, así se ve el tablero de un equipo que ya está corriendo.',
     seeBoard:'Ver un tablero →',
     fineH:'Lo que cuesta',
     fineP:'Nada por adelantado y nada mensual. Nuestro cargo de 10% se le añade al pago del padrino, nunca se saca de lo tuyo: una promesa de $200 es un pago de $220, y el programa recibe los $200 completos.'
@@ -171,7 +171,7 @@ var S = {
     errGen:'That did not send. Try again.',
     doneH:'Got it.',
     doneP:'We will write to {E} to confirm and open your campaign. Usually the same day.',
-    doneMore:'Meanwhile, see what a team board looks like.',
+    doneMore:'Meanwhile, this is the board of a team already running.',
     seeBoard:'See a board →',
     fineH:'What it costs',
     fineP:'Nothing up front and nothing monthly. Our 10% is added to the padrino\u2019s payment, never taken out of yours: a $200 pledge is a $220 payment, and the program receives the full $200.'
@@ -211,7 +211,8 @@ function draw(){
         '<h1>' + T('doneH') + '</h1>' +
         '<p class="lede">' + T('doneP', { E: esc(SENT) }) + '</p>' +
         '<p class="lede">' + T('doneMore') + '</p>' +
-        '<a class="btn line" href="index.html">' + T('seeBoard') + '</a>' +
+        '<a class="btn line" href="scoreboard.html?c=6d0c4618-6d02-4fa6-a461-48eca14b4f7f" ' +
+          'target="_blank" rel="noopener">' + T('seeBoard') + '</a>' +
       '</div>';
     return;
   }
