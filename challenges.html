@@ -555,9 +555,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <div class="menu" id="menu">
   <a href="index.html" id="mHow">How it works</a>
   <a href="challenges.html" id="mPlay">The challenges</a>
-  <a href="padrinos.html" id="mPad">Getting padrinos</a>
-  <a href="scoring.html" id="mScoring">Chain scoring</a>
-  <a class="mtalk" href="contact.html" id="mTalk">Talk to us →</a>
+  <a href="padrinos.html" id="mPad">Getting padrinos</a><a class="mtalk" href="contact.html" id="mTalk">Talk to us →</a>
 </div>
 
 <div class="wrap" id="app">
@@ -857,10 +855,8 @@ function toggleMenu(){
 // rather than on every render.
 function paintMenu(){
   var l = {
-    en:{ mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
-         mScoring:'Chain scoring', mTalk:'Talk to us →' },
-    es:{ mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
-         mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →' }
+    en:{ mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos', mTalk:'Talk to us →' },
+    es:{ mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →' }
   }[LANG] || {};
   Object.keys(l).forEach(function(id){
     var el = document.getElementById(id); if (el) el.textContent = l[id];
