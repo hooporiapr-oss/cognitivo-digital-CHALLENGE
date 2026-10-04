@@ -116,6 +116,8 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .total span{display:block;color:var(--mute);font-size:.85rem;margin-top:6px}
 
 /* ---- the window ---- */
+.winlose{border:2px solid var(--ink);border-radius:4px;padding:15px 17px;margin:18px 0 0;
+  font-weight:700;background:var(--tint)}
 .window{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
 @media(max-width:760px){.window{grid-template-columns:1fr}}
 .wk{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;padding-top:24px}
@@ -169,9 +171,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <nav><div class="wrap navin">
   <a class="mark" href="index.html"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
-    <a href="challenges.html" data-t="navPlay">The challenges</a>
-    <a href="scoring.html" data-t="navScoring">Chain scoring</a>
-    <button id="lang" onclick="flip()">ES</button>
+    <a href="juegos.html" data-t="navPlay">The games</a><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -179,16 +179,14 @@ footer .f-dot{padding:0 7px;opacity:.5}
 </div>
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
-  <a href="challenges.html" data-t="mPlay">The challenges</a>
-  <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
-  <a href="scoring.html" data-t="mScoring">Chain scoring</a>
-  <a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
+  <a href="juegos.html" data-t="mPlay">The games</a>
+  <a href="padrinos.html" data-t="mPad">Getting padrinos</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
 
 <header><div class="wrap">
-  <h1 data-t="h1">Your score is one number. Your <em>padrinos decide what it is worth</em>.</h1>
-  <p class="lede" data-t="lede">How far you get in the challenge is up to your practice. How much that is worth is up to how many padrinos you found. This is the part you can start on today.</p>
+  <h1 data-t="h1">Your team scores. <em>Your padrinos decide what every point is worth</em>.</h1>
+  <p class="lede" data-t="lede">How many points your team puts up is up to the team. How much each one is worth is up to you — and that part you can start on today, before a basket is made.</p>
 </div></header>
 
 <div class="wrap">
@@ -200,7 +198,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
     <div class="ppvdef">
       <h3 data-t="ppvH">Your Padrino Point Value</h3>
       <p data-t="ppvD"><b>Every padrino's pledge, added together.</b> That is what one point of yours is worth. Ten cents from one, two dollars from another — it all goes into the same number, and the number only ever goes up.</p>
-      <p class="mute" data-t="ppvD2">It is the one thing you control completely. Your score depends on how the run goes; your point value depends only on how many people you asked.</p>
+      <p class="mute" data-t="ppvD2">It is the one thing you control completely. The score depends on the game; what a point is worth depends only on how many people you asked.</p>
     </div>
 
     <div class="mult">
@@ -225,14 +223,14 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
   <section>
     <h2 data-t="h2calc">Work out your own</h2>
-    <p data-t="calcP">Move the sliders and see what your run would be worth.</p>
+    <p data-t="calcP">Move the sliders and see what one game would be worth.</p>
 
     <div class="calc">
       <div class="crow">
         <div>
-          <label data-t="lRounds">Rounds you hold</label>
-          <div class="val"><span id="vRounds">9</span> <small data-t="roundsWord">rounds</small></div>
-          <input type="range" id="rounds" min="1" max="20" value="9">
+          <label data-t="lRounds">Points your team scores</label>
+          <div class="val"><span id="vRounds">58</span> <small data-t="roundsWord">points</small></div>
+          <input type="range" id="rounds" min="20" max="110" value="58">
         </div>
         <div>
           <label data-t="lPad">Padrinos you find</label>
@@ -255,27 +253,29 @@ footer .f-dot{padding:0 7px;opacity:.5}
   </section>
 
   <section>
-    <h2 data-t="h2when">You have two weeks</h2>
-    <p data-t="whenP">Pledging opens two weeks before the run and closes when the run happens. Once you have taken your official run, nobody else can pledge on it — so every padrino has to be found before then.</p>
+    <h2 data-t="h2when">Every game, all season</h2>
+    <p data-t="whenP">There is no deadline to beat. A padrino picks a game, pledges, and pays after it is played — then picks another one if they want. Pledging on a game closes when that game starts, and the next game is already there.</p>
 
     <div class="window">
       <div class="wk now">
-        <span class="tag" data-t="wk1t">Week 1</span>
-        <b data-t="wk1h">Ask everyone you can</b>
-        <span data-t="wk1p">Family first, then neighbours and friends. This is the week that decides your total.</span>
+        <span class="tag" data-t="wk1t">Before the game</span>
+        <b data-t="wk1h">Share your link</b>
+        <span data-t="wk1p">One link, as many people as you can reach. Each one picks the game they want and what they pledge.</span>
       </div>
       <div class="wk">
-        <span class="tag" data-t="wk2t">Week 2</span>
-        <b data-t="wk2h">Follow up, and practise</b>
-        <span data-t="wk2p">Chase the people who said they would and forgot. Practise as much as you like — none of it counts yet.</span>
+        <span class="tag" data-t="wk2t">Game day</span>
+        <b data-t="wk2h">Play</b>
+        <span data-t="wk2p">Pledging on that game closes at tip-off. Nothing else to do — your coach enters the score afterwards.</span>
       </div>
       <div class="wk">
-        <span class="tag" data-t="wk3t">Run day</span>
-        <b data-t="wk3h">One official run</b>
-        <span data-t="wk3p">Pledging closes. Whatever you score is what every padrino is invoiced on.</span>
+        <span class="tag" data-t="wk3t">After</span>
+        <b data-t="wk3h">Everyone sees the result</b>
+        <span data-t="wk3p">Your padrinos get the score and what it came to. The next game is already on the board.</span>
       </div>
     </div>
-  </section>
+
+    <p class="winlose" data-t="winLose">Win or lose, your program wins. A padrino pays on the points your team scored, and a loss pays exactly what a win pays.</p>
+  </section
 
   <section>
     <h2 data-t="h2who">Who to ask</h2>
@@ -307,7 +307,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
 <footer><div class="wrap">
   <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
-  <p class="f-nav"><a href="scoring.html" data-t="fScoring">Chain scoring</a><span class="f-dot">·</span><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
+  <p class="f-nav"><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
   <p class="f-legal">
     <a href="terms.html" data-t="fTerms">Terms</a>
     <span class="f-dot">·</span>
@@ -320,51 +320,51 @@ function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
 
 var T = {
   en:{
-    mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
-    mScoring:'Chain scoring', mTalk:'Talk to us →',
-    navPlay:'The challenges', navScoring:'Chain scoring',
-    h1:'Your score is one number. Your <em>padrinos decide what it is worth</em>.',
-    lede:'How far you get in the challenge is up to your practice. How much that is worth is up to how many padrinos you found. This is the part you can start on today.',
+    winLose:'Win or lose, your program wins. A padrino pays on the points your team scored, and a loss pays exactly what a win pays.',
+    mHow:'How it works', mPlay:'The games', mPad:'Getting padrinos', mTalk:'Talk to us →',
+    navPlay:'The games',
+    h1:'Your team scores. <em>Your padrinos decide what every point is worth</em>.',
+    lede:'How many points your team puts up is up to the team. How much each one is worth is up to you — and that part you can start on today, before a basket is made.',
 
-    h2value:'Every padrino raises what your point is worth',
+    h2value:'Every padrino raises what your team\u2019s point is worth',
     vhWho:'Who said yes',
     p1:'Abuela · $1.00', p2:'Your tía · 25¢', p3:'A neighbour · 10¢',
     p4:'Your coach · 50¢', p5:'An uncle in Orlando · $2.00',
     p6:'Four more, whatever they chose · $1.15',
     ppvH:'Your Padrino Point Value',
-    ppvD:'<b>Every padrino\'s pledge, added together.</b> That is what one point of yours is worth. Ten cents from one, two dollars from another — it all goes into the same number, and the number only ever goes up.',
-    ppvD2:'It is the one thing you control completely. Your score depends on how the run goes; your point value depends only on how many people you asked.',
-    valP:'Each padrino pledges whatever they like, and their pledges add together. That total is what <b>one point</b> of yours is worth — and it goes up every time somebody says yes.',
+    ppvD:'<b>Every padrino\u2019s pledge, added together.</b> That is what one point is worth. Ten cents from one, two dollars from another — it all goes into the same number, and the number only ever goes up.',
+    ppvD2:'It is the one thing you control completely. The score depends on the game; what a point is worth depends only on how many people you asked.',
+    valP:'Each padrino pledges whatever they like, and their pledges add together. That total is what <b>one point</b> is worth when your team scores it — and it goes up every time somebody says yes.',
     vhWho:'Who said yes',
     p1:'Abuela · $1.00', p2:'Your tía · 25¢', p3:'A neighbour · 10¢',
     p4:'Your coach · 50¢', p5:'An uncle in Orlando · $2.00',
     p6:'Four more, whatever they chose · $1.15',
-    vhVal:'Your point is now worth', vhRun:'A nine-round run',
-    vNote:'Nine rounds the whole way down. Only the padrinos changed.',
-    valP2:'This is the number to grow. Your score is the same however many padrinos you have, so <b>every padrino you find raises the value of every point you go on to score</b> — including the ones you have not scored yet.',
-    smallP2:'So do not decide for them. Ask everyone, let each one choose their own number, and watch what your point is worth climb.',
+    vhVal:'Your point is now worth', vhRun:'A 58-point game',
+    vNote:'The same 58 points every time. Only the padrinos changed.',
+    valP2:'This is the number to grow. The team scores the same whether you found two padrinos or twenty, so <b>every padrino you find raises the value of every point your team goes on to score</b> — this game, and every game after it.',
+    smallP2:'So do not decide for them. Ask everyone, let each one choose their own number, and watch what a point is worth climb.',
     h2small:'There is no amount too small to ask for',
     smallP:'Ten cents a point is a real pledge. So is two dollars. People give what suits them, and none of them need to know what anyone else gave — they only see their own.',
 
     h2calc:'Work out your own',
-    calcP:'Move the sliders and see what your run would be worth.',
-    lRounds:'Rounds you hold', roundsWord:'rounds',
+    calcP:'Move the sliders and see what one game would be worth.',
+    lRounds:'Points your team scores', roundsWord:'points',
     lPad:'Padrinos you find', padWord:'padrinos',
     lRate:'Each pledges', perPoint:'per point',
     ppvL:'Your Padrino Point Value',
     sub:'{P} points, at {V} a point',
 
-    h2when:'You have two weeks',
-    whenP:'Pledging opens two weeks before the run and closes when the run happens. Once you have taken your official run, nobody else can pledge on it — so every padrino has to be found before then.',
-    wk1t:'Week 1', wk1h:'Ask everyone you can',
-    wk1p:'Family first, then neighbours and friends. This is the week that decides your total.',
-    wk2t:'Week 2', wk2h:'Follow up, and practise',
-    wk2p:'Chase the people who said they would and forgot. Practise as much as you like — none of it counts yet.',
-    wk3t:'Run day', wk3h:'One official run',
-    wk3p:'Pledging closes. Whatever you score is what every padrino is invoiced on.',
+    h2when:'Every game, all season',
+    whenP:'There is no deadline to beat. A padrino picks a game, pledges, and pays after it is played — then picks another one if they want. Pledging on a game closes when that game starts, and the next game is already there.',
+    wk1t:'Before the game', wk1h:'Share your link',
+    wk1p:'One link, as many people as you can reach. Each one picks the game they want and what they pledge.',
+    wk2t:'Game day', wk2h:'Play',
+    wk2p:'Pledging on that game closes at tip-off. Nothing else to do — your coach enters the score afterwards.',
+    wk3t:'After', wk3h:'Everyone sees the result',
+    wk3p:'Your padrinos get the score and what it came to. The next game is already on the board.',
 
     h2who:'Who to ask',
-    whoP:'A padrino is anyone who would be glad you asked. Most people find ten without leaving the family.',
+    whoP:'A padrino is anyone who would be glad you asked. Most players find ten without leaving the family.',
     a1:'Parents, and both sets of grandparents',
     a2:'Aunts, uncles, older cousins',
     a3:"Godparents, and your parents' close friends",
@@ -377,55 +377,54 @@ var T = {
     h2msg:'Something to send',
     msgP:'Paste your own link at the end and send it. Short works better than long.',
     msgBody:"Hi — I'm playing a challenge to raise money for my program. You pledge whatever you like per point, even a quarter, and nothing is charged until after I take my run. Would you be one of my padrinos?",
-    copy:'Copy this', copied:'✓ Copied',
-    fScoring:'Chain scoring', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
+    copy:'Copy this', copied:'✓ Copied', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
-    mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
-    navPlay:'Los retos', navScoring:'Puntuación en cadena',
-    h1:'Tu puntuación es un número. Tus <em>padrinos deciden lo que vale</em>.',
-    lede:'Hasta dónde llegues en el reto depende de tu práctica. Cuánto vale eso depende de cuántos padrinos conseguiste. Esta es la parte que puedes empezar hoy.',
+    winLose:'Ganen o pierdan, tu programa gana. El padrino paga por los puntos que anotó tu equipo, y una derrota paga exactamente lo mismo que una victoria.',
+    mHow:'Cómo funciona', mPlay:'Los juegos', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
+    navPlay:'Los juegos',
+    h1:'Tu equipo anota. <em>Tus padrinos deciden lo que vale cada punto</em>.',
+    lede:'Cuántos puntos anota tu equipo depende del equipo. Cuánto vale cada uno depende de ti — y eso lo puedes empezar hoy, antes de que caiga una canasta.',
 
-    h2value:'Cada padrino sube lo que vale tu punto',
+    h2value:'Cada padrino sube lo que vale un punto de tu equipo',
     vhWho:'Quién dijo que sí',
     p1:'Abuela · $1.00', p2:'Tu tía · 25¢', p3:'Un vecino · 10¢',
     p4:'Tu entrenador · 50¢', p5:'Un tío en Orlando · $2.00',
     p6:'Cuatro más, lo que escogieron · $1.15',
     ppvH:'Tu Valor por Punto',
-    ppvD:'<b>La promesa de cada padrino, todas sumadas.</b> Eso es lo que vale un punto tuyo. Diez centavos de uno, dos dólares de otro — todo entra al mismo número, y ese número solo sube.',
-    ppvD2:'Es lo único que controlas por completo. Tu puntuación depende de cómo salga la corrida; tu valor por punto depende solo de a cuánta gente le pediste.',
-    valP:'Cada padrino promete lo que quiera, y sus promesas se suman. Ese total es lo que vale <b>un punto</b> tuyo — y sube cada vez que alguien dice que sí.',
+    ppvD:'<b>La promesa de cada padrino, sumada.</b> Eso es lo que vale un punto. Diez centavos de uno, dos dólares de otro — todo va al mismo número, y ese número sólo sube.',
+    ppvD2:'Es lo único que controlas del todo. El marcador depende del juego; lo que vale un punto depende sólo de a cuánta gente le preguntaste.',
+    valP:'Cada padrino promete lo que quiera, y las promesas se suman. Ese total es lo que vale <b>un punto</b> cuando tu equipo lo anota — y sube cada vez que alguien dice que sí.',
     vhWho:'Quién dijo que sí',
     p1:'Abuela · $1.00', p2:'Tu tía · 25¢', p3:'Un vecino · 10¢',
     p4:'Tu entrenador · 50¢', p5:'Un tío en Orlando · $2.00',
     p6:'Cuatro más, lo que escogieron · $1.15',
-    vhVal:'Tu punto ahora vale', vhRun:'Una corrida de nueve',
-    vNote:'Nueve rondas todo el camino. Solo cambiaron los padrinos.',
-    valP2:'Este es el número que hay que subir. Tu puntuación es la misma con los padrinos que tengas, así que <b>cada padrino que consigues sube el valor de cada punto que vayas a anotar</b> — incluyendo los que todavía no has anotado.',
-    smallP2:'Así que no decidas por ellos. Pídele a todo el mundo, deja que cada uno escoja su número, y mira cómo sube lo que vale tu punto.',
+    vhVal:'Tu punto ahora vale', vhRun:'Un juego de 58 puntos',
+    vNote:'Los mismos 58 puntos siempre. Lo único que cambió fueron los padrinos.',
+    valP2:'Éste es el número que hay que subir. El equipo anota lo mismo tengas dos padrinos o veinte, así que <b>cada padrino que consigues sube el valor de cada punto que tu equipo anote</b> — en este juego y en todos los que vengan.',
+    smallP2:'Así que no decidas por ellos. Pregúntale a todo el mundo, que cada uno escoja su número, y mira cómo sube lo que vale un punto.',
     h2small:'No hay cantidad muy pequeña para pedir',
     smallP:'Diez centavos por punto es una promesa de verdad. Dos dólares también. Cada quien da lo que le sirve, y ninguno necesita saber lo que dio otro — solo ve la suya.',
 
-    h2calc:'Saca tu propia cuenta',
-    calcP:'Mueve las barras y mira cuánto valdría tu corrida.',
-    lRounds:'Rondas que aguantas', roundsWord:'rondas',
+    h2calc:'Saca la tuya',
+    calcP:'Mueve las barras y mira lo que valdría un juego.',
+    lRounds:'Puntos que anota tu equipo', roundsWord:'puntos',
     lPad:'Padrinos que consigues', padWord:'padrinos',
     lRate:'Cada uno promete', perPoint:'por punto',
     ppvL:'Tu Valor por Punto',
     sub:'{P} puntos, a {V} el punto',
 
-    h2when:'Tienes dos semanas',
-    whenP:'Las promesas abren dos semanas antes de la corrida y cierran cuando la corrida pasa. Una vez hiciste tu corrida oficial, ya nadie más puede prometer — así que cada padrino hay que conseguirlo antes.',
-    wk1t:'Semana 1', wk1h:'Pídele a todo el que puedas',
-    wk1p:'Primero la familia, después vecinos y amigos. Esta es la semana que decide tu total.',
-    wk2t:'Semana 2', wk2h:'Dale seguimiento, y practica',
-    wk2p:'Persigue a los que dijeron que sí y se les olvidó. Practica todo lo que quieras — nada de eso cuenta todavía.',
-    wk3t:'Día de la corrida', wk3h:'Una corrida oficial',
-    wk3p:'Cierran las promesas. Lo que anotes es lo que se le factura a cada padrino.',
+    h2when:'Cada juego, toda la temporada',
+    whenP:'No hay fecha límite que correr. Un padrino escoge un juego, promete, y paga después de que se juegue — y si quiere, escoge otro. Las promesas de un juego cierran cuando empieza ese juego, y el próximo ya está puesto.',
+    wk1t:'Antes del juego', wk1h:'Comparte tu enlace',
+    wk1p:'Un enlace, a toda la gente que alcances. Cada uno escoge el juego que quiera y lo que promete.',
+    wk2t:'Día de juego', wk2h:'Juega',
+    wk2p:'Las promesas de ese juego cierran al saque. Nada más que hacer — tu coach pone el marcador después.',
+    wk3t:'Después', wk3h:'Todos ven el resultado',
+    wk3p:'Tus padrinos reciben el marcador y lo que salió. El próximo juego ya está en el tablero.',
 
     h2who:'A quién pedirle',
-    whoP:'Un padrino es cualquiera que se alegraría de que le pidieras. La mayoría consigue diez sin salir de la familia.',
+    whoP:'Un padrino es cualquiera que se alegre de que le preguntes. La mayoría consigue diez sin salir de la familia.',
     a1:'Mamá y papá, y los abuelos de los dos lados',
     a2:'Tías, tíos, primos mayores',
     a3:'Tus padrinos de bautizo, y los amigos cercanos de tus papás',
@@ -438,8 +437,7 @@ var T = {
     h2msg:'Algo para mandar',
     msgP:'Pega tu propio enlace al final y mándalo. Corto funciona mejor que largo.',
     msgBody:'Hola — estoy jugando un reto para recaudar para mi programa. Prometes lo que quieras por punto, aunque sean veinticinco centavos, y no se cobra nada hasta después de mi corrida. ¿Serías uno de mis padrinos?',
-    copy:'Copiar esto', copied:'✓ Copiado',
-    fScoring:'Puntuación en cadena', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
+    copy:'Copiar esto', copied:'✓ Copiado', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
@@ -480,7 +478,7 @@ function update(){
   var r = parseInt(document.getElementById('rounds').value, 10);
   var n = parseInt(document.getElementById('pad').value, 10);
   var rate = parseInt(document.getElementById('rate').value, 10) / 100;
-  var p = pointsFor(r);
+  var p = r;      // los puntos del marcador, tal cual
 
   document.getElementById('vRounds').textContent = r;
   document.getElementById('vPad').textContent = n;
