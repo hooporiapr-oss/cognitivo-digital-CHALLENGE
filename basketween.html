@@ -273,6 +273,8 @@ footer a{color:#4FD3F0;text-decoration:none}
 
 <script>
 var STR_PLEDGE = ' — prometer';
+var STR_PUSHED = 'También se cerró este juego en la campaña (vs {O}).\n' +
+                 'Las promesas ya se pueden cobrar desde el admin.';
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 
@@ -455,7 +457,11 @@ function tap(row){
   }
 
   rpc('bw_set_score', {
-    p_code: code(), p_game: norm(j), p_a: parseInt(a,10), p_b: parseInt(b,10)
+    p_code: code(), p_game: norm(j),
+    p_a: parseInt(a,10), p_b: parseInt(b,10),
+    p_team_a: resolve(row.dataset.a),
+    p_team_b: resolve(row.dataset.b),
+    p_on: row.dataset.on || null
   }).then(function(r){
     if (!r || !r.ok){
       if (r && r.reason === 'code'){ lockOff(); alert('Código incorrecto.'); return; }
@@ -464,6 +470,11 @@ function tap(row){
     }
     SCORES[norm(j)] = { a: parseInt(a,10), b: parseInt(b,10) };
     paint(); paintPledges();
+
+    // Si el juego también estaba en la campaña de alguien, se cerró
+    // allí solo — vale la pena decirlo, porque significa que las
+    // promesas ya se pueden cobrar.
+    if (r.pushed) alert(STR_PUSHED.replace('{O}', r.pushed));
   }).catch(function(e){ console.error(e); alert('No se pudo guardar.'); });
 }
 
