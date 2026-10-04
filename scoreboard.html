@@ -194,7 +194,7 @@ var S = {
     upcoming:'Coming up',
     results:'Results',
     home:'Home', away:'Away',
-    allDivs:'All squads',
+    allDivs:'All squads', noneHere:'No games for that squad yet.',
     iPlay:'I play for this team', iPlayP:'Get your own link to send your family.',
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
@@ -232,7 +232,7 @@ var S = {
     upcoming:'Vienen',
     results:'Resultados',
     home:'Casa', away:'Visita',
-    allDivs:'Todas',
+    allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
     iPlay:'Yo juego en este equipo', iPlayP:'Consigue tu propio enlace para mandarle a tu familia.',
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
@@ -352,6 +352,7 @@ function divOf(g){
 function divisions(games){
   var seen = [], out = [];
   games.forEach(function(g){
+    if (g.status === 'cancelled') return;      // no se enseña, no se filtra
     var d = divOf(g);
     if (d && seen.indexOf(d) === -1){ seen.push(d); out.push(d); }
   });
@@ -548,6 +549,10 @@ function draw(){
     '</div>' +
 
     divBar(games) +
+
+    (!upcoming.length && !results.length
+      ? '<p style="color:var(--mute)">' + T('noneHere') + '</p>'
+      : '') +
 
     (upcoming.length
       ? upcoming.map(function(g){
