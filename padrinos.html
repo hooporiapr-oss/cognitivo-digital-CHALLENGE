@@ -170,8 +170,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
 <nav><div class="wrap navin">
   <a class="mark" href="index.html"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
-  <div class="navr">
-    <a href="juegos.html" data-t="navPlay">The games</a><button id="lang" onclick="flip()">ES</button>
+  <div class="navr"><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -179,7 +178,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 </div>
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
-  <a href="juegos.html" data-t="mPlay">The games</a>
+  <a href="jugador.html" data-t="mPlayer">I am a player</a>
   <a href="padrinos.html" data-t="mPad">Getting padrinos</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
@@ -321,8 +320,7 @@ function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
 var T = {
   en:{
     winLose:'Win or lose, your program wins. A padrino pays on the points your team scored, and a loss pays exactly what a win pays.',
-    mHow:'How it works', mPlay:'The games', mPad:'Getting padrinos', mTalk:'Talk to us →',
-    navPlay:'The games',
+    mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
     h1:'Your team scores. <em>Your padrinos decide what every point is worth</em>.',
     lede:'How many points your team puts up is up to the team. How much each one is worth is up to you — and that part you can start on today, before a basket is made.',
 
@@ -381,8 +379,7 @@ var T = {
   },
   es:{
     winLose:'Ganen o pierdan, tu programa gana. El padrino paga por los puntos que anotó tu equipo, y una derrota paga exactamente lo mismo que una victoria.',
-    mHow:'Cómo funciona', mPlay:'Los juegos', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
-    navPlay:'Los juegos',
+    mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
     h1:'Tu equipo anota. <em>Tus padrinos deciden lo que vale cada punto</em>.',
     lede:'Cuántos puntos anota tu equipo depende del equipo. Cuánto vale cada uno depende de ti — y eso lo puedes empezar hoy, antes de que caiga una canasta.',
 
