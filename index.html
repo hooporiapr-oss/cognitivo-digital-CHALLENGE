@@ -278,6 +278,48 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .gm-btn{display:inline-block;padding:13px 20px;border:2px solid var(--ink,#12202E);border-radius:4px;
   background:var(--ink,#12202E);color:#fff;text-decoration:none;font-weight:800}
 .gm-btn:hover{background:#0B1724}
+
+/* ── La tarjeta del marcador en vivo ───────────────────────
+   Es lo único de la portada con movimiento, y por eso funciona:
+   un resplandor que pasa despacio y un punto que late. Si el
+   visitante pidió menos movimiento, se queda quieta. */
+.live-card{position:relative;display:block;overflow:hidden;text-decoration:none;
+  background:#0B1724;color:#fff;border-radius:6px;padding:24px 26px;margin:28px 0;
+  border:2px solid #16304a}
+.live-card:hover{border-color:var(--ball,#FF7A18)}
+
+.lc-glow{position:absolute;inset:-40% -10%;pointer-events:none;
+  background:radial-gradient(circle at 20% 50%, rgba(255,122,24,.28), transparent 42%);
+  animation:sweep 7s ease-in-out infinite}
+@keyframes sweep{
+  0%   {transform:translateX(-18%)}
+  50%  {transform:translateX(18%)}
+  100% {transform:translateX(-18%)}
+}
+
+.lc-top{position:relative;display:flex;align-items:center;gap:8px;
+  font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ball,#FF7A18)}
+.lc-dot{width:9px;height:9px;border-radius:50%;background:var(--ball,#FF7A18);
+  box-shadow:0 0 0 0 rgba(255,122,24,.7);animation:ping 1.8s ease-out infinite}
+@keyframes ping{
+  0%   {box-shadow:0 0 0 0 rgba(255,122,24,.7)}
+  70%  {box-shadow:0 0 0 12px rgba(255,122,24,0)}
+  100% {box-shadow:0 0 0 0 rgba(255,122,24,0)}
+}
+
+.lc-name{position:relative;display:block;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;
+  letter-spacing:-.04em;line-height:1.05;margin:8px 0 8px}
+.lc-name em{font-style:normal;color:var(--ball,#FF7A18)}
+.lc-p{position:relative;display:block;color:#A8BDD0;font-size:.95rem;max-width:46ch}
+.lc-go{position:relative;display:inline-block;margin-top:16px;padding:11px 18px;
+  border:2px solid var(--ball,#FF7A18);border-radius:4px;color:var(--ball,#FF7A18);
+  font-weight:800;font-size:.92rem}
+.live-card:hover .lc-go{background:var(--ball,#FF7A18);color:#1A0C00}
+
+@media(prefers-reduced-motion:reduce){
+  .lc-glow,.lc-dot{animation:none}
+}
 </style>
 </head>
 <body>
@@ -286,6 +328,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <a class="mark" href="#top"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
     <a href="juegos.html" data-t="navPlay">The games</a>
+    <a href="https://marcadorpr.com" data-t="navLive">Live events</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -295,6 +338,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
   <a href="jugador.html" data-t="mPlayer">I am a player</a>
+  <a href="https://marcadorpr.com" data-t="mLive">Live events</a>
   <a href="padrinos.html" data-t="mPad">Getting padrinos</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
@@ -351,6 +395,16 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
   <!-- Secondary now: a reason the platform is more than a donate
        button, and something to run between seasons. -->
+  <!-- El marcador en vivo: lo que más atención trae, con el punto
+       latiendo para que no pase desapercibido. -->
+  <a class="live-card" href="https://marcadorpr.com">
+    <span class="lc-glow" aria-hidden="true"></span>
+    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">Live now</span></span>
+    <span class="lc-name">marcador<em>pr</em></span>
+    <span class="lc-p" data-t="lcP">Every game of the tournament, every score as it lands, and the bracket filling itself in. The page your families will have open all week.</span>
+    <span class="lc-go" data-t="lcGo">See the live scoreboard →</span>
+  </a>
+
   <section class="games-link">
     <h2 data-t="gmH">Memory Basketball</h2>
     <p data-t="gmP">Two games built on real zone defenses — your players beat the 2-1-2 and the 1-3-1 from memory. Free to play, right now.</p>
@@ -395,6 +449,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <script>
 var T = {
   en:{
+    lcTag:'Live now', lcGo:'See the live scoreboard →',
+    lcP:'Every game of the tournament, every score as it lands, and the bracket filling itself in. The page your families will have open all week.',
+    mLive:'Live events', navLive:'Live events',
     gmH:'Memory Basketball',
     gmP:'Two games built on real zone defenses — your players beat the 2-1-2 and the 1-3-1 from memory. Free to play, right now.',
     gmCta:'Beat the Zones →',
@@ -431,6 +488,9 @@ var T = {
     closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
+    lcTag:'En vivo', lcGo:'Ver el marcador en vivo →',
+    lcP:'Todos los juegos del torneo, cada marcador según entra, y el cuadro llenándose solo. La página que tus familias van a tener abierta toda la semana.',
+    mLive:'Eventos en vivo', navLive:'Eventos en vivo',
     gmH:'Memory Basketball',
     gmP:'Dos juegos hechos sobre defensas de zona de verdad — tus jugadores vencen el 2-1-2 y el 1-3-1 de memoria. Gratis, ahora mismo.',
     gmCta:'Vence las Zonas →',
