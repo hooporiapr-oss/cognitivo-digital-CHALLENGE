@@ -65,6 +65,7 @@ h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.03em;margin:0 0 4px;font-
 .r .sc{display:block;font-size:.8rem;font-weight:900;color:var(--mute);
   font-variant-numeric:tabular-nums;margin-top:1px}
 .r .sc b{color:var(--ink)}
+.r .m b.fill{color:#0C6E8C}
 .r .won{color:#0B7A5A;font-weight:900}
 .r .won::after{content:' ✓';font-size:.8em}
 .r .lost{color:#9AA8B5;font-weight:500}
@@ -278,12 +279,60 @@ function keep(c){ try { sessionStorage.setItem('bw-code', c); } catch(e){} }
 
 var SCORES = {};
 
+// ══════════════════════════════════════════════════════
+//  "Ganador J-9" deja de ser un hueco en cuanto se pone
+//  el marcador de J-9. Y como un ganador puede depender de
+//  otro ganador, se resuelve hacia atrás hasta encontrar un
+//  nombre de verdad.
+// ══════════════════════════════════════════════════════
+var GAMES = {};   // J-9 → { a:'CNSC Red', b:'DAC-A' }
+
+function indexGames(){
+  var rows = document.querySelectorAll('.r');
+  for (var i = 0; i < rows.length; i++){
+    GAMES[norm(rows[i].dataset.j)] = { a: rows[i].dataset.a, b: rows[i].dataset.b };
+  }
+}
+
+function norm(s){ return String(s || '').replace(/#/g, '').trim().toUpperCase(); }
+
+function placeholderFor(name){
+  var m = norm(name).match(/^GANADOR\s+(J-\S+)$/);
+  return m ? m[1] : null;
+}
+
+// Devuelve el nombre real si ya se sabe, o el texto original si no.
+// El guardia de profundidad evita que dos juegos que se apunten el uno
+// al otro cuelguen la página.
+function resolve(name, depth){
+  depth = depth || 0;
+  if (depth > 8) return name;
+
+  var key = placeholderFor(name);
+  if (!key) return name;
+
+  var g = GAMES[key], s = SCORES[key];
+  if (!g || !s || s.a === s.b) return name;
+
+  var winner = s.a > s.b ? g.a : g.b;
+  return resolve(winner, depth + 1);
+}
+
+
+
 function paint(){
   var rows = document.querySelectorAll('.r');
   for (var i = 0; i < rows.length; i++){
     var r = rows[i];
-    var s = SCORES[r.dataset.j];
+    var s = SCORES[norm(r.dataset.j)] || SCORES[r.dataset.j];
     var sa = r.querySelector('.sa'), sb = r.querySelector('.sb'), sc = r.querySelector('.sc');
+
+    // Los huecos del cuadro se rellenan solos según entran marcadores.
+    var na = resolve(r.dataset.a), nb = resolve(r.dataset.b);
+    sa.textContent = na;
+    sb.textContent = nb;
+    sa.classList.toggle('fill', na !== r.dataset.a);
+    sb.classList.toggle('fill', nb !== r.dataset.b);
 
     r.classList.toggle('live', !!code());
     sa.className = 'sa'; sb.className = 'sb';
@@ -313,14 +362,14 @@ function tap(row){
   if (!code()) return;                 // sin código no se toca nada
   var j = row.dataset.j;
   var cur = SCORES[j];
-  var a = prompt(row.dataset.a + ' — puntos:', cur ? cur.a : '');
+  var a = prompt(resolve(row.dataset.a) + ' — puntos:', cur ? cur.a : '');
   if (a === null) return;
   if (a.trim() === ''){                // vacío borra el marcador
-    rpc('bw_clear_score', { p_code: code(), p_game: j })
-      .then(function(){ delete SCORES[j]; paint(); });
+    rpc('bw_clear_score', { p_code: code(), p_game: norm(j) })
+      .then(function(){ delete SCORES[norm(j)]; paint(); });
     return;
   }
-  var b = prompt(row.dataset.b + ' — puntos:', cur ? cur.b : '');
+  var b = prompt(resolve(row.dataset.b) + ' — puntos:', cur ? cur.b : '');
   if (b === null) return;
 
   if (!/^\d+$/.test(a.trim()) || !/^\d+$/.test(b.trim())){
@@ -329,14 +378,14 @@ function tap(row){
   }
 
   rpc('bw_set_score', {
-    p_code: code(), p_game: j, p_a: parseInt(a,10), p_b: parseInt(b,10)
+    p_code: code(), p_game: norm(j), p_a: parseInt(a,10), p_b: parseInt(b,10)
   }).then(function(r){
     if (!r || !r.ok){
       if (r && r.reason === 'code'){ lockOff(); alert('Código incorrecto.'); return; }
       alert('No se pudo guardar.');
       return;
     }
-    SCORES[j] = { a: parseInt(a,10), b: parseInt(b,10) };
+    SCORES[norm(j)] = { a: parseInt(a,10), b: parseInt(b,10) };
     paint();
   }).catch(function(e){ console.error(e); alert('No se pudo guardar.'); });
 }
@@ -362,6 +411,7 @@ function lockOff(){
   paint();
 }
 
+indexGames();
 document.querySelector('.mark').addEventListener('dblclick', unlock);
 if (code()) document.getElementById('lock').classList.add('on');
 load();
