@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inscribe tu equipo — Cada Punto</title>
+<meta name="description" content="Tu equipo recauda con sus propios juegos. Los padrinos prometen por punto, tú pones el marcador, y cada dólar cobrado va al programa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;
+      --good:#0B7A5A;--bad:#A8323F}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(600px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 22px}
+h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
+
+.how{display:grid;gap:10px;margin:0 0 24px}
+.how .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px}
+.how .s b{display:block;font-size:.98rem}
+.how .s span{color:var(--mute);font-size:.92rem}
+
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
+input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
+.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
+.btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
+.msg.ok{color:var(--good)}
+
+.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
+.fine b{display:block;margin-bottom:3px}
+.fine p{margin:0;color:var(--mute);font-size:.93rem}
+
+.done{text-align:center}
+.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+
+var S = {
+  es:{
+    kick:'Inscribe tu equipo',
+    h1:'Tu equipo anota. Tu programa cobra.',
+    lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo. Juegas tus juegos, pones el marcador, y ellos pagan lo que el equipo ganó. Sin vender nada.',
+    s1b:'Pones tu calendario.',
+    s1:'Añades un juego en diez segundos desde el teléfono. Los vas añadiendo según salen.',
+    s2b:'Los padrinos escogen sus juegos.',
+    s2:'Familia, vecinos, el negocio de la esquina. Cada uno escoge cuánto y en qué juego.',
+    s3b:'Pones el marcador.',
+    s3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
+    formH:'Dinos de tu equipo',
+    teamL:'Nombre del equipo', teamPh:'Como aparece en el calendario',
+    progL:'Nombre del programa', progPh:'Lo que verán las familias',
+    nameL:'Tu nombre', namePh:'Nombre y apellido',
+    emailL:'Tu correo', emailPh:'Ahí te escribimos y por ahí entras',
+    phoneL:'Tu teléfono (opcional)', phonePh:'787…',
+    go:'Inscribir mi equipo',
+    errTeam:'Escribe el nombre del equipo.',
+    errProg:'Escribe el nombre del programa.',
+    errWho:'Tu nombre y tu correo, por favor.',
+    errTaken:'Ese equipo ya tiene campaña. Escríbenos si crees que es un error.',
+    errPending:'Ya hay una petición para ese equipo. Te escribimos pronto.',
+    errGen:'No se pudo enviar. Intenta otra vez.',
+    doneH:'Recibido.',
+    doneP:'Te escribimos a {E} para confirmarlo y abrirte la campaña. Normalmente el mismo día.',
+    doneMore:'Mientras tanto, mira cómo se ve un tablero de equipo.',
+    seeBoard:'Ver un tablero →',
+    fineH:'Lo que cuesta',
+    fineP:'Nada por adelantado y nada mensual. Nuestro cargo de 10% se le añade al pago del padrino, nunca se saca de lo tuyo: una promesa de $200 es un pago de $220, y el programa recibe los $200 completos.'
+  },
+  en:{
+    kick:'Sign up your team',
+    h1:'Your team scores. Your program gets paid.',
+    lede:'Padrinos pledge a few cents for every point your team scores. You play your games, enter the score, and they pay what the team earned. Nothing to sell.',
+    s1b:'You post your schedule.',
+    s1:'Add a game in ten seconds from your phone. Add them as they come.',
+    s2b:'Padrinos pick their games.',
+    s2:'Family, neighbours, the business down the road. Each one picks how much, and which game.',
+    s3b:'You enter the score.',
+    s3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
+    formH:'Tell us about your team',
+    teamL:'Team name', teamPh:'As it appears on a schedule',
+    progL:'Program name', progPh:'What families will see',
+    nameL:'Your name', namePh:'First and last name',
+    emailL:'Your email', emailPh:'We write here, and you sign in with it',
+    phoneL:'Your phone (optional)', phonePh:'787…',
+    go:'Sign up my team',
+    errTeam:'Write the team name.',
+    errProg:'Write the program name.',
+    errWho:'Your name and email, please.',
+    errTaken:'That team already has a campaign. Write to us if that seems wrong.',
+    errPending:'There is already a request for that team. We will be in touch.',
+    errGen:'That did not send. Try again.',
+    doneH:'Got it.',
+    doneP:'We will write to {E} to confirm and open your campaign. Usually the same day.',
+    doneMore:'Meanwhile, see what a team board looks like.',
+    seeBoard:'See a board →',
+    fineH:'What it costs',
+    fineP:'Nothing up front and nothing monthly. Our 10% is added to the padrino\u2019s payment, never taken out of yours: a $200 pledge is a $220 payment, and the program receives the full $200.'
+  }
+};
+
+var LANG='es';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function T(k,v){
+  var s = (S[LANG] && S[LANG][k]) || S.es[k] || '';
+  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
+  return s;
+}
+function toggleLang(){
+  LANG = LANG==='es' ? 'en':'es';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+  draw();
+}
+
+var app = document.getElementById('app');
+var SENT = null;
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+
+function draw(){
+  if (SENT){
+    app.innerHTML =
+      '<div class="done">' +
+        '<div class="tick">✓</div>' +
+        '<h1>' + T('doneH') + '</h1>' +
+        '<p class="lede">' + T('doneP', { E: esc(SENT) }) + '</p>' +
+        '<p class="lede">' + T('doneMore') + '</p>' +
+        '<a class="btn line" href="index.html">' + T('seeBoard') + '</a>' +
+      '</div>';
+    return;
+  }
+
+  app.innerHTML =
+    '<div class="kick">' + T('kick') + '</div>' +
+    '<h1>' + T('h1') + '</h1>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+
+    '<div class="how">' +
+      '<div class="s"><b>' + T('s1b') + '</b><span>' + T('s1') + '</span></div>' +
+      '<div class="s"><b>' + T('s2b') + '</b><span>' + T('s2') + '</span></div>' +
+      '<div class="s"><b>' + T('s3b') + '</b><span>' + T('s3') + '</span></div>' +
+    '</div>' +
+
+    '<h2>' + T('formH') + '</h2>' +
+    '<label for="tm">' + T('teamL') + '</label>' +
+    '<input id="tm" type="text" maxlength="60" placeholder="' + T('teamPh') + '">' +
+    '<label for="pg">' + T('progL') + '</label>' +
+    '<input id="pg" type="text" maxlength="60" placeholder="' + T('progPh') + '">' +
+    '<label for="nm">' + T('nameL') + '</label>' +
+    '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
+    '<label for="em">' + T('emailL') + '</label>' +
+    '<input id="em" type="email" maxlength="80" placeholder="' + T('emailPh') + '" autocomplete="email">' +
+    '<label for="ph">' + T('phoneL') + '</label>' +
+    '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" autocomplete="tel">' +
+
+    '<button class="btn" onclick="send()">' + T('go') + '</button>' +
+    '<p class="msg" id="msg"></p>' +
+
+    '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
+}
+
+function say(t,c){
+  var el = document.getElementById('msg');
+  if (el){ el.textContent = t; el.className = 'msg ' + (c||''); }
+}
+
+function send(){
+  var team  = (document.getElementById('tm').value || '').trim();
+  var prog  = (document.getElementById('pg').value || '').trim();
+  var name  = (document.getElementById('nm').value || '').trim();
+  var email = (document.getElementById('em').value || '').trim();
+  var phone = (document.getElementById('ph').value || '').trim();
+
+  if (!team) return say(T('errTeam'), 'bad');
+  if (!prog) return say(T('errProg'), 'bad');
+  if (!name || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
+
+  say('…');
+  rpc('bw_request_team', {
+    p_team: team, p_program: prog, p_name: name, p_email: email, p_phone: phone
+  })
+  .then(function(r){
+    if (!r || !r.ok){
+      if (r && r.reason === 'taken')   return say(T('errTaken'), 'bad');
+      if (r && r.reason === 'pending') return say(T('errPending'), 'bad');
+      return say(T('errGen'), 'bad');
+    }
+    SENT = email;
+    draw();
+    try{ document.querySelector('main').scrollTop = 0; }catch(e){}
+  })
+  .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+draw();
+</script>
+</body>
+</html>
