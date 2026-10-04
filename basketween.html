@@ -347,6 +347,15 @@ function askTeam(name){
       return alert(ASK.failed);
     }
     ASKED[team.toLowerCase()] = 'pending';
+
+    fetch('https://basketball-money-payments.onrender.com/team-signup', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ team: team, program: program.trim(),
+                             coach: coach.trim(), email: email.trim(),
+                             phone: phone.trim() })
+    }).catch(function(e){ console.error('notice', e); });
+
     alert(ASK.thanks);
     paintPledges();
   }).catch(function(e){ console.error(e); alert(ASK.failed); });
