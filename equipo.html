@@ -99,6 +99,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 </footer>
 
 <script>
+var SERVER='https://basketball-money-payments.onrender.com';
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 
@@ -280,6 +281,13 @@ function send(){
     }
     SENT = email;
     draw();
+
+    fetch(SERVER + '/team-signup', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ team: team, program: prog, coach: name,
+                             email: email, phone: phone })
+    }).catch(function(e){ console.error('notice', e); });
     try{ document.querySelector('main').scrollTop = 0; }catch(e){}
   })
   .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
