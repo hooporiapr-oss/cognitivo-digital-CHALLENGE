@@ -65,8 +65,18 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 /* Un juego que todavía no existe: se ve, se entiende, y no se puede
    prometer en él. La línea de la izquierda lo ata al de arriba, que
    es lo que hace que se lea como un cuadro. */
-.game.locked{border-style:dashed;border-color:var(--line);background:#fff;
-  margin-left:18px;position:relative}
+.game.locked{border-style:dashed;border-color:var(--line);background:#fff;position:relative}
+.game.d1{margin-left:18px}
+.game.d2{margin-left:34px}
+.game.d3{margin-left:50px}
+.game.d4{margin-left:62px}
+@media(max-width:520px){
+  /* en un teléfono no hay sitio para cuatro escalones */
+  .game.d1{margin-left:12px}
+  .game.d2{margin-left:22px}
+  .game.d3{margin-left:30px}
+  .game.d4{margin-left:36px}
+}
 .game.locked::before{
   content:'';position:absolute;left:-18px;top:-12px;bottom:50%;width:14px;
   border-left:2px dashed var(--line);border-bottom:2px dashed var(--line);
@@ -290,7 +300,7 @@ function gameCard(g, isNext){
   var won = played && g.opp_points != null && g.team_points > g.opp_points;
 
   return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') +
-         (locked ? ' locked' : '') + '">' +
+         (locked ? ' locked' : '') + (g._depth ? ' d' + g._depth : '') + '">' +
     (isNext ? '<div class="tagn">' + T('next') + '</div>' : '') +
     (locked ? '<div class="tagl">' + T('ifTheyWin') + '</div>' : '') +
     '<div class="top">' +
@@ -324,6 +334,18 @@ function draw(){
   });
   var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
   var results  = games.filter(function(g){ return g.status === 'played'; }).reverse();
+
+  // Qué tan adentro del cuadro está cada juego, para indentarlo.
+  var byId = {};
+  games.forEach(function(g){ byId[g.id] = g; });
+  function depth(g, seen){
+    seen = seen || {};
+    if (!g.unlocks_from || seen[g.id]) return 0;
+    seen[g.id] = 1;
+    var parent = byId[g.unlocks_from];
+    return parent ? 1 + depth(parent, seen) : 1;
+  }
+  games.forEach(function(g){ g._depth = Math.min(depth(g), 4); });
 
   app.innerHTML =
     (BOARD.logo
