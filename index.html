@@ -266,6 +266,12 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .steps3 .st{border:2px solid var(--line,#D7E0E8);border-radius:4px;padding:16px 18px}
 .steps3 .st b{display:block;font-size:1.02rem;margin-bottom:4px}
 .steps3 .st span{color:var(--mute,#5A6B7C);font-size:.94rem}
+.step-cta{text-align:center;margin-top:22px}
+.step-go{display:inline-block;padding:15px 30px;border:2px solid var(--ink,#12202E);
+  border-radius:4px;background:var(--ink,#12202E);color:#fff;text-decoration:none;
+  font-weight:800;font-size:1.02rem}
+.step-go:hover{background:#0B1724}
+@media(max-width:520px){.step-go{display:block}}
 .seasonnote{color:var(--mute,#5A6B7C);font-size:.9rem;margin-top:12px}
 .board{margin:30px 0;border-left:4px solid #0C6E8C;padding:4px 0 4px 16px}
 .board h2{margin:0 0 6px}
@@ -363,12 +369,15 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <section class="season" aria-labelledby="seasonH">
     <h2 id="seasonH" data-t="seasonH">Pledge by the game, all season.</h2>
     <div class="steps3">
-      <div class="st"><b data-t="st1b">You post your schedule.</b>
-        <span data-t="st1">Add a game in ten seconds from your phone — opponent, date, home or away. Add them as they come.</span></div>
+      <div class="st"><b data-t="st1b">You sign up, we approve you.</b>
+        <span data-t="st1">We check it is really your program, usually the same day. Then your coach panel opens and you post your schedule.</span></div>
       <div class="st"><b data-t="st2b">Padrinos pick their games.</b>
         <span data-t="st2">A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.</span></div>
       <div class="st"><b data-t="st3b">You enter the score.</b>
         <span data-t="st3">That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.</span></div>
+    </div>
+    <div class="step-cta">
+      <a class="step-go" href="equipo.html" data-t="stepGo">Sign up my team →</a>
     </div>
     <p class="seasonnote" data-t="seasonNote">Nothing is charged before a game is played. A padrino can cap what they pay, and a cancelled game moves their pledge to the next one.</p>
   </section>
@@ -467,12 +476,13 @@ var T = {
     hw3fee:'Our 10% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $27.50 payment, and the program receives the full $25.00 collected.',
     brandTag:'fundraising for basketball programs',
     seasonH:'Pledge by the game, all season.',
-    st1b:'You post your schedule.',
-    st1:'Add a game in ten seconds from your phone — opponent, date, home or away. Add them as they come.',
+    st1b:'You sign up, we approve you.',
+    st1:'We check it is really your program, usually the same day. Then your coach panel opens and you post your schedule — a game takes ten seconds from your phone.',
     st2b:'Padrinos pick their games.',
     st2:'A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.',
     st3b:'You enter the score.',
     st3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
+    stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a cancelled game moves their pledge to the next one.',
     boardH:'One page your families will actually check.',
     boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.',
@@ -506,12 +516,13 @@ var T = {
     hw3fee:'Nuestro cargo de plataforma de 10% se añade encima de su pago, nunca se saca de él. Una promesa de $25.00 es un pago de $27.50, y el programa recibe los $25.00 completos cobrados.',
     brandTag:'recaudación para programas de baloncesto',
     seasonH:'Promesas juego por juego, toda la temporada.',
-    st1b:'Pones tu calendario.',
-    st1:'Añade un juego en diez segundos desde el teléfono — contra quién, cuándo, casa o visita. Los vas añadiendo según salen.',
+    st1b:'Te inscribes, te aprobamos.',
+    st1:'Comprobamos que de verdad es tu programa, normalmente el mismo día. Ahí se te abre el panel de coach y pones tu calendario — un juego toma diez segundos desde el teléfono.',
     st2b:'Los padrinos escogen sus juegos.',
     st2:'Diez centavos por punto el sábado. Veinticinco para el torneo. La familia, los vecinos, el negocio de la esquina — cada uno escoge lo que le sirve.',
     st3b:'Pones el marcador.',
     st3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
+    stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y si se cancela un juego su promesa pasa al próximo.',
     boardH:'Una página que tus familias sí van a mirar.',
     boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.',
