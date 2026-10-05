@@ -282,6 +282,8 @@ function toggleLang(){
 var PARAMS = new URLSearchParams(location.search);
 var CAMPAIGN = PARAMS.get('c');
 var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
+var WANT_DIV = PARAMS.get('d') || null;        // escuadra pedida en el enlace
+var DIV_SET = false;
 var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
 var WANT_VS = PARAMS.get('vs') || null;        // y contra quién
 var JUMPED = false;
@@ -493,6 +495,19 @@ function draw(){
   if (PICKED) return drawPledge();
 
   var games = BOARD.games || [];
+  // Un enlace de jugador trae su escuadra. Sólo se aplica si existe
+  // de verdad en el calendario — si el jugador la escribió distinta,
+  // mejor enseñarlo todo que una página vacía.
+  if (!DIV_SET){
+    DIV_SET = true;
+    if (WANT_DIV){
+      var match = divisions(games).filter(function(d){
+        return d.toLowerCase() === WANT_DIV.trim().toLowerCase();
+      })[0];
+      if (match) DIV = match;
+    }
+  }
+
   var shown = DIV
     ? games.filter(function(g){ return divOf(g) === DIV; })
     : games;
