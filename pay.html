@@ -172,9 +172,9 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <footer><div class="wrap">
   <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
   <p class="f-legal">
-    <a href="terms.html" data-t="fTerms">Terms</a>
+    <a href="terms.html" data-t="terms">Terms</a>
     <span class="f-dot">·</span>
-    <a href="privacy.html" data-t="fPrivacy">Privacy</a>
+    <a href="privacy.html" data-t="privacy">Privacy</a>
   </p>
 </div></footer>
 
@@ -277,14 +277,19 @@ function T(k, v){
 function flip(){
   LANG = LANG === 'en' ? 'es' : 'en';
   try { localStorage.setItem('cfh_lang', LANG); } catch(e){}
-  paintChrome();
+  try { paintChrome(); } catch(e){ console.error('chrome', e); }
   if (DATA) render(DATA); 
 }
 function paintChrome(){
   document.documentElement.lang = LANG;
   document.getElementById('lang').textContent = LANG === 'en' ? 'ES' : 'EN';
-  document.getElementById('fTerms').textContent = T('terms');
-  document.getElementById('fPrivacy').textContent = T('privacy');
+  // Lo que no esté, no revienta la página: pintar el pie no puede
+  // impedir que se vea una promesa.
+  var n = document.querySelectorAll('[data-t]');
+  for (var i = 0; i < n.length; i++){
+    var v = T(n[i].getAttribute('data-t'));
+    if (v) n[i].textContent = v;
+  }
 }
 
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
