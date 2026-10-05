@@ -136,6 +136,17 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
 .rate.on{border-color:var(--ink);background:var(--ink);color:#fff}
 .rate small{display:block;font-size:.62rem;font-weight:800;letter-spacing:.08em;
   text-transform:uppercase;opacity:.75;margin-top:2px}
+/* A quién se apoya, primero y en grande: antes el título era el
+   nombre del contrario y la hoja parecía ser para ellos. */
+.forwho{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);text-align:center;margin-bottom:4px}
+.whoteam{text-align:center;margin:0 0 10px}
+.fixture{text-align:center;color:var(--mute);font-size:.95rem;margin:0 0 20px;
+  padding-bottom:16px;border-bottom:1px solid var(--line)}
+.fixture b{color:var(--ink);font-weight:800}
+.fx-vs{text-transform:uppercase;font-size:.7rem;font-weight:900;letter-spacing:.14em}
+.fx-when{display:block;font-size:.86rem;margin-top:3px}
+
 .est{border-left:4px solid var(--accent);background:var(--tint);padding:12px 14px;margin:14px 0;font-size:.93rem}
 .est b{display:block}
 .msg{margin-top:10px;font-weight:700;font-size:.9rem;min-height:1.2em}
@@ -199,6 +210,7 @@ var S = {
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
     final:'Final',
+    pledgeFor:'You are backing', vsWord:'vs', atWord:'away to',
     pickRate:'Your rate, per point',
     yourName:'Your name',
     yourEmail:'Your email',
@@ -237,6 +249,7 @@ var S = {
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
     final:'Final',
+    pledgeFor:'Estás apoyando a', vsWord:'contra', atWord:'de visita contra',
     pickRate:'Tu tarifa, por punto',
     yourName:'Tu nombre',
     yourEmail:'Tu correo',
@@ -605,9 +618,22 @@ function setRate(r){
 
 function drawPledge(){
   var g = PICKED;
+  var team = esc(BOARD.campaign || '');
+
   app.innerHTML =
-    '<h1>' + (g.home ? '' : '@ ') + esc(g.opponent) + '</h1>' +
-    '<p class="lede">' + when(g) + (g.note ? ' · ' + esc(g.note) : '') + '</p>' +
+    (BOARD.logo
+      ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" ' +
+        'onerror="this.style.display=\'none\'">'
+      : '') +
+
+    '<div class="forwho">' + T('pledgeFor') + '</div>' +
+    '<h1 class="whoteam">' + team + '</h1>' +
+
+    '<div class="fixture">' +
+      '<span class="fx-vs">' + (g.home ? T('vsWord') : T('atWord')) + '</span> ' +
+      '<b>' + esc(g.opponent) + '</b>' +
+      '<span class="fx-when">' + when(g) + (g.note ? ' · ' + esc(g.note) : '') + '</span>' +
+    '</div>' +
 
     '<label>' + T('pickRate') + '</label>' +
     '<div class="rates">' +
