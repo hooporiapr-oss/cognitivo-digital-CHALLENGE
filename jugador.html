@@ -182,6 +182,12 @@ function divs(){
   return out;
 }
 
+// Los dos idiomas en el mismo mensaje: el español primero, porque
+// es donde está el equipo, y el inglés para la familia de afuera.
+function bothLangs(){
+  return S.es.msg + '\n\n' + S.en.msg;
+}
+
 function myLink(){
   // La categoría va en el enlace: quien lo abra ve los juegos de esa
   // escuadra y no los de las otras cinco.
@@ -214,7 +220,7 @@ function draw(){
         '<p class="lede">' + T('doneP') + '</p>' +
         '<div class="linkbox">' + esc(link) + '</div>' +
         '<a class="btn" href="https://wa.me/?text=' +
-          encodeURIComponent(T('msg') + '\n\n' + link) + '">' + T('share') + '</a>' +
+          encodeURIComponent(bothLangs() + '\n\n' + link) + '">' + T('share') + '</a>' +
         '<button class="btn line" onclick="copyLink()">' + T('copy') + '</button>' +
         '<a class="btn line" href="scoreboard.html?c=' + CAMPAIGN + '">' + T('seeBoard') + '</a>' +
         '<p class="msg" id="msg"></p>' +
