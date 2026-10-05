@@ -98,6 +98,7 @@ var S = {
     lede:'Pon tu nombre y tu categoría. Te damos un enlace para mandarle a tu familia — lo que prometan queda apuntado a tu nombre.',
     nameL:'Tu nombre', namePh:'Nombre y apellido',
     squadL:'Tu categoría o equipo', squadPh:'Mini, Juniors, Senior Silver…',
+    squadPick:'Escoge tu escuadra',
     go:'Dame mi enlace',
     errName:'Escribe tu nombre completo.',
     errGen:'No se pudo. Intenta otra vez.',
@@ -120,6 +121,7 @@ var S = {
     lede:'Put your name and your squad. We give you a link to send your family — whatever they pledge is credited to you.',
     nameL:'Your name', namePh:'First and last name',
     squadL:'Your squad or category', squadPh:'Mini, Juniors, Senior Silver…',
+    squadPick:'Pick your squad',
     go:'Give me my link',
     errName:'Write your full name.',
     errGen:'That did not work. Try again.',
@@ -155,7 +157,9 @@ function toggleLang(){
   draw();
 }
 
-var CAMPAIGN = new URLSearchParams(location.search).get('c');
+var PARAMS = new URLSearchParams(location.search);
+var CAMPAIGN = PARAMS.get('c');
+var WANT_SQUAD = PARAMS.get('d') || null;   // la categoría del juego que tocó
 var BOARD = null, ME = null;
 var app = document.getElementById('app');
 
@@ -165,8 +169,24 @@ function esc(s){
   });
 }
 
+// Las escuadras que de verdad existen en el calendario, sacadas de
+// la nota de cada juego igual que en el tablero.
+function divs(){
+  if (!BOARD || !BOARD.games) return [];
+  var out = [];
+  BOARD.games.forEach(function(g){
+    if (g.status === 'cancelled') return;
+    var d = String(g.note || '').split('·')[0].trim();
+    if (d && out.indexOf(d) === -1) out.push(d);
+  });
+  return out;
+}
+
 function myLink(){
-  return location.origin + '/scoreboard.html?c=' + CAMPAIGN + '&p=' + ME.id;
+  // La categoría va en el enlace: quien lo abra ve los juegos de esa
+  // escuadra y no los de las otras cinco.
+  var d = ME.squad ? '&d=' + encodeURIComponent(ME.squad) : '';
+  return location.origin + '/scoreboard.html?c=' + CAMPAIGN + '&p=' + ME.id + d;
 }
 
 function draw(){
@@ -210,7 +230,16 @@ function draw(){
     '<label for="nm">' + T('nameL') + '</label>' +
     '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
     '<label for="sq">' + T('squadL') + '</label>' +
-    '<input id="sq" type="text" maxlength="30" placeholder="' + T('squadPh') + '">' +
+    (divs().length
+      ? '<select id="sq">' +
+          '<option value="">' + T('squadPick') + '</option>' +
+          divs().map(function(d){
+            var on = WANT_SQUAD && d.toLowerCase() === WANT_SQUAD.trim().toLowerCase();
+            return '<option value="' + esc(d) + '"' + (on ? ' selected' : '') + '>' +
+                   esc(d) + '</option>';
+          }).join('') +
+        '</select>'
+      : '<input id="sq" type="text" maxlength="30" placeholder="' + T('squadPh') + '">') +
     '<button class="btn" onclick="join()">' + T('go') + '</button>' +
     '<p class="msg" id="msg"></p>';
 }
@@ -230,7 +259,8 @@ function join(){
     .then(function(r){
       if (!r || !r.ok) return say(T('errGen'), 'bad');
       ME = r;
-      try { localStorage.setItem('cp-me-' + CAMPAIGN, JSON.stringify(r)); } catch(e){}
+      ME.squad = squad;          // para que su enlace filtre por ella
+      try { localStorage.setItem('cp-me-' + CAMPAIGN, JSON.stringify(ME)); } catch(e){}
       draw();
     })
     .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
