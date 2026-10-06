@@ -206,6 +206,7 @@ var S = {
     results:'Results',
     home:'Home', away:'Away',
     allDivs:'All squads', noneHere:'No games for that squad yet.',
+    howPaid:'How the program gets paid', howPaidP:'For players and families \u2014 two minutes.',
     iPlay:'I play for this team', iPlayP:'Get your own link to send your family.',
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
@@ -245,6 +246,7 @@ var S = {
     results:'Resultados',
     home:'Casa', away:'Visita',
     allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
+    howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
     iPlay:'Yo juego en este equipo', iPlayP:'Consigue tu propio enlace para mandarle a tu familia.',
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
@@ -596,6 +598,10 @@ function draw(){
     // Para un jugador que llega aquí: su propio enlace está a un toque.
     '<a class="playerlink" href="jugador.html?c=' + CAMPAIGN + '">' +
       '<b>' + T('iPlay') + '</b><span>' + T('iPlayP') + '</span>' +
+    '</a>' +
+
+    '<a class="playerlink" href="programa.html?c=' + CAMPAIGN + '">' +
+      '<b>' + T('howPaid') + '</b><span>' + T('howPaidP') + '</span>' +
     '</a>';
 }
 
