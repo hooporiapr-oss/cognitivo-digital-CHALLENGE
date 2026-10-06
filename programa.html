@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cómo se paga el programa — Cada Punto</title>
+<meta name="description" content="Para jugadores y familias: cómo un padrino promete por punto, cuándo se paga, y qué tiene que hacer cada jugador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;--ball:#FF7A18}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(640px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#9FB3C4}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 34px}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.8vw,2.1rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 24px}
+h2{font-size:clamp(1.05rem,3vw,1.3rem);letter-spacing:-.025em;margin:30px 0 10px;font-weight:900}
+p{margin:0 0 14px}
+
+.flow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 22px}
+.flow i{font-style:normal;background:var(--ink);color:#fff;border-radius:3px;
+  padding:7px 11px;font-size:.74rem;font-weight:900;letter-spacing:.05em}
+.flow em{font-style:normal;color:var(--mute);font-weight:900}
+
+.pts{display:grid;gap:10px;margin:0 0 20px}
+.pts div{border-left:3px solid var(--ball);padding:2px 0 2px 14px}
+.pts b{display:block;font-size:1rem}
+.pts span{color:var(--mute);font-size:.95rem}
+
+.big{border:2px solid var(--ink);border-radius:4px;padding:18px 20px;margin:24px 0;
+  background:var(--tint);text-align:center}
+.big b{display:block;font-size:clamp(1.1rem,3.4vw,1.35rem);letter-spacing:-.02em}
+.big span{color:var(--mute);font-size:.95rem}
+
+ol.steps{counter-reset:s;list-style:none;margin:0 0 20px;padding:0}
+ol.steps li{counter-increment:s;position:relative;padding:12px 0 12px 44px;
+  border-bottom:1px solid var(--line)}
+ol.steps li:last-child{border-bottom:none}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:12px;width:28px;height:28px;
+  border-radius:50%;background:var(--ink);color:#fff;font-weight:900;font-size:.86rem;
+  display:grid;place-content:center}
+ol.steps b{display:block}
+ol.steps span{color:var(--mute);font-size:.95rem}
+
+.maths{border:2px solid var(--line);border-radius:4px;padding:16px 18px;margin:0 0 20px}
+.maths table{width:100%;border-collapse:collapse;font-size:.95rem}
+.maths td{padding:6px 0;border-bottom:1px solid var(--line)}
+.maths td:last-child{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.maths tr:last-child td{border-bottom:none;padding-top:10px;font-weight:900}
+.maths p{margin:12px 0 0;color:var(--mute);font-size:.88rem}
+
+.note{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0}
+.note b{display:block;margin-bottom:3px}
+.note p{margin:0;color:var(--mute);font-size:.94rem}
+
+.cta{display:block;text-align:center;background:var(--ink);color:#fff;border:2px solid var(--ink);
+  border-radius:4px;padding:16px;font-weight:800;text-decoration:none;margin-top:10px}
+.cta.line{background:#fff;color:var(--ink);margin-top:10px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#4FD3F0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var DOC = {
+  es: {
+    kick:'Para jugadores y familias',
+    h1:'Cómo se paga el programa',
+    lede:'Los uniformes, los arbitrajes, las inscripciones y los viajes salen de algún sitio. Esto explica de dónde, y qué tiene que hacer cada quien.',
+
+    h2how:'En cuatro pasos',
+    flow:['PROMETEN','JUGAMOS','ENTRA EL MARCADOR','SE PAGA'],
+    pts:[
+      ['Un padrino promete por punto',
+       'Alguien de tu familia escoge un juego del calendario y promete unos centavos por cada punto que anote el equipo. Diez centavos, veinticinco, un dólar — lo que quiera.'],
+      ['No paga nada por adelantado',
+       'Nadie cobra nada antes del juego. Se juega, entra el marcador, y entonces paga por los puntos que de verdad anotamos.'],
+      ['Es el marcador del equipo',
+       'Se cuenta el marcador final, no el de nadie en particular. Nadie cobra más por anotar más, y nadie tiene que tirar de más. Un punto de un compañero vale exactamente lo mismo que uno tuyo.'],
+      ['Ganemos o perdamos',
+       'Una derrota de 54 paga lo mismo que una victoria de 54. El programa gana igual.']
+    ],
+
+    bigB:'Tu parte no es anotar más.',
+    bigS:'Es conseguir padrinos.',
+
+    h2you:'Lo que tienes que hacer tú',
+    steps:[
+      ['Saca tu enlace','Entras al tablero del equipo, pones tu nombre y tu categoría, y te da un enlace que es tuyo.'],
+      ['Mándaselo a quien sea','Padres, tíos, abuelos, padrinos, vecinos, el negocio de la esquina. No hay que vender nada ni entregar nada.'],
+      ['Lo que prometan queda a tu nombre','El dinero va al programa, pero quien lo trajo se sabe. Tu coach lo ve.'],
+      ['Y ya','No tienes que cobrar nada ni recordarle a nadie. Después del juego les llega solo.']
+    ],
+
+    h2math:'Por qué importa a cuánta gente le preguntas',
+    mathP:'El marcador depende del juego. Lo que vale un punto depende sólo de cuántos padrinos conseguiste.',
+    rows:[
+      ['4 padrinos a 25¢ el punto','$1.00 el punto'],
+      ['10 padrinos a 25¢ el punto','$2.50 el punto'],
+      ['20 padrinos a 25¢ el punto','$5.00 el punto']
+    ],
+    mathNote:'En un juego de 58 puntos, eso es $58, $145 o $290 para el programa. El equipo anotó lo mismo las tres veces.',
+
+    noteB:'Para la familia',
+    noteP:'Prometer no es comprar nada. Es un donativo al programa cuya cantidad depende del marcador, se puede poner un tope, y nunca se cobra antes de que se juegue. Si se cancela un juego, la promesa pasa al próximo.',
+
+    cta1:'Ver el tablero de mi equipo',
+    cta2:'Preguntas →'
+  },
+  en: {
+    kick:'For players and families',
+    h1:'How the program gets paid',
+    lede:'Uniforms, officials, entry fees and travel come from somewhere. This explains where, and what each person has to do.',
+
+    h2how:'In four steps',
+    flow:['THEY PLEDGE','WE PLAY','THE SCORE GOES IN','IT GETS PAID'],
+    pts:[
+      ['A padrino pledges per point',
+       'Someone in your family picks a game from the schedule and pledges a few cents for every point the team scores. Ten cents, a quarter, a dollar — whatever they like.'],
+      ['Nothing is paid up front',
+       'Nobody is charged before the game. We play, the score goes in, and then they pay on the points we actually scored.'],
+      ['It is the team\u2019s score',
+       'The final score counts, not any one player\u2019s. Nobody earns more by scoring more, and nobody has to shoot more. A teammate\u2019s point is worth exactly what yours is.'],
+      ['Win or lose',
+       'A 54-point loss pays what a 54-point win pays. The program gets paid either way.']
+    ],
+
+    bigB:'Your job is not to score more.',
+    bigS:'It is to find padrinos.',
+
+    h2you:'What you have to do',
+    steps:[
+      ['Get your link','Open the team board, put in your name and your squad, and it gives you a link that is yours.'],
+      ['Send it to anyone','Parents, uncles, grandparents, godparents, neighbours, the business down the road. Nothing to sell and nothing to hand over.'],
+      ['What they pledge is credited to you','The money goes to the program, but who brought it is recorded. Your coach can see it.'],
+      ['That is it','You do not collect anything or remind anyone. After the game it reaches them on its own.']
+    ],
+
+    h2math:'Why it matters how many people you ask',
+    mathP:'The score depends on the game. What a point is worth depends only on how many padrinos you found.',
+    rows:[
+      ['4 padrinos at 25¢ a point','$1.00 a point'],
+      ['10 padrinos at 25¢ a point','$2.50 a point'],
+      ['20 padrinos at 25¢ a point','$5.00 a point']
+    ],
+    mathNote:'In a 58-point game that is $58, $145 or $290 for the program. The team scored the same all three times.',
+
+    noteB:'For the family',
+    noteP:'Pledging is not buying anything. It is a donation to the program whose size depends on the score, you can set a maximum, and nothing is charged before the game is played. If a game is cancelled, the pledge moves to the next one.',
+
+    cta1:'See my team\u2019s board',
+    cta2:'Questions →'
+  }
+};
+
+var LANG='es';
+try{ LANG = localStorage.getItem('cp-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+// Si vienen con la campaña en el enlace, el botón lleva a su tablero.
+var CAMP = new URLSearchParams(location.search).get('c');
+
+function draw(){
+  var D = DOC[LANG] || DOC.es;
+  document.documentElement.lang = LANG;
+
+  document.getElementById('app').innerHTML =
+    '<div class="kick">' + D.kick + '</div>' +
+    '<h1>' + D.h1 + '</h1>' +
+    '<p class="lede">' + D.lede + '</p>' +
+
+    '<h2>' + D.h2how + '</h2>' +
+    '<div class="flow">' +
+      D.flow.map(function(f, i){
+        return (i ? '<em>→</em>' : '') + '<i>' + f + '</i>';
+      }).join('') +
+    '</div>' +
+
+    '<div class="pts">' +
+      D.pts.map(function(p){
+        return '<div><b>' + p[0] + '</b><span>' + p[1] + '</span></div>';
+      }).join('') +
+    '</div>' +
+
+    '<div class="big"><b>' + D.bigB + '</b><span>' + D.bigS + '</span></div>' +
+
+    '<h2>' + D.h2you + '</h2>' +
+    '<ol class="steps">' +
+      D.steps.map(function(s){
+        return '<li><b>' + s[0] + '</b><span>' + s[1] + '</span></li>';
+      }).join('') +
+    '</ol>' +
+
+    '<h2>' + D.h2math + '</h2>' +
+    '<p>' + D.mathP + '</p>' +
+    '<div class="maths"><table>' +
+      D.rows.map(function(r){
+        return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+      }).join('') +
+    '</table><p>' + D.mathNote + '</p></div>' +
+
+    '<div class="note"><b>' + D.noteB + '</b><p>' + D.noteP + '</p></div>' +
+
+    (CAMP
+      ? '<a class="cta" href="scoreboard.html?c=' + encodeURIComponent(CAMP) + '">' + D.cta1 + '</a>'
+      : '') +
+    '<a class="cta line" href="preguntas.html">' + D.cta2 + '</a>';
+
+  document.getElementById('langBtn').textContent = LANG === 'es' ? 'EN' : 'ES';
+}
+
+function toggleLang(){
+  LANG = LANG === 'es' ? 'en' : 'es';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  draw();
+}
+
+draw();
+</script>
+</body>
+</html>
