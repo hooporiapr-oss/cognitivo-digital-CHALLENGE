@@ -151,6 +151,8 @@ var DOC = {
     noteB:'Para la familia',
     noteP:'Prometer no es comprar nada. Es un donativo al programa cuya cantidad depende del marcador, se puede poner un tope, y nunca se cobra antes de que se juegue. Si se cancela un juego, la promesa pasa al próximo.',
 
+    whereB:'¿Dónde está el tablero de mi equipo?',
+    whereP:'Cada equipo tiene el suyo y no está en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
     cta1:'Ver el tablero de mi equipo',
     cta2:'Preguntas →'
   },
@@ -195,6 +197,8 @@ var DOC = {
     noteB:'For the family',
     noteP:'Pledging is not buying anything. It is a donation to the program whose size depends on the score, you can set a maximum, and nothing is charged before the game is played. If a game is cancelled, the pledge moves to the next one.',
 
+    whereB:'Where is my team\u2019s board?',
+    whereP:'Every team has its own and it is not in a public list. Your coach sends the link to the team group — ask them for it if you do not have it.',
     cta1:'See my team\u2019s board',
     cta2:'Questions →'
   }
@@ -250,7 +254,7 @@ function draw(){
 
     (CAMP
       ? '<a class="cta" href="scoreboard.html?c=' + encodeURIComponent(CAMP) + '">' + D.cta1 + '</a>'
-      : '') +
+      : '<div class="note"><b>' + D.whereB + '</b><p>' + D.whereP + '</p></div>') +
     '<a class="cta line" href="preguntas.html">' + D.cta2 + '</a>';
 
   document.getElementById('langBtn').textContent = LANG === 'es' ? 'EN' : 'ES';
