@@ -266,6 +266,20 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .steps3 .st{border:2px solid var(--line,#D7E0E8);border-radius:4px;padding:16px 18px}
 .steps3 .st b{display:block;font-size:1.02rem;margin-bottom:4px}
 .steps3 .st span{color:var(--mute,#5A6B7C);font-size:.94rem}
+.demo-card{display:block;border:2px solid var(--accent,#0C6E8C);border-radius:6px;
+  padding:20px 22px;margin:26px 0 0;text-decoration:none;color:var(--ink,#12202E);
+  background:var(--tint,#F7FAFC)}
+.demo-card:hover{background:#fff;box-shadow:0 0 0 4px rgba(12,110,140,.14)}
+.dc-kick{display:block;font-size:.62rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent,#0C6E8C)}
+.dc-h{display:block;font-size:1.25rem;font-weight:900;letter-spacing:-.025em;margin:3px 0 6px}
+.dc-p{display:block;color:var(--ink,#12202E);font-size:.95rem;line-height:1.6}
+.dc-go{display:block;width:fit-content;margin:16px auto 0;padding:12px 24px;text-align:center;
+  border:2px solid var(--accent,#0C6E8C);border-radius:4px;
+  color:var(--accent,#0C6E8C);font-weight:800;font-size:.92rem;
+  transition:background .2s,color .2s}
+.demo-card:hover .dc-go{background:var(--accent,#0C6E8C);color:#fff}
+
 .step-cta{text-align:center;margin-top:22px}
 .step-go{display:inline-block;padding:15px 30px;border:2px solid var(--ink,#12202E);
   border-radius:4px;background:var(--ink,#12202E);color:#fff;text-decoration:none;
@@ -380,6 +394,13 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
       <div class="st"><b data-t="st3b">You enter the score.</b>
         <span data-t="st3">That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.</span></div>
     </div>
+    <a class="demo-card" href="scoreboard.html?c=19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6">
+      <span class="dc-kick" data-t="dcKick">See it working</span>
+      <span class="dc-h" data-t="dcH">Open a team board</span>
+      <span class="dc-p" data-t="dcP">A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.</span>
+      <span class="dc-go" data-t="dcGo">Open the demo →</span>
+    </a>
+
     <div class="step-cta">
       <a class="step-go" href="equipo.html" data-t="stepGo">Sign up my team →</a>
     </div>
@@ -488,6 +509,9 @@ var T = {
     st2:'A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.',
     st3b:'You enter the score.',
     st3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
+    dcKick:'See it working', dcH:'Open a team board',
+    dcP:'A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.',
+    dcGo:'Open the demo →',
     stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a cancelled game moves their pledge to the next one.',
     boardH:'One page your families will actually check.',
@@ -530,6 +554,9 @@ var T = {
     st2:'Diez centavos por punto el sábado. Veinticinco para el torneo. La familia, los vecinos, el negocio de la esquina — cada uno escoge lo que le sirve.',
     st3b:'Pones el marcador.',
     st3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
+    dcKick:'Míralo funcionando', dcH:'Abre el tablero de un equipo',
+    dcP:'Una demostración del tablero de un equipo, igual al de verdad, con juegos, marcadores y lo que recaudó el programa. Date una vuelta — el calendario, la hoja de promesa, y el desglose de a dónde va el dinero.',
+    dcGo:'Abrir la demostración →',
     stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y si se cancela un juego su promesa pasa al próximo.',
     boardH:'Una página que tus familias sí van a mirar.',
