@@ -110,11 +110,23 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
   border:1px solid var(--line);border-radius:3px;padding:3px 8px;margin-bottom:6px}
 .game .need{margin-top:8px;font-size:.86rem;color:var(--mute)}
 .btn.small.dead{background:#fff;color:#9AA8B5;border-color:var(--line);cursor:not-allowed}
-.playerlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
+/* Lo del jugador es una acción, no una nota al pie: caja propia,
+   con su botón. Lo de abajo sigue siendo un enlace para leer. */
+.playcard{border:2px solid var(--ink);border-radius:4px;padding:18px 20px;margin-top:26px;
+  background:var(--tint)}
+.pc-kick{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:4px}
+.pc-h{display:block;font-size:1.2rem;font-weight:900;letter-spacing:-.025em}
+.pc-p{margin:6px 0 0;color:var(--mute);font-size:.93rem}
+.pc-go{display:block;text-align:center;margin-top:16px;padding:14px;border:2px solid var(--ink);
+  border-radius:4px;background:var(--ink);color:#fff;font-weight:800;text-decoration:none}
+.pc-go:hover{background:#0B1724}
+
+.readlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
   margin-top:18px;text-decoration:none;color:var(--ink)}
-.playerlink:hover{border-color:var(--ink);border-style:solid}
-.playerlink b{display:block}
-.playerlink span{color:var(--mute);font-size:.88rem}
+.readlink:hover{border-color:var(--ink);border-style:solid}
+.readlink b{display:block}
+.readlink span{color:var(--mute);font-size:.88rem}
 .tagn{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
   background:var(--ball);color:#1A0C00;border-radius:3px;padding:3px 8px;margin-bottom:6px}
 
@@ -207,7 +219,10 @@ var S = {
     home:'Home', away:'Away',
     allDivs:'All squads', noneHere:'No games for that squad yet.',
     howPaid:'How the program gets paid', howPaidP:'For players and families \u2014 two minutes.',
-    iPlay:'I play for this team', iPlayP:'Get your own link to send your family.',
+    iPlayKick:'If you play for this team',
+    iPlay:'Get your own link',
+    iPlayGo:'Get my link →',
+    iPlayP:'Put your name in and you get a link of your own. Send it to your family — whatever they pledge is credited to you, and all of it goes to the program.',
     pledgeOn:'Pledge on this game',
     pledged:'{N} padrino(s)',
     final:'Final',
@@ -247,7 +262,10 @@ var S = {
     home:'Casa', away:'Visita',
     allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
     howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
-    iPlay:'Yo juego en este equipo', iPlayP:'Consigue tu propio enlace para mandarle a tu familia.',
+    iPlayKick:'Si juegas en este equipo',
+    iPlay:'Saca tu propio enlace',
+    iPlayGo:'Sacar mi enlace →',
+    iPlayP:'Pones tu nombre y te da un enlace que es tuyo. Mándaselo a tu familia — lo que prometan queda apuntado a tu nombre, y todo va al programa.',
     pledgeOn:'Prometer en este juego',
     pledged:'{N} padrino(s)',
     final:'Final',
@@ -596,11 +614,17 @@ function draw(){
       : '') +
 
     // Para un jugador que llega aquí: su propio enlace está a un toque.
-    '<a class="playerlink" href="jugador.html?c=' + CAMPAIGN + '">' +
-      '<b>' + T('iPlay') + '</b><span>' + T('iPlayP') + '</span>' +
-    '</a>' +
+    // Para el jugador: lo que tiene que hacer, con su botón.
+    '<div class="playcard">' +
+      '<div class="pc-kick">' + T('iPlayKick') + '</div>' +
+      '<b class="pc-h">' + T('iPlay') + '</b>' +
+      '<p class="pc-p">' + T('iPlayP') + '</p>' +
+      '<a class="pc-go" href="jugador.html?c=' + CAMPAIGN +
+        (DIV ? '&d=' + encodeURIComponent(DIV) : '') + '">' + T('iPlayGo') + '</a>' +
+    '</div>' +
 
-    '<a class="playerlink" href="programa.html?c=' + CAMPAIGN + '">' +
+    // Y lo otro es para leer, no para hacer.
+    '<a class="readlink" href="programa.html?c=' + CAMPAIGN + '">' +
       '<b>' + T('howPaid') + '</b><span>' + T('howPaidP') + '</span>' +
     '</a>';
 }
