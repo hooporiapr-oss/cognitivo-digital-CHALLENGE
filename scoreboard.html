@@ -219,6 +219,10 @@ var S = {
     home:'Home', away:'Away',
     allDivs:'All squads', noneHere:'No games for that squad yet.',
     howPaid:'How the program gets paid', howPaidP:'For players and families \u2014 two minutes.',
+    noCampH:'You need your team\u2019s link',
+    noCampP:'Every program has its own board and they are not in a public list. Your coach sends the link to the team group — ask them for it if you do not have it.',
+    noCampGo:'Is your team not raising yet?',
+    noCampGoP:'See how Cada Punto works, and sign your team up.',
     iPlayKick:'If you play for this team',
     iPlay:'Get your own link',
     iPlayGo:'Get my link →',
@@ -262,6 +266,10 @@ var S = {
     home:'Casa', away:'Visita',
     allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
     howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
+    noCampH:'Te falta el enlace de tu equipo',
+    noCampP:'Cada programa tiene su propio tablero y no están en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
+    noCampGo:'¿Tu equipo todavía no recauda?',
+    noCampGoP:'Mira cómo funciona Cada Punto e inscríbelo.',
     iPlayKick:'Si juegas en este equipo',
     iPlay:'Saca tu propio enlace',
     iPlayGo:'Sacar mi enlace →',
@@ -454,7 +462,18 @@ function when(g){
 }
 
 function load(){
-  if (!CAMPAIGN){ app.innerHTML = '<p style="color:var(--mute)">No campaign.</p>'; return; }
+  if (!CAMPAIGN){
+    app.innerHTML =
+      '<h1>' + T('noCampH') + '</h1>' +
+      '<p class="lede">' + T('noCampP') + '</p>' +
+      '<a class="readlink" href="programa.html">' +
+        '<b>' + T('howPaid') + '</b><span>' + T('howPaidP') + '</span>' +
+      '</a>' +
+      '<a class="readlink" href="index.html">' +
+        '<b>' + T('noCampGo') + '</b><span>' + T('noCampGoP') + '</span>' +
+      '</a>';
+    return;
+  }
   Promise.all([
     rpc('game_board', { p_campaign: CAMPAIGN }),
     rpc('game_roster', { p_campaign: CAMPAIGN })
