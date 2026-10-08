@@ -164,7 +164,14 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
 .fx-vs{text-transform:uppercase;font-size:.7rem;font-weight:900;letter-spacing:.14em}
 .fx-when{display:block;font-size:.86rem;margin-top:3px}
 
-.est{border-left:4px solid var(--accent);background:var(--tint);padding:12px 14px;margin:14px 0;font-size:.93rem}
+.est{border-left:4px solid var(--accent);background:var(--tint);padding:13px 15px;margin:14px 0;font-size:.93rem}
+.est b{display:block}
+.es-l{display:flex;justify-content:space-between;gap:12px;padding:3px 0;color:var(--mute)}
+.es-l b{display:inline;color:var(--ink);font-variant-numeric:tabular-nums}
+.es-l span{font-variant-numeric:tabular-nums}
+.es-tot{border-top:1px solid var(--line);margin-top:4px;padding-top:6px}
+.es-tot b{font-size:1.05rem}
+.es-note{display:block;color:var(--mute);font-size:.86rem;margin-top:8px;line-height:1.5}
 .est b{display:block}
 .msg{margin-top:10px;font-weight:700;font-size:.9rem;min-height:1.2em}
 .msg.bad{color:#A8323F}
@@ -242,8 +249,11 @@ var S = {
     yourName:'Your name',
     yourEmail:'Your email',
     capLabel:'Most you want to pay (optional)',
-    estTitle:'If they score 60',
-    estBody:'You would pay about {A}. You are billed after the game, on the points they actually score.',
+    estTitle:'If they score {N}, which is about their average',
+    esPoints:'{N} points to the program',
+    esFee:'Platform fee (20%)',
+    esPay:'You would pay',
+    esNote:'The fee is added on top — the program receives every dollar you pledged. Nothing is charged until the game is played, and you are billed on the points they actually score.',
     minNote:'Minimum $5 per pledge.',
     send:'Pledge',
     back:'← Back to the schedule',
@@ -291,8 +301,11 @@ var S = {
     yourName:'Tu nombre',
     yourEmail:'Tu correo',
     capLabel:'Lo máximo que quieres pagar (opcional)',
-    estTitle:'Si anotan 60',
-    estBody:'Pagarías unos {A}. Se te cobra después del juego, por los puntos que de verdad anoten.',
+    estTitle:'Si anotan {N}, que es más o menos su promedio',
+    esPoints:'{N} puntos para el programa',
+    esFee:'Cargo de plataforma (20%)',
+    esPay:'Tú pagarías',
+    esNote:'El cargo se suma encima — el programa recibe completo lo que prometiste. No se cobra nada hasta que se juegue, y se te cobra por los puntos que de verdad anoten.',
     minNote:'Mínimo $5 por promesa.',
     send:'Prometer',
     back:'← Volver al calendario',
@@ -683,11 +696,39 @@ function pick(id){
 function setRate(r){
   RATE = r;
   var est = document.getElementById('estLine');
-  if (est) est.innerHTML = T('estBody', { A: money(r * 60) });
+  if (est) est.innerHTML = estimate(r);
   var btns = document.querySelectorAll('.rate');
   for (var i = 0; i < btns.length; i++){
     btns[i].className = 'rate' + (Number(btns[i].dataset.r) === r ? ' on' : '');
   }
+}
+
+
+// Lo que suele anotar este equipo. Si todavía no ha jugado, 60 sirve
+// de ejemplo — pero en cuanto hay marcadores, se usan los suyos.
+function typicalPoints(){
+  var played = (BOARD.games || []).filter(function(g){
+    return g.status === 'played' && g.team_points != null;
+  });
+  if (!played.length) return 60;
+  var sum = played.reduce(function(n, g){ return n + Number(g.team_points || 0); }, 0);
+  return Math.round(sum / played.length);
+}
+
+// El desglose: lo que recibe el programa, el cargo, y lo que paga
+// el padrino. Tres líneas, antes de prometer nada.
+function estimate(rate){
+  var pts  = typicalPoints();
+  var team = rate * pts;
+  var fee  = team * 0.20;
+
+  return '<span class="es-l"><span>' + T('esPoints', { N: pts }) + '</span>' +
+           '<b>' + money(team) + '</b></span>' +
+         '<span class="es-l"><span>' + T('esFee') + '</span>' +
+           '<span>+' + money(fee) + '</span></span>' +
+         '<span class="es-l es-tot"><b>' + T('esPay') + '</b>' +
+           '<b>' + money(team + fee) + '</b></span>' +
+         '<span class="es-note">' + T('esNote') + '</span>';
 }
 
 function drawPledge(){
@@ -714,13 +755,13 @@ function drawPledge(){
       [[0.10,'10¢'],[0.25,'25¢'],[0.50,'50¢'],[1.00,'$1']].map(function(r){
         return '<button class="rate' + (r[0] === RATE ? ' on' : '') + '" data-r="' + r[0] + '" ' +
                'onclick="setRate(' + r[0] + ')">' + r[1] +
-               '<small>' + money(r[0] * 60) + '</small></button>';
+               '<small>' + money(r[0] * typicalPoints() * 1.20) + '</small></button>';
       }).join('') +
     '</div>' +
 
     '<div class="est">' +
-      '<b>' + T('estTitle') + '</b>' +
-      '<span id="estLine">' + T('estBody', { A: money(RATE * 60) }) + '</span>' +
+      '<b>' + T('estTitle', { N: typicalPoints() }) + '</b>' +
+      '<span id="estLine">' + estimate(RATE) + '</span>' +
     '</div>' +
 
     '<label for="pn">' + T('yourName') + '</label>' +
