@@ -67,6 +67,11 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .game.locked .dtag{background:#fff;color:var(--mute);border:1px solid var(--line)}
 
 /* El filtro por escuadra */
+.demo{border:2px dashed var(--accent);background:var(--tint);border-radius:4px;
+  padding:13px 15px;margin:0 0 18px}
+.demo b{display:block;font-size:.95rem}
+.demo span{color:var(--mute);font-size:.9rem}
+
 .divs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
 .dv{border:1.5px solid var(--line);background:#fff;color:var(--mute);border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
@@ -219,6 +224,8 @@ var S = {
     home:'Home', away:'Away',
     allDivs:'All squads', noneHere:'No games for that squad yet.',
     howPaid:'How the program gets paid', howPaidP:'For players and families \u2014 two minutes.',
+    demoH:'This is a demonstration',
+    demoP:'A made-up team, so you can see how a board works. The games, the scores and the money are examples — nothing here is charged.',
     noCampH:'You need your team\u2019s link',
     noCampP:'Every program has its own board and they are not in a public list. Your coach sends the link to the team group — ask them for it if you do not have it.',
     noCampGo:'Is your team not raising yet?',
@@ -266,6 +273,8 @@ var S = {
     home:'Casa', away:'Visita',
     allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
     howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
+    demoH:'Esto es una demostración',
+    demoP:'Un equipo inventado, para que veas cómo funciona un tablero. Los juegos, los marcadores y el dinero son de ejemplo — aquí no se cobra nada.',
     noCampH:'Te falta el enlace de tu equipo',
     noCampP:'Cada programa tiene su propio tablero y no están en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
     noCampGo:'¿Tu equipo todavía no recauda?',
@@ -323,6 +332,15 @@ function toggleLang(){
 var PARAMS = new URLSearchParams(location.search);
 var CAMPAIGN = PARAMS.get('c');
 var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
+// La campaña de demostración. Es un tablero normal en todo menos en
+// que lo de dentro está inventado — y hay que decirlo.
+var DEMOS = {
+  '19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6': 'basket',
+  'b8c9366a-e5dd-4337-a326-1617b94b105c': 'voley'
+};
+var IS_DEMO  = !!DEMOS[CAMPAIGN];
+var DEMO_SPORT = DEMOS[CAMPAIGN] || null;
+
 var WANT_DIV = PARAMS.get('d') || null;        // escuadra pedida en el enlace
 var DIV_SET = false;
 var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
@@ -614,6 +632,13 @@ function draw(){
       '<div class="big">' + (BOARD.points || 0) + '</div>' +
       '<div class="sub">' + T('gamesPlayed', { N: BOARD.played || 0 }) + '</div>' +
     '</div>' +
+
+    (IS_DEMO
+      ? '<div class="demo">' +
+          '<b>' + T('demoH') + '</b>' +
+          '<span>' + T('demoP') + '</span>' +
+        '</div>'
+      : '') +
 
     divBar(games) +
 
