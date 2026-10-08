@@ -88,10 +88,9 @@ header{padding:clamp(14px,3vw,24px) 0 clamp(32px,5vw,48px);text-align:center}
   box-shadow:0 18px 50px rgba(0,0,0,.55)}
 /* The logo leads, and the copy under it is centred with it — the
    whole masthead reads as one block. */
-.heromark{display:block;width:min(340px,70vw);height:auto;margin:0 auto clamp(18px,3.5vw,26px)}
 header h1{margin-left:auto;margin-right:auto}
-header .lede,header .forwho{margin-left:auto;margin-right:auto}
-header .forwho{border-left:none;padding-left:0;border-top:1px solid rgba(34,211,238,.35);padding-top:16px}
+header .lede,header 
+header 
 header .actions{justify-content:center}
 h1{
   font-size:clamp(2.1rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;
@@ -102,10 +101,6 @@ h1 em{font-style:normal;color:var(--gold)}
 /* Who it is for, stated once rather than hedged into every
    sentence — the copy stays concrete and says "school", this line
    does the widening. */
-.forwho{
-  color:var(--mute);font-size:.95rem;max-width:52ch;margin:0 0 26px;
-  padding-left:14px;border-left:2px solid rgba(34,211,238,.4);
-}
 .actions{display:flex;gap:12px;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -248,9 +243,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 .wm em{font-style:normal;color:#22D3EE}
 .mark .wm{display:block}
 @media(max-width:560px){.mark .wm{font-size:23px}}
-.heromark{display:flex;flex-direction:column;align-items:center;gap:10px;width:auto!important}
 .wmbig{font-size:clamp(3.4rem,13vw,6rem);letter-spacing:-.05em}
-.brandtag{font-size:clamp(.72rem,2.2vw,.86rem);font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
 
 /* what the free month is worth */
 
@@ -273,9 +266,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   max-width:20ch;text-wrap:balance}
 .nosell p{margin:0;color:var(--mute);max-width:56ch;font-size:1rem;line-height:1.65}
 
-.newway{margin:16px 0 2px;text-align:center;font-size:.72rem;font-weight:900;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#0C6E8C)}
-.motto{margin:4px 0 18px;text-align:center;font-size:clamp(1.15rem,3.2vw,1.5rem);font-weight:900;letter-spacing:-.01em;color:var(--gold)}
 .playnote{color:var(--gold)!important;font-weight:700}
 
 /* the mark says the whole line now */
@@ -315,14 +305,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .board{margin:30px 0;border-left:4px solid #0C6E8C;padding:4px 0 4px 16px}
 .board h2{margin:0 0 6px}
 .board p{color:var(--mute,#5A6B7C);margin:0;max-width:60ch}
-
-/* Los juegos ya no son la portada: un bloque y su enlace. */
-.games-link{margin:30px 0;padding:20px 22px;border:2px solid var(--line,#D7E0E8);border-radius:4px}
-.games-link h2{margin:0 0 6px}
-.games-link p{color:var(--mute,#5A6B7C);margin:0 0 14px;max-width:58ch}
-.gm-btn{display:inline-block;padding:13px 20px;border:2px solid var(--ink,#12202E);border-radius:4px;
-  background:var(--ink,#12202E);color:#fff;text-decoration:none;font-weight:800}
-.gm-btn:hover{background:#0B1724}
 
 /* ── La tarjeta del marcador en vivo ───────────────────────
    Es lo único de la portada con movimiento, y por eso funciona:
@@ -372,7 +354,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <nav><div class="wrap navin">
   <a class="mark" href="#top"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
-    <a href="juegos.html" data-t="navPlay">The games</a>
     <a href="https://marcadorpr.com" data-t="navLive">Live events</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
     <a href="programa.html" data-t="navProg">For players and families</a>
@@ -469,11 +450,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <span class="lc-go" data-t="lcGo">See the live scoreboard →</span>
   </a>
 
-  <section class="games-link">
-    <h2 data-t="gmH">Memory Basketball</h2>
-    <p data-t="gmP">Two games built on real zone defenses — your players beat the 2-1-2 and the 1-3-1 from memory. Free to play, right now.</p>
-    <a class="gm-btn" href="juegos.html" data-t="gmCta">Beat the Zones →</a>
-  </section>
 
   <!-- The one argument every other fundraiser cannot make. -->
   <section class="nosell">
@@ -518,11 +494,6 @@ var T = {
     mLive:'Live events', navLive:'Live events',
     mFaq:'Questions', navFaq:'Questions',
     mProg:'For players and families', navProg:'For players and families',
-    gmH:'Memory Basketball',
-    gmP:'Two games built on real zone defenses — your players beat the 2-1-2 and the 1-3-1 from memory. Free to play, right now.',
-    gmCta:'Beat the Zones →',
-    newWay:'A new way to support the game.',
-    motto:'Every Point Counts.',
     hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
     nsH:'Nothing to sell. Nothing to deliver.',
     nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
@@ -531,7 +502,6 @@ var T = {
     hw2b:'The padrino pays, the program is paid.', hw2:'After each game they get the score and a pay button. Minimum $5 a pledge.',
     hw3b:'You watch the money as it arrives.', hw3:'Every pledge, payment and payout, listed per game in your own panel.',
     hw3fee:'Our 20% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $30.00 payment, and the program receives the full $25.00 collected.',
-    brandTag:'fundraising for teams',
     seasonH:'Pledge by the game, all season.',
     st1b:'You sign up, we approve you.',
     st1:'We check it is really your program, usually the same day. Then your coach panel opens and you post your schedule — a game takes ten seconds from your phone.',
@@ -548,13 +518,12 @@ var T = {
     boardH:'One page your families will actually check.',
     boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
-    navPlay:'The games', navPad:'Getting padrinos',
+    navPad:'Getting padrinos',
     heroAlt:'Cada Punto Cuenta — basketball and volleyball. Nothing to sell, no raffles, no deliveries.',
     ctaHow:'See how it works',
     h1:'Your team is already competing.',
     lede:'Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.',
-    forWho:'For teams, clubs, leagues and school programs. No products. No raffles. No deliveries.',
-    cta1:'Talk to us', cta1b2:'Sign up my team', cta1b:'Talk to us',
+    cta1b2:'Sign up my team', cta1b:'Talk to us',
     costH:'Free for your program.',
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
     closeH:'We will set it up for you.',
@@ -566,11 +535,6 @@ var T = {
     mLive:'Eventos en vivo', navLive:'Eventos en vivo',
     mFaq:'Preguntas', navFaq:'Preguntas',
     mProg:'Para jugadores y familias', navProg:'Para jugadores y familias',
-    gmH:'Memory Basketball',
-    gmP:'Dos juegos hechos sobre defensas de zona de verdad — tus jugadores vencen el 2-1-2 y el 1-3-1 de memoria. Gratis, ahora mismo.',
-    gmCta:'Vence las Zonas →',
-    newWay:'Una nueva forma de apoyar el deporte.',
-    motto:'Cada Punto Cuenta.',
     hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
     nsH:'Nada que vender. Nada que entregar.',
     nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
@@ -579,7 +543,6 @@ var T = {
     hw2b:'El padrino paga, el programa cobra.', hw2:'Después de cada juego reciben el marcador y un botón para pagar. Mínimo $5 por promesa.',
     hw3b:'Ves el dinero según entra.', hw3:'Cada promesa, cada pago y cada desembolso, por juego, en tu propio panel.',
     hw3fee:'Nuestro cargo de plataforma de 20% se a\u00f1ade encima de su pago, nunca se saca de \u00e9l. Una promesa de $25.00 es un pago de $30.00, y el programa recibe los $25.00 completos.',
-    brandTag:'recaudación para equipos',
     seasonH:'Promesas juego por juego, toda la temporada.',
     st1b:'Te inscribes, te aprobamos.',
     st1:'Comprobamos que de verdad es tu programa, normalmente el mismo día. Ahí se te abre el panel de coach y pones tu calendario — un juego toma diez segundos desde el teléfono.',
@@ -596,13 +559,12 @@ var T = {
     boardH:'Una página que tus familias sí van a mirar.',
     boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
-    navPlay:'Los juegos', navPad:'Conseguir padrinos',
+    navPad:'Conseguir padrinos',
     heroAlt:'Cada Punto Cuenta — baloncesto y voleibol. Nada que vender, sin rifas, nada que entregar.',
     ctaHow:'Ver cómo funciona',
     h1:'Tu equipo ya está compitiendo.',
     lede:'Cada Punto convierte cada punto que anotan en dinero para el programa — unos centavos a la vez, prometidos por la gente que ya estaba gritando en la cancha. Diez padrinos a diez centavos, una noche de 68 puntos, y el programa tiene $68.',
-    forWho:'Para equipos, clubes, ligas y programas escolares. Sin productos. Sin rifas. Sin entregas.',
-    cta1:'Habla con nosotros', cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
+    cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
     costH:'Gratis para tu programa.',
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
     closeH:'Te lo montamos nosotros.',
