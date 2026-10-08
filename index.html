@@ -269,16 +269,19 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .demo-card{display:block;border:3px solid var(--leather,#38BDF8);border-radius:6px;
   padding:20px 22px;margin:26px 0 0;text-decoration:none;color:var(--ink,#12202E);
   background:var(--tint,#F7FAFC)}
-.demo-card:hover{background:#fff;box-shadow:0 0 0 4px rgba(56,189,248,.22)}
+/* Dos botones, uno por deporte. En el teléfono se apilan. */
+.dc-two{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.dc-two .dc-go{margin:0}
+@media(max-width:560px){ .dc-two{flex-direction:column} .dc-two .dc-go{width:100%} }
 .dc-kick{display:block;font-size:.62rem;font-weight:900;letter-spacing:.2em;
   text-transform:uppercase;color:#0B6FA4}
 .dc-h{display:block;font-size:1.25rem;font-weight:900;letter-spacing:-.025em;margin:3px 0 6px}
 .dc-p{display:block;color:var(--ink,#12202E);font-size:.95rem;line-height:1.6}
-.dc-go{display:block;width:fit-content;margin:16px auto 0;padding:12px 24px;text-align:center;
+.dc-go{display:block;width:fit-content;padding:12px 22px;text-align:center;
   border:2px solid #0B6FA4;border-radius:4px;
   color:#0B6FA4;font-weight:800;font-size:.92rem;
   transition:background .2s,color .2s}
-.demo-card:hover .dc-go{background:#0B6FA4;color:#fff}
+.dc-go:hover{background:#0B6FA4;color:#fff}
 
 .step-cta{text-align:center;margin-top:22px}
 .step-go{display:inline-block;padding:15px 30px;border:2px solid var(--ink,#12202E);
@@ -394,12 +397,17 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
       <div class="st"><b data-t="st3b">You enter the score.</b>
         <span data-t="st3">That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.</span></div>
     </div>
-    <a class="demo-card" href="scoreboard.html?c=19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6">
+    <div class="demo-card">
       <span class="dc-kick" data-t="dcKick">See it working</span>
       <span class="dc-h" data-t="dcH">Open a team board</span>
       <span class="dc-p" data-t="dcP">A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.</span>
-      <span class="dc-go" data-t="dcGo">Open the demo →</span>
-    </a>
+      <span class="dc-two">
+        <a class="dc-go" href="scoreboard.html?c=19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6"
+           data-t="dcGoB">Open the basketball demo →</a>
+        <a class="dc-go" href="scoreboard.html?c=b8c9366a-e5dd-4337-a326-1617b94b105c"
+           data-t="dcGoV">Open the volleyball demo →</a>
+      </span>
+    </div>
 
     <div class="step-cta">
       <a class="step-go" href="equipo.html" data-t="stepGo">Sign up my team →</a>
@@ -511,7 +519,8 @@ var T = {
     st3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
     dcKick:'See it working', dcH:'Open a team board',
     dcP:'A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.',
-    dcGo:'Open the demo →',
+    dcGoB:'Open the basketball demo →',
+    dcGoV:'Open the volleyball demo →',
     stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a cancelled game moves their pledge to the next one.',
     boardH:'One page your families will actually check.',
@@ -556,7 +565,8 @@ var T = {
     st3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
     dcKick:'Míralo funcionando', dcH:'Abre el tablero de un equipo',
     dcP:'Una demostración del tablero de un equipo, igual al de verdad, con juegos, marcadores y lo que recaudó el programa. Date una vuelta — el calendario, la hoja de promesa, y el desglose de a dónde va el dinero.',
-    dcGo:'Abrir la demostración →',
+    dcGoB:'Abrir la demostración de baloncesto →',
+    dcGoV:'Abrir la demostración de voleibol →',
     stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y si se cancela un juego su promesa pasa al próximo.',
     boardH:'Una página que tus familias sí van a mirar.',
