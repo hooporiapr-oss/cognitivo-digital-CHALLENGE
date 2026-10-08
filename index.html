@@ -4,6 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cada Punto — fundraising from the games you already play</title>
+<!-- La vista previa cuando alguien comparte el enlace: en vez de
+     un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:url" content="https://cadapunto.com/">
+<meta property="og:title" content="Cada Punto — fundraising from the games you already play">
+<meta property="og:description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="942">
+<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto y voleibol">
+<meta property="og:locale" content="es_PR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cada Punto — fundraising from the games you already play">
+<meta name="twitter:description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+
 <meta name="description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +80,12 @@ nav{position:sticky;top:0;z-index:70;background:var(--ink);border-bottom:1px sol
 #lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 
 /* ---------- the one sentence ---------- */
-header{padding:clamp(18px,3.5vw,28px) 0 clamp(32px,5vw,48px);text-align:center}
+header{padding:clamp(14px,3vw,24px) 0 clamp(32px,5vw,48px);text-align:center}
+/* El cartel es lo primero que se ve: ancho completo, nítido, y
+   sin nada encima que lo estorbe. */
+.heroart{display:block;width:100%;height:auto;max-width:860px;margin:0 auto clamp(22px,4vw,34px);
+  border-radius:10px;border:1px solid rgba(56,189,248,.28);
+  box-shadow:0 18px 50px rgba(0,0,0,.55)}
 /* The logo leads, and the copy under it is centred with it — the
    whole masthead reads as one block. */
 .heromark{display:block;width:min(340px,70vw);height:auto;margin:0 auto clamp(18px,3.5vw,26px)}
@@ -371,15 +393,15 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 </nav>
 
 <header id="top"><div class="wrap">
-  <div class="heromark"><span class="wm wmbig">cada&nbsp;<em>punto</em></span><span class="brandtag" data-t="brandTag">fundraising for teams</span></div>
-  <p class="newway" data-t="newWay">A new way to support the game.</p>
-  <p class="motto" data-t="motto">Every Point Counts.</p>
-  <h1 data-t="h1">Your team scores.<br><em>Your program gets paid.</em></h1>
-  <p class="lede" data-t="lede">Family and friends pledge a few cents for every point your team scores. Win by 68 with ten padrinos at a dime, and the program has $68.</p>
-  <p class="forwho" data-t="forWho">For teams, clubs, leagues and school programs. No products. No raffles. No deliveries.</p>
+  <img class="heroart" src="cadapunto-share.jpg" width="1200" height="942"
+       data-t-alt="heroAlt" alt="Cada Punto Cuenta — baloncesto y voleibol">
+
+  <h1 data-t="h1">Your team is already playing.</h1>
+  <p class="lede" data-t="lede">Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.</p>
+
   <div class="actions">
-    <a class="btn btn-solid" href="equipo.html" data-t="cta1b2">Sign up my team</a>
-    <a class="btn btn-line" href="contact.html" data-t="cta1">Talk to us</a>
+    <a class="btn btn-solid" href="#seasonH" data-t="ctaHow">See how it works</a>
+    <a class="btn btn-line" href="equipo.html" data-t="cta1b2">Sign up my team</a>
   </div>
 </div></header>
 
@@ -527,8 +549,10 @@ var T = {
     boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
     navPlay:'The games', navPad:'Getting padrinos',
-    h1:'Your team scores.<br><em>Your program gets paid.</em>',
-    lede:'Family and friends pledge a few cents for every point your team scores. Win by 68 with ten padrinos at a dime, and the program has $68.',
+    heroAlt:'Cada Punto Cuenta — basketball and volleyball. Nothing to sell, no raffles, no deliveries.',
+    ctaHow:'See how it works',
+    h1:'Your team is already playing.',
+    lede:'Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.',
     forWho:'For teams, clubs, leagues and school programs. No products. No raffles. No deliveries.',
     cta1:'Talk to us', cta1b2:'Sign up my team', cta1b:'Talk to us',
     costH:'Free for your program.',
@@ -573,8 +597,10 @@ var T = {
     boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
     navPlay:'Los juegos', navPad:'Conseguir padrinos',
-    h1:'Tu equipo anota.<br><em>Tu programa cobra.</em>',
-    lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo — el marcador final, no el de un jugador. Juegas tus juegos, pones el marcador, y ellos pagan lo que el equipo ganó.',
+    heroAlt:'Cada Punto Cuenta — baloncesto y voleibol. Nada que vender, sin rifas, nada que entregar.',
+    ctaHow:'Ver cómo funciona',
+    h1:'Tu equipo ya está jugando.',
+    lede:'Cada Punto convierte cada punto que anotan en dinero para el programa — unos centavos a la vez, prometidos por la gente que ya estaba gritando en la cancha. Diez padrinos a diez centavos, una noche de 68 puntos, y el programa tiene $68.',
     forWho:'Para equipos, clubes, ligas y programas escolares. Sin productos. Sin rifas. Sin entregas.',
     cta1:'Habla con nosotros', cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
     costH:'Gratis para tu programa.',
@@ -603,6 +629,12 @@ function paint(){
     // the headline carries its own emphasis
     if (v.indexOf('<') !== -1) el.innerHTML = v; else el.textContent = v;
   });
+  document.querySelectorAll('[data-t-alt]').forEach(function(el){
+    var key = el.getAttribute('data-t-alt');
+    var v = (T[lang] && T[lang][key]) || T.en[key];
+    if (v) el.setAttribute('alt', v);
+  });
+
   document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
 }
 
