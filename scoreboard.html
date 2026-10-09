@@ -4,11 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Scoreboard — Cada Punto</title>
+<!-- La vista previa cuando alguien comparte el enlace: en vez de
+     un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:url" content="https://cadapunto.com/scoreboard.html">
+<meta property="og:title" content="Cada Punto">
+<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="942">
+<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto y voleibol">
+<meta property="og:locale" content="es_PR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cada Punto">
+<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
       --ball:#FF7A18;--good:#0B7A5A}
 *{box-sizing:border-box}
 html{background:#12202E}
@@ -21,8 +38,8 @@ header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
   padding-top:env(safe-area-inset-top,0px)}
 header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
 .mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#4FD3F0}
-.mark i{font-style:normal;color:#9FB3C4}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
 .langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
@@ -181,7 +198,7 @@ footer p{margin:0 0 7px}
 footer .f-co{color:#fff;font-weight:700}
 footer .f-legal{margin:7px 0 0;font-size:.78rem}
 footer .f-dot{padding:0 7px;opacity:.5}
-footer a{color:#4FD3F0;text-decoration:none}
+footer a{color:#8FA8C0;text-decoration:none}
 </style>
 </head>
 <body>
