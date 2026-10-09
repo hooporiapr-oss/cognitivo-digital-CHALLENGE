@@ -90,8 +90,7 @@ header{padding:clamp(14px,3vw,24px) 0 clamp(32px,5vw,48px);text-align:center}
 /* The logo leads, and the copy under it is centred with it — the
    whole masthead reads as one block. */
 header h1{margin-left:auto;margin-right:auto}
-header .lede,header 
-header 
+header .lede{margin-left:auto;margin-right:auto}
 header .actions{justify-content:center}
 h1{
   font-size:clamp(2.1rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;
@@ -198,6 +197,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .dc-two{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
 .dc-two .dc-go{margin:0}
 @media(max-width:560px){ .dc-two{flex-direction:column} .dc-two .dc-go{width:100%} }
+/* Apilados en el telefono se veian disparejos; mismo ancho. */
+@media(max-width:560px){header .actions{flex-direction:column;align-items:center}
+  header .actions .btn{width:100%;max-width:290px}}
 .dc-kick{display:block;font-size:.62rem;font-weight:900;letter-spacing:.2em;
   text-transform:uppercase;color:var(--ember)}
 .dc-h{display:block;font-size:1.25rem;font-weight:900;letter-spacing:-.025em;margin:3px 0 6px}
@@ -319,9 +321,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
       <span class="dc-p" data-t="dcP">A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.</span>
       <span class="dc-two">
         <a class="dc-go" href="scoreboard.html?c=19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6"
-           data-t="dcGoB">Open the basketball demo →</a>
+           data-t="dcGoB">Basketball Demo →</a>
         <a class="dc-go" href="scoreboard.html?c=b8c9366a-e5dd-4337-a326-1617b94b105c"
-           data-t="dcGoV">Open the volleyball demo →</a>
+           data-t="dcGoV">Volleyball Demo →</a>
       </span>
     </div>
 
@@ -424,8 +426,8 @@ var T = {
     st3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
     dcKick:'See it working', dcH:'Open a team board',
     dcP:'A demo example of a team board, the same as a real one, with games, scores and what the program raised. Look around it — the schedule, the pledge form, the breakdown of where the money goes.',
-    dcGoB:'Open the basketball demo →',
-    dcGoV:'Open the volleyball demo →',
+    dcGoB:'Basketball Demo →',
+    dcGoV:'Volleyball Demo →',
     stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a cancelled game moves their pledge to the next one.',
     boardH:'One page your families will actually check.',
@@ -465,8 +467,8 @@ var T = {
     st3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
     dcKick:'Míralo funcionando', dcH:'Abre el tablero de un equipo',
     dcP:'Una demostración del tablero de un equipo, igual al de verdad, con juegos, marcadores y lo que recaudó el programa. Date una vuelta — el calendario, la hoja de promesa, y el desglose de a dónde va el dinero.',
-    dcGoB:'Abrir la demostración de baloncesto →',
-    dcGoV:'Abrir la demostración de voleibol →',
+    dcGoB:'Demo de Baloncesto →',
+    dcGoV:'Demo de Voleibol →',
     stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y si se cancela un juego su promesa pasa al próximo.',
     boardH:'Una página que tus familias sí van a mirar.',
