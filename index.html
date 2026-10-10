@@ -172,6 +172,21 @@ ol.hw > li > span{color:var(--mute);font-size:.94rem}
 ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:.9rem}
 .hw-see{max-width:640px;margin:12px 0 0;color:var(--mute);font-size:.94rem;line-height:1.6}
 
+/* ── Lo único que ningún otro recaudador puede decir ───────
+   Va en HTML y no dentro del cartel: así cambia con el idioma,
+   se lee nítido en el teléfono, y una corrección de texto es una
+   línea y no una imagen nueva. */
+.claims{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,2vw,22px);
+  margin:0 auto clamp(26px,4vw,38px);max-width:860px}
+.claim{text-align:center}
+.claim svg{display:block;margin:0 auto 9px;width:clamp(30px,6vw,40px);height:auto}
+.claim b{display:block;font-size:clamp(.78rem,1.9vw,.95rem);font-weight:800;
+  letter-spacing:-.01em;line-height:1.25}
+.claim.paid b{color:var(--leather)}
+@media(max-width:560px){
+  .claims{grid-template-columns:repeat(2,1fr);gap:16px 10px;max-width:420px}
+}
+
 /* ---------- the one thing nobody else can say ---------- */
 .nosell{padding:0 0 clamp(34px,5vw,52px)}
 .nosell h2{font-size:clamp(1.4rem,4vw,1.9rem);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;
@@ -289,8 +304,15 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 </nav>
 
 <header id="top"><div class="wrap">
-  <img class="heroart" src="cadapunto-share.jpg" width="1200" height="942"
-       data-t-alt="heroAlt" alt="Cada Punto Cuenta — baloncesto y voleibol">
+  <img class="heroart" src="cadapunto-hero.jpg" width="1536" height="575"
+       data-t-alt="heroAlt" alt="Cada Punto — recaudación deportiva, baloncesto y voleibol">
+
+  <div class="claims">
+    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M17 17l-5 3 2 5 3-1.5V33h14V23.5l3 1.5 2-5-5-3-3.5-1a3.5 3.5 0 0 1-7 0z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl1">Nothing to sell.</b></div>
+    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M12 20h24v4a3 3 0 0 0 0 6v4H12v-4a3 3 0 0 0 0-6z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl2">No raffles.</b></div>
+    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M13 19h22v16H13z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><path d="M13 25h22M24 19v16" fill="none" stroke="#93AAC2" stroke-width="2.4"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl3">Nothing to deliver.</b></div>
+    <div class="claim paid"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#2A7D08" stroke-width="3.5"/><path d="M14 31l7-7 5 5 9-9" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 20h6v6" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-t="cl4">They score. You get paid.</b></div>
+  </div>
 
   <h1 data-t="h1">Your team is already competing.</h1>
   <p class="lede" data-t="lede">Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.</p>
@@ -435,7 +457,9 @@ var T = {
     boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
     navPad:'Getting padrinos',
-    heroAlt:'Cada Punto Cuenta — basketball and volleyball. Nothing to sell, no raffles, no deliveries.',
+    heroAlt:'Cada Punto — sports fundraising for basketball and volleyball programs. Every point counts.',
+    cl1:'Nothing to sell.', cl2:'No raffles.', cl3:'Nothing to deliver.',
+    cl4:'They score. You get paid.',
     ctaHow:'See how it works',
     h1:'Your team is already competing.',
     lede:'Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.',
@@ -476,7 +500,9 @@ var T = {
     boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
     navPad:'Conseguir padrinos',
-    heroAlt:'Cada Punto Cuenta — baloncesto y voleibol. Nada que vender, sin rifas, nada que entregar.',
+    heroAlt:'Cada Punto — recaudación deportiva para programas de baloncesto y voleibol. Cada punto cuenta.',
+    cl1:'Nada que vender.', cl2:'Sin rifas.', cl3:'Nada que entregar.',
+    cl4:'Tu equipo anota. Tu programa cobra.',
     ctaHow:'Ver cómo funciona',
     h1:'Tu equipo ya está compitiendo.',
     lede:'Cada Punto convierte cada punto que anotan en dinero para el programa — unos centavos a la vez, prometidos por la gente que ya estaba gritando en la cancha. Diez padrinos a diez centavos, una noche de 68 puntos, y el programa tiene $68.',
