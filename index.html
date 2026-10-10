@@ -221,7 +221,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 .board h2{margin:0 0 6px}
 .board p{color:var(--mute,#5A6B7C);margin:0;max-width:60ch}
 
-/* ── La tarjeta del marcador en vivo ───────────────────────
+/* ── La tarjeta de Memory Basketball ──────────────────────
    Es lo único de la portada con movimiento, y por eso funciona:
    un resplandor que pasa despacio y un punto que late. Si el
    visitante pidió menos movimiento, se queda quieta. */
@@ -269,7 +269,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <nav><div class="wrap navin">
   <a class="mark" href="#top"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
-    <a href="https://marcadorpr.com" data-t="navLive">Live events</a>
+    <a href="juegos.html" data-t="navLive">Memory Basketball</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
     <a href="programa.html" data-t="navProg">For players and families</a>
     <a href="preguntas.html" data-t="navFaq">Questions</a><button id="lang" onclick="flip()">ES</button>
@@ -281,7 +281,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
   <a href="jugador.html" data-t="mPlayer">I am a player</a>
-  <a href="https://marcadorpr.com" data-t="mLive">Live events</a>
+  <a href="juegos.html" data-t="mLive">Memory Basketball</a>
   <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
   <a href="programa.html" data-t="mProg">For players and families</a>
   <a href="preguntas.html" data-t="mFaq">Questions</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
@@ -355,14 +355,15 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
   <!-- Secondary now: a reason the platform is more than a donate
        button, and something to run between seasons. -->
-  <!-- El marcador en vivo: lo que más atención trae, con el punto
-       latiendo para que no pase desapercibido. -->
-  <a class="live-card" href="https://marcadorpr.com">
+  <!-- Memory Basketball: se juega sin temporada, sin cancha y sin
+       calendario, así que un programa puede recaudar también cuando
+       no hay juegos. -->
+  <a class="live-card" href="juegos.html">
     <span class="lc-glow" aria-hidden="true"></span>
-    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">Live now</span></span>
-    <span class="lc-name">marcador<em>pr</em></span>
-    <span class="lc-p" data-t="lcP">Every game of the tournament, every score as it lands, and the bracket filling itself in. The page your families will have open all week.</span>
-    <span class="lc-go" data-t="lcGo">See the live scoreboard →</span>
+    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">Between seasons</span></span>
+    <span class="lc-name">memory<em>basketball</em></span>
+    <span class="lc-p" data-t="lcP">The zone lights up one spot at a time and grows by one every round — read it, then play it back. Free to play, and a way to keep raising when there are no games on the calendar.</span>
+    <span class="lc-go" data-t="lcGo">Play it →</span>
   </a>
 
 
@@ -404,9 +405,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <script>
 var T = {
   en:{
-    lcTag:'Live now', lcGo:'See the live scoreboard →',
-    lcP:'Every game of the tournament, every score as it lands, and the bracket filling itself in. The page your families will have open all week.',
-    mLive:'Live events', navLive:'Live events',
+    lcTag:'Between seasons', lcGo:'Play it →',
+    lcP:'The zone lights up one spot at a time and grows by one every round — read it, then play it back. Free to play, and a way to keep raising when there are no games on the calendar.',
+    mLive:'Memory Basketball', navLive:'Memory Basketball',
     mFaq:'Questions', navFaq:'Questions',
     mProg:'For players and families', navProg:'For players and families',
     hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
@@ -445,9 +446,9 @@ var T = {
     closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    lcTag:'En vivo', lcGo:'Ver el marcador en vivo →',
-    lcP:'Todos los juegos del torneo, cada marcador según entra, y el cuadro llenándose solo. La página que tus familias van a tener abierta toda la semana.',
-    mLive:'Eventos en vivo', navLive:'Eventos en vivo',
+    lcTag:'Entre temporadas', lcGo:'Jugar →',
+    lcP:'La zona se enciende un punto a la vez y crece uno cada ronda — léela y repítela. Gratis, y una manera de seguir recaudando cuando no hay juegos en el calendario.',
+    mLive:'Memory Basketball', navLive:'Memory Basketball',
     mFaq:'Preguntas', navFaq:'Preguntas',
     mProg:'Para jugadores y familias', navProg:'Para jugadores y familias',
     hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
