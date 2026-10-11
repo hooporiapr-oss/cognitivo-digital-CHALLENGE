@@ -177,7 +177,9 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
   font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 .unlf input[type=text]{width:100%;box-sizing:border-box;font:inherit;font-weight:800;
   font-size:1rem;padding:9px 10px;border:2px solid var(--line);border-radius:4px;
-  background:#fff;color:var(--ink);text-transform:uppercase;letter-spacing:.08em}
+  background:#fff;color:var(--ink);letter-spacing:.06em}
+/* Sin text-transform: el código se compara cifrado y distingue mayúsculas.
+   Mostrarlo en caps mientras se envía en minúsculas es una trampa. */
 
 /* Dentro de la tarjeta: dos números y Guardar, en una fila. */
 .sline{display:flex;align-items:flex-end;gap:8px;margin-top:9px;
