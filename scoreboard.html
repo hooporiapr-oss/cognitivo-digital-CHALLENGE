@@ -541,6 +541,14 @@ function moreRounds(btn, rootId){
 // ══════════════════════════════════════════════════════
 var DIV = null;        // null = todas
 
+// Lo que queda de la nota después de la división, para no imprimir
+// "Mini 9-10 · Mini 9-10" cuando la nota es sólo la división.
+function notaExtra(g){
+  var n = String(g.note || '');
+  var i = n.indexOf('·');
+  return i === -1 ? '' : n.slice(i + 1).replace(/^\s+|\s+$/g, '');
+}
+
 function divOf(g){
   var n = String(g.note || '').split('·')[0].trim();
   return n || null;
@@ -792,7 +800,7 @@ function gameCard(g, isNext, hidden){
           (divOf(g) ? ' · <span class="dtag">' + esc(divOf(g)) + '</span>' : '') +
           (!played && g.pledges > 0
             ? ' · ' + T(g.pledges === 1 ? 'pledged' : 'pledgedN', { N: g.pledges }) : '') +
-          (g.note ? ' · ' + esc(g.note) : '') +
+          (notaExtra(g) ? ' · ' + esc(notaExtra(g)) : '') +
         '</div>' +
       '</div>' +
       '<div class="rr">' +
