@@ -296,6 +296,8 @@ footer a{color:#8FA8C0;text-decoration:none}
 </footer>
 
 <script>
+// El servidor que manda los correos. Mismo que usan pay.html y equipo.html.
+var PAY_API='https://basketball-money-payments.onrender.com';
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 
@@ -757,6 +759,16 @@ function sendScore(id){
       return say(T('sGen'), 'bad');
     }
     say(T('saved'), 'ok');
+    // Avisar que hay un juego listo para cobrar. El servidor decide si
+    // hace falta: si no quedan promesas abiertas, no manda nada. Se va
+    // sin esperar respuesta — el marcador ya quedó guardado y el correo
+    // no es asunto de quien anota.
+    try{
+      fetch(PAY_API + '/score-posted', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ game_id: id })
+      }).catch(function(){});
+    }catch(e){}
     setTimeout(load, 900);
   })
   .catch(function(){ say(T('sGen'), 'bad'); });
