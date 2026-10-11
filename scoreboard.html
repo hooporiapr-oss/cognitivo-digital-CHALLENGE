@@ -67,19 +67,37 @@ h1.withcrest + .lede{text-align:center;margin-left:auto;margin-right:auto}
 .lede{color:var(--mute);margin:0 0 18px}
 h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 
-.game{border:2px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:10px}
+.game{border:2px solid var(--line);border-radius:4px;padding:10px 12px;margin-bottom:7px}
 .game.next{border-color:var(--ink)}
 .game.played{background:var(--tint)}
-.game .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-.game .opp{font-weight:900;font-size:1.05rem}
+
+/* Una fila: a la izquierda quién y cuándo, a la derecha el botón o el
+   marcador. La tarjeta alta se comía la pantalla. */
+.game .row{display:flex;align-items:center;gap:12px}
+.game .rl{flex:1 1 auto;min-width:0}
+.game .rr{flex:0 0 auto}
+.game .opp{font-weight:900;font-size:1rem;line-height:1.25}
+/* El punto del próximo juego: una marca, no una etiqueta que ocupe línea. */
+.game .opp .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--ball,#FF8A2B);margin-right:7px;vertical-align:1px}
+.game .rsub{color:var(--mute);font-size:.8rem;line-height:1.35;margin-top:2px}
 .game .when{color:var(--mute);font-size:.86rem;white-space:nowrap}
 .game .meta{color:var(--mute);font-size:.86rem;margin-top:2px}
+/* Dentro de la fila el botón se ajusta a su texto: ancho completo y
+   margen de arriba son de los botones de página, no de éstos. */
+.game .rr .btn{width:auto;margin-top:0;padding:10px 16px;white-space:nowrap}
+/* Por debajo de esto el nombre del rival y el botón ya no caben juntos. */
+@media(max-width:330px){
+  .game .row{flex-wrap:wrap;gap:8px}
+  .game .rr{flex:1 1 100%}
+  .game .rr .btn{width:100%}
+}
 
 /* La división, marcada en la tarjeta: con seis escuadras hace falta
    saber de un vistazo cuál es la tuya. */
-.dtag{display:inline-block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+.dtag{display:inline-block;font-size:.56rem;font-weight:900;letter-spacing:.12em;
   text-transform:uppercase;background:var(--ink);color:#fff;border-radius:3px;
-  padding:3px 8px;margin-top:6px}
+  padding:2px 6px;vertical-align:1px}
 .game.played .dtag{background:var(--mute)}
 .game.locked .dtag{background:#fff;color:var(--mute);border:1px solid var(--line)}
 
@@ -94,10 +112,19 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
   padding:6px 13px;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
 .dv:hover{border-color:var(--ink);color:var(--ink)}
 .dv.on{background:var(--ink);border-color:var(--ink);color:#fff}
-.game .score{font-size:1.5rem;font-weight:900;margin-top:6px}
+/* El marcador de un juego jugado. El número del equipo es el que
+   importa — es sobre el que prometieron los padrinos — así que va
+   grande, y el del rival, si lo hay, al lado y en gris. */
+.sb{text-align:right;line-height:1;white-space:nowrap}
+.sb-n{font-size:2rem;font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.sb-o{font-size:1rem;font-weight:800;color:var(--mute);margin-left:2px;letter-spacing:0}
+.sb-c{font-size:.5rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin-top:4px}
+.sb.won .sb-n{color:var(--good)}
+.game .score{font-size:1.3rem;font-weight:900;white-space:nowrap}
 .game .score span{color:var(--mute);font-weight:800;font-size:1rem}
 .game .score .w{color:var(--good)}
-.game .shut{margin-top:8px;font-size:.86rem;font-weight:800;color:var(--mute)}
+.game .shut{font-size:.8rem;font-weight:800;color:var(--mute);white-space:nowrap}
 
 /* Un juego que todavía no existe: se ve, se entiende, y no se puede
    prometer en él. La línea de la izquierda lo ata al de arriba, que
@@ -130,7 +157,33 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .tagl{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;
   text-transform:uppercase;background:var(--tint);color:var(--accent);
   border:1px solid var(--line);border-radius:3px;padding:3px 8px;margin-bottom:6px}
-.game .need{margin-top:8px;font-size:.86rem;color:var(--mute)}
+.sbox{margin-top:9px;border-top:2px solid var(--line);padding-top:9px}
+.sbox.folded .sform{display:none}
+.sbox .sfold{background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);text-decoration:underline}
+.sbox.folded .sfold{display:block}
+.sbox .sfold{display:none}
+.sform{display:flex;flex-direction:column;gap:8px}
+.sgrid{display:flex;gap:8px}
+.sform label{flex:1 1 0;display:flex;flex-direction:column;gap:3px;min-width:0;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.sform input[type=number],.sform input[type=text]{width:100%;box-sizing:border-box;
+  font:inherit;font-weight:800;font-size:1rem;padding:9px 10px;
+  border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.sform input[type=number]{font-size:1.5rem;letter-spacing:-.03em;text-align:center;
+  font-variant-numeric:tabular-nums}
+.swho input{text-transform:uppercase;letter-spacing:.08em}
+.scert{flex-direction:row !important;align-items:flex-start;gap:8px !important;
+  text-transform:none !important;letter-spacing:0 !important;font-size:.78rem !important;
+  font-weight:600 !important;line-height:1.35;color:var(--ink) !important}
+.scert input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0}
+.sform .btn{width:100%;margin-top:0}
+.smsg{font-size:.78rem;font-weight:700;line-height:1.35;min-height:1px}
+.smsg.bad{color:#b4231c}
+.smsg.ok{color:var(--good)}
+
+.game .need{margin-top:7px;font-size:.86rem;color:var(--mute)}
 .btn.small.dead{background:#fff;color:#9AA8B5;border-color:var(--line);cursor:not-allowed}
 /* Lo del jugador es una acción, no una nota al pie: caja propia,
    con su botón. Lo de abajo sigue siendo un enlace para leer. */
@@ -239,7 +292,10 @@ function rpc(name, args){
 var S = {
   en:{
     pointsCap:'Points this season',
-    gamesPlayed:'{N} game(s) played',
+    gamesPlayed1:'1 game played', gamesPlayedN:'{N} games played',
+    notStarted:'The season has not started yet',
+    perGame:'{P} a game', toPledgeN:'{N} to pledge on',
+    toPledge:'Games to pledge on',
     noGames:'No games on the schedule yet.',
     lede:'Padrinos pledge an amount for every point the team scores. Pick a game, pick a rate, and pay only what they actually score.',
     next:'Next up',
@@ -258,9 +314,17 @@ var S = {
     iPlay:'Get your own link',
     iPlayGo:'Get my link →',
     iPlayP:'Put your name in and you get a link of your own. Send it to your family — whatever they pledge is credited to you, and all of it goes to the program.',
-    pledgeOn:'Pledge on this game',
-    pledged:'{N} padrino(s)',
-    final:'Final',
+    pledgeOn:'Pledge →',
+    pledged:'{N} padrino', pledgedN:'{N} padrinos',
+    final:'Final', pointsWord:'points scored',
+    anotar:'Report score', ours:'Ours', theirs:'Theirs',
+    yourCode:'Your code', change:'Change', send:'Send',
+    certify:'I certify these are the points on the official scoresheet.',
+    sOk:'Score reported.', sCode:'That code does not work.',
+    sScore:'Both scores, whole numbers.',
+    sCert:'Check the box to certify the points.',
+    sEarly:'That game has not been played yet.',
+    sGen:'It did not go through. Try again.',
     pledgeFor:'You are backing', vsWord:'vs', atWord:'away to',
     pickRate:'Your rate, per point',
     yourName:'Your name',
@@ -291,7 +355,10 @@ var S = {
   },
   es:{
     pointsCap:'Puntos esta temporada',
-    gamesPlayed:'{N} juego(s) jugado(s)',
+    gamesPlayed1:'1 juego jugado', gamesPlayedN:'{N} juegos jugados',
+    notStarted:'La temporada no ha empezado',
+    perGame:'{P} por juego', toPledgeN:'{N} por prometer',
+    toPledge:'Juegos para prometer',
     noGames:'Todavía no hay juegos en el calendario.',
     lede:'Los padrinos prometen una cantidad por cada punto que anota el equipo. Escoge un juego, escoge tu tarifa, y pagas sólo lo que de verdad anoten.',
     next:'Próximo juego',
@@ -310,9 +377,17 @@ var S = {
     iPlay:'Saca tu propio enlace',
     iPlayGo:'Sacar mi enlace →',
     iPlayP:'Pones tu nombre y te da un enlace que es tuyo. Mándaselo a tu familia — lo que prometan queda apuntado a tu nombre, y todo va al programa.',
-    pledgeOn:'Prometer en este juego',
-    pledged:'{N} padrino(s)',
-    final:'Final',
+    pledgeOn:'Prometer →',
+    pledged:'{N} padrino', pledgedN:'{N} padrinos',
+    final:'Final', pointsWord:'puntos anotados',
+    anotar:'Anotar', ours:'Nosotros', theirs:'Ellos',
+    yourCode:'Tu c\u00f3digo', change:'Cambiar', send:'Enviar',
+    certify:'Certifico que estos son los puntos del acta oficial del juego.',
+    sOk:'Marcador reportado.', sCode:'Ese c\u00f3digo no sirve.',
+    sScore:'Los dos marcadores, n\u00fameros enteros.',
+    sCert:'Marca la casilla para certificar los puntos.',
+    sEarly:'Ese juego todav\u00eda no se ha jugado.',
+    sGen:'No entr\u00f3. Int\u00e9ntalo otra vez.',
     pledgeFor:'Estás apoyando a', vsWord:'contra', atWord:'de visita contra',
     pickRate:'Tu tarifa, por punto',
     yourName:'Tu nombre',
@@ -344,7 +419,9 @@ var S = {
 };
 
 var LANG='en';
-try{ LANG = localStorage.getItem('cp-lang') ||
+// El sitio guarda el idioma en cfh_lang; el tablero leía cp-lang y por eso
+// nunca heredaba el cambio. Se leen los dos, el del sitio primero.
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
 function T(k,v){
@@ -365,8 +442,8 @@ var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
 // La campaña de demostración. Es un tablero normal en todo menos en
 // que lo de dentro está inventado — y hay que decirlo.
 var DEMOS = {
-  '19bc0805-692f-43c6-b7ae-fdcc5a2d9ec6': 'basket',
-  'b8c9366a-e5dd-4337-a326-1617b94b105c': 'voley'
+  '8d0d1f66-29a8-4406-90f2-3c3cf9479d55': 'basket',
+  'd941a507-4588-45e1-9b52-9bfce5ef015d': 'voley'
 };
 var IS_DEMO  = !!DEMOS[CAMPAIGN];
 var DEMO_SPORT = DEMOS[CAMPAIGN] || null;
@@ -534,6 +611,95 @@ function load(){
   .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
 }
 
+// Debajo del número: lo que un padrino necesita para decidir — cuánto
+// anota el equipo en un juego típico, y cuántos juegos le quedan por
+// prometer. Antes decía los juegos jugados, que es mirar atrás en una
+// página que vende lo que viene.
+function boardSub(abiertos){
+  var partes = [];
+  // Un solo juego no es un promedio: decir "54 por juego" con un juego
+  // jugado es repetir ese marcador y llamarlo tendencia. Desde dos.
+  if (BOARD.played >= 2) partes.push(T('perGame', { P: typicalPoints() }));
+  if (abiertos)          partes.push(T('toPledgeN', { N: abiertos }));
+  if (partes.length) return partes.join(' · ');
+  // Tablero recién abierto: que lo diga mirando adelante, no un cero más.
+  if (!BOARD.played) return T('notStarted');
+  return T(BOARD.played === 1 ? 'gamesPlayed1' : 'gamesPlayedN', { N: BOARD.played });
+}
+
+function scoreBox(g, played){
+  var i = 'sb_' + g.id;
+  // Plegada siempre: el tablero es público y lo primero que ve un padrino
+  // no puede ser un formulario. Se abre con "Anotar"; el código es la puerta.
+  return '<div class="sbox folded" id="' + i + '">' +
+    '<button class="sfold" onclick="unfold(\'' + i + '\')">' +
+      T(played ? 'change' : 'anotar') +
+    '</button>' +
+    '<div class="sform">' +
+      '<div class="sgrid">' +
+        '<label>' + T('ours') + '<input type="number" min="0" inputmode="numeric" ' +
+          'id="o_' + g.id + '" value="' + (g.team_points != null ? g.team_points : '') + '"></label>' +
+        '<label>' + T('theirs') + '<input type="number" min="0" inputmode="numeric" ' +
+          'id="t_' + g.id + '" value="' + (g.opp_points != null ? g.opp_points : '') + '"></label>' +
+      '</div>' +
+      '<label class="swho">' + T('yourCode') +
+        '<input type="text" autocomplete="off" spellcheck="false" ' +
+          'id="w_' + g.id + '" value="' + esc(savedCode()) + '"></label>' +
+      '<label class="scert"><input type="checkbox" id="c_' + g.id + '">' +
+        '<span>' + T('certify') + '</span></label>' +
+      '<button class="btn small" onclick="sendScore(\'' + g.id + '\')">' + T('send') + '</button>' +
+      '<div class="smsg" id="m_' + g.id + '"></div>' +
+    '</div>' +
+  '</div>';
+}
+
+function savedCode(){
+  try{ return localStorage.getItem('cp_code') || ''; }catch(e){ return ''; }
+}
+
+function unfold(id){
+  var el = document.getElementById(id);
+  if (el) el.className = el.className.replace(' folded','');
+}
+
+function sendScore(id){
+  var ours = document.getElementById('o_' + id);
+  var them = document.getElementById('t_' + id);
+  var code = document.getElementById('w_' + id);
+  var cert = document.getElementById('c_' + id);
+  var msg  = document.getElementById('m_' + id);
+  function say(t, cls){ if (msg){ msg.className = 'smsg ' + (cls||''); msg.textContent = t; } }
+
+  var a = parseInt((ours && ours.value) || '', 10);
+  var b = parseInt((them && them.value) || '', 10);
+  var k = ((code && code.value) || '').replace(/^\s+|\s+$/g, '');
+
+  // Los dos marcadores: el del contrario abre o cierra el juego que
+  // dependía de éste.
+  if (isNaN(a) || isNaN(b) || a < 0 || b < 0) return say(T('sScore'), 'bad');
+  if (k.length < 4) return say(T('sCode'), 'bad');
+  if (!(cert && cert.checked)) return say(T('sCert'), 'bad');
+
+  say('\u2026');
+  rpc('report_score', {
+    p_campaign: CAMPAIGN, p_code: k, p_game: id, p_team: a, p_opp: b
+  })
+  .then(function(r){
+    if (!r || !r.ok){
+      var why = r && r.reason;
+      if (why === 'code')  return say(T('sCode'), 'bad');
+      if (why === 'score') return say(T('sScore'), 'bad');
+      if (why === 'early') return say(T('sEarly'), 'bad');
+      return say(T('sGen'), 'bad');
+    }
+    // El código vale: se recuerda para que se escriba una sola vez.
+    try{ localStorage.setItem('cp_code', k); }catch(e){}
+    say(T('sOk') + (r.by ? ' \u00b7 ' + r.by : ''), 'ok');
+    setTimeout(load, 1400);
+  })
+  .catch(function(){ say(T('sGen'), 'bad'); });
+}
+
 function gameCard(g, isNext, hidden){
   var played = g.status === 'played';
   var locked = g.status === 'conditional';
@@ -544,27 +710,48 @@ function gameCard(g, isNext, hidden){
          (locked ? ' locked' : '') + (g._depth ? ' d' + g._depth : '') +
          (hidden ? ' tucked' : '') + '"' +
          ' data-id="' + g.id + '" data-chain="' + (g.unlocks_from || '') + '">' +
-    (isNext ? '<div class="tagn">' + T('next') + '</div>' : '') +
-    (locked ? '<div class="tagl">' + T('ifTheyWin') + '</div>' : '') +
-    '<div class="top">' +
-      '<div class="opp">' + (g.home ? '' : '@ ') + esc(g.opponent) + '</div>' +
-      '<div class="when">' + when(g) + '</div>' +
+    // Datos a la izquierda, acción a la derecha, en una sola fila. La
+    // tarjeta alta se comía la pantalla: con diez juegos había que
+    // desplazarse media página para ver los que quedan por prometer.
+    '<div class="row">' +
+      '<div class="rl">' +
+        '<div class="opp">' +
+          (isNext ? '<i class="dot" aria-hidden="true"></i>' : '') +
+          (g.home ? '' : '@ ') + esc(g.opponent) +
+        '</div>' +
+        '<div class="rsub">' + when(g) +
+          (divOf(g) ? ' · <span class="dtag">' + esc(divOf(g)) + '</span>' : '') +
+          (!played && g.pledges > 0
+            ? ' · ' + T(g.pledges === 1 ? 'pledged' : 'pledgedN', { N: g.pledges }) : '') +
+          (g.note ? ' · ' + esc(g.note) : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="rr">' +
+        (played
+          ? '<div class="sb' + (won ? ' won' : '') + '">' +
+              '<div class="sb-n">' + g.team_points +
+                (g.opp_points != null ? '<span class="sb-o">–' + g.opp_points + '</span>' : '') +
+              '</div>' +
+              '<div class="sb-c">' + T('pointsWord') + '</div>' +
+            '</div>'
+          : locked
+            ? '<button class="btn small dead" disabled>' + T('pledgeOn') + '</button>'
+            : started
+              ? '<div class="shut">' + T('inPlay') + '</div>'
+              : '<button class="btn small" onclick="pick(\'' + g.id + '\')">' +
+                  T('pledgeOn') + '</button>') +
+      '</div>' +
     '</div>' +
-    (divOf(g) ? '<div class="dtag">' + esc(divOf(g)) + '</div>' : '') +
-    (g.note ? '<div class="meta">' + esc(g.note) + '</div>' : '') +
-    (played
-      ? '<div class="score"><span class="' + (won ? 'w' : '') + '">' + T('final') + '</span> ' +
-          g.team_points + (g.opp_points != null ? ' <span>–</span> ' + g.opp_points : '') + '</div>'
-      : locked
-        ? '<div class="need">' +
-            T('needsWin', { O: esc(g.needs_win_vs || ''), D: needDate(g) }) +
-          '</div>' +
-          '<button class="btn small dead" disabled>' + T('pledgeOn') + '</button>'
-        : started
-          ? (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
-            '<div class="shut">' + T('inPlay') + '</div>'
-          : (g.pledges > 0 ? '<div class="meta">' + T('pledged', { N: g.pledges }) + '</div>' : '') +
-            '<button class="btn small" onclick="pick(\'' + g.id + '\')">' + T('pledgeOn') + '</button>') +
+    // Sólo para quien trae la llave: los dos marcadores, quién los reporta,
+    // y la certificación. Un juego ya anotado llega plegado — se corrige
+    // apretando "Cambiar" — y el que se jugó y no tiene marcador llega
+    // abierto, porque es lo que hace falta hacer.
+    (!locked && (played || started) ? scoreBox(g, played) : '') +
+
+    // El juego de cuadro necesita su explicación, y eso no cabe en la fila.
+    (locked
+      ? '<div class="need">' + T('needsWin', { O: esc(g.needs_win_vs || ''), D: needDate(g) }) + '</div>'
+      : '') +
 
     // El camino que sigue, si lo hay y si no se está mostrando ya.
     (g._rounds > 0 && g._depth === 0
@@ -660,7 +847,7 @@ function draw(){
     '<div class="total">' +
       '<div class="cap">' + T('pointsCap') + '</div>' +
       '<div class="big">' + (BOARD.points || 0) + '</div>' +
-      '<div class="sub">' + T('gamesPlayed', { N: BOARD.played || 0 }) + '</div>' +
+      '<div class="sub">' + boardSub(open.length) + '</div>' +
     '</div>' +
 
     (IS_DEMO
@@ -672,12 +859,13 @@ function draw(){
 
     divBar(games) +
 
-    (!upcoming.length && !results.length
+    (DIV && !upcoming.length && !results.length
       ? '<p style="color:var(--mute)">' + T('noneHere') + '</p>'
       : '') +
 
     (upcoming.length
-      ? upcoming.map(function(g){
+      ? '<h2>' + (open.length ? T('toPledge') : T('next')) + '</h2>' +
+        upcoming.map(function(g){
           var hidden = g._depth > 0;        // cualquier juego del cuadro va plegado
           return gameCard(g, g === open[0], hidden);
         }).join('')
