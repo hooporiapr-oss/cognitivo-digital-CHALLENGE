@@ -29,7 +29,11 @@
       --ball:#FF7A18;--good:#0B7A5A}
 *{box-sizing:border-box}
 html{background:#12202E}
-body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+/* El teclado del teléfono no achica la página, achica lo que se ve de
+   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
+   campo enfocado se iba debajo del teclado. Rodando la página entera,
+   el navegador sí puede subirlo. */
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
   font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
   background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
 .wrap{width:min(720px,93vw);margin:0 auto}
@@ -43,7 +47,7 @@ header .bar{display:flex;align-items:center;justify-content:space-between;gap:12
 .langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
-main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main{flex:1 1 auto;overflow-x:hidden}
 main .wrap{padding:clamp(18px,4vw,30px) 0 28px}
 
 footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
@@ -569,7 +573,7 @@ function divisions(games){
 function setDiv(d){
   DIV = d || null;
   draw();
-  try { document.querySelector('main').scrollTop = 0; } catch(e){}
+  try { var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); } catch(e){}
 }
 
 function divBar(games){
@@ -986,7 +990,7 @@ function pick(id){
   PICKED = (BOARD.games || []).filter(function(g){ return g.id === id; })[0] || null;
   RATE = 0.10;
   draw();
-  try { document.querySelector('main').scrollTop = 0; } catch(e){}
+  try { var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); } catch(e){}
 }
 
 function setRate(r){
