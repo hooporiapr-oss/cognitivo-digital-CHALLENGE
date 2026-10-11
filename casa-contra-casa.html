@@ -8,20 +8,20 @@
      un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cada Punto">
-<meta property="og:url" content="https://cadapunto.com/equipo.html">
-<meta property="og:title" content="Inscribe tu equipo — Cada Punto">
-<meta property="og:description" content="Tu equipo recauda con sus propios juegos. Los padrinos prometen por punto, tú pones el marcador, y cada dólar cobrado va al programa.">
-<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="942">
-<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto y voleibol">
+<meta property="og:url" content="https://cadapunto.com/casa-contra-casa.html">
+<meta property="og:title" content="Casa Contra Casa — Cada Punto">
+<meta property="og:description" content="Tu propio equipo partido en dos escuadras, una noche, en tu propia cancha. Las dos recaudan — y todos los puntos de la cancha son del programa, no la mitad.">
+<meta property="og:image" content="https://cadapunto.com/ccc-bajo.jpg">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="575">
+<meta property="og:image:alt" content="Casa Contra Casa — un equipo partido en dos escuadras, en su propia cancha">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Inscribe tu equipo — Cada Punto">
-<meta name="twitter:description" content="Tu equipo recauda con sus propios juegos. Los padrinos prometen por punto, tú pones el marcador, y cada dólar cobrado va al programa.">
-<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta name="twitter:title" content="Casa Contra Casa — Cada Punto">
+<meta name="twitter:description" content="Tu propio equipo partido en dos escuadras, una noche, en tu propia cancha. Las dos recaudan — y todos los puntos de la cancha son del programa, no la mitad.">
+<meta name="twitter:image" content="https://cadapunto.com/ccc-bajo.jpg">
 
-<meta name="description" content="Tu equipo recauda con sus propios juegos. Los padrinos prometen por punto, tú pones el marcador, y cada dólar cobrado va al programa.">
+<meta name="description" content="Tu propio equipo partido en dos escuadras, una noche, en tu propia cancha. Las dos recaudan — y todos los puntos de la cancha son del programa, no la mitad.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -132,6 +132,10 @@ label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
 </footer>
 
 <style>
+.heroart{display:block;width:100%;height:auto;margin:0 0 clamp(18px,4vw,26px);
+  border-radius:6px;border:1px solid rgba(255,138,43,.30);
+  box-shadow:0 14px 40px rgba(0,0,0,.28)}
+
 /* La marca, en grande, una vez. */
 .ccc{font-weight:900;letter-spacing:-.03em;line-height:.95;
   font-size:clamp(2rem,9vw,3.4rem);margin:0 0 4px}
@@ -160,6 +164,7 @@ try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') 
 var S = {
   es:{
     kick:'Casa Contra Casa',
+    fotoAlt:'Un equipo partido en dos escuadras jugando en su propia cancha, con las familias en las gradas',
     h1a:'Casa', h1b:'Contra', h1c:'Casa',
     lede:'Tu propio equipo partido en dos escuadras, una noche, en tu propia cancha. Las dos recaudan. No hace falta rival, ni liga, ni que alguien te dé fecha.',
     whyH:'Por qué recauda más que un juego de verdad',
@@ -190,6 +195,7 @@ var S = {
   },
   en:{
     kick:'Casa Contra Casa',
+    fotoAlt:'One team split into two squads playing in their own gym, with the families in the bleachers',
     h1a:'Casa', h1b:'Contra', h1c:'Casa',
     lede:'House against house: your own team split into two squads, one night, in your own gym. Both sides raise. No opponent to find, no league to ask, nobody else deciding your date.',
     whyH:'Why it raises more than a real game',
@@ -237,6 +243,8 @@ function paint(){
   document.title = 'Casa Contra Casa \u2014 Cada Punto';
 
   document.getElementById('app').innerHTML =
+    '<img class="heroart" src="ccc-bajo.jpg" width="1536" height="575" ' +
+      'alt="' + esc(T('fotoAlt')) + '">' +
     '<p class="kick">' + T('kick') + '</p>' +
     '<h1 class="ccc">' + T('h1a') + ' <em>' + T('h1b') + '</em> ' + T('h1c') + '</h1>' +
     '<p class="lede">' + T('lede') + '</p>' +
