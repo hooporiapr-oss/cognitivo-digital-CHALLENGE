@@ -52,6 +52,12 @@ textarea{min-height:120px;resize:vertical;font-variant-numeric:tabular-nums;line
 .tabs button.on{color:var(--ink);border-bottom-color:var(--ball)}
 .pane{display:none}
 .pane.on{display:block}
+.formfila{display:flex;gap:10px;margin-bottom:10px}
+.formfila>div{flex:1 1 0;min-width:0}
+.formfila .f-fecha{flex:0 0 auto}
+.formfila .f-rival{flex:1 1 auto}
+.formfila input,.formfila select{width:100%}
+
 .teams{display:flex;flex-wrap:wrap;gap:7px}
 .teams label{display:inline-flex;align-items:center;gap:7px;margin:0;border:2px solid var(--line);
   border-radius:4px;padding:8px 11px;font-size:.78rem;font-weight:800;letter-spacing:0;
@@ -139,6 +145,26 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
     <div id="pane-lista" class="pane">
       <h2>Equipo</h2>
       <select id="unoTeam"></select>
+
+      <h2 style="margin-top:18px">Añade un juego</h2>
+      <div class="formfila">
+        <div class="f-fecha"><label for="f_on">Fecha</label>
+          <input id="f_on" type="date"></div>
+        <div class="f-rival"><label for="f_foe">Rival</label>
+          <input id="f_foe" type="text" autocomplete="off"></div>
+      </div>
+      <div class="formfila">
+        <div><label for="f_casa">Dónde</label>
+          <select id="f_casa"><option value="casa">Casa</option><option value="fuera">Fuera</option></select></div>
+        <div><label for="f_hora">Hora</label>
+          <input id="f_hora" type="text" placeholder="10:00 AM" autocomplete="off"></div>
+        <div><label for="f_div">División</label>
+          <input id="f_div" type="text" placeholder="Mini 9-10" autocomplete="off"></div>
+      </div>
+      <button class="btn" onclick="anadirLinea()">Añadir a la lista</button>
+      <div id="fm" class="msg"></div>
+      <p class="help">La hora y la división se quedan puestas para el próximo,
+        y la fecha salta una semana. Añade uno tras otro sin volver a escribirlo todo.</p>
 
       <h2 style="margin-top:18px">Los juegos</h2>
       <textarea id="pegado" placeholder="2026-11-07 | Huracanes | casa | 10:00 AM | Mini 9-10&#10;2026-11-14 | Cafeteros | fuera&#10;2026-11-21 | Mangles"></textarea>
@@ -300,6 +326,38 @@ function generar(){
 
   PLAN = filas;
   verPrev('rondas ' + cuantas + ' de ' + rs.length);
+}
+
+// Arma la línea con el formato que lee el area de abajo, para no tener
+// que recordar dónde van las barras.
+function anadirLinea(){
+  var on   = trim($('f_on').value);
+  var foe  = trim($('f_foe').value);
+  var casa = $('f_casa').value;
+  var hora = trim($('f_hora').value);
+  var divi = trim($('f_div').value);
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(on)) return say('fm','Pon la fecha.','bad');
+  if (!foe) return say('fm','Pon el rival.','bad');
+
+  // Las barras de en medio se quedan aunque el campo vaya vacío: la lista
+  // se lee por posición.
+  var partes = [on, foe, casa];
+  if (divi) partes.push(hora, divi);
+  else if (hora) partes.push(hora);
+
+  var ta = $('pegado');
+  ta.value = (trim(ta.value) ? trim(ta.value) + '\n' : '') + partes.join(' | ');
+
+  // El rival cambia siempre; la hora y la división casi nunca. La fecha
+  // casi siempre es la semana que viene.
+  $('f_foe').value = '';
+  var d = new Date(on + 'T12:00:00');
+  d.setDate(d.getDate() + 7);
+  $('f_on').value = d.getFullYear() + '-' +
+    ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
+  say('fm','');
+  $('f_foe').focus();
 }
 
 function leerPegado(){
