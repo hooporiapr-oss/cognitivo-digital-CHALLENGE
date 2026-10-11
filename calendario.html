@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Calendario — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--good:#0B7A5A;--bad:#B4231C}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.who{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#C8D6E2}
+.out{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+main{padding:22px 0 60px}
+h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 4px}
+.lede{color:var(--mute);font-size:.9rem;margin:0 0 20px}
+h2{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin:22px 0 8px}
+label{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+input[type=text],input[type=time],textarea,select{width:100%;font:inherit;font-weight:700;
+  padding:9px 10px;border:2px solid var(--line);border-radius:4px;background:#fff;
+  color:var(--ink)}
+textarea{min-height:120px;resize:vertical;font-variant-numeric:tabular-nums;line-height:1.5}
+.btn{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--ink);
+  color:#fff;font:inherit;font-weight:900;padding:12px 16px;cursor:pointer;margin-top:10px}
+.btn.go{background:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.row2{display:flex;gap:10px}
+.row2>div{flex:1 1 0;min-width:0}
+.msg{font-size:.85rem;font-weight:700;margin-top:8px;min-height:1px}
+.msg.bad{color:var(--bad)}
+.msg.ok{color:var(--good)}
+.gate{border:2px solid var(--ink);border-radius:4px;padding:14px}
+.tabs{display:flex;gap:8px;margin:0 0 14px;border-bottom:2px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;
+  padding:9px 2px;font:inherit;font-size:.78rem;font-weight:900;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--mute);cursor:pointer}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ball)}
+.pane{display:none}
+.pane.on{display:block}
+.teams{display:flex;flex-wrap:wrap;gap:7px}
+.teams label{display:inline-flex;align-items:center;gap:7px;margin:0;border:2px solid var(--line);
+  border-radius:4px;padding:8px 11px;font-size:.78rem;font-weight:800;letter-spacing:0;
+  text-transform:none;color:var(--ink);cursor:pointer}
+.teams label.on{border-color:var(--ink);background:var(--tint)}
+.teams input{width:16px;height:16px;margin:0}
+/* La vista previa puede traer treinta filas y cinco columnas: que
+   ruede la tabla, no la pagina. */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:420px}
+th{text-align:left;font-size:.5rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);border-bottom:2px solid var(--line);padding:5px 6px}
+td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font-size:.52rem;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase;border-radius:3px;padding:2px 6px;background:var(--ink);color:#fff}
+.tag.away{background:var(--mute)}
+.help{color:var(--mute);font-size:.78rem;margin:6px 0 0}
+.help code{background:var(--tint);border:1px solid var(--line);border-radius:3px;padding:1px 5px;
+  font-size:.74rem}
+.res{border:2px solid var(--line);border-radius:4px;padding:12px;margin-top:14px}
+.res b{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:6px}
+.res a{color:var(--accent);font-weight:800}
+.hide{display:none}
+</style>
+</head>
+<body>
+
+<header><div class="wrap bar">
+  <a class="mark" href="index.html">Cada<em>Punto</em><i>.</i></a>
+  <span id="hwho" class="who hide"></span>
+  <button id="hout" class="out hide" onclick="salir()">Salir</button>
+</div></header>
+
+<main class="wrap">
+  <h1>Calendario</h1>
+  <p class="lede">Crea los juegos de tus equipos de un golpe. Cada juego creado
+    aquí sale en el tablero del equipo y queda abierto a promesas.</p>
+
+  <!-- La puerta: el código de constructor. -->
+  <div id="gate" class="gate">
+    <label for="code">Tu código de constructor</label>
+    <input id="code" type="text" autocomplete="off" spellcheck="false">
+    <button class="btn" onclick="entrar()">Entrar</button>
+    <div id="gm" class="msg"></div>
+  </div>
+
+  <!-- Adentro. -->
+  <div id="app" class="hide">
+    <div class="tabs">
+      <button id="tab-liga"  class="on" onclick="verPane('liga')">Liga</button>
+      <button id="tab-lista" onclick="verPane('lista')">Lista</button>
+    </div>
+
+    <!-- LIGA: todos contra todos -->
+    <div id="pane-liga" class="pane on">
+      <h2>Equipos que juegan</h2>
+      <div id="teams" class="teams"></div>
+
+      <h2>Fechas de juego</h2>
+      <textarea id="fechas" placeholder="2026-11-07&#10;2026-11-14&#10;2026-11-21"></textarea>
+      <p class="help">Una fecha por línea, <code>AAAA-MM-DD</code>. Cada fecha es una
+        jornada: se reparten los juegos de esa ronda. Si pones menos fechas que
+        rondas, se crean las que alcancen.</p>
+
+      <div class="row2" style="margin-top:14px">
+        <div>
+          <label for="hora">Hora (opcional)</label>
+          <input id="hora" type="text" placeholder="10:00 AM" autocomplete="off">
+        </div>
+        <div>
+          <label for="nota">División (opcional)</label>
+          <input id="nota" type="text" placeholder="Mini 9-10" autocomplete="off">
+        </div>
+      </div>
+      <p class="help">Sin hora, el juego se puede prometer y anotar el mismo día.
+        Con hora, las promesas cierran al saque.</p>
+
+      <button class="btn" onclick="generar()">Ver el calendario</button>
+      <div id="lm" class="msg"></div>
+    </div>
+
+    <!-- LISTA: pegar juegos -->
+    <div id="pane-lista" class="pane">
+      <h2>Equipo</h2>
+      <select id="unoTeam"></select>
+
+      <h2 style="margin-top:18px">Los juegos</h2>
+      <textarea id="pegado" placeholder="2026-11-07 | Huracanes | casa | 10:00 AM | Mini 9-10&#10;2026-11-14 | Cafeteros | fuera&#10;2026-11-21 | Mangles"></textarea>
+      <p class="help">Un juego por línea, separado por <code>|</code>:
+        fecha, rival, <code>casa</code> o <code>fuera</code>, hora, división.
+        Sólo la fecha y el rival son obligatorios.</p>
+
+      <button class="btn" onclick="leerPegado()">Ver el calendario</button>
+      <div id="pm" class="msg"></div>
+    </div>
+
+    <!-- Lo que se va a crear -->
+    <div id="prev" class="hide">
+      <h2>Lo que se va a crear <span id="prevN"></span></h2>
+      <div id="prevT"></div>
+      <button class="btn go" onclick="crear()">Crear estos juegos</button>
+      <div id="cm" class="msg"></div>
+    </div>
+
+    <div id="res"></div>
+  </div>
+</main>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function $(id){ return document.getElementById(id); }
+function say(id, t, cls){ var e=$(id); if(e){ e.className='msg '+(cls||''); e.textContent=t; } }
+function trim(s){ return String(s==null?'':s).replace(/^\s+|\s+$/g,''); }
+
+var CODE=null, BY=null, CAMPS=[], PLAN=null;
+
+try{ CODE = localStorage.getItem('cp_build') || null; }catch(e){}
+if (CODE) entrar(true);
+
+function entrar(auto){
+  var k = auto ? CODE : trim($('code').value);
+  if (k.length < 4) return say('gm','Ese código no sirve.','bad');
+  say('gm','…');
+  rpc('builder_check', { p_code: k })
+  .then(function(r){
+    if (!r || !r.ok){ if(auto) olvidar(); return say('gm','Ese código no sirve.','bad'); }
+    CODE = k; BY = r.by; CAMPS = r.campaigns || [];
+    try{ localStorage.setItem('cp_build', k); }catch(e){}
+    say('gm','');
+    $('gate').className='gate hide';
+    $('app').className='';
+    $('hwho').className='who'; $('hwho').textContent = BY;
+    $('hout').className='out';
+    pintarEquipos();
+  })
+  .catch(function(){ say('gm','No entró. Inténtalo otra vez.','bad'); });
+}
+function olvidar(){ try{ localStorage.removeItem('cp_build'); }catch(e){} }
+function salir(){ olvidar(); location.reload(); }
+
+function pintarEquipos(){
+  if (!CAMPS.length){
+    $('teams').innerHTML = '<p class="help">Tu código no alcanza ninguna campaña.</p>';
+    return;
+  }
+  $('teams').innerHTML = CAMPS.map(function(c,i){
+    return '<label id="tl'+i+'"><input type="checkbox" value="'+esc(c.id)+'" ' +
+      'onchange="marcar('+i+')">' + esc(c.name) + '</label>';
+  }).join('');
+  $('unoTeam').innerHTML = CAMPS.map(function(c){
+    return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>';
+  }).join('');
+}
+function marcar(i){
+  var l = $('tl'+i); if(!l) return;
+  l.className = l.querySelector('input').checked ? 'on' : '';
+}
+function escogidos(){
+  return CAMPS.filter(function(c,i){
+    var l=$('tl'+i); return l && l.querySelector('input').checked;
+  });
+}
+
+// Todos contra todos, método del círculo.
+function rondas(lista){
+  var t = lista.slice();
+  if (t.length % 2) t.push(null);                 // descansa uno
+  var n = t.length, out = [];
+  for (var r = 0; r < n - 1; r++){
+    var pares = [];
+    for (var i = 0; i < n/2; i++){
+      var a = t[i], b = t[n-1-i];
+      if (a && b) pares.push([a, b]);
+    }
+    out.push(pares);
+    t.splice(1, 0, t.pop());                      // rota, menos el primero
+  }
+  return out;
+}
+
+function fechasDadas(){
+  return trim($('fechas').value).split('\n').map(trim).filter(function(x){
+    return /^\d{4}-\d{2}-\d{2}$/.test(x);
+  });
+}
+
+function generar(){
+  var eq = escogidos(), fe = fechasDadas();
+  if (eq.length < 2) return say('lm','Escoge al menos dos equipos.','bad');
+  if (!fe.length)    return say('lm','Pon al menos una fecha, AAAA-MM-DD.','bad');
+  say('lm','');
+
+  var hora = trim($('hora').value), nota = trim($('nota').value);
+  var rs = rondas(eq);
+  var cuantas = Math.min(rs.length, fe.length);
+
+  // Quien es local: el que menos veces lo ha sido. Alternar por ronda
+  // dejaba a un equipo con cuatro juegos en casa de cinco.
+  var casa = {}; eq.forEach(function(e){ casa[e.id] = 0; });
+  var alt = 0, juegos = [];
+  for (var r = 0; r < cuantas; r++){
+    rs[r].forEach(function(par){
+      var a = par[0], b = par[1], h;
+      if (casa[a.id] < casa[b.id])      h = a;
+      else if (casa[b.id] < casa[a.id]) h = b;
+      else                              h = (alt++ % 2 === 0) ? a : b;
+      casa[h.id]++;
+      juegos.push({ r: r, a: a, b: b, h: h });
+    });
+  }
+  // Un repaso: si alguien quedo con dos de mas, se le pasa uno al rival.
+  for (var paso = 0; paso < 200; paso++){
+    var v = eq.map(function(e){ return casa[e.id]; });
+    var hi = Math.max.apply(null, v), lo = Math.min.apply(null, v);
+    if (hi - lo <= 1) break;
+    var movido = false;
+    for (var k = 0; k < juegos.length && !movido; k++){
+      var x = juegos[k], otro = (x.h.id === x.a.id) ? x.b : x.a;
+      if (casa[x.h.id] === hi && casa[otro.id] <= hi - 2){
+        casa[x.h.id]--; casa[otro.id]++; x.h = otro; movido = true;
+      }
+    }
+    if (!movido) break;
+  }
+
+  var filas = [];
+  juegos.forEach(function(x){
+    [[x.a, x.b], [x.b, x.a]].forEach(function(lado){
+      filas.push({ camp: lado[0], opponent: lado[1].name, on: fe[x.r],
+                   time: hora, home: lado[0].id === x.h.id, note: nota });
+    });
+  });
+
+  PLAN = filas;
+  verPrev('rondas ' + cuantas + ' de ' + rs.length);
+}
+
+function leerPegado(){
+  var id = $('unoTeam').value;
+  var camp = CAMPS.filter(function(c){ return c.id === id; })[0];
+  if (!camp) return say('pm','Escoge un equipo.','bad');
+
+  var malas = [], filas = [];
+  trim($('pegado').value).split('\n').forEach(function(ln, i){
+    ln = trim(ln); if (!ln) return;
+    var p = ln.split('|').map(trim);
+    var on = p[0] || '', foe = p[1] || '';
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(on) || !foe){ malas.push(i+1); return; }
+    var casa = String(p[2]||'').toLowerCase();
+    filas.push({ camp: camp, opponent: foe, on: on, time: p[3] || '',
+                 home: !(casa === 'fuera' || casa === 'away' || casa === 'visita'),
+                 note: p[4] || '' });
+  });
+  if (!filas.length) return say('pm','No salió ningún juego de ahí.','bad');
+  say('pm', malas.length ? ('Saltadas por formato: línea ' + malas.join(', ')) : '',
+      malas.length ? 'bad' : '');
+  PLAN = filas;
+  verPrev('');
+}
+
+function verPane(k){
+  ['liga','lista'].forEach(function(x){
+    $('pane-'+x).className = 'pane' + (x===k?' on':'');
+    $('tab-'+x).className  = (x===k?'on':'');
+  });
+  PLAN = null; $('prev').className='hide'; $('res').innerHTML='';
+}
+
+function verPrev(sub){
+  var porCamp = {};
+  PLAN.forEach(function(f){ (porCamp[f.camp.id] = porCamp[f.camp.id] || []).push(f); });
+
+  $('prevN').textContent = '— ' + PLAN.length + ' juego' + (PLAN.length===1?'':'s') +
+    ' en ' + Object.keys(porCamp).length + ' equipo' +
+    (Object.keys(porCamp).length===1?'':'s') + (sub ? ', ' + sub : '');
+
+  $('prevT').innerHTML = '<div class="tw"><table><thead><tr><th>Equipo</th><th>Rival</th>' +
+    '<th>Fecha</th><th>Hora</th><th></th></tr></thead><tbody>' +
+    PLAN.map(function(f){
+      return '<tr><td>' + esc(f.camp.name) + '</td><td>' + esc(f.opponent) + '</td>' +
+        '<td class="n">' + esc(f.on) + '</td><td class="n">' + esc(f.time||'—') + '</td>' +
+        '<td><span class="tag' + (f.home?'':' away') + '">' +
+          (f.home?'Casa':'Fuera') + '</span></td></tr>';
+    }).join('') + '</tbody></table></div>';
+
+  // Que se vea el reparto de local, en vez de confiar en el.
+  var casaDe = {}, fueraDe = {}, nombre = {};
+  PLAN.forEach(function(f){
+    nombre[f.camp.id] = f.camp.name;
+    if (f.home) casaDe[f.camp.id] = (casaDe[f.camp.id]||0) + 1;
+    else        fueraDe[f.camp.id] = (fueraDe[f.camp.id]||0) + 1;
+  });
+  var ids = Object.keys(nombre);
+  if (ids.length > 1){
+    $('prevT').innerHTML += '<p class="help">Casa / fuera: ' +
+      ids.map(function(id){
+        return esc(nombre[id]) + ' ' + (casaDe[id]||0) + '-' + (fueraDe[id]||0);
+      }).join(' · ') + '</p>';
+  }
+
+  $('prev').className=''; $('res').innerHTML=''; say('cm','');
+}
+
+function crear(){
+  if (!PLAN || !PLAN.length) return;
+  var porCamp = {}, nombres = {};
+  PLAN.forEach(function(f){
+    (porCamp[f.camp.id] = porCamp[f.camp.id] || []).push({
+      opponent: f.opponent, on: f.on, time: f.time, home: f.home, note: f.note });
+    nombres[f.camp.id] = f.camp.name;
+  });
+
+  var ids = Object.keys(porCamp);
+  say('cm','Creando…');
+  var hechos = [];
+
+  // Uno por campaña, en orden, para poder decir qué pasó en cada una.
+  ids.reduce(function(cadena, id){
+    return cadena.then(function(){
+      return rpc('add_games', { p_code: CODE, p_campaign: id, p_rows: porCamp[id] })
+        .then(function(r){ hechos.push({ id:id, name:nombres[id], r:r }); })
+        .catch(function(){ hechos.push({ id:id, name:nombres[id], r:{ok:false,reason:'red'} }); });
+    });
+  }, Promise.resolve()).then(function(){
+    say('cm','');
+    var tot = hechos.reduce(function(n,h){ return n + ((h.r && h.r.added) || 0); }, 0);
+    $('res').innerHTML = '<div class="res"><b>Resultado — ' + tot + ' creado' +
+      (tot===1?'':'s') + '</b>' +
+      hechos.map(function(h){
+        if (!h.r || !h.r.ok){
+          var why = h.r && h.r.reason;
+          return '<p>' + esc(h.name) + ': <strong>no se crearon</strong> (' +
+            (why==='code' ? 'el código no construye' :
+             why==='scope' ? 'fuera de tu campaña' :
+             why==='nocampaign' ? 'esa campaña no existe' : 'falló la conexión') + ')</p>';
+        }
+        return '<p>' + esc(h.name) + ': ' + h.r.added + ' creado' + (h.r.added===1?'':'s') +
+          (h.r.skipped ? ', ' + h.r.skipped + ' ya estaba' + (h.r.skipped===1?'':'n') : '') +
+          (h.r.bad ? ', ' + h.r.bad + ' con datos malos' : '') +
+          ' · <a href="scoreboard.html?c=' + esc(h.id) + '">ver el tablero</a></p>';
+      }).join('') + '</div>';
+    PLAN = null; $('prev').className='hide';
+  });
+}
+</script>
+</body>
+</html>
