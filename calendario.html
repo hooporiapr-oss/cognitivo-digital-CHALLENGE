@@ -205,6 +205,19 @@ function $(id){ return document.getElementById(id); }
 function say(id, t, cls){ var e=$(id); if(e){ e.className='msg '+(cls||''); e.textContent=t; } }
 function trim(s){ return String(s==null?'':s).replace(/^\s+|\s+$/g,''); }
 
+// El campo de fecha devuelve 0026-09-22 si alguien teclea "26" en el año,
+// y /^\d{4}-\d{2}-\d{2}$/ lo da por bueno. El juego queda en el año 26 y
+// sale de primero en el tablero. Se pide un año que exista de verdad.
+function fechaOk(v){
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  var a = parseInt(v.slice(0, 4), 10);
+  var m = parseInt(v.slice(5, 7), 10);
+  var d = parseInt(v.slice(8, 10), 10);
+  if (a < 2020 || a > 2100) return false;
+  if (m < 1 || m > 12 || d < 1 || d > 31) return false;
+  return true;
+}
+
 var CODE=null, BY=null, CAMPS=[], PLAN=null;
 
 try{ CODE = localStorage.getItem('cp_build') || null; }catch(e){}
@@ -273,7 +286,7 @@ function rondas(lista){
 
 function fechasDadas(){
   return trim($('fechas').value).split('\n').map(trim).filter(function(x){
-    return /^\d{4}-\d{2}-\d{2}$/.test(x);
+    return fechaOk(x);
   });
 }
 
@@ -337,7 +350,7 @@ function anadirLinea(){
   var hora = trim($('f_hora').value);
   var divi = trim($('f_div').value);
 
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(on)) return say('fm','Pon la fecha.','bad');
+  if (!fechaOk(on)) return say('fm','Revisa la fecha — el año completo, 2026.','bad');
   if (!foe) return say('fm','Pon el rival.','bad');
 
   // Las barras de en medio se quedan aunque el campo vaya vacío: la lista
@@ -370,7 +383,7 @@ function leerPegado(){
     ln = trim(ln); if (!ln) return;
     var p = ln.split('|').map(trim);
     var on = p[0] || '', foe = p[1] || '';
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(on) || !foe){ malas.push(i+1); return; }
+    if (!fechaOk(on) || !foe){ malas.push(i+1); return; }
     var casa = String(p[2]||'').toLowerCase();
     filas.push({ camp: camp, opponent: foe, on: on, time: p[3] || '',
                  home: !(casa === 'fuera' || casa === 'away' || casa === 'visita'),
