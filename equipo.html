@@ -30,7 +30,11 @@
       --good:#0B7A5A;--bad:#A8323F}
 *{box-sizing:border-box}
 html{background:#12202E}
-body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
+/* El teclado del teléfono no achica la página, achica lo que se ve de
+   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
+   campo enfocado se iba debajo del teclado y el navegador no podía
+   subirlo. Rodando la página entera, sí puede. */
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
   font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
   background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
 .wrap{width:min(600px,93vw);margin:0 auto}
@@ -44,7 +48,7 @@ header .bar{display:flex;align-items:center;justify-content:space-between;gap:12
 .langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
-main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
+main{flex:1 1 auto;overflow-x:hidden}
 main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
 
 footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
@@ -70,6 +74,9 @@ label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
 input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
   background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
 input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+/* Cuando el navegador sube el campo enfocado, que no quede pegado al
+   borde: se ve su etiqueta y el campo de antes. */
+label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
 .hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
 .btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
   background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
@@ -83,6 +90,15 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
 .msg.bad{color:var(--bad)}
 .msg.ok{color:var(--good)}
+
+/* En el teléfono el pie es lo último que hace falta mientras se llena
+   un formulario: que ocupe lo justo. */
+@media(max-width:560px){
+  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
+  footer p{margin:0 0 4px}
+  footer .f-legal{margin:4px 0 0}
+  main .wrap{padding-bottom:20px}
+}
 
 .fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
 .fine b{display:block;margin-bottom:3px}
@@ -134,11 +150,11 @@ var S = {
     h1:'Tu equipo anota. Tu programa cobra.',
     lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo. Juegas tus juegos, pones el marcador, y ellos pagan lo que el equipo ganó. Sin vender nada.',
     s1b:'Pones tu calendario.',
-    s1:'Añades un juego en diez segundos desde el teléfono. Los vas añadiendo según salen.',
+    s1:'Te damos un código y pones tu calendario completo de una vez — desde el teléfono, en un par de minutos.',
     s2b:'Los padrinos escogen sus juegos.',
     s2:'Familia, vecinos, el negocio de la esquina. Cada uno escoge cuánto y en qué juego.',
     s3b:'Pones el marcador.',
-    s3:'Eso cierra el juego y cobra cada promesa. Anotan 68 con diez padrinos a diez centavos, y el programa tiene $68.',
+    s3:'Eso cierra el juego y saca lo que debe cada padrino. Anotan 68 con diez padrinos a diez centavos, y hay $68 listos para cobrar.',
     formH:'Dinos de tu equipo',
     teamL:'Nombre del equipo', teamPh:'Como aparece en el calendario',
     progL:'Nombre del programa', progPh:'Lo que verán las familias',
@@ -166,11 +182,11 @@ var S = {
     h1:'Your team scores. Your program gets paid.',
     lede:'Padrinos pledge a few cents for every point your team scores. You play your games, enter the score, and they pay what the team earned. Nothing to sell.',
     s1b:'You post your schedule.',
-    s1:'Add a game in ten seconds from your phone. Add them as they come.',
+    s1:'We give you a code, and you post your whole schedule in one go — from your phone, in a couple of minutes.',
     s2b:'Padrinos pick their games.',
     s2:'Family, neighbours, the business down the road. Each one picks how much, and which game.',
     s3b:'You enter the score.',
-    s3:'That closes the game and bills every pledge on it. Score 68 with ten padrinos at a dime, and the program has $68.',
+    s3:'That closes the game and works out what every padrino owes. Score 68 with ten padrinos at a dime, and $68 is ready to collect.',
     formH:'Tell us about your team',
     teamL:'Team name', teamPh:'As it appears on a schedule',
     progL:'Program name', progPh:'What families will see',
@@ -196,7 +212,7 @@ var S = {
 };
 
 var LANG='es';
-try{ LANG = localStorage.getItem('cp-lang') ||
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
 function T(k,v){
@@ -206,7 +222,7 @@ function T(k,v){
 }
 function toggleLang(){
   LANG = LANG==='es' ? 'en':'es';
-  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); }catch(e){}
   document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
   draw();
 }
@@ -247,15 +263,20 @@ function draw(){
 
     '<h2>' + T('formH') + '</h2>' +
     '<label for="tm">' + T('teamL') + '</label>' +
-    '<input id="tm" type="text" maxlength="60" placeholder="' + T('teamPh') + '">' +
+    '<input id="tm" type="text" maxlength="60" placeholder="' + T('teamPh') + '" ' +
+      'autocapitalize="words" enterkeyhint="next">' +
     '<label for="pg">' + T('progL') + '</label>' +
-    '<input id="pg" type="text" maxlength="60" placeholder="' + T('progPh') + '">' +
+    '<input id="pg" type="text" maxlength="60" placeholder="' + T('progPh') + '" ' +
+      'autocapitalize="words" autocomplete="organization" enterkeyhint="next">' +
     '<label for="nm">' + T('nameL') + '</label>' +
-    '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
+    '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" ' +
+      'autocomplete="name" autocapitalize="words" enterkeyhint="next">' +
     '<label for="em">' + T('emailL') + '</label>' +
-    '<input id="em" type="email" maxlength="80" placeholder="' + T('emailPh') + '" autocomplete="email">' +
+    '<input id="em" type="email" maxlength="80" placeholder="' + T('emailPh') + '" ' +
+      'autocomplete="email" autocapitalize="off" spellcheck="false" enterkeyhint="next">' +
     '<label for="ph">' + T('phoneL') + '</label>' +
-    '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" autocomplete="tel">' +
+    '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" ' +
+      'autocomplete="tel" enterkeyhint="done">' +
 
     '<div class="ok">' +
       '<input id="tc" type="checkbox">' +
