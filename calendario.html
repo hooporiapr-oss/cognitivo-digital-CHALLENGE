@@ -109,40 +109,12 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
   <!-- Adentro. -->
   <div id="app" class="hide">
     <div class="tabs">
-      <button id="tab-liga"  class="on" onclick="verPane('liga')">Liga</button>
-      <button id="tab-lista" onclick="verPane('lista')">Lista</button>
-    </div>
-
-    <!-- LIGA: todos contra todos -->
-    <div id="pane-liga" class="pane on">
-      <h2>Equipos que juegan</h2>
-      <div id="teams" class="teams"></div>
-
-      <h2>Fechas de juego</h2>
-      <textarea id="fechas" placeholder="2026-11-07&#10;2026-11-14&#10;2026-11-21"></textarea>
-      <p class="help">Una fecha por línea, <code>AAAA-MM-DD</code>. Cada fecha es una
-        jornada: se reparten los juegos de esa ronda. Si pones menos fechas que
-        rondas, se crean las que alcancen.</p>
-
-      <div class="row2" style="margin-top:14px">
-        <div>
-          <label for="hora">Hora (opcional)</label>
-          <input id="hora" type="text" placeholder="10:00 AM" autocomplete="off">
-        </div>
-        <div>
-          <label for="nota">División (opcional)</label>
-          <input id="nota" type="text" placeholder="Mini 9-10" autocomplete="off">
-        </div>
-      </div>
-      <p class="help">Sin hora, el juego se puede prometer y anotar el mismo día.
-        Con hora, las promesas cierran al saque.</p>
-
-      <button class="btn" onclick="generar()">Ver el calendario</button>
-      <div id="lm" class="msg"></div>
+      <button id="tab-lista" class="on" onclick="verPane('lista')">Un juego</button>
+      <button id="tab-liga"  onclick="verPane('liga')">Liga completa</button>
     </div>
 
     <!-- LISTA: pegar juegos -->
-    <div id="pane-lista" class="pane">
+    <div id="pane-lista" class="pane on">
       <h2>Equipo</h2>
       <select id="unoTeam"></select>
 
@@ -193,6 +165,36 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 
       <button class="btn" onclick="leerPegado()">Ver el calendario</button>
       <div id="pm" class="msg"></div>
+    </div>
+
+    <!-- LIGA: todos contra todos -->
+    <div id="pane-liga" class="pane">
+      <h2>Equipos que juegan</h2>
+      <div id="teams" class="teams"></div>
+
+      <h2>Fechas de juego</h2>
+      <textarea id="fechas" placeholder="2026-11-07&#10;2026-11-14&#10;2026-11-21"></textarea>
+      <p class="help">Para una liga con el calendario ya cerrado. Si no lo tienes,
+        mete los juegos de uno en uno — es más fácil y el tablero se lee mejor.</p>
+      <p class="help">Una fecha por línea, <code>AAAA-MM-DD</code>. Cada fecha es una
+        jornada: se reparten los juegos de esa ronda. Si pones menos fechas que
+        rondas, se crean las que alcancen.</p>
+
+      <div class="row2" style="margin-top:14px">
+        <div>
+          <label for="hora">Hora (opcional)</label>
+          <input id="hora" type="text" placeholder="10:00 AM" autocomplete="off">
+        </div>
+        <div>
+          <label for="nota">División (opcional)</label>
+          <input id="nota" type="text" placeholder="Mini 9-10" autocomplete="off">
+        </div>
+      </div>
+      <p class="help">Sin hora, el juego se puede prometer y anotar el mismo día.
+        Con hora, las promesas cierran al saque.</p>
+
+      <button class="btn" onclick="generar()">Ver el calendario</button>
+      <div id="lm" class="msg"></div>
     </div>
 
     <!-- Lo que se va a crear -->
