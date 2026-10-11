@@ -196,7 +196,7 @@ var GAME_PLEDGE = params.get('g');   // una promesa por juego
 var JUST_PAID = params.get('paid') === '1';
 
 var LANG = 'en';
-try { LANG = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+try { LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
 
 var S = {
   en:{
@@ -276,7 +276,7 @@ function T(k, v){
 }
 function flip(){
   LANG = LANG === 'en' ? 'es' : 'en';
-  try { localStorage.setItem('cfh_lang', LANG); } catch(e){}
+  try { localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); } catch(e){}
   try { paintChrome(); } catch(e){ console.error('chrome', e); }
   if (DATA) render(DATA); 
 }
