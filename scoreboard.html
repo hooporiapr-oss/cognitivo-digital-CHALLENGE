@@ -754,6 +754,21 @@ function sendScore(id){
   .catch(function(){ say(T('sGen'), 'bad'); });
 }
 
+// ¿Se puede anotar este juego? 'started' lo calcula el servidor y exige
+// hora de saque. Un juego sin hora nunca la tiene, así que quedaba sin
+// casillas aunque la función sí lo aceptara. Sin hora manda la fecha.
+function yaSeJugo(g){
+  if (g.status === 'played') return true;
+  if (g.started) return true;
+  if (g.tips_at) return false;                 // tiene hora y no ha llegado
+  if (!g.plays_on) return false;
+  var h = new Date();
+  var hoy = h.getFullYear() + '-' +
+            ('0' + (h.getMonth() + 1)).slice(-2) + '-' +
+            ('0' + h.getDate()).slice(-2);
+  return String(g.plays_on).slice(0, 10) <= hoy;
+}
+
 function gameCard(g, isNext, hidden){
   var played = g.status === 'played';
   var locked = g.status === 'conditional';
@@ -800,7 +815,7 @@ function gameCard(g, isNext, hidden){
     // y la certificación. Un juego ya anotado llega plegado — se corrige
     // apretando "Cambiar" — y el que se jugó y no tiene marcador llega
     // abierto, porque es lo que hace falta hacer.
-    (unlocked() && !locked && (played || started) ? scoreLine(g) : '') +
+    (unlocked() && !locked && yaSeJugo(g) ? scoreLine(g) : '') +
 
     // El juego de cuadro necesita su explicación, y eso no cabe en la fila.
     (locked
