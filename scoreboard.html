@@ -445,7 +445,7 @@ var S = {
 var LANG='en';
 // El sitio guarda el idioma en cfh_lang; el tablero leía cp-lang y por eso
 // nunca heredaba el cambio. Se leen los dos, el del sitio primero.
-try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
 function T(k,v){
