@@ -126,7 +126,7 @@ label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
     <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
     <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
     <p class="f-legal">
-      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+      <a href="reglas.html">Reglas</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
     </p>
   </div>
 </footer>
@@ -191,6 +191,7 @@ var S = {
     s3:'Tu cancha, tu gente, una noche. Los papás ya estaban ahí.',
     s4b:'Pones los dos marcadores.',
     s4:'Desde el mismo tablero, con tu código. Cada escuadra cobra por los suyos.',
+    verReglas:'Las reglas completas \u2192',
     regH:'Las reglas',
     regP:'Es tu cancha y tu gente, así que el formato es corto a propósito: una noche, sin reloj, sin árbitros que conseguir.',
     r1b:'Dos escuadras.',
@@ -238,6 +239,7 @@ var S = {
     s3:'Your gym, your people, one night. The parents were already there.',
     s4b:'You post both scores.',
     s4:'From the same board, with your code. Each squad collects on its own.',
+    verReglas:'The full rules \u2192',
     regH:'The rules',
     regP:'It is your gym and your people, so the format is short on purpose: one night, no clock, no officials to line up.',
     r1b:'Two squads.',
@@ -318,6 +320,9 @@ function paint(){
       '<div><b>' + T('r6b') + '</b><span>' + T('r6') + '</span></div>' +
       '<div><b>' + T('r7b') + '</b><span>' + T('r7') + '</span></div>' +
     '</div>' +
+
+    '<p style="margin:-14px 0 26px"><a href="reglas.html" style="color:var(--accent);' +
+      'font-weight:800;text-decoration:none">' + T('verReglas') + '</a></p>' +
 
     '<div class="fine">' +
       '<b>' + T('costH') + '</b><br>' + T('costP') +
