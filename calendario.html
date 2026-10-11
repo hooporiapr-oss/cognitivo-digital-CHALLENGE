@@ -166,6 +166,25 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
       <p class="help">La hora y la división se quedan puestas para el próximo,
         y la fecha salta una semana. Añade uno tras otro sin volver a escribirlo todo.</p>
 
+      <h2 style="margin-top:18px">O un interescuadra</h2>
+      <div class="formfila">
+        <div class="f-fecha"><label for="x_on">Fecha</label>
+          <input id="x_on" type="date"></div>
+        <div><label for="x_hora">Hora</label>
+          <input id="x_hora" type="text" placeholder="6:00 PM" autocomplete="off"></div>
+      </div>
+      <div class="formfila">
+        <div><label for="x_a">Escuadra A</label>
+          <input id="x_a" type="text" placeholder="Azules" autocomplete="off"></div>
+        <div><label for="x_b">Escuadra B</label>
+          <input id="x_b" type="text" placeholder="Blancos" autocomplete="off"></div>
+      </div>
+      <button class="btn" onclick="anadirInterescuadra()">Añadir interescuadra</button>
+      <div id="xm" class="msg"></div>
+      <p class="help">Tu propio equipo partido en dos. Se crean los dos juegos,
+        uno por escuadra, cada uno con sus padrinos y su marcador. Ganan unos
+        y pierden otros, pero los puntos de las dos escuadras son del programa.</p>
+
       <h2 style="margin-top:18px">Los juegos</h2>
       <textarea id="pegado" placeholder="2026-11-07 | Huracanes | casa | 10:00 AM | Mini 9-10&#10;2026-11-14 | Cafeteros | fuera&#10;2026-11-21 | Mangles"></textarea>
       <p class="help">Un juego por línea, separado por <code>|</code>:
@@ -371,6 +390,32 @@ function anadirLinea(){
     ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
   say('fm','');
   $('f_foe').focus();
+}
+
+// Un interescuadra son dos juegos del mismo día: cada escuadra es el
+// equipo en su propia fila, y la otra es el rival. Escritas a mano es
+// fácil cruzarlas — o escribir una sola y dejar a media plantilla sin
+// recaudar. Las dos van de casa: nadie viaja a su propio gimnasio.
+function anadirInterescuadra(){
+  var on = trim($('x_on').value);
+  var hora = trim($('x_hora').value);
+  var A = trim($('x_a').value);
+  var B = trim($('x_b').value);
+
+  if (!fechaOk(on)) return say('xm','Revisa la fecha — el año completo, 2026.','bad');
+  if (!A || !B)     return say('xm','Pon el nombre de las dos escuadras.','bad');
+  if (A.toLowerCase() === B.toLowerCase())
+    return say('xm','Las dos escuadras no pueden llamarse igual.','bad');
+
+  var lineas = [
+    [on, B, 'casa', hora, A].join(' | '),   // la fila de A: juega contra B
+    [on, A, 'casa', hora, B].join(' | ')    // la fila de B: juega contra A
+  ];
+  var ta = $('pegado');
+  ta.value = (trim(ta.value) ? trim(ta.value) + '\n' : '') + lineas.join('\n');
+
+  $('x_a').value = ''; $('x_b').value = '';
+  say('xm','');
 }
 
 function leerPegado(){
