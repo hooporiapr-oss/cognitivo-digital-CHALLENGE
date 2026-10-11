@@ -327,7 +327,7 @@ function send(){
       body: JSON.stringify({ team: team, program: prog, coach: name,
                              email: email, phone: phone })
     }).catch(function(e){ console.error('notice', e); });
-    try{ document.querySelector('main').scrollTop = 0; }catch(e){}
+    try{ var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); }catch(e){}
   })
   .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
 }
