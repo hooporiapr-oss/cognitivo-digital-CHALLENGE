@@ -518,7 +518,7 @@ var T = {
 };
 
 var lang = 'en';
-try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+try { lang = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
 
 
 function toggleMenu(){
@@ -558,7 +558,7 @@ function paint(){
 
 function flip(){
   lang = lang === 'en' ? 'es' : 'en';
-  try { localStorage.setItem('cfh_lang', lang); } catch(e){}
+  try { localStorage.setItem('cfh_lang', lang), localStorage.setItem('cp-lang', lang), localStorage.setItem('fc-lang', lang); } catch(e){}
   paint();
 }
 
