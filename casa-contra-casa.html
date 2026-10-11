@@ -152,6 +152,12 @@ label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
 .num .s b{display:block;font-size:.98rem}
 .num .s span{color:var(--mute);font-size:.92rem}
 .big2{border:3px solid var(--good);border-radius:6px;padding:16px 18px;margin:0 0 26px}
+.reg{border:1.5px solid var(--line);border-radius:4px;margin:0 0 26px}
+.reg>div{display:flex;gap:14px;padding:12px 15px;border-top:1px solid var(--line);font-size:.93rem}
+.reg>div:first-child{border-top:none}
+.reg b{flex:0 0 36%;font-weight:900}
+.reg span{color:var(--mute)}
+@media(max-width:470px){ .reg>div{flex-direction:column;gap:2px} .reg b{flex:none} }
 .big2 b{display:block;font-size:1.1rem;margin-bottom:4px}
 .big2 span{color:var(--mute);font-size:.95rem;line-height:1.6}
 </style>
@@ -169,13 +175,13 @@ var S = {
     lede:'La manera más fácil de empezar: tu propio equipo partido en dos escuadras, una noche, en tu propia cancha. Escoges un martes dentro de dos semanas y ya tienes campaña. Sin rival que conseguir, sin liga que apruebe, sin esperar temporada.',
     whyH:'Por qué se empieza por aquí',
     w1b:'Todos los puntos de la cancha son del programa.',
-    w1:'En un juego de verdad la mitad de los puntos son de la otra escuela. Aquí las dos escuadras son tuyas, así que el programa cobra por los 103 puntos de la noche, no por 55.',
+    w1:'En un juego de verdad la mitad de los puntos son de la otra escuela. Aquí las dos escuadras son tuyas, así que el programa cobra por los 35 puntos de la noche, no por 21.',
     w2b:'Lo aprendes todo en una semana.',
     w2:'Una noche recorre el sistema entero: creas el juego, los jugadores sacan su enlace, los padrinos prometen, pones el marcador, entra el dinero. Cuando lleguen los juegos de verdad, tu gente ya sabe cómo funciona — lo hicieron una vez, en chiquito.',
     w3b:'Juegan todos, recaudan todos.',
     w3:'Cada jugador escoge su escuadra y saca su propio enlace. Su familia ve sólo el juego de su escuadra y promete ahí. Nadie se queda fuera del juego de su propio equipo.',
     w4b:'Gana uno, cobran los dos.',
-    w4:'Hay ganador y perdedor, pero nadie deja de recaudar: los 48 puntos del que perdió valen exactamente lo mismo por punto que los 55 del que ganó.',
+    w4:'Hay ganador y perdedor, pero nadie deja de recaudar: los 14 puntos del que perdió valen exactamente lo mismo por punto que los 21 del que ganó.',
     howH:'Cómo se monta',
     s1b:'Lo creas en el calendario.',
     s1:'Fecha, hora y el nombre de las dos escuadras. Un botón y quedan los dos juegos, uno por escuadra.',
@@ -185,6 +191,22 @@ var S = {
     s3:'Tu cancha, tu gente, una noche. Los papás ya estaban ahí.',
     s4b:'Pones los dos marcadores.',
     s4:'Desde el mismo tablero, con tu código. Cada escuadra cobra por los suyos.',
+    regH:'Las reglas',
+    regP:'Es tu cancha y tu gente, así que el formato es corto a propósito: una noche, sin reloj, sin árbitros que conseguir.',
+    r1b:'Dos escuadras.',
+    r1:'Las dos salen de tu propia matrícula. Tú las armas, tan parejas como quieras.',
+    r2b:'Primero a 21.',
+    r2:'Se juega hasta que una escuadra llega a 21. No hace falta reloj, ni mesa, ni árbitros.',
+    r3b:'Juegan todos.',
+    r3:'Cada jugador en una escuadra y cada jugador en la cancha. Nadie se queda en el banco en el juego de su propio equipo.',
+    r4b:'50¢ por punto.',
+    r4:'Es la tarifa con la que se monta: 21 puntos son $10.50 por padrino. El padrino puede prometer más si quiere.',
+    r5b:'Las dos escuadras cobran igual.',
+    r5:'Mismo valor por punto para la que gana y para la que pierde. El resultado decide quién celebra, no quién recauda.',
+    r6b:'El marcador es el marcador.',
+    r6:'Lo pones el mismo día con tu código, certificado contra la hoja oficial. Si tu escuadra anotó 6, el tablero dice 6 — las familias estaban ahí, saben que fueron 6.',
+    r7b:'Cobro mínimo $5.',
+    r7:'Si la cuenta de un padrino da menos de $5, se cobra $5. La escuadra que pierde 21–10 igual deja sus $5 por padrino, y la que pierde 21–6 también.',
     costH:'Y no cuesta nada montarlo.',
     costP:'Sin cuota, sin mensualidad, sin contrato. Nuestro 20% se le suma al pago del padrino, nunca se te descuenta a ti: una promesa de $25 es un pago de $25.00 más $5.00, y el programa recibe los $25 completos.',
     ctaH:'Escoge una fecha.',
@@ -200,13 +222,13 @@ var S = {
     lede:'House against house, and the easiest way to begin: your own team split into two squads, one night, in your own gym. Pick a Tuesday two weeks out and you have a campaign. No opponent to find, no league to ask, no season to wait for.',
     whyH:'Why you start here',
     w1b:'Every point on the floor belongs to the program.',
-    w1:'In a real game half the points belong to the other school. Here both squads are yours, so the program collects on all 103 points of the night, not 55.',
+    w1:'In a real game half the points belong to the other school. Here both squads are yours, so the program collects on all 35 points of the night, not 21.',
     w2b:'Your whole program learns it in a week.',
     w2:'One night runs the entire system once: you create the game, players take their links, padrinos pledge, you post the score, the money arrives. By the time real games come around, your families have already done it \u2014 once, at small stakes.',
     w3b:'Everyone plays, everyone raises.',
     w3:'Each player picks their squad and takes their own link. Their family sees only their squad\u2019s game and pledges there. Nobody is left out of their own team\u2019s game.',
     w4b:'One side wins, both sides collect.',
-    w4:'There is a winner and a loser, but nobody stops raising: the 48 points the losing squad scored are worth exactly the same per point as the winner\u2019s 55.',
+    w4:'There is a winner and a loser, but nobody stops raising: the 14 points the losing squad scored are worth exactly the same per point as the winner\u2019s 21.',
     howH:'How you set one up',
     s1b:'You create it in the scheduler.',
     s1:'Date, time, and the names of the two squads. One button and both games exist, one per squad.',
@@ -216,6 +238,22 @@ var S = {
     s3:'Your gym, your people, one night. The parents were already there.',
     s4b:'You post both scores.',
     s4:'From the same board, with your code. Each squad collects on its own.',
+    regH:'The rules',
+    regP:'It is your gym and your people, so the format is short on purpose: one night, no clock, no officials to line up.',
+    r1b:'Two squads.',
+    r1:'Both come off your own roster. You pick them, as even as you want them.',
+    r2b:'First to 21.',
+    r2:'You play until one squad reaches 21. No clock, no scorer\u2019s table, no officials.',
+    r3b:'Everyone plays.',
+    r3:'Every player on a squad and every player on the floor. Nobody sits out their own team\u2019s game.',
+    r4b:'50\u00a2 a point.',
+    r4:'That is the rate the format is built on: 21 points is $10.50 a padrino. A padrino can always pledge more.',
+    r5b:'Both squads collect the same.',
+    r5:'Same value per point for the winning squad and the losing one. The result decides who celebrates, not who raises.',
+    r6b:'The score is the score.',
+    r6:'You post it the same day with your code, certified against the official scoresheet. If your squad scored 6, the board says 6 \u2014 the families were there, they know it was 6.',
+    r7b:'$5 minimum charge.',
+    r7:'If a padrino\u2019s total comes to less than $5, it is $5. A squad that loses 21\u201310 still brings its $5 a padrino, and so does one that loses 21\u20136.',
     costH:'And it costs nothing to run.',
     costP:'No setup fee, no monthly fee, no contract. Our 20% is added to the padrino\u2019s payment, never taken out of yours: a $25 pledge is a $25.00 payment plus $5.00, and the program receives the full $25.',
     ctaH:'Pick a date.',
@@ -267,6 +305,18 @@ function paint(){
       '<div class="s"><b>' + T('s2b') + '</b><span>' + T('s2') + '</span></div>' +
       '<div class="s"><b>' + T('s3b') + '</b><span>' + T('s3') + '</span></div>' +
       '<div class="s"><b>' + T('s4b') + '</b><span>' + T('s4') + '</span></div>' +
+    '</div>' +
+
+    '<h2>' + T('regH') + '</h2>' +
+    '<p class="lede" style="margin-bottom:14px">' + T('regP') + '</p>' +
+    '<div class="reg">' +
+      '<div><b>' + T('r1b') + '</b><span>' + T('r1') + '</span></div>' +
+      '<div><b>' + T('r2b') + '</b><span>' + T('r2') + '</span></div>' +
+      '<div><b>' + T('r3b') + '</b><span>' + T('r3') + '</span></div>' +
+      '<div><b>' + T('r4b') + '</b><span>' + T('r4') + '</span></div>' +
+      '<div><b>' + T('r5b') + '</b><span>' + T('r5') + '</span></div>' +
+      '<div><b>' + T('r6b') + '</b><span>' + T('r6') + '</span></div>' +
+      '<div><b>' + T('r7b') + '</b><span>' + T('r7') + '</span></div>' +
     '</div>' +
 
     '<div class="fine">' +
