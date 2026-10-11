@@ -211,7 +211,7 @@ var FAQ = {
 };
 
 var LANG = 'es';
-try{ LANG = localStorage.getItem('cp-lang') ||
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
 var app = document.getElementById('app');
@@ -261,7 +261,7 @@ function toggle(id){
 
 function toggleLang(){
   LANG = LANG === 'es' ? 'en' : 'es';
-  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); }catch(e){}
   draw();
 }
 
