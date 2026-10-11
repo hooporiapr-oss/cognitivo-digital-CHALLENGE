@@ -157,28 +157,44 @@ h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
 .tagl{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;
   text-transform:uppercase;background:var(--tint);color:var(--accent);
   border:1px solid var(--line);border-radius:3px;padding:3px 8px;margin-bottom:6px}
-.sbox{margin-top:9px;border-top:2px solid var(--line);padding-top:9px}
-.sbox.folded .sform{display:none}
-.sbox .sfold{background:none;border:0;padding:0;cursor:pointer;font:inherit;
+/* La barra del anotador: un botón discreto que se abre a un campo. */
+.unl{margin:0 0 12px}
+.unl .unlb{background:none;border:0;padding:0;cursor:pointer;font:inherit;
   font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
   color:var(--mute);text-decoration:underline}
-.sbox.folded .sfold{display:block}
-.sbox .sfold{display:none}
-.sform{display:flex;flex-direction:column;gap:8px}
-.sgrid{display:flex;gap:8px}
-.sform label{flex:1 1 0;display:flex;flex-direction:column;gap:3px;min-width:0;
+.unl .unlf{display:none}
+.unl.open .unlb{display:none}
+.unl.open .unlf{display:flex;flex-direction:column;gap:8px;
+  border:2px solid var(--ink);border-radius:4px;padding:10px 12px}
+.unl.on{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);
+  border-radius:4px;padding:8px 12px}
+.unl.on span{flex:1 1 auto;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase}
+.unl .unlx{flex:0 0 auto;background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);text-decoration:underline}
+.unlf label{display:flex;flex-direction:column;gap:3px;
   font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
-.sform input[type=number],.sform input[type=text]{width:100%;box-sizing:border-box;
-  font:inherit;font-weight:800;font-size:1rem;padding:9px 10px;
-  border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
-.sform input[type=number]{font-size:1.5rem;letter-spacing:-.03em;text-align:center;
-  font-variant-numeric:tabular-nums}
-.swho input{text-transform:uppercase;letter-spacing:.08em}
+.unlf input[type=text]{width:100%;box-sizing:border-box;font:inherit;font-weight:800;
+  font-size:1rem;padding:9px 10px;border:2px solid var(--line);border-radius:4px;
+  background:#fff;color:var(--ink);text-transform:uppercase;letter-spacing:.08em}
+
+/* Dentro de la tarjeta: dos números y Guardar, en una fila. */
+.sline{display:flex;align-items:flex-end;gap:8px;margin-top:9px;
+  border-top:2px solid var(--line);padding-top:9px;flex-wrap:wrap}
+.sline label{flex:1 1 0;min-width:64px;display:flex;flex-direction:column;gap:3px;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.sline input{width:100%;box-sizing:border-box;font:inherit;font-weight:900;
+  font-size:1.35rem;letter-spacing:-.03em;text-align:center;font-variant-numeric:tabular-nums;
+  padding:7px 8px;border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.sline .btn{flex:0 0 auto;width:auto;margin-top:0;padding:10px 14px;white-space:nowrap}
+.sline .smsg{flex:1 1 100%}
+
 .scert{flex-direction:row !important;align-items:flex-start;gap:8px !important;
   text-transform:none !important;letter-spacing:0 !important;font-size:.78rem !important;
   font-weight:600 !important;line-height:1.35;color:var(--ink) !important}
 .scert input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0}
-.sform .btn{width:100%;margin-top:0}
+.unlf .btn{width:100%;margin-top:0}
 .smsg{font-size:.78rem;font-weight:700;line-height:1.35;min-height:1px}
 .smsg.bad{color:#b4231c}
 .smsg.ok{color:var(--good)}
@@ -317,7 +333,9 @@ var S = {
     pledgeOn:'Pledge →',
     pledged:'{N} padrino', pledgedN:'{N} padrinos',
     final:'Final', pointsWord:'points scored',
-    anotar:'Report score', ours:'Ours', theirs:'Theirs',
+    anotar:'Report scores', ours:'Ours', theirs:'Theirs',
+    unlockH:'Report scores', unlockGo:'Enter', unlockOut:'Done',
+    unlockAs:'Reporting as {N}', save:'Save', saved:'Saved',
     yourCode:'Your code', change:'Change', send:'Send',
     certify:'I certify these are the points on the official scoresheet.',
     sOk:'Score reported.', sCode:'That code does not work.',
@@ -380,7 +398,9 @@ var S = {
     pledgeOn:'Prometer →',
     pledged:'{N} padrino', pledgedN:'{N} padrinos',
     final:'Final', pointsWord:'puntos anotados',
-    anotar:'Anotar', ours:'Nosotros', theirs:'Ellos',
+    anotar:'Anotar marcadores', ours:'Nosotros', theirs:'Ellos',
+    unlockH:'Anotar marcadores', unlockGo:'Entrar', unlockOut:'Salir',
+    unlockAs:'Anotando como {N}', save:'Guardar', saved:'Guardado',
     yourCode:'Tu c\u00f3digo', change:'Cambiar', send:'Enviar',
     certify:'Certifico que estos son los puntos del acta oficial del juego.',
     sOk:'Marcador reportado.', sCode:'Ese c\u00f3digo no sirve.',
@@ -449,6 +469,13 @@ var IS_DEMO  = !!DEMOS[CAMPAIGN];
 var DEMO_SPORT = DEMOS[CAMPAIGN] || null;
 
 var WANT_DIV = PARAMS.get('d') || null;        // escuadra pedida en el enlace
+// El anotador entra una sola vez, como al abrir el encabezado del
+// calendario en Basketween. Después cada juego es dos números y listo.
+var SCODE = null, SBY = null;
+try{ SCODE = localStorage.getItem('cp_code') || null;
+     SBY   = localStorage.getItem('cp_by')   || null; }catch(e){}
+function unlocked(){ return !!(SCODE && SBY); }
+
 var DIV_SET = false;
 var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
 var WANT_VS = PARAMS.get('vs') || null;        // y contra quién
@@ -627,75 +654,100 @@ function boardSub(abiertos){
   return T(BOARD.played === 1 ? 'gamesPlayed1' : 'gamesPlayedN', { N: BOARD.played });
 }
 
-function scoreBox(g, played){
-  var i = 'sb_' + g.id;
-  // Plegada siempre: el tablero es público y lo primero que ve un padrino
-  // no puede ser un formulario. Se abre con "Anotar"; el código es la puerta.
-  return '<div class="sbox folded" id="' + i + '">' +
-    '<button class="sfold" onclick="unfold(\'' + i + '\')">' +
-      T(played ? 'change' : 'anotar') +
-    '</button>' +
-    '<div class="sform">' +
-      '<div class="sgrid">' +
-        '<label>' + T('ours') + '<input type="number" min="0" inputmode="numeric" ' +
-          'id="o_' + g.id + '" value="' + (g.team_points != null ? g.team_points : '') + '"></label>' +
-        '<label>' + T('theirs') + '<input type="number" min="0" inputmode="numeric" ' +
-          'id="t_' + g.id + '" value="' + (g.opp_points != null ? g.opp_points : '') + '"></label>' +
-      '</div>' +
-      '<label class="swho">' + T('yourCode') +
-        '<input type="text" autocomplete="off" spellcheck="false" ' +
-          'id="w_' + g.id + '" value="' + esc(savedCode()) + '"></label>' +
-      '<label class="scert"><input type="checkbox" id="c_' + g.id + '">' +
+function unlockBar(){
+  if (unlocked()){
+    return '<div class="unl on">' +
+      '<span>' + T('unlockAs', { N: esc(SBY) }) + '</span>' +
+      '<button class="unlx" onclick="lockOut()">' + T('unlockOut') + '</button>' +
+    '</div>';
+  }
+  return '<div class="unl" id="unl">' +
+    '<button class="unlb" onclick="openUnlock()">' + T('anotar') + '</button>' +
+    '<div class="unlf">' +
+      '<label>' + T('yourCode') +
+        '<input type="text" id="uc" autocomplete="off" spellcheck="false"></label>' +
+      '<label class="scert"><input type="checkbox" id="ucc">' +
         '<span>' + T('certify') + '</span></label>' +
-      '<button class="btn small" onclick="sendScore(\'' + g.id + '\')">' + T('send') + '</button>' +
-      '<div class="smsg" id="m_' + g.id + '"></div>' +
+      '<button class="btn small" onclick="doUnlock()">' + T('unlockGo') + '</button>' +
+      '<div class="smsg" id="um"></div>' +
     '</div>' +
   '</div>';
 }
 
-function savedCode(){
-  try{ return localStorage.getItem('cp_code') || ''; }catch(e){ return ''; }
+function openUnlock(){
+  var el = document.getElementById('unl');
+  if (el) el.className = 'unl open';
+  var i = document.getElementById('uc');
+  if (i) i.focus();
 }
 
-function unfold(id){
-  var el = document.getElementById(id);
-  if (el) el.className = el.className.replace(' folded','');
+function doUnlock(){
+  var i = document.getElementById('uc');
+  var c = document.getElementById('ucc');
+  var m = document.getElementById('um');
+  function say(t, cls){ if (m){ m.className = 'smsg ' + (cls||''); m.textContent = t; } }
+  var k = ((i && i.value) || '').replace(/^\s+|\s+$/g, '');
+  if (k.length < 4) return say(T('sCode'), 'bad');
+  // Se certifica al entrar, una vez, y vale para todo lo que reporte.
+  if (!(c && c.checked)) return say(T('sCert'), 'bad');
+  say('\u2026');
+  rpc('score_check', { p_campaign: CAMPAIGN, p_code: k })
+  .then(function(r){
+    if (!r || !r.ok) return say(T('sCode'), 'bad');
+    SCODE = k; SBY = r.by;
+    try{ localStorage.setItem('cp_code', k); localStorage.setItem('cp_by', r.by); }catch(e){}
+    load();
+  })
+  .catch(function(){ say(T('sGen'), 'bad'); });
+}
+
+function lockOut(){
+  SCODE = null; SBY = null;
+  try{ localStorage.removeItem('cp_code'); localStorage.removeItem('cp_by'); }catch(e){}
+  load();
+}
+
+// Dentro de la tarjeta: dos números y Guardar. Ni código ni casilla —
+// eso ya se hizo al entrar.
+function scoreLine(g){
+  return '<div class="sline">' +
+    '<label>' + T('ours') + '<input type="number" min="0" inputmode="numeric" ' +
+      'id="o_' + g.id + '" value="' + (g.team_points != null ? g.team_points : '') + '" ' +
+      'onkeydown="if(event.key===\'Enter\')sendScore(\'' + g.id + '\')"></label>' +
+    '<label>' + T('theirs') + '<input type="number" min="0" inputmode="numeric" ' +
+      'id="t_' + g.id + '" value="' + (g.opp_points != null ? g.opp_points : '') + '" ' +
+      'onkeydown="if(event.key===\'Enter\')sendScore(\'' + g.id + '\')"></label>' +
+    '<button class="btn small" onclick="sendScore(\'' + g.id + '\')">' + T('save') + '</button>' +
+    '<div class="smsg" id="m_' + g.id + '"></div>' +
+  '</div>';
 }
 
 function sendScore(id){
   var ours = document.getElementById('o_' + id);
   var them = document.getElementById('t_' + id);
-  var code = document.getElementById('w_' + id);
-  var cert = document.getElementById('c_' + id);
   var msg  = document.getElementById('m_' + id);
   function say(t, cls){ if (msg){ msg.className = 'smsg ' + (cls||''); msg.textContent = t; } }
 
   var a = parseInt((ours && ours.value) || '', 10);
   var b = parseInt((them && them.value) || '', 10);
-  var k = ((code && code.value) || '').replace(/^\s+|\s+$/g, '');
-
   // Los dos marcadores: el del contrario abre o cierra el juego que
   // dependía de éste.
   if (isNaN(a) || isNaN(b) || a < 0 || b < 0) return say(T('sScore'), 'bad');
-  if (k.length < 4) return say(T('sCode'), 'bad');
-  if (!(cert && cert.checked)) return say(T('sCert'), 'bad');
 
   say('\u2026');
   rpc('report_score', {
-    p_campaign: CAMPAIGN, p_code: k, p_game: id, p_team: a, p_opp: b
+    p_campaign: CAMPAIGN, p_code: SCODE, p_game: id, p_team: a, p_opp: b
   })
   .then(function(r){
     if (!r || !r.ok){
       var why = r && r.reason;
-      if (why === 'code')  return say(T('sCode'), 'bad');
+      if (why === 'code'){ lockOut(); return; }   // le quitaron el código
       if (why === 'score') return say(T('sScore'), 'bad');
       if (why === 'early') return say(T('sEarly'), 'bad');
       return say(T('sGen'), 'bad');
     }
-    // El código vale: se recuerda para que se escriba una sola vez.
-    try{ localStorage.setItem('cp_code', k); }catch(e){}
-    say(T('sOk') + (r.by ? ' \u00b7 ' + r.by : ''), 'ok');
-    setTimeout(load, 1400);
+    say(T('saved'), 'ok');
+    setTimeout(load, 900);
   })
   .catch(function(){ say(T('sGen'), 'bad'); });
 }
@@ -746,7 +798,7 @@ function gameCard(g, isNext, hidden){
     // y la certificación. Un juego ya anotado llega plegado — se corrige
     // apretando "Cambiar" — y el que se jugó y no tiene marcador llega
     // abierto, porque es lo que hace falta hacer.
-    (!locked && (played || started) ? scoreBox(g, played) : '') +
+    (unlocked() && !locked && (played || started) ? scoreLine(g) : '') +
 
     // El juego de cuadro necesita su explicación, y eso no cabe en la fila.
     (locked
@@ -849,6 +901,8 @@ function draw(){
       '<div class="big">' + (BOARD.points || 0) + '</div>' +
       '<div class="sub">' + boardSub(open.length) + '</div>' +
     '</div>' +
+
+    unlockBar() +
 
     (IS_DEMO
       ? '<div class="demo">' +
