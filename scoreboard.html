@@ -2,288 +2,298 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chain scoring — Cada Punto</title>
-<meta name="description" content="Every challenge produces one number, counted by software. How a round escalates, how the points add up, and what ends a run.">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scoreboard — Cada Punto</title>
+<!-- La vista previa cuando alguien comparte el enlace: en vez de
+     un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:url" content="https://cadapunto.com/scoreboard.html">
+<meta property="og:title" content="Cada Punto">
+<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
+<meta property="og:locale" content="es_PR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cada Punto">
+<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#050A12;--panel:#0D1826;--line:#1E3550;--gold:#22D3EE;--leather:#38BDF8;--paper:#EAF4FB;--mute:#8AA4BD;--teal:#2DD4BF}
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--good:#0B7A5A}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
-.wrap{width:min(960px,92vw);margin:0 auto}
+html{background:#12202E}
+/* El teclado del teléfono no achica la página, achica lo que se ve de
+   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
+   campo enfocado se iba debajo del teclado. Rodando la página entera,
+   el navegador sí puede subirlo. */
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
 
-/* The bar follows the page down, so the menu is always a tap
-   away rather than a scroll back to the top. */
-nav{position:sticky;top:0;z-index:70;background:var(--ink);border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
-.mark{display:block;line-height:0;text-decoration:none}
-.mark img{display:block;height:34px;width:auto}
-@media(max-width:560px){.mark img{height:26px}}
-.navr{display:flex;align-items:center;gap:16px}
-.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
-.navr a:hover{color:var(--paper)}
-@media(max-width:560px){.navr a{display:none}}
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
-/* ---------- the menu ---------- */
-.burger{
-  display:none;width:42px;height:42px;flex-shrink:0;
-  background:none;border:1px solid var(--line);border-radius:11px;
-  cursor:pointer;padding:0;position:relative;
+main{flex:1 1 auto;overflow-x:hidden}
+main .wrap{padding:clamp(18px,4vw,30px) 0 28px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer b{color:#fff;display:block;font-weight:800}
+
+/* the running total, which is the point of the page */
+.total{border:2px solid var(--ink);border-radius:4px;padding:clamp(18px,4vw,26px);
+  text-align:center;margin-bottom:18px;background:var(--tint)}
+.total .cap{font-size:.66rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.total .big{font-size:clamp(3rem,15vw,5.5rem);font-weight:900;line-height:1;letter-spacing:-.04em}
+.total .sub{color:var(--mute);font-size:.94rem;margin-top:4px}
+h1{font-size:clamp(1.35rem,4.2vw,1.85rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
+/* Un escudo puede venir en cualquier forma, así que se le da una caja
+   y se encaja dentro sin recortarlo. Si la dirección falla, desaparece
+   en vez de dejar un icono roto. */
+.crest{display:block;max-height:96px;max-width:200px;width:auto;height:auto;
+  margin:0 auto 12px;object-fit:contain}
+h1.withcrest{text-align:center}
+h1.withcrest + .lede{text-align:center;margin-left:auto;margin-right:auto}
+.lede{color:var(--mute);margin:0 0 18px}
+h2{font-size:1.05rem;margin:24px 0 8px;font-weight:900;letter-spacing:-.02em}
+
+.game{border:2px solid var(--line);border-radius:4px;padding:10px 12px;margin-bottom:7px}
+.game.next{border-color:var(--ink)}
+.game.played{background:var(--tint)}
+
+/* Una fila: a la izquierda quién y cuándo, a la derecha el botón o el
+   marcador. La tarjeta alta se comía la pantalla. */
+.game .row{display:flex;align-items:center;gap:12px}
+.game .rl{flex:1 1 auto;min-width:0}
+.game .rr{flex:0 0 auto}
+.game .opp{font-weight:900;font-size:1rem;line-height:1.25}
+/* El punto del próximo juego: una marca, no una etiqueta que ocupe línea. */
+.game .opp .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--ball,#FF8A2B);margin-right:7px;vertical-align:1px}
+.game .rsub{color:var(--mute);font-size:.8rem;line-height:1.35;margin-top:2px}
+.game .when{color:var(--mute);font-size:.86rem;white-space:nowrap}
+.game .meta{color:var(--mute);font-size:.86rem;margin-top:2px}
+/* Dentro de la fila el botón se ajusta a su texto: ancho completo y
+   margen de arriba son de los botones de página, no de éstos. */
+.game .rr .btn{width:auto;margin-top:0;padding:10px 16px;white-space:nowrap}
+/* Por debajo de esto el nombre del rival y el botón ya no caben juntos. */
+@media(max-width:330px){
+  .game .row{flex-wrap:wrap;gap:8px}
+  .game .rr{flex:1 1 100%}
+  .game .rr .btn{width:100%}
 }
-.burger span{
-  position:absolute;left:11px;right:11px;height:2px;background:var(--paper);
-  border-radius:2px;transition:transform .22s,opacity .18s;
+
+/* La división, marcada en la tarjeta: con seis escuadras hace falta
+   saber de un vistazo cuál es la tuya. */
+.dtag{display:inline-block;font-size:.56rem;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;background:var(--ink);color:#fff;border-radius:3px;
+  padding:2px 6px;vertical-align:1px}
+.game.played .dtag{background:var(--mute)}
+.game.locked .dtag{background:#fff;color:var(--mute);border:1px solid var(--line)}
+
+/* El filtro por escuadra */
+.demo{border:2px dashed var(--accent);background:var(--tint);border-radius:4px;
+  padding:13px 15px;margin:0 0 18px}
+.demo b{display:block;font-size:.95rem}
+.demo span{color:var(--mute);font-size:.9rem}
+
+.divs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
+.dv{border:1.5px solid var(--line);background:#fff;color:var(--mute);border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
+.dv:hover{border-color:var(--ink);color:var(--ink)}
+.dv.on{background:var(--ink);border-color:var(--ink);color:#fff}
+/* El marcador de un juego jugado. El número del equipo es el que
+   importa — es sobre el que prometieron los padrinos — así que va
+   grande, y el del rival, si lo hay, al lado y en gris. */
+.sb{text-align:right;line-height:1;white-space:nowrap}
+.sb-n{font-size:2rem;font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.sb-o{font-size:1rem;font-weight:800;color:var(--mute);margin-left:2px;letter-spacing:0}
+.sb-c{font-size:.5rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin-top:4px}
+.sb.won .sb-n{color:var(--good)}
+.game .score{font-size:1.3rem;font-weight:900;white-space:nowrap}
+.game .score span{color:var(--mute);font-weight:800;font-size:1rem}
+.game .score .w{color:var(--good)}
+.game .shut{font-size:.8rem;font-weight:800;color:var(--mute);white-space:nowrap}
+
+/* Un juego que todavía no existe: se ve, se entiende, y no se puede
+   prometer en él. La línea de la izquierda lo ata al de arriba, que
+   es lo que hace que se lea como un cuadro. */
+.game.locked{border-style:dashed;border-color:var(--line);background:#fff;position:relative}
+.game.tucked{display:none}
+.game.tucked.shown{display:block}
+.more{display:block;width:100%;margin-top:8px;padding:8px;border:1px dashed var(--line);
+  border-radius:4px;background:#fff;color:var(--accent);font:inherit;font-size:.8rem;
+  font-weight:800;cursor:pointer}
+.more:hover{border-color:var(--accent)}
+.more.open{color:var(--mute)}
+.game.d1{margin-left:18px}
+.game.d2{margin-left:34px}
+.game.d3{margin-left:50px}
+.game.d4{margin-left:62px}
+@media(max-width:520px){
+  /* en un teléfono no hay sitio para cuatro escalones */
+  .game.d1{margin-left:12px}
+  .game.d2{margin-left:22px}
+  .game.d3{margin-left:30px}
+  .game.d4{margin-left:36px}
 }
-.burger span:nth-child(1){top:14px}
-.burger span:nth-child(2){top:20px}
-.burger span:nth-child(3){top:26px}
-.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.burger.open span:nth-child(2){opacity:0}
-.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-.menu{display:none}
-@media(max-width:760px){
-  .navr a{display:none}
-  .burger{display:block}
-  .menu{
-    display:block;max-height:0;overflow:hidden;
-    border-top:0 solid var(--line);transition:max-height .3s ease-out;
-  }
-  .menu.open{max-height:420px;border-top-width:1px}
-  .menu a{
-    display:block;padding:15px 0;color:var(--paper);text-decoration:none;
-    font-size:1rem;font-weight:600;border-bottom:1px solid var(--line);
-  }
-  .menu a:last-child{border-bottom:none}
-  .menu a.mtalk{color:#E8B23A;font-weight:800}
+.game.locked::before{
+  content:'';position:absolute;left:-18px;top:-12px;bottom:50%;width:14px;
+  border-left:2px dashed var(--line);border-bottom:2px dashed var(--line);
+  border-bottom-left-radius:6px;
 }
-#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+.game.locked .opp,.game.locked .when{color:var(--mute)}
+.tagl{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;
+  text-transform:uppercase;background:var(--tint);color:var(--accent);
+  border:1px solid var(--line);border-radius:3px;padding:3px 8px;margin-bottom:6px}
+/* La barra del anotador: un botón discreto que se abre a un campo. */
+.unl{margin:0 0 12px}
+.unl .unlb{background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);text-decoration:underline}
+.unl .unlf{display:none}
+.unl.open .unlb{display:none}
+.unl.open .unlf{display:flex;flex-direction:column;gap:8px;
+  border:2px solid var(--ink);border-radius:4px;padding:10px 12px}
+.unl.on{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);
+  border-radius:4px;padding:8px 12px}
+.unl.on span{flex:1 1 auto;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase}
+.unl .unlx{flex:0 0 auto;background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);text-decoration:underline}
+.unlf label{display:flex;flex-direction:column;gap:3px;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.unlf input[type=text]{width:100%;box-sizing:border-box;font:inherit;font-weight:800;
+  font-size:1rem;padding:9px 10px;border:2px solid var(--line);border-radius:4px;
+  background:#fff;color:var(--ink);letter-spacing:.06em}
+/* Sin text-transform: el código se compara cifrado y distingue mayúsculas.
+   Mostrarlo en caps mientras se envía en minúsculas es una trampa. */
 
-header{padding:clamp(44px,8vw,72px) 0 30px;border-bottom:1px solid var(--line)}
-h1{font-size:clamp(2rem,6vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:0 0 .35em;max-width:17ch}
-.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:#CFE3F2;max-width:58ch;margin:0}
+/* Dentro de la tarjeta: dos números y Guardar, en una fila. */
+.sline{display:flex;align-items:flex-end;gap:8px;margin-top:9px;
+  border-top:2px solid var(--line);padding-top:9px;flex-wrap:wrap}
+.sline label{flex:1 1 0;min-width:64px;display:flex;flex-direction:column;gap:3px;
+  font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.sline input{width:100%;box-sizing:border-box;font:inherit;font-weight:900;
+  font-size:1.35rem;letter-spacing:-.03em;text-align:center;font-variant-numeric:tabular-nums;
+  padding:7px 8px;border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.sline .btn{flex:0 0 auto;width:auto;margin-top:0;padding:10px 14px;white-space:nowrap}
+.sline .smsg{flex:1 1 100%}
 
-section{padding:clamp(34px,6vw,52px) 0;border-top:1px solid var(--line)}
-section:first-of-type{border-top:none}
-h2{font-size:clamp(1.35rem,3.6vw,1.75rem);font-weight:800;letter-spacing:-.025em;margin:0 0 .5em;max-width:22ch}
-h3{font-size:1rem;font-weight:800;margin:0 0 .3em}
-p{margin:0 0 1em;color:#CFE3F2;max-width:62ch}
-.mute{color:var(--mute)}
-b{color:var(--paper)}
+.scert{flex-direction:row !important;align-items:flex-start;gap:8px !important;
+  text-transform:none !important;letter-spacing:0 !important;font-size:.78rem !important;
+  font-weight:600 !important;line-height:1.35;color:var(--ink) !important}
+.scert input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0}
+.unlf .btn{width:100%;margin-top:0}
+.smsg{font-size:.78rem;font-weight:700;line-height:1.35;min-height:1px}
+.smsg.bad{color:#b4231c}
+.smsg.ok{color:var(--good)}
 
-/* ---- a run, built up one round at a time ---- */
-.ladder{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,24px);margin:22px 0}
-.lhead,.lrow{display:grid;grid-template-columns:34px 1fr auto 92px;gap:12px;align-items:center}
-.lhead{padding:0 4px 8px;font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
-.lhead span:nth-child(3),.lhead span:nth-child(4){text-align:right}
-.lrow{padding:11px 4px;border-bottom:1px solid var(--line);font-size:.98rem}
-.lrow:last-of-type{border-bottom:none}
-.lrow .rd{
-  width:30px;height:30px;border-radius:50%;
-  border:2px solid var(--line);color:var(--mute);
-  font-size:.8rem;font-weight:800;display:grid;place-content:center;
-}
-.lrow .what{color:var(--mute);min-width:0}
-.lrow .adds{color:var(--leather);font-weight:800;text-align:right;white-space:nowrap}
-.lrow .tot{font-weight:800;text-align:right;white-space:nowrap}
-.lrow.hi .rd{border-color:var(--gold);color:var(--gold)}
-.lrow.hi .tot{color:var(--gold)}
-.lnote{color:var(--mute);font-size:.88rem;margin:14px 0 0;text-align:center}
+.game .need{margin-top:7px;font-size:.86rem;color:var(--mute)}
+.btn.small.dead{background:#fff;color:#9AA8B5;border-color:var(--line);cursor:not-allowed}
+/* Lo del jugador es una acción, no una nota al pie: caja propia,
+   con su botón. Lo de abajo sigue siendo un enlace para leer. */
+.playcard{border:2px solid var(--ink);border-radius:4px;padding:18px 20px;margin-top:26px;
+  background:var(--tint)}
+.pc-kick{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:4px}
+.pc-h{display:block;font-size:1.2rem;font-weight:900;letter-spacing:-.025em}
+.pc-p{margin:6px 0 0;color:var(--mute);font-size:.93rem}
+.pc-go{display:block;text-align:center;margin-top:16px;padding:14px;border:2px solid var(--ink);
+  border-radius:4px;background:var(--ink);color:#fff;font-weight:800;text-decoration:none}
+.pc-go:hover{background:#0B1724}
 
-/* ---- the three challenges ---- */
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0 0}
-@media(max-width:860px){.three{grid-template-columns:1fr}}
-.ch{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
-.ch.f{border-color:rgba(34,211,238,.4)}
-.ch.rc{border-color:rgba(56,189,248,.4)}
-.ch.rg{border-color:rgba(45,212,191,.4)}
-.ch h3{margin-bottom:8px}
-.ch.f h3{color:var(--gold)} .ch.rc h3{color:var(--leather)} .ch.rg h3{color:var(--teal)}
-.ch p{font-size:.92rem;color:var(--mute);margin:0 0 12px;max-width:none}
-.ch .grows{font-size:.9rem;color:var(--paper);padding-top:11px;border-top:1px solid var(--line)}
-.ch .grows b{display:block;font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.readlink{display:block;border:2px dashed var(--line);border-radius:4px;padding:14px 16px;
+  margin-top:18px;text-decoration:none;color:var(--ink)}
+.readlink:hover{border-color:var(--ink);border-style:solid}
+.readlink b{display:block}
+.readlink span{color:var(--mute);font-size:.88rem}
+.tagn{display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--ball);color:#1A0C00;border-radius:3px;padding:3px 8px;margin-bottom:6px}
 
-/* ---- ending a run ---- */
-.ends{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 0}
-@media(max-width:760px){.ends{grid-template-columns:1fr}}
-.end{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
-.end.no{border-color:rgba(255,92,122,.32)}
-.end.yes{border-color:rgba(34,211,238,.32)}
-.end h3{margin-bottom:6px}
-.end.no h3{color:#FF8FA3} .end.yes h3{color:var(--gold)}
-.end p{font-size:.93rem;color:var(--mute);margin:0;max-width:none}
+.btn{display:block;width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;
+  text-align:center;text-decoration:none;margin-top:10px}
+.btn.line{background:#fff;color:var(--ink)}
+.btn.small{padding:11px;font-size:.92rem;margin-top:8px}
 
-/* ---- worked example ---- */
-.calc{background:var(--panel);border:1px solid rgba(34,211,238,.32);border-radius:18px;padding:clamp(20px,3.5vw,30px);margin:22px 0}
-.crow{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:640px){.crow{grid-template-columns:1fr}}
-label{display:block;font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-input[type=range]{width:100%;accent-color:var(--gold)}
-.val{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
-.val small{font-size:.78rem;font-weight:600;color:var(--mute);letter-spacing:0}
-.out{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
-@media(max-width:560px){.out{grid-template-columns:1fr}}
-.out div{background:#08111C;border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center}
-.out b{display:block;font-size:1.75rem;font-weight:800;letter-spacing:-.03em;line-height:1}
-.out .hi b{color:var(--gold)}
-.out span{display:block;color:var(--mute);font-size:.8rem;margin-top:5px}
-.gain{margin:16px 0 0;padding:13px 15px;border-radius:12px;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.25);font-size:.94rem}
-.gain b{color:var(--gold)}
+label{display:block;font-size:.84rem;font-weight:700;margin:12px 0 5px}
+input{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1rem}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1rem}
+.rates{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.rate{flex:1 1 90px;padding:12px 8px;border:2px solid var(--line);border-radius:4px;background:#fff;
+  font:inherit;font-weight:900;cursor:pointer;color:var(--ink);text-align:center}
+.rate.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.rate small{display:block;font-size:.62rem;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;opacity:.75;margin-top:2px}
+/* A quién se apoya, primero y en grande: antes el título era el
+   nombre del contrario y la hoja parecía ser para ellos. */
+.forwho{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);text-align:center;margin-bottom:4px}
+.whoteam{text-align:center;margin:0 0 10px}
+.fixture{text-align:center;color:var(--mute);font-size:.95rem;margin:0 0 20px;
+  padding-bottom:16px;border-bottom:1px solid var(--line)}
+.fixture b{color:var(--ink);font-weight:800}
+.fx-vs{text-transform:uppercase;font-size:.7rem;font-weight:900;letter-spacing:.14em}
+.fx-when{display:block;font-size:.86rem;margin-top:3px}
 
-.cta{display:inline-flex;align-items:center;justify-content:center;padding:15px 26px;border-radius:12px;background:var(--gold);color:#04121A;font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;margin-top:10px}
-
-footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
-footer a{color:var(--mute)}
-
-/* ---------- the Cada Punto wordmark ---------- */
-.wm{font-family:Archivo,system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;
-  color:#EAF4FB;line-height:1;white-space:nowrap;font-size:28px}
-.wm em{font-style:normal;color:#22D3EE}
-.mark .wm{display:block}
-@media(max-width:560px){.mark .wm{font-size:23px}}
-
-/* the mark says the whole line now */
-.wm i{font-style:normal;color:var(--mute)}
-
+.est{border-left:4px solid var(--accent);background:var(--tint);padding:13px 15px;margin:14px 0;font-size:.93rem}
+.est b{display:block}
+.es-l{display:flex;justify-content:space-between;gap:12px;padding:3px 0;color:var(--mute)}
+.es-l b{display:inline;color:var(--ink);font-variant-numeric:tabular-nums}
+.es-l span{font-variant-numeric:tabular-nums}
+.es-tot{border-top:1px solid var(--line);margin-top:4px;padding-top:6px}
+.es-tot b{font-size:1.05rem}
+.es-note{display:block;color:var(--mute);font-size:.86rem;margin-top:8px;line-height:1.5}
+.est b{display:block}
+.msg{margin-top:10px;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:#A8323F}
+.msg.ok{color:var(--good)}
+.fine{color:var(--mute);font-size:.82rem;margin-top:10px}
 footer p{margin:0 0 7px}
-footer .f-co{font-weight:700}
-footer .f-nav{margin-top:12px}
-footer .f-legal{margin:7px 0 0;font-size:.8rem}
+footer .f-co{color:#fff;font-weight:700}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
 footer .f-dot{padding:0 7px;opacity:.5}
+footer a{color:#8FA8C0;text-decoration:none}
 .f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
   margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap navin">
-  <a class="mark" href="index.html"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
-  <div class="navr">
-    <a href="challenges.html" data-t="navPlay">The challenges</a>
-    <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
-    <a href="index.html" data-t="navHow">How it works</a>
-    <button id="lang" onclick="flip()">ES</button>
-    <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">ES</button>
   </div>
-</div>
-<div class="menu" id="menu"><div class="wrap">
-  <a href="index.html" data-t="mHow">How it works</a>
-  <a href="challenges.html" data-t="mPlay">The challenges</a>
-  <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
-  <a href="scoring.html" data-t="mScoring">Chain scoring</a>
-  <a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
-</div></div>
-</nav>
+</header>
 
-<header><div class="wrap">
-  <h1 data-t="h1">Chain scoring.</h1>
-  <p class="lede" data-t="lede">Each round adds one more, and each round is worth more than the last. That is the whole rule, it is the same in every challenge we run, and it is counted by software rather than by a person with a clipboard.</p>
-</div></header>
+<main>
+  <div class="wrap" id="app"><p style="color:var(--mute)">…</p></div>
+</main>
 
-<div class="wrap">
-
-  <section>
-    <h2 data-t="h2round">The chain grows by one every round</h2>
-    <p data-t="roundP">Each round adds one more thing to remember than the round before. Get a round right and the next one is longer. There is no target to reach and no level to unlock — a run simply keeps going until it ends.</p>
-
-    <div class="ladder">
-      <div class="lhead">
-        <span></span><span data-t="lWhat">What the participant holds</span><span data-t="lAdds">Round is worth</span><span data-t="lTot">Score so far</span>
-      </div>
-      <div id="ladder"></div>
-      <p class="lnote" data-t="lNote">And so on. There is no ceiling — a run ends when the participant misses, not when they finish.</p>
-    </div>
-
-    <p data-t="roundP2"><b>Completing a round banks its own number.</b> Round 4 is worth 4, round 9 is worth 9. So the score after any round is simply 1 + 2 + 3 and so on up to that round — which is why a longer run is worth so much more than a slightly shorter one.</p>
-  </section>
-
-  <section>
-    <h2 data-t="h2what">What grows, in each challenge</h2>
-    <p data-t="whatP">All three are scored identically. What differs is what the participant is holding in their head.</p>
-
-    <div class="three">
-      <div class="ch f">
-        <h3 data-t="fH">The Fortress</h3>
-        <p data-t="fP">Five circles light up one at a time. The participant taps them back in the same order.</p>
-        <div class="grows"><b data-t="growsL">Each round adds</b><span data-t="fG">One more circle to the sequence. Round 1 is a single circle.</span></div>
-      </div>
-      <div class="ch rc">
-        <h3 data-t="rcH">The Recall</h3>
-        <p data-t="rcP">Numbered cells appear on a grid. They vanish, and the participant taps them back in number order.</p>
-        <div class="grows"><b data-t="growsL2">Each round adds</b><span data-t="rcG">One more numbered cell. The first round starts with two.</span></div>
-      </div>
-      <div class="ch rg">
-        <h3 data-t="rgH">Recognition</h3>
-        <p data-t="rgP">A pattern appears, then comes back with exactly one cell moved. The participant taps the one that moved.</p>
-        <div class="grows"><b data-t="growsL3">Each round adds</b><span data-t="rgG">One more cell to the pattern. The first round starts with two.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2 data-t="h2end">What ends a run</h2>
-
-    <div class="ends">
-      <div class="end no">
-        <h3 data-t="e1h">One wrong tap</h3>
-        <p data-t="e1p">That is the only thing that ends a run. The moment a participant taps something that is not next in the chain, the run is over and the score is fixed.</p>
-      </div>
-      <div class="end yes">
-        <h3 data-t="e2h">There is no clock</h3>
-        <p data-t="e2p">Nothing runs out. A participant can take as long as they like on their turn, and thinking carefully costs nothing. Rushing is how most runs end early.</p>
-      </div>
-    </div>
-
-    <p style="margin-top:22px;" data-t="endP"><b>The final score is the last round completed in full.</b> A participant who gets through round 9 and then slips on round 10 scores nine rounds — <b>45 points</b>. The unfinished round does not count, and it does not take anything away either.</p>
-    <p class="mute" data-t="endP2">A run that ends on the very first round scores nothing in The Fortress, and one point in the other two, because those begin with two cells rather than one.</p>
-  </section>
-
-  <section>
-    <h2 data-t="h2money">What a run is worth</h2>
-    <p data-t="moneyP">Move the sliders. This is the same arithmetic the platform runs when it invoices a padrino.</p>
-
-    <div class="calc">
-      <div class="crow">
-        <div>
-          <label data-t="lRounds">Rounds completed</label>
-          <div class="val"><span id="vRounds">9</span> <small data-t="roundsWord">rounds</small></div>
-          <input type="range" id="rounds" min="1" max="20" value="9">
-        </div>
-        <div>
-          <label data-t="lRate">Pledged per point</label>
-          <div class="val">$<span id="vRate">0.25</span> <small data-t="perPoint">per point</small></div>
-          <input type="range" id="rate" min="5" max="100" step="5" value="25">
-        </div>
-      </div>
-
-      <div class="out">
-        <div class="hi"><b id="oPoints">45</b><span data-t="oPointsL">Points scored</span></div>
-        <div><b id="oOne">$11.25</b><span data-t="oOneL">From one padrino</span></div>
-        <div><b id="oTen">$113</b><span data-t="oTenL">From ten padrinos</span></div>
-      </div>
-
-      <p class="gain" id="gainLine"></p>
-    </div>
-
-    <p class="mute" data-t="moneyNote">The figures above are what the program receives. A padrino's invoice is 10% higher — that fee is ours, and it never comes out of the pledge. All collected pledges go to the program.</p>
-  </section>
-
-  <section>
-    <h2 data-t="h2why">Why it is built this way</h2>
-    <p data-t="whyP1"><b>Nobody counts it.</b> The software records the run. There is no tally sheet, no volunteer and nothing for a parent to question — which matters more than anything else in a fundraiser where money depends on a number.</p>
-    <p data-t="whyP2"><b>Effort is what moves it.</b> A participant cannot raise their score by having wealthier relatives. They raise it by holding one more round than last time, and that takes practice.</p>
-    <p data-t="whyP3"><b>It is the same number every time.</b> A program can run one challenge this year and another next without explaining anything new to a single parent, and compare the two results directly.</p>
-    <a class="cta" href="contact.html" data-t="cta">Talk to us</a>
-  </section>
-
-</div>
-
-<footer><div class="wrap">
-  <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
 <p class="f-what" id="fWhat"></p>
 <script>
 /* Lo que somos, dicho donde se ve: una herramienta que se cobra, no
@@ -300,185 +310,839 @@ footer .f-dot{padding:0 7px;opacity:.5}
     : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
 })();
 </script>
-  <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
-  <p class="f-nav"><a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a></p>
-  <p class="f-legal">
-    <a href="terms.html" data-t="fTerms">Terms</a>
-    <span class="f-dot">·</span>
-    <a href="privacy.html" data-t="fPrivacy">Privacy</a>
-  </p>
-</div></footer>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Terms</a><span class="f-dot">·</span><a href="privacy.html">Privacy</a>
+    </p>
+  </div>
+</footer>
 
 <script>
-// Completing round n banks n points, so the score after n rounds is
-// 1 + 2 + … + n. The same function the games themselves use.
-function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
+// El servidor que manda los correos. Mismo que usan pay.html y equipo.html.
+var PAY_API='https://basketball-money-payments.onrender.com';
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 
-var T = {
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+
+var S = {
   en:{
-    mHow:'How it works', mPlay:'The challenges', mPad:'Getting padrinos',
-    mScoring:'Chain scoring', mTalk:'Talk to us →',
-    navPlay:'The challenges', navPad:'Getting padrinos', navHow:'How it works',
-    h1:'Chain scoring.',
-    lede:'Each round adds one more, and each round is worth more than the last. That is the whole rule, it is the same in every challenge we run, and it is counted by software rather than by a person with a clipboard.',
-
-    h2round:'The chain grows by one every round',
-    roundP:'Each round adds one more thing to remember than the round before. Get a round right and the next one is longer. There is no target to reach and no level to unlock — a run simply keeps going until it ends.',
-    lWhat:'What the participant holds', lAdds:'Round is worth', lTot:'Score so far',
-    lNote:'And so on. There is no ceiling — a run ends when the participant misses, not when they finish.',
-    roundP2:'<b>Completing a round banks its own number.</b> Round 4 is worth 4, round 9 is worth 9. So the score after any round is simply 1 + 2 + 3 and so on up to that round — which is why a longer run is worth so much more than a slightly shorter one.',
-    thingsWord:'to remember',
-
-    h2what:'What grows, in each challenge',
-    whatP:'All three are scored identically. What differs is what the participant is holding in their head.',
-    growsL:'Each round adds', growsL2:'Each round adds', growsL3:'Each round adds',
-    fH:'The Fortress',
-    fP:'Five circles light up one at a time. The participant taps them back in the same order.',
-    fG:'One more circle to the sequence. Round 1 is a single circle.',
-    rcH:'The Recall',
-    rcP:'Numbered cells appear on a grid. They vanish, and the participant taps them back in number order.',
-    rcG:'One more numbered cell. The first round starts with two.',
-    rgH:'Recognition',
-    rgP:'A pattern appears, then comes back with exactly one cell moved. The participant taps the one that moved.',
-    rgG:'One more cell to the pattern. The first round starts with two.',
-
-    h2end:'What ends a run',
-    e1h:'One wrong tap',
-    e1p:'That is the only thing that ends a run. The moment a participant taps something that is not next in the chain, the run is over and the score is fixed.',
-    e2h:'There is no clock',
-    e2p:'Nothing runs out. A participant can take as long as they like on their turn, and thinking carefully costs nothing. Rushing is how most runs end early.',
-    endP:'<b>The final score is the last round completed in full.</b> A participant who gets through round 9 and then slips on round 10 scores nine rounds — <b>45 points</b>. The unfinished round does not count, and it does not take anything away either.',
-    endP2:'A run that ends on the very first round scores nothing in The Fortress, and one point in the other two, because those begin with two cells rather than one.',
-
-    h2money:'What a run is worth',
-    moneyP:'Move the sliders. This is the same arithmetic the platform runs when it invoices a padrino.',
-    lRounds:'Rounds completed', roundsWord:'rounds', lRate:'Pledged per point', perPoint:'per point',
-    oPointsL:'Points scored', oOneL:'From one padrino', oTenL:'From ten padrinos',
-    gain:'One more round would add <b>{P} points</b> — another <b>{M}</b> from every padrino.',
-    moneyNote:"The figures above are what the program receives. A padrino's invoice is 10% higher — that fee is ours, and it never comes out of the pledge. All collected pledges go to the program.",
-
-    h2why:'Why it is built this way',
-    whyP1:'<b>Nobody counts it.</b> The software records the run. There is no tally sheet, no volunteer and nothing for a parent to question — which matters more than anything else in a fundraiser where money depends on a number.',
-    whyP2:'<b>Effort is what moves it.</b> A participant cannot raise their score by having wealthier relatives. They raise it by holding one more round than last time, and that takes practice.',
-    whyP3:'<b>It is the same number every time.</b> A program can run one challenge this year and another next without explaining anything new to a single parent, and compare the two results directly.',
-    cta:'Talk to us', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
+    pointsCap:'Points this season',
+    gamesPlayed1:'1 game played', gamesPlayedN:'{N} games played',
+    notStarted:'The season has not started yet',
+    perGame:'{P} a game', toPledgeN:'{N} to pledge on',
+    toPledge:'Games to pledge on',
+    noGames:'No games on the schedule yet.',
+    lede:'Padrinos pledge an amount for every point the team scores. Pick a game, pick a rate, and pay only what they actually score.',
+    next:'Next up',
+    upcoming:'Coming up',
+    results:'Results',
+    home:'Home', away:'Away',
+    allDivs:'All squads', noneHere:'No games for that squad yet.',
+    howPaid:'How the program gets paid', howPaidP:'For players and families \u2014 two minutes.',
+    demoH:'This is a demonstration',
+    demoP:'A made-up team, so you can see how a board works. The games, the scores and the money are examples — nothing here is charged.',
+    noCampH:'You need your team\u2019s link',
+    noCampP:'Every program has its own board and they are not in a public list. Your coach sends the link to the team group — ask them for it if you do not have it.',
+    noCampGo:'Is your team not raising yet?',
+    noCampGoP:'See how Cada Punto works, and sign your team up.',
+    iPlayKick:'If you play for this team',
+    iPlay:'Get your own link',
+    iPlayGo:'Get my link →',
+    iPlayP:'Put your name in and you get a link of your own. Send it to your family — whatever they pledge is credited to you, and all of it goes to the program.',
+    pledgeOn:'Pledge →',
+    pledged:'{N} padrino', pledgedN:'{N} padrinos',
+    final:'Final', pointsWord:'points scored',
+    anotar:'Report scores', ours:'Ours', theirs:'Theirs',
+    unlockH:'Report scores', unlockGo:'Enter', unlockOut:'Done',
+    unlockAs:'Reporting as {N}', save:'Save', saved:'Saved',
+    yourCode:'Your code', change:'Change', send:'Send',
+    certify:'I certify these are the points on the official scoresheet.',
+    sOk:'Score reported.', sCode:'That code does not work.',
+    sScore:'Both scores, whole numbers.',
+    sCert:'Check the box to certify the points.',
+    sEarly:'That game has not been played yet.',
+    sGen:'It did not go through. Try again.',
+    pledgeFor:'You are backing', vsWord:'vs', atWord:'away to',
+    pickRate:'Your rate, per point',
+    yourName:'Your name',
+    yourEmail:'Your email',
+    capLabel:'Most you want to pay (optional)',
+    estTitle:'If they score {N}, which is about their average',
+    esPoints:'{N} points to the program',
+    esFee:'Platform fee (20%)',
+    esPay:'You would pay',
+    esNote:'The fee is added on top — the program receives every dollar you pledged. Nothing is charged until the game is played, and you are billed on the points they actually score.',
+    minNote:'Minimum $5 per pledge.',
+    send:'Pledge',
+    back:'← Back to the schedule',
+    thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
+    errMin:'That comes to less than $5. Choose a higher rate.',
+    errWho:'Your name and email, please.',
+    showPath:'See the path to the final · {N} more',
+    hidePath:'Hide the rest',
+    ifTheyWin:'If they win',
+    needsWin:'Opens if they beat {O} on {D}.',
+    inPlay:'Pledging closed — the game has started.',
+    errStarted:'That game has started. Pick another one.',
+    errClosed:'That game is closed for pledges.',
+    errGen:'Could not record the pledge. Try again.',
+    whoAsked:'Who asked you? (optional)', nobody:'Nobody in particular',
+    notDonation:'Your pledge is a voluntary contribution to the program. Nothing is won or paid out.',
+    feeNote:'Payment processing and the 20% platform fee are added on top — the program receives your full pledge.'
   },
   es:{
-    mHow:'Cómo funciona', mPlay:'Los retos', mPad:'Conseguir padrinos',
-    mScoring:'Puntuación en cadena', mTalk:'Habla con nosotros →',
-    navPlay:'Los retos', navPad:'Conseguir padrinos', navHow:'Cómo funciona',
-    h1:'Puntuación en cadena.',
-    lede:'Cada ronda añade una más, y cada ronda vale más que la anterior. Esa es toda la regla, es igual en todos nuestros retos, y la cuenta el programa y no alguien con una tablilla.',
-
-    h2round:'La cadena crece de a uno cada ronda',
-    roundP:'Cada ronda añade una cosa más que recordar que la ronda anterior. Si aciertas una ronda, la próxima es más larga. No hay meta que alcanzar ni nivel que desbloquear — la corrida sigue hasta que termina.',
-    lWhat:'Lo que el participante aguanta', lAdds:'La ronda vale', lTot:'Puntuación',
-    lNote:'Y así sigue. No hay techo — una corrida termina cuando el participante falla, no cuando acaba.',
-    roundP2:'<b>Completar una ronda suma su propio número.</b> La ronda 4 vale 4, la ronda 9 vale 9. Así que la puntuación después de cualquier ronda es sencillamente 1 + 2 + 3 y así hasta esa ronda — por eso una corrida más larga vale mucho más que una un poco más corta.',
-    thingsWord:'que recordar',
-
-    h2what:'Qué crece, en cada reto',
-    whatP:'Los tres se puntúan igual. Lo que cambia es lo que el participante aguanta en la cabeza.',
-    growsL:'Cada ronda añade', growsL2:'Cada ronda añade', growsL3:'Cada ronda añade',
-    fH:'The Fortress',
-    fP:'Cinco círculos se encienden uno a uno. El participante los toca de vuelta en el mismo orden.',
-    fG:'Un círculo más a la secuencia. La ronda 1 es un solo círculo.',
-    rcH:'The Recall',
-    rcP:'Celdas numeradas aparecen en una cuadrícula. Desaparecen, y el participante las toca de vuelta en orden.',
-    rcG:'Una celda numerada más. La primera ronda empieza con dos.',
-    rgH:'Recognition',
-    rgP:'Aparece un patrón y vuelve con exactamente una celda movida. El participante toca la que se movió.',
-    rgG:'Una celda más al patrón. La primera ronda empieza con dos.',
-
-    h2end:'Qué termina una corrida',
-    e1h:'Un toque equivocado',
-    e1p:'Es lo único que termina una corrida. En el momento en que el participante toca algo que no sigue en la cadena, la corrida se acaba y la puntuación queda fija.',
-    e2h:'No hay reloj',
-    e2p:'Nada se acaba. El participante puede tomarse el tiempo que quiera en su turno, y pensar bien no cuesta nada. Apurarse es como terminan temprano la mayoría de las corridas.',
-    endP:'<b>La puntuación final es la última ronda completada entera.</b> Un participante que pasa la ronda 9 y falla en la 10 anota nueve rondas — <b>45 puntos</b>. La ronda sin terminar no cuenta, y tampoco quita nada.',
-    endP2:'Una corrida que termina en la primera ronda no anota nada en The Fortress, y un punto en los otros dos, porque esos empiezan con dos celdas en vez de una.',
-
-    h2money:'Cuánto vale una corrida',
-    moneyP:'Mueve las barras. Esta es la misma aritmética que corre la plataforma cuando le factura a un padrino.',
-    lRounds:'Rondas completadas', roundsWord:'rondas', lRate:'Prometido por punto', perPoint:'por punto',
-    oPointsL:'Puntos anotados', oOneL:'De un padrino', oTenL:'De diez padrinos',
-    gain:'Una ronda más añadiría <b>{P} puntos</b> — otros <b>{M}</b> de cada padrino.',
-    moneyNote:'Las cifras de arriba son lo que recibe el programa. La factura del padrino es 10% más alta — ese cargo es nuestro y nunca sale de la promesa. Todas las promesas cobradas van a el programa.',
-
-    h2why:'Por qué está hecho así',
-    whyP1:'<b>Nadie lo cuenta.</b> El programa graba la corrida. No hay hoja de conteo, no hay voluntario y no hay nada que un padre pueda cuestionar — lo que importa más que cualquier otra cosa en una recaudación donde el dinero depende de un número.',
-    whyP2:'<b>El esfuerzo es lo que lo mueve.</b> Un participante no puede subir su puntuación teniendo familiares con más dinero. La sube aguantando una ronda más que la vez pasada, y eso requiere práctica.',
-    whyP3:'<b>Es el mismo número siempre.</b> Un programa puede correr un reto este año y otro el próximo sin explicarle nada nuevo a ningún padre, y comparar los dos resultados directamente.',
-    cta:'Habla con nosotros', fSignin:'Acceder', fTerms:'Términos', fPrivacy:'Privacidad'
+    pointsCap:'Puntos esta temporada',
+    gamesPlayed1:'1 juego jugado', gamesPlayedN:'{N} juegos jugados',
+    notStarted:'La temporada no ha empezado',
+    perGame:'{P} por juego', toPledgeN:'{N} por prometer',
+    toPledge:'Juegos para prometer',
+    noGames:'Todavía no hay juegos en el calendario.',
+    lede:'Los padrinos prometen una cantidad por cada punto que anota el equipo. Escoge un juego, escoge tu tarifa, y pagas sólo lo que de verdad anoten.',
+    next:'Próximo juego',
+    upcoming:'Vienen',
+    results:'Resultados',
+    home:'Casa', away:'Visita',
+    allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
+    howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
+    demoH:'Esto es una demostración',
+    demoP:'Un equipo inventado, para que veas cómo funciona un tablero. Los juegos, los marcadores y el dinero son de ejemplo — aquí no se cobra nada.',
+    noCampH:'Te falta el enlace de tu equipo',
+    noCampP:'Cada programa tiene su propio tablero y no están en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
+    noCampGo:'¿Tu equipo todavía no recauda?',
+    noCampGoP:'Mira cómo funciona Cada Punto e inscríbelo.',
+    iPlayKick:'Si juegas en este equipo',
+    iPlay:'Saca tu propio enlace',
+    iPlayGo:'Sacar mi enlace →',
+    iPlayP:'Pones tu nombre y te da un enlace que es tuyo. Mándaselo a tu familia — lo que prometan queda apuntado a tu nombre, y todo va al programa.',
+    pledgeOn:'Prometer →',
+    pledged:'{N} padrino', pledgedN:'{N} padrinos',
+    final:'Final', pointsWord:'puntos anotados',
+    anotar:'Anotar marcadores', ours:'Nosotros', theirs:'Ellos',
+    unlockH:'Anotar marcadores', unlockGo:'Entrar', unlockOut:'Salir',
+    unlockAs:'Anotando como {N}', save:'Guardar', saved:'Guardado',
+    yourCode:'Tu c\u00f3digo', change:'Cambiar', send:'Enviar',
+    certify:'Certifico que estos son los puntos del acta oficial del juego.',
+    sOk:'Marcador reportado.', sCode:'Ese c\u00f3digo no sirve.',
+    sScore:'Los dos marcadores, n\u00fameros enteros.',
+    sCert:'Marca la casilla para certificar los puntos.',
+    sEarly:'Ese juego todav\u00eda no se ha jugado.',
+    sGen:'No entr\u00f3. Int\u00e9ntalo otra vez.',
+    pledgeFor:'Estás apoyando a', vsWord:'contra', atWord:'de visita contra',
+    pickRate:'Tu tarifa, por punto',
+    yourName:'Tu nombre',
+    yourEmail:'Tu correo',
+    capLabel:'Lo máximo que quieres pagar (opcional)',
+    estTitle:'Si anotan {N}, que es más o menos su promedio',
+    esPoints:'{N} puntos para el programa',
+    esFee:'Cargo de plataforma (20%)',
+    esPay:'Tú pagarías',
+    esNote:'El cargo se suma encima — el programa recibe completo lo que prometiste. No se cobra nada hasta que se juegue, y se te cobra por los puntos que de verdad anoten.',
+    minNote:'Mínimo $5 por promesa.',
+    send:'Prometer',
+    back:'← Volver al calendario',
+    thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
+    errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
+    errWho:'Tu nombre y tu correo, por favor.',
+    showPath:'Ver el camino a la final · {N} más',
+    hidePath:'Esconder el resto',
+    ifTheyWin:'Si ganan',
+    needsWin:'Se abre si le ganan a {O} el {D}.',
+    inPlay:'Promesas cerradas — el juego ya empezó.',
+    errStarted:'Ese juego ya empezó. Escoge otro.',
+    errClosed:'Ese juego ya no acepta promesas.',
+    errGen:'No se pudo registrar la promesa. Intenta otra vez.',
+    whoAsked:'¿Quién te invitó? (opcional)', nobody:'Nadie en particular',
+    notDonation:'Tu promesa es una contribución voluntaria al programa. No se gana ni se paga nada a cambio.',
+    feeNote:'El procesamiento del pago y el 20% de plataforma se añaden encima — el programa recibe tu promesa completa.'
   }
 };
 
-var lang = 'en';
-try { lang = localStorage.getItem('cfh_lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
-function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+var LANG='en';
+// El sitio guarda el idioma en cfh_lang; el tablero leía cp-lang y por eso
+// nunca heredaba el cambio. Se leen los dos, el del sitio primero.
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
-
-function toggleMenu(){
-  document.getElementById('burger').classList.toggle('open');
-  document.getElementById('menu').classList.toggle('open');
+function T(k,v){
+  var s = (S[LANG] && S[LANG][k]) || S.en[k] || '';
+  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
+  return s;
+}
+function toggleLang(){
+  LANG = LANG==='en' ? 'es' : 'en';
+  try{ localStorage.setItem('cp-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='en' ? 'ES':'EN';
+  draw();
 }
 
-function paint(){
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-t]').forEach(function(el){
-    var v = t(el.getAttribute('data-t'));
-    if (!v) return;
-    if (v.indexOf('<') !== -1) el.innerHTML = v; else el.textContent = v;
+var PARAMS = new URLSearchParams(location.search);
+var CAMPAIGN = PARAMS.get('c');
+var FROM_PLAYER = PARAMS.get('p') || null;     // su enlace propio
+// La campaña de demostración. Es un tablero normal en todo menos en
+// que lo de dentro está inventado — y hay que decirlo.
+var DEMOS = {
+  '8d0d1f66-29a8-4406-90f2-3c3cf9479d55': 'basket',
+  'd941a507-4588-45e1-9b52-9bfce5ef015d': 'voley'
+};
+var IS_DEMO  = !!DEMOS[CAMPAIGN];
+var DEMO_SPORT = DEMOS[CAMPAIGN] || null;
+
+var WANT_DIV = PARAMS.get('d') || null;        // escuadra pedida en el enlace
+// El anotador entra una sola vez, como al abrir el encabezado del
+// calendario en Basketween. Después cada juego es dos números y listo.
+var SCODE = null, SBY = null;
+try{ SCODE = localStorage.getItem('cp_code') || null;
+     SBY   = localStorage.getItem('cp_by')   || null; }catch(e){}
+function unlocked(){ return !!(SCODE && SBY); }
+
+var DIV_SET = false;
+var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
+var WANT_VS = PARAMS.get('vs') || null;        // y contra quién
+var JUMPED = false;
+var ROSTER = [];
+var BOARD = null, PICKED = null, RATE = 0.10;
+var app = document.getElementById('app');
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
   });
-  document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
-  buildLadder();
-  update();
 }
-function flip(){
-  lang = lang === 'en' ? 'es' : 'en';
-  try { localStorage.setItem('cfh_lang', lang); } catch(e){}
-  paint();
+function money(n){ return '$' + Number(n||0).toFixed(2); }
+
+
+// Cada cadena, seguida: el juego de partida y debajo todo lo que
+// cuelga de él, antes de pasar a la siguiente.
+
+
+// ══════════════════════════════════════════════════════
+//  El camino completo de una cadena se guarda plegado: el
+//  próximo juego se ve siempre, y lo que viene después está
+//  a un toque. Una cadena de cuatro rondas ocupaba media
+//  pantalla por escuadra.
+// ══════════════════════════════════════════════════════
+function moreRounds(btn, rootId){
+  var opening = !btn.classList.contains('open');
+  btn.classList.toggle('open', opening);
+
+  // Quién cuelga de quién, leído del propio tablero.
+  var cards = document.querySelectorAll('.game[data-id]');
+  var parent = {};
+  for (var i = 0; i < cards.length; i++){
+    parent[cards[i].dataset.id] = cards[i].dataset.chain || null;
+  }
+
+  function descends(id){
+    var up = parent[id], hops = 0;
+    while (up && hops < 8){
+      if (up === rootId) return true;
+      up = parent[up];
+      hops++;
+    }
+    return false;
+  }
+
+  for (var j = 0; j < cards.length; j++){
+    if (!cards[j].classList.contains('tucked')) continue;
+    if (descends(cards[j].dataset.id)) cards[j].classList.toggle('shown', opening);
+  }
+
+  btn.textContent = opening ? T('hidePath') : btn.dataset.label;
 }
 
-function money(n){
-  return '$' + (n >= 100 ? Math.round(n).toLocaleString() : n.toFixed(2));
+
+// ══════════════════════════════════════════════════════
+//  Las divisiones salen de la nota de cada juego: lo que
+//  hay antes del primer "·". Un programa con seis escuadras
+//  manda un enlace, y cada familia filtra la suya.
+// ══════════════════════════════════════════════════════
+var DIV = null;        // null = todas
+
+// Lo que queda de la nota después de la división, para no imprimir
+// "Mini 9-10 · Mini 9-10" cuando la nota es sólo la división.
+function notaExtra(g){
+  var n = String(g.note || '');
+  var i = n.indexOf('·');
+  return i === -1 ? '' : n.slice(i + 1).replace(/^\s+|\s+$/g, '');
 }
 
-// The first seven rounds, one at a time. The running total makes the
-// rule obvious without anyone having to explain it.
-function buildLadder(){
-  var rows = '';
-  for (var r = 1; r <= 7; r++){
-    rows += '<div class="lrow' + (r === 7 ? ' hi' : '') + '">' +
-      '<span class="rd">' + r + '</span>' +
-      '<span class="what">' + r + ' ' + t('thingsWord') + '</span>' +
-      '<span class="adds">+' + r + '</span>' +
-      '<span class="tot">' + pointsFor(r) + '</span>' +
+function divOf(g){
+  var n = String(g.note || '').split('·')[0].trim();
+  return n || null;
+}
+
+function divisions(games){
+  var seen = [], out = [];
+  games.forEach(function(g){
+    if (g.status === 'cancelled') return;      // no se enseña, no se filtra
+    var d = divOf(g);
+    if (d && seen.indexOf(d) === -1){ seen.push(d); out.push(d); }
+  });
+  return out;
+}
+
+function setDiv(d){
+  DIV = d || null;
+  draw();
+  try { var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); } catch(e){}
+}
+
+function divBar(games){
+  var ds = divisions(games);
+  if (ds.length < 2) return '';      // con una sola no hace falta filtrar
+
+  return '<div class="divs">' +
+    '<button class="dv' + (DIV === null ? ' on' : '') + '" onclick="setDiv(null)">' +
+      T('allDivs') + '</button>' +
+    ds.map(function(d){
+      return '<button class="dv' + (DIV === d ? ' on' : '') + '" ' +
+             'onclick="setDiv(' + JSON.stringify(d).replace(/"/g, '&quot;') + ')">' +
+             esc(d) + '</button>';
+    }).join('') +
+  '</div>';
+}
+
+function chainOrder(list){
+  var kids = {}, roots = [];
+
+  list.forEach(function(g){
+    if (g.unlocks_from && list.some(function(x){ return x.id === g.unlocks_from; })){
+      (kids[g.unlocks_from] = kids[g.unlocks_from] || []).push(g);
+    } else {
+      roots.push(g);
+    }
+  });
+
+  var out = [];
+  function walk(g, depth){
+    if (depth > 8) return;                      // por si dos se apuntan entre sí
+    out.push(g);
+    (kids[g.id] || []).forEach(function(k){ walk(k, depth + 1); });
+  }
+  roots.forEach(function(r){ walk(r, 0); });
+
+  // Por si algo quedó fuera, que no desaparezca.
+  list.forEach(function(g){ if (out.indexOf(g) === -1) out.push(g); });
+  return out;
+}
+
+function needDate(g){
+  if (!g.needs_win_on) return '';
+  var d = new Date(g.needs_win_on + 'T12:00:00');
+  return d.toLocaleDateString(LANG === 'es' ? 'es-PR' : 'en-US',
+    { weekday:'short', day:'numeric', month:'short' });
+}
+
+function when(g){
+  if (!g.plays_on) return '';
+  var d = new Date(g.plays_on + 'T12:00:00');
+  var s = d.toLocaleDateString(LANG==='es'?'es-PR':'en-US', { weekday:'short', day:'numeric', month:'short' });
+  return s + (g.tip_time ? ' · ' + esc(g.tip_time) : '');
+}
+
+function load(){
+  if (!CAMPAIGN){
+    app.innerHTML =
+      '<h1>' + T('noCampH') + '</h1>' +
+      '<p class="lede">' + T('noCampP') + '</p>' +
+      '<a class="readlink" href="programa.html">' +
+        '<b>' + T('howPaid') + '</b><span>' + T('howPaidP') + '</span>' +
+      '</a>' +
+      '<a class="readlink" href="index.html">' +
+        '<b>' + T('noCampGo') + '</b><span>' + T('noCampGoP') + '</span>' +
+      '</a>';
+    return;
+  }
+  Promise.all([
+    rpc('game_board', { p_campaign: CAMPAIGN }),
+    rpc('game_roster', { p_campaign: CAMPAIGN })
+  ])
+  .then(function(r){
+    BOARD = r[0];
+    ROSTER = r[1] || [];
+    draw();
+  })
+  .catch(function(e){ console.error(e); app.innerHTML = '<p style="color:var(--mute)">—</p>'; });
+}
+
+// Debajo del número: lo que un padrino necesita para decidir — cuánto
+// anota el equipo en un juego típico, y cuántos juegos le quedan por
+// prometer. Antes decía los juegos jugados, que es mirar atrás en una
+// página que vende lo que viene.
+function boardSub(abiertos){
+  var partes = [];
+  // Un solo juego no es un promedio: decir "54 por juego" con un juego
+  // jugado es repetir ese marcador y llamarlo tendencia. Desde dos.
+  if (BOARD.played >= 2) partes.push(T('perGame', { P: typicalPoints() }));
+  if (abiertos)          partes.push(T('toPledgeN', { N: abiertos }));
+  if (partes.length) return partes.join(' · ');
+  // Tablero recién abierto: que lo diga mirando adelante, no un cero más.
+  if (!BOARD.played) return T('notStarted');
+  return T(BOARD.played === 1 ? 'gamesPlayed1' : 'gamesPlayedN', { N: BOARD.played });
+}
+
+function unlockBar(){
+  if (unlocked()){
+    return '<div class="unl on">' +
+      '<span>' + T('unlockAs', { N: esc(SBY) }) + '</span>' +
+      '<button class="unlx" onclick="lockOut()">' + T('unlockOut') + '</button>' +
     '</div>';
   }
-  document.getElementById('ladder').innerHTML = rows;
+  return '<div class="unl" id="unl">' +
+    '<button class="unlb" onclick="openUnlock()">' + T('anotar') + '</button>' +
+    '<div class="unlf">' +
+      '<label>' + T('yourCode') +
+        '<input type="text" id="uc" autocomplete="off" spellcheck="false"></label>' +
+      '<label class="scert"><input type="checkbox" id="ucc">' +
+        '<span>' + T('certify') + '</span></label>' +
+      '<button class="btn small" onclick="doUnlock()">' + T('unlockGo') + '</button>' +
+      '<div class="smsg" id="um"></div>' +
+    '</div>' +
+  '</div>';
 }
 
-function update(){
-  var r = parseInt(document.getElementById('rounds').value, 10);
-  var rate = parseInt(document.getElementById('rate').value, 10) / 100;
-  var p = pointsFor(r);
-
-  document.getElementById('vRounds').textContent = r;
-  document.getElementById('vRate').textContent = rate.toFixed(2);
-  document.getElementById('oPoints').textContent = p;
-  document.getElementById('oOne').textContent = money(p * rate);
-  document.getElementById('oTen').textContent = money(p * rate * 10);
-
-  var next = r + 1;
-  document.getElementById('gainLine').innerHTML =
-    t('gain').split('{P}').join(next).split('{M}').join(money(next * rate));
+function openUnlock(){
+  var el = document.getElementById('unl');
+  if (el) el.className = 'unl open';
+  var i = document.getElementById('uc');
+  if (i) i.focus();
 }
 
-document.getElementById('rounds').addEventListener('input', update);
-document.getElementById('rate').addEventListener('input', update);
+function doUnlock(){
+  var i = document.getElementById('uc');
+  var c = document.getElementById('ucc');
+  var m = document.getElementById('um');
+  function say(t, cls){ if (m){ m.className = 'smsg ' + (cls||''); m.textContent = t; } }
+  var k = ((i && i.value) || '').replace(/^\s+|\s+$/g, '');
+  if (k.length < 4) return say(T('sCode'), 'bad');
+  // Se certifica al entrar, una vez, y vale para todo lo que reporte.
+  if (!(c && c.checked)) return say(T('sCert'), 'bad');
+  say('\u2026');
+  rpc('score_check', { p_campaign: CAMPAIGN, p_code: k })
+  .then(function(r){
+    if (!r || !r.ok) return say(T('sCode'), 'bad');
+    SCODE = k; SBY = r.by;
+    try{ localStorage.setItem('cp_code', k); localStorage.setItem('cp_by', r.by); }catch(e){}
+    load();
+  })
+  .catch(function(){ say(T('sGen'), 'bad'); });
+}
 
-paint();
+function lockOut(){
+  SCODE = null; SBY = null;
+  try{ localStorage.removeItem('cp_code'); localStorage.removeItem('cp_by'); }catch(e){}
+  load();
+}
+
+// Dentro de la tarjeta: dos números y Guardar. Ni código ni casilla —
+// eso ya se hizo al entrar.
+function scoreLine(g){
+  return '<div class="sline">' +
+    '<label>' + T('ours') + '<input type="number" min="0" inputmode="numeric" ' +
+      'id="o_' + g.id + '" value="' + (g.team_points != null ? g.team_points : '') + '" ' +
+      'onkeydown="if(event.key===\'Enter\')sendScore(\'' + g.id + '\')"></label>' +
+    '<label>' + T('theirs') + '<input type="number" min="0" inputmode="numeric" ' +
+      'id="t_' + g.id + '" value="' + (g.opp_points != null ? g.opp_points : '') + '" ' +
+      'onkeydown="if(event.key===\'Enter\')sendScore(\'' + g.id + '\')"></label>' +
+    '<button class="btn small" onclick="sendScore(\'' + g.id + '\')">' + T('save') + '</button>' +
+    '<div class="smsg" id="m_' + g.id + '"></div>' +
+  '</div>';
+}
+
+function sendScore(id){
+  var ours = document.getElementById('o_' + id);
+  var them = document.getElementById('t_' + id);
+  var msg  = document.getElementById('m_' + id);
+  function say(t, cls){ if (msg){ msg.className = 'smsg ' + (cls||''); msg.textContent = t; } }
+
+  var a = parseInt((ours && ours.value) || '', 10);
+  var b = parseInt((them && them.value) || '', 10);
+  // Los dos marcadores: el del contrario abre o cierra el juego que
+  // dependía de éste.
+  if (isNaN(a) || isNaN(b) || a < 0 || b < 0) return say(T('sScore'), 'bad');
+
+  say('\u2026');
+  rpc('report_score', {
+    p_campaign: CAMPAIGN, p_code: SCODE, p_game: id, p_team: a, p_opp: b
+  })
+  .then(function(r){
+    if (!r || !r.ok){
+      var why = r && r.reason;
+      if (why === 'code'){ lockOut(); return; }   // le quitaron el código
+      if (why === 'score') return say(T('sScore'), 'bad');
+      if (why === 'early') return say(T('sEarly'), 'bad');
+      return say(T('sGen'), 'bad');
+    }
+    say(T('saved'), 'ok');
+    // Avisar que hay un juego listo para cobrar. El servidor decide si
+    // hace falta: si no quedan promesas abiertas, no manda nada. Se va
+    // sin esperar respuesta — el marcador ya quedó guardado y el correo
+    // no es asunto de quien anota.
+    try{
+      fetch(PAY_API + '/score-posted', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ game_id: id })
+      }).catch(function(){});
+    }catch(e){}
+    setTimeout(load, 900);
+  })
+  .catch(function(){ say(T('sGen'), 'bad'); });
+}
+
+// ¿Se puede anotar este juego? 'started' lo calcula el servidor y exige
+// hora de saque. Un juego sin hora nunca la tiene, así que quedaba sin
+// casillas aunque la función sí lo aceptara. Sin hora manda la fecha.
+function yaSeJugo(g){
+  if (g.status === 'played') return true;
+  if (g.started) return true;
+  if (g.tips_at) return false;                 // tiene hora y no ha llegado
+  if (!g.plays_on) return false;
+  var h = new Date();
+  var hoy = h.getFullYear() + '-' +
+            ('0' + (h.getMonth() + 1)).slice(-2) + '-' +
+            ('0' + h.getDate()).slice(-2);
+  return String(g.plays_on).slice(0, 10) <= hoy;
+}
+
+function gameCard(g, isNext, hidden){
+  var played = g.status === 'played';
+  var locked = g.status === 'conditional';
+  var started = !played && !locked && g.started;
+  var won = played && g.opp_points != null && g.team_points > g.opp_points;
+
+  return '<div class="game ' + (isNext ? 'next' : '') + (played ? ' played' : '') +
+         (locked ? ' locked' : '') + (g._depth ? ' d' + g._depth : '') +
+         (hidden ? ' tucked' : '') + '"' +
+         ' data-id="' + g.id + '" data-chain="' + (g.unlocks_from || '') + '">' +
+    // Datos a la izquierda, acción a la derecha, en una sola fila. La
+    // tarjeta alta se comía la pantalla: con diez juegos había que
+    // desplazarse media página para ver los que quedan por prometer.
+    '<div class="row">' +
+      '<div class="rl">' +
+        '<div class="opp">' +
+          (isNext ? '<i class="dot" aria-hidden="true"></i>' : '') +
+          (g.home ? '' : '@ ') + esc(g.opponent) +
+        '</div>' +
+        '<div class="rsub">' + when(g) +
+          (divOf(g) ? ' · <span class="dtag">' + esc(divOf(g)) + '</span>' : '') +
+          (!played && g.pledges > 0
+            ? ' · ' + T(g.pledges === 1 ? 'pledged' : 'pledgedN', { N: g.pledges }) : '') +
+          (notaExtra(g) ? ' · ' + esc(notaExtra(g)) : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="rr">' +
+        (played
+          ? '<div class="sb' + (won ? ' won' : '') + '">' +
+              '<div class="sb-n">' + g.team_points +
+                (g.opp_points != null ? '<span class="sb-o">–' + g.opp_points + '</span>' : '') +
+              '</div>' +
+              '<div class="sb-c">' + T('pointsWord') + '</div>' +
+            '</div>'
+          : locked
+            ? '<button class="btn small dead" disabled>' + T('pledgeOn') + '</button>'
+            : started
+              ? '<div class="shut">' + T('inPlay') + '</div>'
+              : '<button class="btn small" onclick="pick(\'' + g.id + '\')">' +
+                  T('pledgeOn') + '</button>') +
+      '</div>' +
+    '</div>' +
+    // Sólo para quien trae la llave: los dos marcadores, quién los reporta,
+    // y la certificación. Un juego ya anotado llega plegado — se corrige
+    // apretando "Cambiar" — y el que se jugó y no tiene marcador llega
+    // abierto, porque es lo que hace falta hacer.
+    (unlocked() && !locked && yaSeJugo(g) ? scoreLine(g) : '') +
+
+    // El juego de cuadro necesita su explicación, y eso no cabe en la fila.
+    (locked
+      ? '<div class="need">' + T('needsWin', { O: esc(g.needs_win_vs || ''), D: needDate(g) }) + '</div>'
+      : '') +
+
+    // El camino que sigue, si lo hay y si no se está mostrando ya.
+    (g._rounds > 0 && g._depth === 0
+      ? '<button class="more" data-label="' + esc(T('showPath', { N: g._rounds })) + '" ' +
+          'onclick="moreRounds(this,\'' + g.id + '\')">' +
+          T('showPath', { N: g._rounds }) +
+        '</button>'
+      : '') +
+  '</div>';
+}
+
+function draw(){
+  if (!BOARD) return;
+
+  // Si vinieron desde el calendario del torneo pidiendo un juego, se
+  // abre ése directamente. Una sola vez: después se navega normal.
+  if (!JUMPED && WANT_ON && WANT_VS && !PICKED){
+    JUMPED = true;
+    var hit = (BOARD.games || []).filter(function(g){
+      return g.status === 'scheduled' && !g.started &&
+             g.plays_on === WANT_ON &&
+             String(g.opponent || '').trim().toLowerCase() ===
+               WANT_VS.trim().toLowerCase();
+    })[0];
+    if (hit){ PICKED = hit; }
+  }
+
+  if (PICKED) return drawPledge();
+
+  var games = BOARD.games || [];
+  // Un enlace de jugador trae su escuadra. Sólo se aplica si existe
+  // de verdad en el calendario — si el jugador la escribió distinta,
+  // mejor enseñarlo todo que una página vacía.
+  if (!DIV_SET){
+    DIV_SET = true;
+    if (WANT_DIV){
+      var match = divisions(games).filter(function(d){
+        return d.toLowerCase() === WANT_DIV.trim().toLowerCase();
+      })[0];
+      if (match) DIV = match;
+    }
+  }
+
+  var shown = DIV
+    ? games.filter(function(g){ return divOf(g) === DIV; })
+    : games;
+
+  var upcoming = shown.filter(function(g){
+    return g.status === 'scheduled' || g.status === 'conditional';
+  });
+
+  // Un juego del cuadro tiene que ir justo debajo del que depende, no
+  // al final por su fecha — si no, la línea que los une apunta a otro
+  // juego y no se entiende nada.
+  upcoming = chainOrder(upcoming);
+  var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
+  var results  = shown.filter(function(g){ return g.status === 'played'; }).reverse();
+
+  // Qué tan adentro del cuadro está cada juego, para indentarlo.
+  var byId = {};
+  games.forEach(function(g){ byId[g.id] = g; });
+  function depth(g, seen){
+    seen = seen || {};
+    if (!g.unlocks_from || seen[g.id]) return 0;
+    seen[g.id] = 1;
+    var parent = byId[g.unlocks_from];
+    return parent ? 1 + depth(parent, seen) : 1;
+  }
+  games.forEach(function(g){ g._depth = Math.min(depth(g), 4); });
+
+  // Cuántas rondas más hay colgando de cada juego, para poder decirlo
+  // en el botón que las abre.
+  var kidsOf = {};
+  games.forEach(function(g){
+    if (g.unlocks_from) (kidsOf[g.unlocks_from] = kidsOf[g.unlocks_from] || []).push(g);
+  });
+  function rounds(id, d){
+    d = d || 0;
+    if (d > 8) return 0;
+    var k = kidsOf[id] || [];
+    return k.reduce(function(n, c){ return n + 1 + rounds(c.id, d + 1); }, 0);
+  }
+  games.forEach(function(g){ g._rounds = rounds(g.id); });
+
+  app.innerHTML =
+    (BOARD.logo
+      ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" ' +
+        'onerror="this.style.display=\'none\'">'
+      : '') +
+    '<h1' + (BOARD.logo ? ' class="withcrest"' : '') + '>' + esc(BOARD.campaign || '') + '</h1>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+
+    '<div class="total">' +
+      '<div class="cap">' + T('pointsCap') + '</div>' +
+      '<div class="big">' + (BOARD.points || 0) + '</div>' +
+      '<div class="sub">' + boardSub(open.length) + '</div>' +
+    '</div>' +
+
+    unlockBar() +
+
+    (IS_DEMO
+      ? '<div class="demo">' +
+          '<b>' + T('demoH') + '</b>' +
+          '<span>' + T('demoP') + '</span>' +
+        '</div>'
+      : '') +
+
+    divBar(games) +
+
+    (DIV && !upcoming.length && !results.length
+      ? '<p style="color:var(--mute)">' + T('noneHere') + '</p>'
+      : '') +
+
+    (upcoming.length
+      ? '<h2>' + (open.length ? T('toPledge') : T('next')) + '</h2>' +
+        upcoming.map(function(g){
+          var hidden = g._depth > 0;        // cualquier juego del cuadro va plegado
+          return gameCard(g, g === open[0], hidden);
+        }).join('')
+      : '<p style="color:var(--mute)">' + T('noGames') + '</p>') +
+
+    (results.length
+      ? '<h2>' + T('results') + '</h2>' + results.map(function(g){ return gameCard(g, false); }).join('')
+      : '') +
+
+    // Para un jugador que llega aquí: su propio enlace está a un toque.
+    // Para el jugador: lo que tiene que hacer, con su botón.
+    '<div class="playcard">' +
+      '<div class="pc-kick">' + T('iPlayKick') + '</div>' +
+      '<b class="pc-h">' + T('iPlay') + '</b>' +
+      '<p class="pc-p">' + T('iPlayP') + '</p>' +
+      '<a class="pc-go" href="jugador.html?c=' + CAMPAIGN +
+        (DIV ? '&d=' + encodeURIComponent(DIV) : '') + '">' + T('iPlayGo') + '</a>' +
+    '</div>' +
+
+    // Y lo otro es para leer, no para hacer.
+    '<a class="readlink" href="programa.html?c=' + CAMPAIGN + '">' +
+      '<b>' + T('howPaid') + '</b><span>' + T('howPaidP') + '</span>' +
+    '</a>';
+}
+
+function pick(id){
+  PICKED = (BOARD.games || []).filter(function(g){ return g.id === id; })[0] || null;
+  RATE = 0.10;
+  draw();
+  try { var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); } catch(e){}
+}
+
+function setRate(r){
+  RATE = r;
+  var est = document.getElementById('estLine');
+  if (est) est.innerHTML = estimate(r);
+  var btns = document.querySelectorAll('.rate');
+  for (var i = 0; i < btns.length; i++){
+    btns[i].className = 'rate' + (Number(btns[i].dataset.r) === r ? ' on' : '');
+  }
+}
+
+
+// Lo que suele anotar este equipo. Si todavía no ha jugado, 60 sirve
+// de ejemplo — pero en cuanto hay marcadores, se usan los suyos.
+function typicalPoints(){
+  var played = (BOARD.games || []).filter(function(g){
+    return g.status === 'played' && g.team_points != null;
+  });
+  if (!played.length) return 60;
+  var sum = played.reduce(function(n, g){ return n + Number(g.team_points || 0); }, 0);
+  return Math.round(sum / played.length);
+}
+
+// El desglose: lo que recibe el programa, el cargo, y lo que paga
+// el padrino. Tres líneas, antes de prometer nada.
+function estimate(rate){
+  var pts  = typicalPoints();
+  var team = rate * pts;
+  var fee  = team * 0.20;
+
+  return '<span class="es-l"><span>' + T('esPoints', { N: pts }) + '</span>' +
+           '<b>' + money(team) + '</b></span>' +
+         '<span class="es-l"><span>' + T('esFee') + '</span>' +
+           '<span>+' + money(fee) + '</span></span>' +
+         '<span class="es-l es-tot"><b>' + T('esPay') + '</b>' +
+           '<b>' + money(team + fee) + '</b></span>' +
+         '<span class="es-note">' + T('esNote') + '</span>';
+}
+
+function drawPledge(){
+  var g = PICKED;
+  var team = esc(BOARD.campaign || '');
+
+  app.innerHTML =
+    (BOARD.logo
+      ? '<img class="crest" src="' + esc(BOARD.logo) + '" alt="" ' +
+        'onerror="this.style.display=\'none\'">'
+      : '') +
+
+    '<div class="forwho">' + T('pledgeFor') + '</div>' +
+    '<h1 class="whoteam">' + team + '</h1>' +
+
+    '<div class="fixture">' +
+      '<span class="fx-vs">' + (g.home ? T('vsWord') : T('atWord')) + '</span> ' +
+      '<b>' + esc(g.opponent) + '</b>' +
+      '<span class="fx-when">' + when(g) + (g.note ? ' · ' + esc(g.note) : '') + '</span>' +
+    '</div>' +
+
+    '<label>' + T('pickRate') + '</label>' +
+    '<div class="rates">' +
+      [[0.10,'10¢'],[0.25,'25¢'],[0.50,'50¢'],[1.00,'$1']].map(function(r){
+        return '<button class="rate' + (r[0] === RATE ? ' on' : '') + '" data-r="' + r[0] + '" ' +
+               'onclick="setRate(' + r[0] + ')">' + r[1] +
+               '<small>' + money(r[0] * typicalPoints() * 1.20) + '</small></button>';
+      }).join('') +
+    '</div>' +
+
+    '<div class="est">' +
+      '<b>' + T('estTitle', { N: typicalPoints() }) + '</b>' +
+      '<span id="estLine">' + estimate(RATE) + '</span>' +
+    '</div>' +
+
+    '<label for="pn">' + T('yourName') + '</label>' +
+    '<input id="pn" type="text" maxlength="60" autocomplete="name">' +
+    '<label for="pe">' + T('yourEmail') + '</label>' +
+    '<input id="pe" type="email" maxlength="80" autocomplete="email">' +
+    '<label for="pc">' + T('capLabel') + '</label>' +
+    '<input id="pc" type="number" step="1" min="5" placeholder="—">' +
+
+    (ROSTER.length
+      ? '<label for="pp">' + T('whoAsked') + '</label>' +
+        '<select id="pp">' +
+          '<option value="">' + T('nobody') + '</option>' +
+          ROSTER.map(function(pl){
+            return '<option value="' + pl.id + '"' +
+                   (pl.id === FROM_PLAYER ? ' selected' : '') + '>' + esc(pl.name) + '</option>';
+          }).join('') +
+        '</select>'
+      : '') +
+
+    '<button class="btn" onclick="send()">' + T('send') + '</button>' +
+    '<p class="msg" id="msg"></p>' +
+    '<p class="fine">' + T('minNote') + ' ' + T('feeNote') + '</p>' +
+    '<p class="fine">' + T('notDonation') + '</p>' +
+    '<button class="btn line" onclick="PICKED=null;draw()">' + T('back') + '</button>';
+}
+
+function say(t, c){
+  var el = document.getElementById('msg');
+  if (el){ el.textContent = t; el.className = 'msg ' + (c || ''); }
+}
+
+function send(){
+  var name = (document.getElementById('pn').value || '').trim();
+  var email = (document.getElementById('pe').value || '').trim();
+  var capEl = document.getElementById('pc').value;
+  var cap = capEl ? Number(capEl) : null;
+  var ppEl = document.getElementById('pp');
+  var player = ppEl && ppEl.value ? ppEl.value : null;
+
+  if (!name || !email || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
+
+  say('…');
+  rpc('pledge_game', {
+    p_game: PICKED.id, p_name: name, p_email: email, p_rate: RATE,
+    p_cap: cap, p_player: player
+  })
+  .then(function(r){
+    if (!r || !r.ok){
+      if (r && r.reason === 'min')    return say(T('errMin'), 'bad');
+      if (r && r.reason === 'closed')  return say(T('errClosed'), 'bad');
+      if (r && r.reason === 'started') return say(T('errStarted'), 'bad');
+      if (r && r.reason === 'who')    return say(T('errWho'), 'bad');
+      return say(T('errGen'), 'bad');
+    }
+    say(T('thanks'), 'ok');
+    setTimeout(function(){ PICKED = null; load(); }, 2200);
+  })
+  .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+document.getElementById('langBtn').textContent = LANG === 'en' ? 'ES' : 'EN';
+load();
 </script>
 </body>
 </html>
