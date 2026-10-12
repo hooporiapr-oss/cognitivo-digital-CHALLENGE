@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hoja del entrenador — Cada Punto</title>
+<!-- Esta página lleva códigos escritos a mano antes de imprimir. No
+     tiene por qué salir en una búsqueda. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Una hoja por entrenador: su código, los tres pasos, y cuándo se le paga al programa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;--good:#0B7A5A}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(760px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto}
+main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 22px}
+
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
+input{width:100%;padding:12px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1rem}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
+
+/* Una fila por entrenador. En el teléfono se apilan. */
+.row{display:grid;grid-template-columns:1.1fr 1fr 1.4fr auto;gap:8px;align-items:end;
+  padding:10px 0;border-bottom:1px solid var(--line)}
+.row label{margin:0 0 4px}
+.row .x{border:2px solid var(--line);background:#fff;color:var(--mute);border-radius:4px;
+  padding:11px 13px;font:inherit;font-weight:800;cursor:pointer;line-height:1}
+.row .x:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:700px){
+  .row{grid-template-columns:1fr auto;gap:8px 10px}
+  .row .f-code,.row .f-link{grid-column:1/2}
+  .row .x{grid-row:1/2;grid-column:2/3}
+}
+
+.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
+.btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
+  font-size:.88rem;font-weight:400;color:var(--mute)}
+.ok span{cursor:pointer}
+.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+
+.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
+.fine b{display:block;margin-bottom:3px}
+.fine p{margin:0;color:var(--mute);font-size:.93rem}
+
+/* ---- las hojas ---- */
+#sheets{margin-top:26px}
+.sheet{border:1.5px solid var(--line);border-radius:6px;padding:26px 28px;margin:0 0 18px}
+.sheet .top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:18px}
+.sheet .logo{font-weight:900;font-size:.95rem}
+.sheet .logo em{font-style:normal;color:#C85A00}
+.sheet .logo i{font-style:normal;color:#2E8B10}
+.sheet .prog{font-size:.84rem;color:var(--mute);text-align:right}
+.sheet .div{font-size:1.9rem;font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:0}
+.sheet .sub{color:var(--mute);margin:3px 0 18px;font-size:.92rem}
+
+.code{border:2px solid var(--ink);border-radius:5px;padding:12px 15px;margin:0 0 20px;
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.code b{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.code .v{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  font-size:1.5rem;font-weight:700;letter-spacing:.04em;word-break:break-all}
+.code .blank{flex:1 1 180px;border-bottom:2px solid var(--ink);min-height:1.6rem}
+
+.steps{counter-reset:s;margin:0 0 18px;padding:0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:0 0 13px 34px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;
+  width:23px;height:23px;border-radius:50%;background:var(--ink);color:#fff;
+  font-size:.78rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.steps b{display:block;font-size:1rem}
+.steps .lnk{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  font-size:.86rem;color:var(--accent);word-break:break-all;display:block;margin:1px 0}
+.steps span{color:var(--mute);font-size:.92rem;display:block}
+
+.once{border:1.5px solid var(--good);border-radius:5px;padding:13px 15px;margin:0 0 16px}
+.once b{display:block;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--good);margin-bottom:4px}
+.once .lnk{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  font-size:.9rem;color:var(--accent);word-break:break-all}
+.once span{color:var(--mute);font-size:.92rem;display:block;margin-top:2px}
+
+.money{border-top:1.5px solid var(--line);padding-top:13px;font-size:.88rem;color:var(--mute)}
+.money b{color:var(--ink)}
+.money p{margin:0 0 5px}
+.money .mail{margin-top:9px;font-size:.84rem}
+
+/* ---- impresión: una hoja por entrenador, nada de la pantalla ---- */
+@media print{
+  @page{size:letter;margin:14mm}
+  html,body{background:#fff}
+  header,main .setup,footer,.btn,.no-print{display:none !important}
+  main .wrap,.wrap{width:100%;max-width:none;padding:0}
+  #sheets{margin:0}
+  .sheet{border:none;border-radius:0;padding:0;margin:0;
+    break-after:page;page-break-after:always}
+  .sheet:last-child{break-after:auto;page-break-after:auto}
+  .steps li,.code,.once,.money{break-inside:avoid;page-break-inside:avoid}
+  a{color:var(--accent);text-decoration:none}
+}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
+  margin-left:auto;margin-right:auto}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="setup" id="setup"></div>
+    <div id="sheets"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p class="f-what" id="fWhat"></p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var S = {
+  es:{
+    kick:'Hoja del entrenador',
+    h1:'Una hoja para cada uno.',
+    lede:'Llena los nombres, imprime, y cada entrenador se va con la suya. Sale una página por entrenador.',
+    progL:'Nombre del programa', progPh:'Canóvanas Basketball Inc.',
+    rowsH:'Los entrenadores',
+    divL:'División o equipo', divPh:'Infantil',
+    codeL:'Su código', codePh:'Déjalo en blanco para escribirlo a mano',
+    linkL:'Enlace de su tablero', linkPh:'cadapunto.com/scoreboard.html?c=…',
+    add:'Añadir otro',
+    rm:'Quitar',
+    blank:'Imprimir los códigos en la hoja. Si lo dejas sin marcar, sale una raya y lo escribes a mano al entregarla.',
+    print:'Imprimir',
+    fineH:'Un consejo',
+    fineP:'Escribir el código a mano al entregar la hoja es más seguro que imprimirlo: una hoja impresa se queda en una mesa, se le saca foto, se pasa. El código abre el calendario del equipo y dice a dónde va su dinero. Entrégalo en mano, a quien es.',
+
+    sTag:'Tu código',
+    s1b:'Pon tu calendario.',
+    s1:'Entra con tu código y pon todos tus juegos de una vez. Desde el teléfono, en un par de minutos.',
+    s2b:'Comparte tu tablero.',
+    s2:'Mándalo por WhatsApp a las familias, vecinos, el negocio de la esquina. Cada uno promete unos centavos por punto.',
+    s2blank:'Te lo damos cuando abramos tu campaña.',
+    s3b:'Pon el marcador cuando acabe el juego.',
+    s3:'En el mismo tablero. Eso cierra el juego y saca lo que debe cada padrino. Anotan 68 con diez padrinos a diez centavos, y hay $68 listos para cobrar.',
+    onceB:'Una vez, al principio',
+    once:'Dinos a dónde pagarle a tu programa — con el mismo código. Es la cuenta ATH Móvil Business de la organización.',
+    mUno:'Te remitimos el <b>día 1</b> y el <b>día 15</b> de cada mes, por lo cobrado hasta ese día.',
+    mDos:'El programa recibe el <b>100%</b> de lo prometido. Nuestro 20% se le añade al pago del padrino, nunca se saca de lo tuyo.',
+    mTres:'Nada por adelantado y nada mensual.',
+    mMail:'Dudas: gostardigital@gmail.com'
+  },
+  en:{
+    kick:'Coach sheet',
+    h1:'One sheet each.',
+    lede:'Fill in the names, print, and every coach leaves with their own. One page per coach.',
+    progL:'Program name', progPh:'Canóvanas Basketball Inc.',
+    rowsH:'The coaches',
+    divL:'Division or team', divPh:'Infantil',
+    codeL:'Their code', codePh:'Leave blank to write it in by hand',
+    linkL:'Their board link', linkPh:'cadapunto.com/scoreboard.html?c=…',
+    add:'Add another',
+    rm:'Remove',
+    blank:'Print the codes on the sheet. Left unticked, a blank line prints and you write it in as you hand it over.',
+    print:'Print',
+    fineH:'One suggestion',
+    fineP:'Writing the code in by hand as you hand the sheet over is safer than printing it: a printed sheet gets left on a table, photographed, passed along. The code opens the team’s schedule and says where their money goes. Hand it to the right person yourself.',
+
+    sTag:'Your code',
+    s1b:'Post your schedule.',
+    s1:'Sign in with your code and post all your games in one go. From your phone, in a couple of minutes.',
+    s2b:'Share your board.',
+    s2:'Send it on WhatsApp to families, neighbours, the business down the road. Each one pledges a few cents per point.',
+    s2blank:'We give you this when we open your campaign.',
+    s3b:'Enter the score when the game ends.',
+    s3:'On the same board. That closes the game and works out what every padrino owes. Score 68 with ten padrinos at a dime, and $68 is ready to collect.',
+    onceB:'Once, at the start',
+    once:'Tell us where to pay your program — with the same code. It is the organization’s ATH Móvil Business account.',
+    mUno:'We remit on the <b>1st</b> and the <b>15th</b> of each month, for whatever was collected up to that day.',
+    mDos:'The program receives <b>100%</b> of what was pledged. Our 20% is added to the padrino’s payment, never taken out of yours.',
+    mTres:'Nothing up front and nothing monthly.',
+    mMail:'Questions: gostardigital@gmail.com'
+  }
+};
+
+var LANG='es';
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function T(k){ return (S[LANG] && S[LANG][k]) || S.es[k] || ''; }
+
+function toggleLang(){
+  read();
+  LANG = LANG==='es' ? 'en':'es';
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+  paintWhat();
+  drawSetup(); drawSheets();
+}
+
+/* Las cinco divisiones de Canóvanas, que son las del jueves. Se
+   cambian escribiendo encima. */
+var PROG = '';
+var ROWS = [
+  { div:'Infantil', code:'', link:'' },
+  { div:'Mini',     code:'', link:'' },
+  { div:'Juvenil',  code:'', link:'' },
+  { div:'Junior A', code:'', link:'' },
+  { div:'Junior B', code:'', link:'' }
+];
+var SHOWCODE = false;
+
+/* El programa y las divisiones se recuerdan; los códigos y los
+   enlaces NO. Un código guardado en el navegador es un código que
+   sobrevive a quien lo escribió. */
+try{
+  var raw = localStorage.getItem('cp-hoja');
+  if (raw){
+    var v = JSON.parse(raw);
+    if (v && typeof v.prog === 'string') PROG = v.prog;
+    if (v && Array.isArray(v.divs) && v.divs.length)
+      ROWS = v.divs.map(function(d){ return { div:String(d||''), code:'', link:'' }; });
+  }
+}catch(e){}
+
+function save(){
+  try{
+    localStorage.setItem('cp-hoja', JSON.stringify({
+      prog: PROG, divs: ROWS.map(function(r){ return r.div; })
+    }));
+  }catch(e){}
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+
+function paintWhat(){
+  var el = document.getElementById('fWhat');
+  if (el) el.textContent = (LANG === 'es')
+    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
+}
+
+/* Lo que está escrito en pantalla, de vuelta al modelo. */
+function read(){
+  var p = document.getElementById('pg');
+  if (p) PROG = p.value;
+  ROWS.forEach(function(r, i){
+    var d = document.getElementById('d' + i);
+    var c = document.getElementById('c' + i);
+    var l = document.getElementById('l' + i);
+    if (d) r.div  = d.value;
+    if (c) r.code = c.value;
+    if (l) r.link = l.value;
+  });
+  var s = document.getElementById('sc');
+  if (s) SHOWCODE = s.checked;
+  save();
+}
+
+function sync(){ read(); drawSheets(); }
+
+function addRow(){ read(); ROWS.push({ div:'', code:'', link:'' }); drawSetup(); drawSheets(); }
+function rmRow(i){ read(); ROWS.splice(i, 1); if (!ROWS.length) ROWS.push({ div:'', code:'', link:'' }); drawSetup(); drawSheets(); }
+
+function drawSetup(){
+  var rows = ROWS.map(function(r, i){
+    return '<div class="row">' +
+      '<div><label for="d' + i + '">' + T('divL') + '</label>' +
+        '<input id="d' + i + '" type="text" maxlength="40" value="' + esc(r.div) + '" ' +
+        'placeholder="' + T('divPh') + '" autocapitalize="words" oninput="sync()"></div>' +
+      '<div class="f-code"><label for="c' + i + '">' + T('codeL') + '</label>' +
+        '<input id="c' + i + '" type="text" maxlength="40" value="' + esc(r.code) + '" ' +
+        'placeholder="' + T('codePh') + '" autocapitalize="off" autocorrect="off" ' +
+        'spellcheck="false" oninput="sync()"></div>' +
+      '<div class="f-link"><label for="l' + i + '">' + T('linkL') + '</label>' +
+        '<input id="l' + i + '" type="text" maxlength="200" value="' + esc(r.link) + '" ' +
+        'placeholder="' + T('linkPh') + '" autocapitalize="off" autocorrect="off" ' +
+        'spellcheck="false" oninput="sync()"></div>' +
+      '<button class="x" onclick="rmRow(' + i + ')" title="' + T('rm') + '">×</button>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('setup').innerHTML =
+    '<div class="kick">' + T('kick') + '</div>' +
+    '<h1>' + T('h1') + '</h1>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+    '<label for="pg">' + T('progL') + '</label>' +
+    '<input id="pg" type="text" maxlength="70" value="' + esc(PROG) + '" ' +
+      'placeholder="' + T('progPh') + '" autocapitalize="words" oninput="sync()">' +
+    '<h2 style="font-size:1.02rem;margin:26px 0 2px;font-weight:900;letter-spacing:-.02em;">' +
+      T('rowsH') + '</h2>' +
+    rows +
+    '<button class="btn line" onclick="addRow()">' + T('add') + '</button>' +
+    '<div class="ok">' +
+      '<input id="sc" type="checkbox"' + (SHOWCODE ? ' checked' : '') + ' onchange="sync()">' +
+      '<span onclick="document.getElementById(\'sc\').click()">' + T('blank') + '</span>' +
+    '</div>' +
+    '<button class="btn" onclick="window.print()">' + T('print') + '</button>' +
+    '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
+}
+
+function drawSheets(){
+  document.getElementById('sheets').innerHTML = ROWS.map(function(r){
+    var codeBox = (SHOWCODE && r.code.trim())
+      ? '<span class="v">' + esc(r.code.trim()) + '</span>'
+      : '<span class="blank"></span>';
+
+    var board = r.link.trim()
+      ? '<span class="lnk">' + esc(r.link.trim()) + '</span>'
+      : '<span class="lnk">' + T('s2blank') + '</span>';
+
+    return '<div class="sheet">' +
+      '<div class="top">' +
+        '<span class="logo">cada <em>punto</em> <i>cuenta</i></span>' +
+        '<span class="prog">' + esc(PROG) + '</span>' +
+      '</div>' +
+      '<p class="div">' + esc(r.div) + '</p>' +
+      '<p class="sub">' + esc(PROG) + '</p>' +
+
+      '<div class="code"><b>' + T('sTag') + '</b>' + codeBox + '</div>' +
+
+      '<ol class="steps">' +
+        '<li><b>' + T('s1b') + '</b>' +
+          '<span class="lnk">cadapunto.com/calendario.html</span>' +
+          '<span>' + T('s1') + '</span></li>' +
+        '<li><b>' + T('s2b') + '</b>' + board +
+          '<span>' + T('s2') + '</span></li>' +
+        '<li><b>' + T('s3b') + '</b>' +
+          '<span>' + T('s3') + '</span></li>' +
+      '</ol>' +
+
+      '<div class="once"><b>' + T('onceB') + '</b>' +
+        '<span class="lnk">cadapunto.com/cobro.html</span>' +
+        '<span>' + T('once') + '</span></div>' +
+
+      '<div class="money">' +
+        '<p>' + T('mUno') + '</p>' +
+        '<p>' + T('mDos') + '</p>' +
+        '<p>' + T('mTres') + '</p>' +
+        '<p class="mail">' + T('mMail') + '</p>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+paintWhat();
+drawSetup();
+drawSheets();
+</script>
+</body>
+</html>
