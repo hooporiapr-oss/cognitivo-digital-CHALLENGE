@@ -181,6 +181,8 @@ var S = {
     phoneL:'Tu teléfono (opcional)', phonePh:'787…',
     terms:'He leído y acepto los <a href="terms.html" target="_blank">Términos de Uso</a> y la <a href="privacy.html" target="_blank">Política de Privacidad</a>.',
     errTerms:'Tienes que aceptar los términos para seguir.',
+    custody:'He leído <a href="custodia.html" target="_blank">cómo se maneja el dinero</a>: lo que pagan los padrinos lo cobra Gostar Digital LLC y se le remite al programa el día 1 y el día 15 de cada mes.',
+    errCustody:'Tienes que aceptar cómo se maneja el dinero para seguir.',
     go:'Inscribir mi equipo',
     errTeam:'Escribe el nombre del equipo.',
     errProg:'Escribe el nombre del programa.',
@@ -213,6 +215,8 @@ var S = {
     phoneL:'Your phone (optional)', phonePh:'787…',
     terms:'I have read and accept the <a href="terms.html" target="_blank">Terms of Use</a> and the <a href="privacy.html" target="_blank">Privacy Policy</a>.',
     errTerms:'You have to accept the terms to continue.',
+    custody:'I have read <a href="custodia.html" target="_blank">how the money is handled</a>: what padrinos pay is collected by Gostar Digital LLC and remitted to the program on the 1st and the 15th of each month.',
+    errCustody:'You have to accept how the money is handled to continue.',
     go:'Sign up my team',
     errTeam:'Write the team name.',
     errProg:'Write the program name.',
@@ -297,6 +301,10 @@ function draw(){
       'autocomplete="tel" enterkeyhint="done">' +
 
     '<div class="ok">' +
+      '<input id="cu" type="checkbox">' +
+      '<span onclick="document.getElementById(\'cu\').click()">' + T('custody') + '</span>' +
+    '</div>' +
+    '<div class="ok">' +
       '<input id="tc" type="checkbox">' +
       '<span onclick="document.getElementById(\'tc\').click()">' + T('terms') + '</span>' +
     '</div>' +
@@ -322,13 +330,16 @@ function send(){
   if (!prog) return say(T('errProg'), 'bad');
   if (!name || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
 
+  var cu = document.getElementById('cu');
+  if (!cu || !cu.checked) return say(T('errCustody'), 'bad');
+
   var ok = document.getElementById('tc');
   if (!ok || !ok.checked) return say(T('errTerms'), 'bad');
 
   say('…');
   rpc('bw_request_team', {
     p_team: team, p_program: prog, p_name: name, p_email: email,
-    p_phone: phone, p_terms: true
+    p_phone: phone, p_terms: true, p_custody: true
   })
   .then(function(r){
     if (!r || !r.ok){
