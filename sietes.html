@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sietes — Reglas Oficiales — Cada Punto</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:url" content="https://cadapunto.com/sietes.html">
+<meta property="og:title" content="Sietes — Reglas Oficiales">
+<meta property="og:description" content="Baloncesto por sets: cada set a siete puntos, gana el que gane tres. Todas las canastas cuentan y los dos equipos recaudan.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
+<meta property="og:locale" content="es_PR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sietes — Reglas Oficiales">
+<meta name="twitter:description" content="Baloncesto por sets: cada set a siete puntos, gana el que gane tres. Todas las canastas cuentan y los dos equipos recaudan.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta name="description" content="Baloncesto por sets: cada set a siete puntos, gana el que gane tres. Todas las canastas cuentan y los dos equipos recaudan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --good:#0B7A5A;--bad:#A8323F}
+*{box-sizing:border-box}
+html{background:#12202E}
+/* El teclado del teléfono no achica la página, achica lo que se ve de
+   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
+   campo enfocado se iba debajo del teclado y el navegador no podía
+   subirlo. Rodando la página entera, sí puede. */
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(600px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 22px}
+h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
+
+.how{display:grid;gap:10px;margin:0 0 24px}
+.how .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px}
+.how .s b{display:block;font-size:.98rem}
+.how .s span{color:var(--mute);font-size:.92rem}
+
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
+input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+/* Cuando el navegador sube el campo enfocado, que no quede pegado al
+   borde: se ve su etiqueta y el campo de antes. */
+label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
+.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
+.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
+.btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
+  font-size:.88rem;font-weight:400;color:var(--mute)}
+.ok span{cursor:pointer}
+.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+.ok a{color:var(--accent)}
+.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
+.msg.ok{color:var(--good)}
+
+/* En el teléfono el pie es lo último que hace falta mientras se llena
+   un formulario: que ocupe lo justo. */
+@media(max-width:560px){
+  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
+  footer p{margin:0 0 4px}
+  footer .f-legal{margin:4px 0 0}
+  main .wrap{padding-bottom:20px}
+}
+
+.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
+.fine b{display:block;margin-bottom:3px}
+.fine p{margin:0;color:var(--mute);font-size:.93rem}
+
+.done{text-align:center}
+.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
+</style>
+<style>
+/* La portada de las reglas: el nombre una vez, en grande. */
+.rtop{border-bottom:3px solid var(--ink);padding-bottom:16px;margin:0 0 24px}
+.rtop h1{font-size:clamp(1.6rem,6vw,2.4rem);margin:0 0 6px}
+.rtop .sub{color:var(--mute);margin:0;font-size:.95rem}
+
+/* Cada regla numerada, para que un entrenador pueda decir
+   "regla 3.2" en la cancha y todo el mundo busque lo mismo. */
+.sec{margin:0 0 26px}
+.sec h2{display:flex;gap:10px;align-items:baseline;margin:0 0 6px;font-size:1.06rem}
+.sec h2 .n{flex:0 0 auto;color:var(--accent);font-weight:900}
+.sec .cab{color:var(--mute);margin:0 0 10px;font-size:.95rem}
+.sec ol,.sec ul{margin:0;padding-left:0;list-style:none;counter-reset:r}
+.sec li{position:relative;padding:9px 0 9px 44px;border-top:1px solid var(--line);font-size:.95rem}
+.sec li:first-child{border-top:none}
+.sec li::before{counter-increment:r;content:attr(data-n);position:absolute;left:0;top:9px;
+  font-weight:900;font-size:.82rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.sec .cierre{margin:10px 0 0;font-size:.95rem;font-weight:700}
+
+table.money{width:100%;border-collapse:collapse;margin:12px 0 0;font-size:.95rem}
+table.money th,table.money td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+table.money th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
+  border-bottom:2px solid var(--ink)}
+table.money td:nth-child(2),table.money th:nth-child(2),
+table.money td:nth-child(3),table.money th:nth-child(3){text-align:right;font-variant-numeric:tabular-nums}
+
+.pie{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.pie a,.pie button{flex:1 1 180px;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-weight:800;font-size:.95rem;
+  text-align:center;text-decoration:none;cursor:pointer}
+.pie a.solid{background:var(--ink);color:#fff}
+
+/* Un entrenador la va a imprimir y pegarla en la pared del gimnasio. */
+/* La hoja impresa tiene que decir de dónde salió. Alguien la pega en
+   la pared del gimnasio, otro entrenador le saca una foto, y si no
+   lleva la dirección esa foto no lleva a ningún sitio. */
+.pie-print{display:none}
+@media print{
+  .heroart,.why,.num{display:none !important}
+  header,footer,.pie,.langb{display:none !important}
+  html,body{background:#fff}
+  main .wrap{width:100%;padding:0}
+  .sec{break-inside:avoid;page-break-inside:avoid}
+  .rtop{border-bottom:2px solid #000}
+  a{text-decoration:none;color:#000}
+  .pie-print{display:block;margin-top:22px;padding-top:12px;
+    border-top:2px solid #000;font-size:.86rem;font-weight:700;
+    text-align:center;break-inside:avoid}
+  .pie-print span{display:block;font-weight:400;font-size:.8rem;margin-top:3px}
+}
+
+.heroart{display:block;width:100%;height:auto;margin:0 0 clamp(18px,4vw,26px);
+  border-radius:6px;border:1px solid rgba(255,138,43,.30);
+  box-shadow:0 14px 40px rgba(0,0,0,.28)}
+.why{display:grid;gap:10px;margin:0 0 26px}
+.why .w{border-left:4px solid var(--accent);background:var(--tint);padding:13px 15px}
+.why .w b{display:block;font-size:.98rem}
+.why .w span{color:var(--mute);font-size:.92rem}
+.num{display:grid;gap:10px;margin:0 0 26px;counter-reset:paso}
+.num .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px 13px 46px;position:relative}
+.num .s::before{counter-increment:paso;content:counter(paso);position:absolute;left:14px;top:13px;
+  width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
+  font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.num .s b{display:block;font-size:.98rem}
+.num .s span{color:var(--mute);font-size:.92rem}
+.rulesH{margin-top:34px;padding-top:22px;border-top:3px solid var(--ink)}
+.rulesH h2{font-size:1.25rem;margin:0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var LANG='es';
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+var S = {"es": {"kick": "Reglas oficiales", "h1": "Sietes", "sub": "El formato, completo. Gostar Digital LLC · Cada Punto · octubre 2026", "lede": "Baloncesto por sets. Cada set se juega a siete puntos, y gana el partido el primer equipo que gane tres sets. Todas las canastas se suman — también las de los sets que se perdieron — y los dos equipos recaudan por las suyas.", "s1h": "Los equipos", "s1c": "Dos equipos, cinco por lado, cancha completa con las dos canastas.", "s1": ["Cada equipo puede tener suplentes. Los cambios son libres en cualquier bola muerta.", "Todo jugador inscrito juega.", "Los dos equipos pueden ser de programas distintos o del mismo programa."], "s2h": "El partido", "s2c": "Gana el primer equipo que gane tres sets. Máximo cinco sets.", "s2": ["Cada set se juega a siete puntos. El primero que llega a siete gana el set.", "No hay que ganar por dos. Un set puede terminar 7–6.", "Cada canasta vale un punto, desde donde sea. No hay triples y no hay tiros libres.", "Los puntos de todos los sets se suman. Ese total acumulado es el que cuenta para los padrinos."], "s2n": "Tres sets de siete son veintiún puntos: eso es lo mínimo que hay que anotar para ganar un partido.", "s3h": "Los sets", "s3c": "Cada set es corto y empieza limpio. Lo que se arrastra son los sets ganados y los puntos.", "s3": ["El primer set lo empieza quien gane un sorteo. Cada set siguiente lo empieza el equipo que no empezó el anterior.", "Al terminar un set los equipos cambian de canasta.", "El marcador del set vuelve a 0–0. Los sets ganados y los puntos acumulados se quedan.", "Cada set tiene diez minutos de reloj corrido. Si se acaba el tiempo, gana el set el equipo que va arriba; si van empatados, gana el set la próxima canasta."], "s3n": "El reloj casi nunca decide un set: a siete sin ganar por dos, un set no pasa de trece canastas. Está ahí para que el partido quepa en el tiempo de cancha.", "s4h": "En la cancha", "s4c": "No hay reloj de posesión y no hay árbitros. Los jugadores dirigen su propio juego.", "s4": ["Siguen aplicando las violaciones de siempre: pasos, doble dribleo y fuera de línea.", "Cada jugador canta las faltas que comete y las que le hacen.", "Una falta para el juego. La bola es del equipo que la recibió. No hay tiros libres.", "Después de una canasta, el otro equipo saca desde su línea de fondo.", "No se discute. Una jugada en disputa se repite. Lo que se repita de ahí en adelante lo ve el coordinador."], "s5h": "El marcador y la hoja", "s5c": "El marcador que se publica es el que se jugó. No se redondea, no se ajusta, no se mejora.", "s5": ["Un anotador lleva la hoja, y no es un jugador. Un padre sirve.", "La hoja lleva tres cosas: los puntos de cada set, los sets ganados, y el total acumulado de cada equipo.", "Al terminar, los dos entrenadores firman la hoja.", "Lo que se publica es el total acumulado: un número por equipo. El mismo día, con el código del entrenador.", "Al publicarlo se certifica contra la hoja. Una corrección se hace el mismo día y se le avisa a los padrinos."], "s6h": "El dinero", "s6c": "Cada equipo recauda por su total acumulado, y los dos al mismo valor por punto.", "s6": ["Tarifa mínima: 50¢ por punto. El padrino puede prometer más.", "Cobro mínimo: $5 por padrino. Si la cuenta da menos, se cobra $5.", "El padrino puede poner su propio tope, y el tope manda.", "Todas las canastas cuentan, incluyendo las de los sets que se perdieron.", "El 20% de Cada Punto se le suma al padrino. Al programa no se le descuenta nada."], "s6t": "Lo que deja cada padrino en un partido parejo, a 50¢ el punto:", "s6th": ["Equipo", "Puntos", "Por padrino"], "s6tr": [["Gana", "25.6", "$12.80"], ["Pierde", "20.1", "$10.05"]], "s6n": "El que pierde se lleva el 78% de lo del que gana. En un juego corrido a 21, el que pierde se lleva el 75% — y bastante menos en pesos.", "s7h": "Si el partido no se termina", "s7c": "Lo que se jugó vale. Lo que no se jugó no se cobra.", "s7": ["Los sets completos valen, y los puntos ya anotados valen.", "Un set a medias no se le adjudica a nadie, pero sus puntos cuentan para el total.", "Si no se completó ni un set, no hubo partido: se repone y no se cobra nada.", "Lluvia, luz, una lesión: se para. Ningún partido de estos vale una discusión."], "s8h": "Lo que invalida un partido", "s8c": "Tres cosas lo tumban, y en las tres no se cobra:", "s8": ["Un total publicado que no concuerda con la hoja firmada.", "Un jugador anotando para los dos equipos.", "Un total cambiado después de publicado sin avisarle a los padrinos."], "s8n": "El padrino paga por un número que no vio — confió en que el programa lo iba a decir como fue. Un programa que infla un marcador se gasta eso de una vez y no lo recupera.", "print": "Imprimir", "back": "← Cada Punto", "go": "Inscribe tu equipo", "pieP": "cadapunto.com/sietes.html", "pieS": "Sietes · Cada Punto · Gostar Digital LLC, Puerto Rico", "fotoAlt": "Dos equipos de un programa jugando en su propia cancha, con las familias en las gradas", "whyH": "Por qué se empieza por aquí", "w1b": "No hace falta rival.", "w1": "Si no tienes con quién jugar, partes tu propia matrícula en dos equipos y juegas en casa. Sin liga que apruebe, sin temporada que esperar, y todos los puntos de la cancha son del programa en vez de la mitad.", "w2b": "Nadie se lleva una pela.", "w2": "Cada set empieza 0–0 y se cambia de canasta. Un equipo que va perdiendo dos sets sigue vivo, y el que va perdiendo el partido sigue anotando puntos que cuentan. Las familias se quedan hasta el final porque el final importa.", "w3b": "Recaudan los dos.", "w3": "Hay ganador y perdedor, pero las canastas valen lo mismo para los dos lados. En un partido parejo el que pierde se lleva el 78% de lo que se lleva el que gana.", "howH": "Cómo se monta", "p1b": "Lo creas en el calendario.", "p1": "Fecha, hora y los dos equipos. Un botón y queda montado.", "p2b": "Cada jugador manda su enlace.", "p2": "Saca el suyo y lo manda por WhatsApp. Los padrinos prometen unos centavos por cada punto que anote su equipo.", "p3b": "Se juega.", "p3": "Tu cancha, tu gente, cerca de una hora. Los papás ya estaban ahí.", "p4b": "Pones el total.", "p4": "Un número por equipo, el total acumulado, desde el tablero con tu código.", "costH": "Y no cuesta nada montarlo.", "costP": "Sin cuota, sin mensualidad, sin contrato. Nuestro 20% se le suma al pago del padrino, nunca se te descuenta a ti: una promesa de $25 es un pago de $25.00 más $5.00, y el programa recibe los $25 completos.", "rulesH": "Las reglas, completas"}, "en": {"kick": "Official rules", "h1": "Sietes", "sub": "The format, in full. Gostar Digital LLC · Cada Punto · October 2026", "lede": "Basketball in sets. Every set is played to seven points, and the first team to win three sets wins the match. Every basket counts toward the total — including the ones in sets you lost — and both teams raise on their own.", "s1h": "The teams", "s1c": "Two teams, five a side, full court with both baskets.", "s1": ["Each team may carry substitutes. Substitutions are free on any dead ball.", "Every rostered player plays.", "The two teams may come from different programs or from the same one."], "s2h": "The match", "s2c": "The first team to win three sets wins. Five sets maximum.", "s2": ["Every set is played to seven points. The first team to reach seven wins the set.", "There is no win-by-two. A set can end 7–6.", "Every basket is one point, from anywhere. No three-pointers and no free throws.", "Points from every set are added together. That cumulative total is what counts for padrinos."], "s2n": "Three sets of seven is twenty-one points — the least you can score and still win a match.", "s3h": "The sets", "s3c": "Each set is short and starts clean. What carries over is sets won and points scored.", "s3": ["A coin toss decides who starts the first set. Each set after that is started by the team that did not start the one before.", "Teams switch baskets at the end of every set.", "The set score returns to 0–0. Sets won and cumulative points stay.", "Each set has a ten-minute running clock. If time expires the team ahead wins the set; if the score is tied, the next basket wins it."], "s3n": "The clock rarely decides a set: at seven with no win-by-two, a set cannot exceed thirteen baskets. It is there so the match fits the court time.", "s4h": "On the floor", "s4c": "There is no shot clock and there are no referees. The players run their own game.", "s4": ["The usual violations still apply: traveling, double dribble and out of bounds.", "Every player calls the fouls they commit and the fouls committed against them.", "A foul stops play. The ball goes to the team that was fouled. There are no free throws.", "After a basket, the other team inbounds from its own baseline.", "Nobody argues. A disputed play is replayed. Anything that keeps repeating goes to the coordinator."], "s5h": "The score and the sheet", "s5c": "The score that gets posted is the score that was played. It is not rounded, adjusted, or improved.", "s5": ["One person keeps the sheet, and it is not a player. A parent works.", "The sheet carries three things: points in each set, sets won, and each team’s cumulative total.", "At the end both coaches sign the sheet.", "What gets posted is the cumulative total: one number per team, the same day, with the coach’s code.", "Posting it certifies it against the sheet. A correction is made the same day and the padrinos are told."], "s6h": "The money", "s6c": "Each team raises on its cumulative total, and both at the same value per point.", "s6": ["Minimum rate: 50¢ a point. A padrino can always pledge more.", "Minimum charge: $5 a padrino. If the total comes to less, it is $5.", "A padrino can set their own cap, and the cap wins.", "Every basket counts, including the ones scored in sets you lost.", "Cada Punto’s 20% is added to the padrino’s payment. Nothing is taken out of the program’s."], "s6t": "What each padrino leaves in an even match, at 50¢ a point:", "s6th": ["Team", "Points", "Per padrino"], "s6tr": [["Wins", "25.6", "$12.80"], ["Loses", "20.1", "$10.05"]], "s6n": "The losing side takes 78% of what the winner takes. In a straight game to 21 it is 75% — and a good deal less in dollars.", "s7h": "If the match does not finish", "s7c": "What was played counts. What was not played is not charged.", "s7": ["Completed sets stand, and the points already scored stand.", "A set stopped midway is awarded to nobody, but its points still count toward the total.", "If not one set was completed, there was no match: it is replayed and nothing is charged.", "Rain, lights, an injury: you stop. None of these matches is worth an argument."], "s8h": "What voids a match", "s8c": "Three things void it, and in all three nothing is charged:", "s8": ["A posted total that does not match the signed sheet.", "A player scoring for both teams.", "A total changed after posting without telling the padrinos."], "s8n": "The padrino pays on a number they did not see — they trusted the program to say it the way it happened. A program that inflates a score spends that trust once and does not get it back.", "print": "Print", "back": "← Cada Punto", "go": "Sign up my team", "pieP": "cadapunto.com/sietes.html", "pieS": "Sietes · Cada Punto · Gostar Digital LLC, Puerto Rico", "fotoAlt": "Two teams from one program playing in their own gym, with the families in the bleachers", "whyH": "Why you start here", "w1b": "You do not need an opponent.", "w1": "With nobody to play, you split your own roster into two teams and play at home. No league to ask, no season to wait for, and every point on the floor belongs to the program instead of half of them.", "w2b": "Nobody gets blown out.", "w2": "Every set starts 0–0 and the teams switch baskets. A team down two sets is still alive, and a team losing the match is still scoring points that count. Families stay to the end because the end matters.", "w3b": "Both sides raise.", "w3": "There is a winner and a loser, but baskets are worth the same to both. In an even match the losing side takes 78% of what the winner takes.", "howH": "How you set one up", "p1b": "You create it in the scheduler.", "p1": "Date, time, and the two teams. One button and it exists.", "p2b": "Every player sends their link.", "p2": "They take their own and send it on WhatsApp. Padrinos pledge a few cents for every point their team scores.", "p3b": "You play it.", "p3": "Your gym, your people, about an hour. The parents were already there.", "p4b": "You post the total.", "p4": "One number per team — the cumulative total — from the board with your code.", "costH": "And it costs nothing to run.", "costP": "No setup fee, no monthly fee, no contract. Our 20% is added to the padrino’s payment, never taken out of yours: a $25 pledge is a $25.00 payment plus $5.00, and the program receives the full $25.", "rulesH": "The rules, in full"}};
+
+function T(k){ return (S[LANG] && S[LANG][k]) !== undefined ? S[LANG][k] : (S.en[k]||''); }
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function toggleLang(){
+  LANG = (LANG === 'es') ? 'en' : 'es';
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG),
+       localStorage.setItem('fc-lang', LANG); }catch(e){}
+  paint();
+}
+
+/* Numeradas 1.1, 1.2 ... para que se puedan citar en la cancha. */
+function reglas(n, items){
+  var h = '<ol>';
+  for (var i=0; i<items.length; i++) h += '<li data-n="' + n + '.' + (i+1) + '">' + esc(items[i]) + '</li>';
+  return h + '</ol>';
+}
+function seccion(n, extra){
+  return '<section class="sec">' +
+    '<h2><span class="n">' + n + '.</span> ' + esc(T('s'+n+'h')) + '</h2>' +
+    '<p class="cab">' + esc(T('s'+n+'c')) + '</p>' +
+    reglas(n, T('s'+n)) +
+    (extra || '') +
+    (T('s'+n+'n') ? '<p class="cierre">' + esc(T('s'+n+'n')) + '</p>' : '') +
+    '</section>';
+}
+function tabla(){
+  var th = T('s6th'), tr = T('s6tr'), h = '<table class="money"><thead><tr>';
+  for (var i=0;i<th.length;i++) h += '<th>' + esc(th[i]) + '</th>';
+  h += '</tr></thead><tbody>';
+  for (var r=0;r<tr.length;r++){
+    h += '<tr>';
+    for (var c=0;c<tr[r].length;c++) h += '<td>' + esc(tr[r][c]) + '</td>';
+    h += '</tr>';
+  }
+  return h + '</tbody></table>';
+}
+
+function paint(){
+  document.documentElement.lang = LANG;
+  document.getElementById('langBtn').textContent = (LANG === 'es') ? 'EN' : 'ES';
+  document.title = (LANG === 'es')
+    ? 'Sietes \u2014 Reglas Oficiales \u2014 Cada Punto'
+    : 'Sietes \u2014 Official Rules \u2014 Cada Punto';
+
+  var dinero = '<p class="cierre" style="margin-top:16px;font-weight:400;color:var(--mute)">' +
+    esc(T('s6t')) + '</p>' + tabla();
+
+  var out =
+    '<img class="heroart" src="ccc-bajo.jpg" width="1536" height="575" ' +
+      'alt="' + esc(T('fotoAlt')) + '">' +
+    '<div class="rtop">' +
+      '<p class="kick">' + esc(T('kick')) + '</p>' +
+      '<h1>' + esc(T('h1')) + '</h1>' +
+      '<p class="sub">' + esc(T('sub')) + '</p>' +
+    '</div>' +
+    '<p class="lede">' + esc(T('lede')) + '</p>' +
+
+    '<h2>' + esc(T('whyH')) + '</h2>' +
+    '<div class="why">' +
+      '<div class="w"><b>' + esc(T('w1b')) + '</b><span>' + esc(T('w1')) + '</span></div>' +
+      '<div class="w"><b>' + esc(T('w2b')) + '</b><span>' + esc(T('w2')) + '</span></div>' +
+      '<div class="w"><b>' + esc(T('w3b')) + '</b><span>' + esc(T('w3')) + '</span></div>' +
+    '</div>' +
+
+    '<h2>' + esc(T('howH')) + '</h2>' +
+    '<div class="num">' +
+      '<div class="s"><b>' + esc(T('p1b')) + '</b><span>' + esc(T('p1')) + '</span></div>' +
+      '<div class="s"><b>' + esc(T('p2b')) + '</b><span>' + esc(T('p2')) + '</span></div>' +
+      '<div class="s"><b>' + esc(T('p3b')) + '</b><span>' + esc(T('p3')) + '</span></div>' +
+      '<div class="s"><b>' + esc(T('p4b')) + '</b><span>' + esc(T('p4')) + '</span></div>' +
+    '</div>' +
+
+    '<div class="fine"><b>' + esc(T('costH')) + '</b><br>' + esc(T('costP')) + '</div>' +
+
+    '<div class="rulesH"><h2>' + esc(T('rulesH')) + '</h2></div>';
+
+  for (var n=1; n<=8; n++) out += seccion(n, n===6 ? dinero : '');
+
+  out +=
+    '<div class="pie">' +
+      '<a class="solid" href="equipo.html">' + esc(T('go')) + '</a>' +
+      '<button type="button" onclick="window.print()">' + esc(T('print')) + '</button>' +
+      '<a href="index.html">' + esc(T('back')) + '</a>' +
+    '</div>' +
+    '<p class="pie-print">' + esc(T('pieP')) +
+      '<span>' + esc(T('pieS')) + '</span></p>';
+
+  document.getElementById('app').innerHTML = out;
+}
+
+paint();
+</script>
+</body>
+</html>
