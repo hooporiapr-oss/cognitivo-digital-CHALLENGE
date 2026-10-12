@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A dónde te pagamos — Cada Punto</title>
+<!-- Esta página no se comparte: se le manda al entrenador con su
+     código. Aun así, si el enlace cae en un grupo, que no diga
+     "formulario de pago" en la vista previa. -->
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:url" content="https://cadapunto.com/cobro.html">
+<meta property="og:title" content="A dónde te pagamos — Cada Punto">
+<meta property="og:description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
+<meta property="og:locale" content="es_PR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A dónde te pagamos — Cada Punto">
+<meta name="twitter:description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+
+<meta name="description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --good:#0B7A5A;--bad:#A8323F}
+*{box-sizing:border-box}
+html{background:#12202E}
+/* Mismo arreglo que en equipo.html: el scroll vive en la página, no
+   en <main>, para que el navegador pueda subir el campo enfocado por
+   encima del teclado. */
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(600px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
+  margin-left:auto;margin-right:auto}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 22px}
+h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
+
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
+input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
+label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
+.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
+.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
+.btn.line{background:#fff;color:var(--ink);margin-top:10px}
+.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
+  font-size:.88rem;font-weight:400;color:var(--mute)}
+.ok span{cursor:pointer}
+.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
+.ok a{color:var(--accent)}
+.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
+.msg.ok{color:var(--good)}
+
+/* Quién pide esto, para que nadie llene un formulario a ciegas. */
+.who{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px;margin:0 0 6px}
+.who b{display:block;font-size:.98rem}
+.who span{color:var(--mute);font-size:.92rem}
+
+.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
+.fine b{display:block;margin-bottom:3px}
+.fine p{margin:0;color:var(--mute);font-size:.93rem}
+
+/* Lo que ya está guardado, cuando vuelven a entrar. */
+.now{border:1.5px solid var(--good);border-radius:4px;padding:13px 15px;margin:0 0 20px}
+.now b{display:block;color:var(--good);
+  letter-spacing:.1em;text-transform:uppercase;font-size:.66rem;margin-bottom:5px}
+.now dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.92rem}
+.now dt{color:var(--mute)}
+.now dd{margin:0;font-weight:700}
+
+@media(max-width:560px){
+  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
+  footer p{margin:0 0 4px}
+  footer .f-legal{margin:4px 0 0}
+  main .wrap{padding-bottom:20px}
+}
+
+.done{text-align:center}
+.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p class="f-what" id="fWhat"></p>
+    <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name, args){
+  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+    method:'POST',
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args || {})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
+}
+
+var S = {
+  es:{
+    kick:'A dónde te pagamos',
+    h1:'Dinos la cuenta de tu organización.',
+    lede:'Lo que pagan los padrinos lo cobramos nosotros y te lo remitimos el día 1 y el día 15 de cada mes. Para remitirlo hace falta una cosa: una cuenta ATH Móvil Business a nombre de la organización.',
+    codeL:'Tu código de entrenador', codePh:'El mismo que usas para el calendario',
+    codeHint:'Distingue mayúsculas de minúsculas. Es el código de tu equipo, no uno general.',
+    codeGo:'Entrar',
+    errCode:'Ese código no sirve. Revísalo y prueba otra vez.',
+    errScope:'Ese código no es de un equipo en particular, así que no puede decir a dónde va el dinero. Usa el código que te dimos para tu equipo.',
+    errGen:'No se pudo guardar. Intenta otra vez.',
+
+    whoB:'Estás llenando esto para {N}.',
+    whoS:'Entraste con el código de {B}.',
+
+    nowB:'Lo que tenemos ahora',
+    nowOrg:'Organización', nowAth:'Cuenta ATH', nowTel:'Teléfono',
+    nowP:'Si cambió algo, llénalo otra vez abajo y se reemplaza.',
+
+    formH:'La cuenta',
+    orgL:'Nombre legal de la organización',
+    orgPh:'Como está registrada',
+    orgHint:'El nombre que aparece en el registro, no el apodo del equipo.',
+    regL:'Número de registro (opcional)',
+    regPh:'Registro de Corporaciones',
+    nameL:'Nombre en la cuenta ATH Móvil Business',
+    namePh:'Exacto, como sale en ATH',
+    nameHint:'Tiene que ser el de la organización. Una cuenta personal no.',
+    phoneL:'Teléfono de la cuenta ATH',
+    phonePh:'787 555 0101',
+    phoneHint:'Diez dígitos. Es el número al que le llega el pago.',
+    whoL:'Quién autoriza',
+    whoPh:'Nombre y apellido',
+    titleL:'Su puesto',
+    titlePh:'Presidente, tesorero, director…',
+
+    isorg:'Confirmo que esta cuenta ATH Móvil Business es de la organización, no de una persona, y que estoy autorizado a dar esta información.',
+    errIsorg:'Tienes que confirmar que la cuenta es de la organización.',
+    errOrg:'Escribe el nombre legal de la organización.',
+    errName:'Escribe el nombre que sale en la cuenta ATH.',
+    errWho:'Escribe quién autoriza y su puesto.',
+    errPhone:'El teléfono tiene que ser de diez dígitos.',
+
+    go:'Guardar',
+    doneH:'Guardado.',
+    doneP:'Le remitiremos a {O} al ATH Móvil Business {T} el día 1 y el día 15 de cada mes, por lo que se haya cobrado hasta ese día.',
+    doneMore:'Si te equivocaste en algo, entra otra vez con tu código y vuelve a llenarlo.',
+    back:'Volver al inicio →',
+
+    fineH:'Por qué ATH y no banco',
+    fineP:'Con ATH Móvil Business no tenemos que guardar ningún número de cuenta de banco tuyo — ni nosotros ni nadie que entre a nuestros sistemas. Guardamos un nombre y un teléfono, y eso es todo lo que hace falta para pagarte. Si tu organización necesita transferencia bancaria, escríbenos y lo hacemos por otra vía.'
+  },
+  en:{
+    kick:'Where we pay you',
+    h1:'Tell us your organization’s account.',
+    lede:'What padrinos pay is collected by us and remitted to you on the 1st and the 15th of each month. To remit it we need one thing: an ATH Móvil Business account in the organization’s name.',
+    codeL:'Your coach code', codePh:'The same one you use for the schedule',
+    codeHint:'Capital letters matter. This is your team’s code, not a general one.',
+    codeGo:'Enter',
+    errCode:'That code does not work. Check it and try again.',
+    errScope:'That code is not tied to one team, so it cannot say where the money goes. Use the code we gave you for your team.',
+    errGen:'That did not save. Try again.',
+
+    whoB:'You are filling this in for {N}.',
+    whoS:'You came in with {B}’s code.',
+
+    nowB:'What we have now',
+    nowOrg:'Organization', nowAth:'ATH account', nowTel:'Phone',
+    nowP:'If something changed, fill it in again below and it replaces this.',
+
+    formH:'The account',
+    orgL:'Legal name of the organization',
+    orgPh:'As it is registered',
+    orgHint:'The name on the registration, not the team’s nickname.',
+    regL:'Registration number (optional)',
+    regPh:'Corporations registry',
+    nameL:'Name on the ATH Móvil Business account',
+    namePh:'Exactly as it appears in ATH',
+    nameHint:'It has to be the organization’s. A personal account will not do.',
+    phoneL:'Phone on the ATH account',
+    phonePh:'787 555 0101',
+    phoneHint:'Ten digits. This is the number the payment lands on.',
+    whoL:'Who authorizes this',
+    whoPh:'First and last name',
+    titleL:'Their title',
+    titlePh:'President, treasurer, director…',
+
+    isorg:'I confirm this ATH Móvil Business account belongs to the organization, not to a person, and that I am authorized to give this information.',
+    errIsorg:'You have to confirm the account belongs to the organization.',
+    errOrg:'Write the legal name of the organization.',
+    errName:'Write the name on the ATH account.',
+    errWho:'Write who authorizes this and their title.',
+    errPhone:'The phone has to be ten digits.',
+
+    go:'Save',
+    doneH:'Saved.',
+    doneP:'We will remit to {O} at ATH Móvil Business {T} on the 1st and the 15th of each month, for whatever has been collected up to that day.',
+    doneMore:'If you got something wrong, come back in with your code and fill it in again.',
+    back:'Back to the start →',
+
+    fineH:'Why ATH and not a bank',
+    fineP:'With ATH Móvil Business we never have to hold a bank account number of yours — not us, and not anyone who gets into our systems. We hold a name and a phone number, and that is all it takes to pay you. If your organization needs a bank transfer, write to us and we will arrange it another way.'
+  }
+};
+
+var LANG='es';
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+
+function T(k,v){
+  var s = (S[LANG] && S[LANG][k]) || S.es[k] || '';
+  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
+  return s;
+}
+function toggleLang(){
+  LANG = LANG==='es' ? 'en':'es';
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); }catch(e){}
+  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+  paintWhat();
+  draw();
+}
+
+var app = document.getElementById('app');
+var CODE = null;   /* el código, una vez que payout_check lo aceptó */
+var INFO = null;   /* lo que payout_check devolvió de la campaña */
+var SENT = null;   /* { org, tel } cuando ya se guardó */
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+
+/* El teléfono se guarda en diez dígitos pelados; se lee mejor por partes. */
+function tel(t){
+  var d = String(t||'').replace(/[^0-9]/g,'');
+  return d.length === 10 ? d.slice(0,3)+' '+d.slice(3,6)+' '+d.slice(6) : (t||'');
+}
+
+function paintWhat(){
+  var el = document.getElementById('fWhat');
+  if (el) el.textContent = (LANG === 'es')
+    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
+}
+
+function draw(){
+  /* Tres pantallas: el código, el formulario, y el recibo. */
+  if (SENT){
+    app.innerHTML =
+      '<div class="done">' +
+        '<div class="tick">✓</div>' +
+        '<h1>' + T('doneH') + '</h1>' +
+        '<p class="lede">' + T('doneP', { O: esc(SENT.org), T: esc(tel(SENT.tel)) }) + '</p>' +
+        '<p class="lede">' + T('doneMore') + '</p>' +
+        '<a class="btn line" href="index.html">' + T('back') + '</a>' +
+      '</div>';
+    return;
+  }
+
+  if (!INFO){
+    app.innerHTML =
+      '<div class="kick">' + T('kick') + '</div>' +
+      '<h1>' + T('h1') + '</h1>' +
+      '<p class="lede">' + T('lede') + '</p>' +
+      '<label for="cd">' + T('codeL') + '</label>' +
+      '<input id="cd" type="text" maxlength="40" placeholder="' + T('codePh') + '" ' +
+        'autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">' +
+      '<p class="hint">' + T('codeHint') + '</p>' +
+      '<button class="btn" onclick="checkCode()">' + T('codeGo') + '</button>' +
+      '<p class="msg" id="msg"></p>' +
+      '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
+
+    var cd = document.getElementById('cd');
+    if (cd) cd.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); checkCode(); }
+    });
+    return;
+  }
+
+  var now = '';
+  if (INFO.already){
+    now =
+      '<div class="now">' +
+        '<b>' + T('nowB') + '</b>' +
+        '<dl>' +
+          '<dt>' + T('nowOrg') + '</dt><dd>' + esc(INFO.org || '—') + '</dd>' +
+          '<dt>' + T('nowAth') + '</dt><dd>' + esc(INFO.ath || '—') + '</dd>' +
+          '<dt>' + T('nowTel') + '</dt><dd>' + esc(tel(INFO.phone)) + '</dd>' +
+        '</dl>' +
+      '</div>' +
+      '<p class="lede">' + T('nowP') + '</p>';
+  }
+
+  app.innerHTML =
+    '<div class="kick">' + T('kick') + '</div>' +
+    '<h1>' + T('h1') + '</h1>' +
+    '<div class="who">' +
+      '<b>' + T('whoB', { N: esc(INFO.name || '—') }) + '</b>' +
+      '<span>' + T('whoS', { B: esc(INFO.by || '—') }) + '</span>' +
+    '</div>' +
+    '<p class="lede">' + T('lede') + '</p>' +
+    now +
+
+    '<h2>' + T('formH') + '</h2>' +
+    '<label for="og">' + T('orgL') + '</label>' +
+    '<input id="og" type="text" maxlength="90" placeholder="' + T('orgPh') + '" ' +
+      'value="' + esc(INFO.org || '') + '" autocapitalize="words" ' +
+      'autocomplete="organization" enterkeyhint="next">' +
+    '<p class="hint">' + T('orgHint') + '</p>' +
+    '<label for="rg">' + T('regL') + '</label>' +
+    '<input id="rg" type="text" maxlength="30" placeholder="' + T('regPh') + '" ' +
+      'autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="next">' +
+    '<label for="an">' + T('nameL') + '</label>' +
+    '<input id="an" type="text" maxlength="90" placeholder="' + T('namePh') + '" ' +
+      'value="' + esc(INFO.ath || '') + '" autocapitalize="words" enterkeyhint="next">' +
+    '<p class="hint">' + T('nameHint') + '</p>' +
+    '<label for="ph">' + T('phoneL') + '</label>' +
+    '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" ' +
+      'value="' + esc(tel(INFO.phone)) + '" autocomplete="tel" enterkeyhint="next">' +
+    '<p class="hint">' + T('phoneHint') + '</p>' +
+    '<label for="wh">' + T('whoL') + '</label>' +
+    '<input id="wh" type="text" maxlength="60" placeholder="' + T('whoPh') + '" ' +
+      'autocapitalize="words" autocomplete="name" enterkeyhint="next">' +
+    '<label for="ti">' + T('titleL') + '</label>' +
+    '<input id="ti" type="text" maxlength="40" placeholder="' + T('titlePh') + '" ' +
+      'autocapitalize="words" enterkeyhint="done">' +
+
+    '<div class="ok">' +
+      '<input id="io" type="checkbox">' +
+      '<span onclick="document.getElementById(\'io\').click()">' + T('isorg') + '</span>' +
+    '</div>' +
+    '<button class="btn" onclick="save()">' + T('go') + '</button>' +
+    '<p class="msg" id="msg"></p>' +
+
+    '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
+}
+
+function say(t,c){
+  var el = document.getElementById('msg');
+  if (el){ el.textContent = t; el.className = 'msg ' + (c||''); }
+}
+
+function toTop(){
+  try{ var m = document.querySelector('main'); if (m) m.scrollTop = 0; window.scrollTo(0,0); }catch(e){}
+}
+
+function checkCode(){
+  var code = (document.getElementById('cd').value || '').trim();
+  if (!code) return say(T('errCode'), 'bad');
+  say('…');
+  rpc('payout_check', { p_code: code })
+    .then(function(r){
+      if (!r || !r.ok){
+        if (r && r.reason === 'scope') return say(T('errScope'), 'bad');
+        return say(T('errCode'), 'bad');
+      }
+      CODE = code;
+      INFO = r;
+      draw();
+      toTop();
+    })
+    .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+function save(){
+  var org   = (document.getElementById('og').value || '').trim();
+  var regno = (document.getElementById('rg').value || '').trim();
+  var name  = (document.getElementById('an').value || '').trim();
+  var phone = (document.getElementById('ph').value || '').trim();
+  var who   = (document.getElementById('wh').value || '').trim();
+  var title = (document.getElementById('ti').value || '').trim();
+
+  if (!org)  return say(T('errOrg'), 'bad');
+  if (!name) return say(T('errName'), 'bad');
+  if (!who || !title) return say(T('errWho'), 'bad');
+  if (phone.replace(/[^0-9]/g,'').length !== 10) return say(T('errPhone'), 'bad');
+
+  var io = document.getElementById('io');
+  if (!io || !io.checked) return say(T('errIsorg'), 'bad');
+
+  say('…');
+  rpc('set_payout', {
+    p_code: CODE, p_campaign: INFO.campaign,
+    p_org: org, p_regno: regno, p_name: name, p_phone: phone,
+    p_who: who, p_title: title, p_is_org: true
+  })
+    .then(function(r){
+      if (!r || !r.ok){
+        if (r && r.reason === 'scope') return say(T('errScope'), 'bad');
+        if (r && r.reason === 'code')  return say(T('errCode'), 'bad');
+        if (r && r.reason === 'phone') return say(T('errPhone'), 'bad');
+        if (r && r.reason === 'isorg') return say(T('errIsorg'), 'bad');
+        if (r && r.reason === 'org')   return say(T('errOrg'), 'bad');
+        if (r && r.reason === 'name')  return say(T('errName'), 'bad');
+        if (r && (r.reason === 'who' || r.reason === 'title')) return say(T('errWho'), 'bad');
+        return say(T('errGen'), 'bad');
+      }
+      SENT = { org: r.org || org, tel: r.phone || phone };
+      draw();
+      toTop();
+    })
+    .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
+paintWhat();
+draw();
+</script>
+</body>
+</html>
