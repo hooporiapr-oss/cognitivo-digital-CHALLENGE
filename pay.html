@@ -154,6 +154,8 @@ footer .f-co{font-weight:700}
 footer .f-nav{margin-top:12px}
 footer .f-legal{margin:7px 0 0;font-size:.8rem}
 footer .f-dot{padding:0 7px;opacity:.5}
+.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
+  margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
@@ -171,6 +173,22 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
 <footer><div class="wrap">
   <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+<p class="f-what" id="fWhat"></p>
+<script>
+/* Lo que somos, dicho donde se ve: una herramienta que se cobra, no
+   una obra benéfica. Lee el mismo idioma guardado que el resto del
+   sitio, así que no hace falta cablearlo a cada sistema de traducción. */
+(function(){
+  var l = 'es';
+  try{ l = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
+           localStorage.getItem('fc-lang') ||
+           ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+  var el = document.getElementById('fWhat');
+  if (el) el.textContent = (l === 'es')
+    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
+})();
+</script>
   <p class="f-legal">
     <a href="terms.html" data-t="terms">Terms</a>
     <span class="f-dot">·</span>
