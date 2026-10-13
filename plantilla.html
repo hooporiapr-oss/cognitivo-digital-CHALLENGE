@@ -89,6 +89,7 @@ textarea{font-weight:500;min-height:104px;resize:vertical;line-height:1.5}
 .pl .act button{border:2px solid var(--line);background:#fff;color:var(--mute);border-radius:4px;
   padding:6px 9px;font:inherit;font-weight:800;font-size:.72rem;cursor:pointer}
 .pl .act button.on{border-color:var(--ink);color:var(--ink)}
+.pl .act button.del{border-color:#E8C4C2;color:var(--bad)}
 
 /* editar una fila, en su sitio */
 .ed{padding:11px;background:var(--tint);border-bottom:1px solid var(--line)}
@@ -202,6 +203,10 @@ var S={
     joined:'se apuntó solo',
     noSquad:'sin escuadra',
     edit:'Arreglar', take:'Sacar', back:'Devolver', save:'Guardar', cancel:'Dejarlo',
+    del:'Borrar',
+    askDel:'¿Borrar a {N} para siempre? Esto no se deshace.',
+    gone:'{N} borrado.',
+    kept:'{N} tiene promesas, así que no se puede borrar. Se queda fuera de la lista.',
     nmL:'Nombre', sqL:'Escuadra',
     addH:'Añadir nombres',
     pasteL:'Un nombre por línea',
@@ -237,6 +242,10 @@ var S={
     joined:'signed up on their own',
     noSquad:'no squad',
     edit:'Fix', take:'Take out', back:'Put back', save:'Save', cancel:'Leave it',
+    del:'Delete',
+    askDel:'Delete {N} for good? This cannot be undone.',
+    gone:'{N} deleted.',
+    kept:'{N} has pledges, so they cannot be deleted. They stay off the list.',
     nmL:'Name', sqL:'Squad',
     addH:'Add names',
     pasteL:'One name per line',
@@ -387,10 +396,34 @@ function pintar(){
         (act
           ? '<button onclick="abrir('+i+')">'+esc(T('edit'))+'</button>'+
             '<button onclick="sacar('+i+')">'+esc(T('take'))+'</button>'
-          : '<button class="on" onclick="devolver('+i+')">'+esc(T('back'))+'</button>')+
+          : '<button class="on" onclick="devolver('+i+')">'+esc(T('back'))+'</button>'+
+            '<button class="del" onclick="borrar('+i+')">'+esc(T('del'))+'</button>')+
       '</span>'+
     '</div>';
   }).join('')+'</div>';
+}
+
+/* Borrar sólo se le ofrece a quien ya está fuera de la lista. Dos pasos
+   en vez de uno: sacar, y entonces borrar. Nadie borra a un nene activo
+   por darle al botón de al lado.
+
+   Y si tiene promesas encima, la base de datos no deja borrarlo — eso
+   está bien, porque esas promesas son dinero que alguien prometió. En
+   ese caso se queda fuera de la lista y se le dice al entrenador por
+   qué, en vez de enseñarle un error. */
+function borrar(i){
+  var p=PL[i]; if(!p) return;
+  if(!confirm(T('askDel',{N:p.name}))) return;
+  say('lm','…');
+  rpc('roster_remove',{p_code:CODE,p_campaign:CID,p_player:p.id})
+    .then(function(r){
+      if(!r||!r.ok) return say('lm',T('bad'),'bad');
+      var gone = r.state==='gone';
+      cargar().then(function(){
+        say('lm', gone?T('gone',{N:p.name}):T('kept',{N:p.name}), gone?'ok':'bad');
+      });
+    })
+    .catch(function(e){ console.error(e); say('lm',T('net'),'bad') });
 }
 
 function decidir(i,yes){
