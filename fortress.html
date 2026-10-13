@@ -755,8 +755,11 @@ var runStartTime=0;
 // different one and think they have changed who they are.
 (function nameFromTheLink(){
   if (!(TRYOUT && PLAYER_ID)) return;
-  fetch(SB_URL + '/rest/v1/players?id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=name', {
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  fetch(SB_URL + '/rest/v1/rpc/player_name', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+               'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_id: PLAYER_ID })
   })
   .then(function(r){ return r.json(); })
   .then(function(rows){
@@ -796,8 +799,11 @@ var runStartTime=0;
 
   // Pull the player's name so they do not type it, and so the run is
   // attributed to the roster rather than whatever they type.
-  fetch(SB_URL + '/rest/v1/players?id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=name', {
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  fetch(SB_URL + '/rest/v1/rpc/player_name', {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+               'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_id: PLAYER_ID })
   })
   .then(function(r){ return r.json(); })
   .then(function(rows){
