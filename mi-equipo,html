@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mi equipo — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* La casa del entrenador. Una sola dirección que se le da una vez y no
+   cambia nunca. Entra con su código, y de ahí en adelante este teléfono
+   ya lo conoce.
+
+   Lo que manda en esta página es una sola cosa: los juegos que ya se
+   jugaron y no tienen marcador. Mientras no se ponga el marcador no se
+   le cobra a nadie y el programa no ve un peso — es el único descuido
+   que de verdad cuesta dinero, así que va primero, en grande, y con el
+   botón al lado. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--good:#0B7A5A;--bad:#B4231C}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,93vw);margin:0 auto}
+
+header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.hright{display:flex;align-items:center;gap:10px}
+.who{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#C8D6E2}
+.out,.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{padding:22px 0 60px}
+h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 4px}
+.lede{color:var(--mute);font-size:.9rem;margin:0 0 20px}
+h2{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin:24px 0 8px}
+label{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+input[type=text]{width:100%;font:inherit;font-weight:700;padding:9px 10px;
+  border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.btn{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--ink);
+  color:#fff;font:inherit;font-weight:900;padding:12px 16px;cursor:pointer;margin-top:10px;
+  text-align:center;text-decoration:none}
+.btn.go{background:var(--accent)}
+.msg{font-size:.85rem;font-weight:700;margin-top:8px;min-height:1px}
+.msg.bad{color:var(--bad)}
+.gate{border:2px solid var(--ink);border-radius:4px;padding:14px;max-width:420px}
+.gate.hide,.hide{display:none}
+.help{color:var(--mute);font-size:.85rem;margin:6px 0 0}
+/* La misma certificación que pedía el marcador. El entrenador la firma
+   una vez aquí y no se la vuelven a pedir — pero se le pide. */
+.cert{display:flex;align-items:flex-start;gap:8px;margin-top:12px;
+  font-size:.82rem;font-weight:700;letter-spacing:0;text-transform:none;color:var(--ink)}
+.cert input{width:19px;height:19px;flex:0 0 auto;margin:2px 0 0;accent-color:var(--accent)}
+
+/* lo que hay que hacer ya */
+.todo{border:3px solid var(--ball);border-radius:6px;padding:15px 16px;margin:0 0 20px;
+  background:#FFF6EF}
+.todo b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.todo .big{font-size:1.18rem;font-weight:900;letter-spacing:-.02em;line-height:1.25}
+.todo p{margin:6px 0 0;font-size:.88rem;color:var(--mute)}
+.todo .btn{margin-top:12px}
+
+.team{border:2px solid var(--line);border-radius:6px;padding:16px;margin:0 0 14px}
+.team .nm{font-size:1.2rem;font-weight:900;letter-spacing:-.02em;margin:0 0 10px}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 0 13px}
+.num{background:var(--tint);border:1px solid var(--line);border-radius:5px;padding:9px 6px;
+  text-align:center}
+.num b{display:block;font-size:1.45rem;font-weight:900;line-height:1.1;
+  font-variant-numeric:tabular-nums}
+.num span{font-size:.54rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--mute)}
+.num.hot b{color:var(--ball)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.acts a{display:block;text-align:center;text-decoration:none;border:2px solid var(--ink);
+  border-radius:4px;padding:11px 8px;font-weight:900;font-size:.84rem;color:var(--ink)}
+.acts a.fill{background:var(--ink);color:#fff}
+.acts a.wide{grid-column:1/-1}
+
+.pay{margin-top:11px;font-size:.84rem;padding:9px 11px;border-radius:5px;
+  border:1px solid var(--line);background:var(--tint)}
+.pay.no{border-color:var(--ball);background:#FFF6EF}
+.pay b{font-weight:900}
+.pay a{color:var(--accent);font-weight:900}
+
+footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-dot{padding:0 7px;opacity:.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <div class="hright">
+      <span class="who hide" id="hwho"></span>
+      <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+      <button class="out hide" id="hout" onclick="salir()">Salir</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="gate" id="gate">
+      <h1 id="tH1"></h1>
+      <p class="lede" id="tLede"></p>
+      <label for="code" id="tCodeL"></label>
+      <input id="code" type="text" autocapitalize="characters" autocorrect="off"
+             spellcheck="false" enterkeyhint="go">
+      <p class="help" id="tCodeH"></p>
+      <label class="cert"><input type="checkbox" id="cert"><span id="tCert"></span></label>
+      <button class="btn go" id="tGo" onclick="entrar(false)"></button>
+      <p class="msg" id="gm"></p>
+    </div>
+
+    <div id="app" class="hide">
+      <div id="todo"></div>
+      <h2 id="tTeams"></h2>
+      <div id="teams"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
+  </div>
+</footer>
+
+<script>
+var SB='https://sdaphocueugzfvjovuxd.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name,args){
+  return fetch(SB+'/rest/v1/rpc/'+name,{
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(args||{})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc '+r.status); return r.json() });
+}
+function $(id){ return document.getElementById(id) }
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]});
+}
+
+var S={
+  es:{
+    h1:'Mi equipo',
+    lede:'Entra con tu código. En este teléfono queda guardado — no lo vas a escribir otra vez.',
+    codeL:'Tu código', codeH:'El mismo que usas para el calendario y para el marcador.',
+    cert:'Certifico que los puntos que reporte son los del acta oficial del juego.',
+    needCert:'Marca la casilla para certificar los puntos.',
+    go:'Entrar',
+    bad:'Ese código no sirve.', net:'No entró. Inténtalo otra vez.',
+    none:'Tu código no alcanza ningún equipo. Escríbenos.',
+    teams:'Tus equipos', out:'Salir',
+    todoL:'Falta ponerle el marcador',
+    todo1:'{N} juego ya se jugó y no tiene marcador.',
+    todoN:'{N} juegos ya se jugaron y no tienen marcador.',
+    todoP:'Mientras no pongas el marcador no se le cobra a ningún padrino y el programa no recibe nada.',
+    todoGo:'Poner el marcador',
+    nUp:'por jugar', nNo:'sin marcador', nPad:'padrinos · próximo',
+    aBoard:'Ver el tablero', aGames:'Poner juegos', aScore:'Poner el marcador',
+    payNo:'Todavía no nos has dicho a dónde pagarte. <a href="cobro.html">Dínoslo aquí</a>.',
+    payOk:'Te pagamos a <b>{A}</b> el día 1 y el día 15.'
+  },
+  en:{
+    h1:'My team',
+    lede:'Sign in with your code. It stays on this phone — you will not type it again.',
+    codeL:'Your code', codeH:'The same one you use for the schedule and the scoreboard.',
+    cert:'I certify that any points I report are the points on the official scoresheet.',
+    needCert:'Check the box to certify the points.',
+    go:'Enter',
+    bad:'That code does not work.', net:'That did not go through. Try again.',
+    none:'Your code does not reach any team. Write to us.',
+    teams:'Your teams', out:'Sign out',
+    todoL:'Needs a score',
+    todo1:'{N} game has been played and has no score.',
+    todoN:'{N} games have been played and have no score.',
+    todoP:'Until you enter the score no padrino is charged and the program receives nothing.',
+    todoGo:'Enter the score',
+    nUp:'to play', nNo:'no score', nPad:'padrinos · next',
+    aBoard:'See the board', aGames:'Post games', aScore:'Enter the score',
+    payNo:'You have not told us where to pay you yet. <a href="cobro.html">Tell us here</a>.',
+    payOk:'We pay you at <b>{A}</b> on the 1st and the 15th.'
+  }
+};
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+function T(k,v){
+  var s=(S[LANG]&&S[LANG][k])||S.es[k]||'';
+  if(v)Object.keys(v).forEach(function(x){ s=s.split('{'+x+'}').join(v[x]) });
+  return s;
+}
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG); }catch(e){}
+  paintStatic();
+  if(CODE&&CAMPS.length) pintar();
+}
+function paintStatic(){
+  $('tH1').textContent=T('h1');
+  $('tLede').textContent=T('lede');
+  $('tCodeL').textContent=T('codeL');
+  $('tCodeH').textContent=T('codeH');
+  $('tCert').textContent=T('cert');
+  $('tGo').textContent=T('go');
+  $('tTeams').textContent=T('teams');
+  $('hout').textContent=T('out');
+  $('langBtn').textContent=LANG==='es'?'EN':'ES';
+  document.documentElement.lang=LANG;
+}
+
+var CODE=null, BY=null, CAMPS=[], BOARDS={}, PAY=null;
+
+/* Acepta la sesión que ya tenga de cualquiera de las dos páginas
+   viejas: el calendario guardaba cp_build y el marcador cp_code. Un
+   entrenador que ya entró en una de ellas no vuelve a escribir nada. */
+try{ CODE = localStorage.getItem('cp_build') || localStorage.getItem('cp_code') || null; }catch(e){}
+
+/* El calendario lee cp_build. El marcador no se conforma con el código:
+   quiere cp_code y cp_by juntos, y sólo los escribe después de que el
+   entrenador marca la casilla de certificación. Así que esas dos sólo se
+   escriben cuando aquí se marcó la casilla — o cuando ya estaban puestas
+   de antes, porque entonces ya la marcó en el marcador. Entrar aquí sin
+   certificar no debe certificar nada por la puerta de atrás. */
+function recordar(k,by,cert){
+  try{
+    localStorage.setItem('cp_build',k);
+    if(cert||localStorage.getItem('cp_by')){
+      localStorage.setItem('cp_code',k);
+      if(by) localStorage.setItem('cp_by',by);
+    }
+  }catch(e){}
+}
+function olvidar(){
+  try{ localStorage.removeItem('cp_build'); localStorage.removeItem('cp_code');
+       localStorage.removeItem('cp_by'); }catch(e){}
+}
+function salir(){ olvidar(); location.reload(); }
+
+function say(t,c){ var e=$('gm'); if(e){ e.textContent=t||''; e.className='msg '+(c||'') } }
+
+function entrar(auto){
+  var k = auto ? CODE : ($('code').value||'').trim();
+  if(!k || k.length<4) return say(T('bad'),'bad');
+  var cert = auto ? false : !!($('cert')&&$('cert').checked);
+  if(!auto && !cert) return say(T('needCert'),'bad');
+  say('…');
+  rpc('builder_check',{p_code:k})
+    .then(function(r){
+      if(!r||!r.ok){ if(auto) olvidar(); return say(T('bad'),'bad'); }
+      CODE=k; BY=r.by; CAMPS=r.campaigns||[];
+      recordar(k,BY,cert);
+      say('');
+      $('gate').className='gate hide';
+      $('app').className='';
+      $('hwho').className='who'; $('hwho').textContent=BY;
+      $('hout').className='out';
+      cargar();
+    })
+    .catch(function(e){ console.error(e); say(T('net'),'bad') });
+}
+
+/* Trae el tablero de cada equipo y, de paso, si ya nos dijeron a dónde
+   pagarles. Todo en paralelo: un entrenador con siete equipos no debe
+   esperar siete veces. */
+function cargar(){
+  if(!CAMPS.length){ $('teams').innerHTML='<p class="help">'+T('none')+'</p>'; return }
+  var jobs = CAMPS.map(function(c){
+    return rpc('game_board',{p_campaign:c.id})
+      .then(function(g){ BOARDS[c.id]=Array.isArray(g)?g:[] })
+      .catch(function(){ BOARDS[c.id]=null });
+  });
+  jobs.push(rpc('payout_check',{p_code:CODE})
+    .then(function(r){ PAY = (r&&r.ok)?r:null })
+    .catch(function(){ PAY=null }));
+  Promise.all(jobs).then(pintar);
+}
+
+/* Una sola función decide si un juego ya pasó, para que las dos cuentas
+   no se puedan contradecir. Si el juego tiene hora, se le dan dos horas
+   desde el saque: el entrenador que entra a las diez de la noche ve el
+   aviso esa misma noche, no al otro día. Si no tiene hora, no pasa hasta
+   que cambie el día — mejor avisar tarde que apurar a alguien por un
+   juego que es a las siete. */
+function yaPaso(g){
+  if(!g||!g.plays_on) return false;
+  var ahora=new Date();
+  if(g.tips_at){
+    var hm=String(g.tips_at).split(':');
+    var t=new Date(g.plays_on+'T00:00:00');
+    if(!isNaN(t)){
+      t.setHours((+hm[0]||0)+2,(+hm[1]||0),0,0);
+      return ahora>t;
+    }
+  }
+  var fin=new Date(g.plays_on+'T00:00:00');
+  if(isNaN(fin)) return false;
+  fin.setHours(23,59,59,0);
+  return ahora>fin;
+}
+function pendiente(g){ return g.team_points===null||g.team_points===undefined }
+
+/* Un juego pide marcador cuando ya se jugó y todavía no tiene puntos. */
+function sinMarcador(games){
+  if(!games) return [];
+  return games.filter(function(g){ return pendiente(g)&&yaPaso(g) });
+}
+function porJugar(games){
+  if(!games) return [];
+  return games.filter(function(g){ return pendiente(g)&&!yaPaso(g) });
+}
+/* Cuidado aquí: g.pledges es por juego, no por campaña. Sumarlo cuenta
+   al mismo padrino una vez por cada juego que apadrinó, y da un número
+   que no cuadra con nada. Lo que sí es un número de verdad es cuántos
+   padrinos tiene el próximo juego — y es el que al entrenador le
+   importa: si hay gente con dinero puesto en el juego del jueves. */
+function padrinos(games){
+  var up=porJugar(games);
+  if(!up.length) return 0;
+  var next=up.slice().sort(function(a,b){
+    return String(a.plays_on||'9999').localeCompare(String(b.plays_on||'9999'));
+  })[0];
+  return Number(next.pledges)||0;
+}
+
+function pintar(){
+  paintStatic();
+
+  /* Lo primero de la página: lo que cuesta dinero si se olvida. */
+  var pend=0, uno=null;
+  CAMPS.forEach(function(c){
+    var s=sinMarcador(BOARDS[c.id]);
+    pend+=s.length;
+    if(s.length&&!uno) uno=c;
+  });
+  $('todo').innerHTML = pend ?
+    '<div class="todo">'+
+      '<b>'+T('todoL')+'</b>'+
+      '<div class="big">'+(pend===1?T('todo1',{N:pend}):T('todoN',{N:pend}))+'</div>'+
+      '<p>'+T('todoP')+'</p>'+
+      '<a class="btn go" href="scoreboard.html?c='+esc(uno.id)+'">'+T('todoGo')+'</a>'+
+    '</div>' : '';
+
+  $('teams').innerHTML = CAMPS.map(function(c){
+    var g=BOARDS[c.id], sin=sinMarcador(g), up=porJugar(g), pad=padrinos(g);
+    var pay='';
+    if(PAY&&PAY.campaign===c.id){
+      pay = PAY.already
+        ? '<div class="pay">'+T('payOk',{A:esc(PAY.ath||'')})+'</div>'
+        : '<div class="pay no">'+T('payNo')+'</div>';
+    }
+    return '<div class="team">'+
+      '<p class="nm">'+esc(c.name)+'</p>'+
+      '<div class="nums">'+
+        '<div class="num"><b>'+up.length+'</b><span>'+T('nUp')+'</span></div>'+
+        '<div class="num'+(sin.length?' hot':'')+'"><b>'+sin.length+'</b><span>'+T('nNo')+'</span></div>'+
+        '<div class="num"><b>'+pad+'</b><span>'+T('nPad')+'</span></div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<a class="fill" href="scoreboard.html?c='+esc(c.id)+'">'+T('aBoard')+'</a>'+
+        '<a href="calendario.html">'+T('aGames')+'</a>'+
+        (sin.length?'<a class="wide" href="scoreboard.html?c='+esc(c.id)+'">'+T('aScore')+'</a>':'')+
+      '</div>'+
+      pay+
+    '</div>';
+  }).join('');
+}
+
+$('code').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){ e.preventDefault(); entrar(false) }
+});
+
+paintStatic();
+if(CODE) entrar(true);
+</script>
+</body>
+</html>
