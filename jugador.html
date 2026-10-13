@@ -120,7 +120,7 @@ var S = {
     lede:'Pon tu nombre y tu categoría. Te damos un enlace para mandarle a tu familia — lo que prometan queda apuntado a tu nombre.',
     nameL:'Tu nombre', namePh:'Nombre y apellido',
     squadL:'Tu categoría o equipo', squadPh:'Mini, Juniors, Senior Silver…',
-    squadPick:'Escoge tu escuadra',
+    squadPick:'Escoge tu escuadra', squadOther:'Otra — la escribo yo',
     go:'Dame mi enlace',
     errName:'Escribe tu nombre completo.',
     errGen:'No se pudo. Intenta otra vez.',
@@ -143,7 +143,7 @@ var S = {
     lede:'Put your name and your squad. We give you a link to send your family — whatever they pledge is credited to you.',
     nameL:'Your name', namePh:'First and last name',
     squadL:'Your squad or category', squadPh:'Mini, Juniors, Senior Silver…',
-    squadPick:'Pick your squad',
+    squadPick:'Pick your squad', squadOther:'Other \u2014 let me type it',
     go:'Give me my link',
     errName:'Write your full name.',
     errGen:'That did not work. Try again.',
@@ -183,6 +183,12 @@ var PARAMS = new URLSearchParams(location.search);
 var CAMPAIGN = PARAMS.get('c');
 var WANT_SQUAD = PARAMS.get('d') || null;   // la categoría del juego que tocó
 var BOARD = null, ME = null;
+/* Los nombres de escuadra que ya existen en la campaña. Antes esto
+   salía sólo de las notas de los juegos, así que un programa recién
+   montado — sin juegos todavía — no ofrecía ninguna y cada familia
+   escribía la suya. De ahí salen "Mini", "mini" y "MINI" como tres
+   escuadras distintas. */
+var SQUADS = [];
 var app = document.getElementById('app');
 
 function esc(s){
@@ -194,13 +200,22 @@ function esc(s){
 // Las escuadras que de verdad existen en el calendario, sacadas de
 // la nota de cada juego igual que en el tablero.
 function divs(){
-  if (!BOARD || !BOARD.games) return [];
   var out = [];
-  BOARD.games.forEach(function(g){
-    if (g.status === 'cancelled') return;
-    var d = String(g.note || '').split('·')[0].trim();
-    if (d && out.indexOf(d) === -1) out.push(d);
-  });
+  function add(d){
+    d = String(d || '').trim();
+    if (!d) return;
+    for (var i = 0; i < out.length; i++){
+      if (out[i].toLowerCase() === d.toLowerCase()) return;
+    }
+    out.push(d);
+  }
+  SQUADS.forEach(add);
+  if (BOARD && BOARD.games){
+    BOARD.games.forEach(function(g){
+      if (g.status === 'cancelled') return;
+      add(String(g.note || '').split('·')[0]);
+    });
+  }
   return out;
 }
 
@@ -259,14 +274,17 @@ function draw(){
     '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
     '<label for="sq">' + T('squadL') + '</label>' +
     (divs().length
-      ? '<select id="sq">' +
+      ? '<select id="sq" onchange="otra()">' +
           '<option value="">' + T('squadPick') + '</option>' +
           divs().map(function(d){
             var on = WANT_SQUAD && d.toLowerCase() === WANT_SQUAD.trim().toLowerCase();
             return '<option value="' + esc(d) + '"' + (on ? ' selected' : '') + '>' +
                    esc(d) + '</option>';
           }).join('') +
-        '</select>'
+          '<option value="__otra">' + T('squadOther') + '</option>' +
+        '</select>' +
+        '<input id="sqx" type="text" maxlength="30" style="display:none;margin-top:8px" ' +
+          'placeholder="' + T('squadPh') + '">'
       : '<input id="sq" type="text" maxlength="30" placeholder="' + T('squadPh') + '">') +
     '<button class="btn" onclick="join()">' + T('go') + '</button>' +
     '<p class="msg" id="msg"></p>';
@@ -279,7 +297,12 @@ function say(t,c){
 
 function join(){
   var name = (document.getElementById('nm').value || '').trim();
-  var squad = (document.getElementById('sq').value || '').trim();
+  var sel = document.getElementById('sq');
+  var squad = ((sel && sel.value) || '').trim();
+  if (squad === '__otra'){
+    var x = document.getElementById('sqx');
+    squad = ((x && x.value) || '').trim();
+  }
   if (name.length < 2) return say(T('errName'), 'bad');
 
   say('…');
@@ -292,6 +315,17 @@ function join(){
       draw();
     })
     .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
+}
+
+/* "Otra" enseña el cuadrito para escribirla. Hace falta: un programa
+   que monta una escuadra nueva a mitad de temporada no puede quedarse
+   fuera por no estar en la lista. */
+function otra(){
+  var sel = document.getElementById('sq'), x = document.getElementById('sqx');
+  if (!sel || !x) return;
+  var on = sel.value === '__otra';
+  x.style.display = on ? 'block' : 'none';
+  if (on) x.focus();
 }
 
 function copyLink(){
@@ -313,7 +347,10 @@ try {
 document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
 
 if (CAMPAIGN){
-  rpc('game_board', { p_campaign: CAMPAIGN })
+  rpc('campaign_squads', { p_campaign: CAMPAIGN })
+    .then(function(r){ SQUADS = Array.isArray(r) ? r : []; })
+    .catch(function(){ SQUADS = []; })
+    .then(function(){ return rpc('game_board', { p_campaign: CAMPAIGN }); })
     .then(function(b){ BOARD = b; draw(); })
     .catch(function(e){ console.error(e); draw(); });
 } else {
