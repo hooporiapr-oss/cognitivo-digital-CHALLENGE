@@ -95,6 +95,11 @@ textarea{font-weight:500;min-height:110px;resize:vertical;line-height:1.5}
 .drop{border:0;background:none;color:var(--mute);font:inherit;font-size:1.1rem;font-weight:900;
   cursor:pointer;padding:0 2px;flex:0 0 auto}
 
+.more{border:2px solid var(--line);border-radius:6px;padding:0 15px;margin:0 0 12px}
+.more[open]{padding:0 15px 15px}
+.more summary{cursor:pointer;padding:13px 0;font-size:.82rem;font-weight:800;color:var(--mute)}
+.more summary::marker{color:var(--line)}
+
 .warn{border:3px solid var(--ball);background:#FFF6EF;border-radius:6px;padding:13px 15px;
   margin:0 0 14px;font-size:.88rem;font-weight:700}
 .warn b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
@@ -179,9 +184,9 @@ footer .f-dot{padding:0 7px;opacity:.5}
         </div>
         <div class="sqn" style="margin-top:12px">
           <div class="a"><label for="sa" id="tSaL"></label>
-            <input id="sa" type="text" maxlength="24" oninput="guardar();pintar()"></div>
+            <input id="sa" type="text" maxlength="24" oninput="guardar();ladear();pintar()"></div>
           <div class="b"><label for="sb" id="tSbL"></label>
-            <input id="sb" type="text" maxlength="24" oninput="guardar();pintar()"></div>
+            <input id="sb" type="text" maxlength="24" oninput="guardar();ladear();pintar()"></div>
         </div>
       </div>
 
@@ -190,14 +195,17 @@ footer .f-dot{padding:0 7px;opacity:.5}
       <div id="warn"></div>
       <div id="plist"></div>
       <p class="help" id="tRosterHelp"></p>
+      <p class="msg" id="pm"></p>
 
-      <h2 id="tAddH"></h2>
-      <div class="box">
+      <details class="more">
+        <summary id="tAddH"></summary>
         <label for="paste" id="tPasteL"></label>
         <textarea id="paste" spellcheck="false"></textarea>
         <button class="btn line" id="tPasteGo" onclick="pegar()"></button>
-        <p class="msg" id="pm"></p>
-      </div>
+        <p class="msg" id="am"></p>
+      </details>
+
+      <a class="btn line" href="plantilla.html" id="tManage"></a>
 
       <h2 id="tMakeH"></h2>
       <button class="btn go" id="tMake" onclick="crear()"></button>
@@ -249,12 +257,14 @@ var S={
     saL:'Escuadra 1', sbL:'Escuadra 2',
     sa:'Blancos', sb:'Azules',
     rosterH:'La plantilla',
-    rosterHelp:'Toca 1, 2 o — para cada nene. Los que dejes en blanco no salen en la hoja.',
+    rosterHelp:'Toca 1 o 2 para repartirlos. Queda guardado en la plantilla, así que la próxima vez ya está hecho.',
+    manage:'Añadir o quitar nenes →',
+    saving:'Guardando…', saved:'Guardado.',
     tA:'escuadra 1', tB:'escuadra 2', tOut:'sin poner',
-    empty:'Todavía no hay nadie en esta división. Pega los nombres abajo.',
+    empty:'Todavía no hay nadie en esta división.',
     joined:'se apuntó',
-    addH:'Añadir nombres',
-    pasteL:'Un nombre por línea',
+    addH:'Añadir un nombre que falta',
+    pasteL:'Un nombre por línea — se queda en la plantilla',
     pasteGo:'Añadir a la plantilla',
     pasteNone:'No salió ningún nombre de ahí.',
     pasteOk:'{N} añadido.', pasteOkN:'{N} añadidos.',
@@ -297,12 +307,14 @@ var S={
     saL:'Squad 1', sbL:'Squad 2',
     sa:'Blancos', sb:'Azules',
     rosterH:'The roster',
-    rosterHelp:'Tap 1, 2 or — for each child. Anyone left blank does not appear on the sheet.',
+    rosterHelp:'Tap 1 or 2 to split them. It is saved to the roster, so next time it is already done.',
+    manage:'Add or remove children →',
+    saving:'Saving…', saved:'Saved.',
     tA:'squad 1', tB:'squad 2', tOut:'unassigned',
-    empty:'Nobody in this division yet. Paste the names below.',
+    empty:'Nobody in this division yet.',
     joined:'signed up',
-    addH:'Add names',
-    pasteL:'One name per line',
+    addH:'Add a name that is missing',
+    pasteL:'One name per line — it stays on the roster',
     pasteGo:'Add to the roster',
     pasteNone:'No names came out of that.',
     pasteOk:'{N} added.', pasteOkN:'{N} added.',
@@ -389,6 +401,7 @@ function paintStatic(){
   $('tAddH').textContent=T('addH');
   $('tPasteL').textContent=T('pasteL');
   $('tPasteGo').textContent=T('pasteGo');
+  $('tManage').textContent=T('manage');
   $('tMakeH').textContent=T('makeH');
   $('tMake').textContent=T('make');
   $('tPrint').textContent=T('print');
@@ -401,7 +414,7 @@ function toggleLang(){
   try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
        localStorage.setItem('fc-lang',LANG) }catch(e){}
   paintStatic();
-  if(CID) pintar();
+  if(CID){ ladear(); pintar() }
 }
 
 function entrar(auto){
@@ -441,57 +454,85 @@ function cambiarCamp(){ CID=$('camp').value; cargarCamp() }
 /* La plantilla se junta de dos sitios: quien se apuntó solo por su
    enlace, y los nombres que el entrenador puso aquí. Los que se
    apuntaron se marcan, porque ésos sí tienen enlace propio. */
+/* La plantilla sale de la base de datos, no de este aparato. Antes cada
+   teléfono tenía su propia lista escrita a mano: el reparto se perdía
+   al cerrar y en otro teléfono no existía. Ahora es la misma lista que
+   se maneja en plantilla.html, y la escuadra que se escoge aquí queda
+   guardada allá — la próxima vez ya está repartido. */
 function cargarCamp(){
-  PL=leer();
+  PL=[];
+  var d=null;
+  try{ d=JSON.parse(localStorage.getItem(llave())||'null') }catch(e){}
+  SA=(d&&d.a)||T('sa'); SB_=(d&&d.b)||T('sb');
   $('sa').value=SA; $('sb').value=SB_;
   $('res').innerHTML=''; say('cm',''); say('pm','');
-  pintar();
-  rpc('game_roster',{p_campaign:CID})
+  $('plist').innerHTML='<p class="help">\u2026</p>';
+
+  return rpc('roster_list',{p_code:CODE,p_campaign:CID})
     .then(function(r){
-      (Array.isArray(r)?r:[]).forEach(function(p){
-        var n=trim(p.name); if(!n) return;
-        var hay=PL.filter(function(x){ return x.n.toLowerCase()===n.toLowerCase() })[0];
-        if(hay){ hay.j=true } else { PL.push({n:n,s:'',j:true}) }
-      });
-      guardar(); pintar();
+      if(!r||!r.ok){ PL=[]; pintar(); return }
+      PL=(r.players||[]).filter(function(x){ return x.state==='active' })
+        .map(function(x){ return {id:x.id, n:x.name, sq:x.squad||'', s:''} });
+      ladear(); pintar();
     })
-    .catch(function(){ /* sin red la lista del aparato sirve igual */ });
+    .catch(function(){ PL=[]; pintar() });
 }
 
+/* De qué lado está cada uno: se compara la escuadra que ya tiene
+   guardada con los dos nombres de arriba. Si no cuadra con ninguno,
+   queda sin poner — no se adivina. */
+function ladear(){
+  PL.forEach(function(p){
+    var sq=(p.sq||'').toLowerCase();
+    p.s = sq && sq===SA.toLowerCase() ? 'a'
+        : sq && sq===SB_.toLowerCase() ? 'b' : '';
+  });
+}
+
+/* Tocar 1 o 2 no es sólo pintar: le guarda la escuadra al nene. Por eso
+   el reparto sobrevive a cerrar la página, y por eso la familia que
+   abre su enlace ve los juegos de SU escuadra y no los de la otra. */
 function poner(i,s){
-  if(!PL[i]) return;
-  PL[i].s = (PL[i].s===s) ? '' : s;
+  var p=PL[i]; if(!p) return;
+  var nuevo = (p.s===s) ? '' : s;
+  var sq = nuevo==='a' ? SA : nuevo==='b' ? SB_ : '';
+  p.s=nuevo; p.sq=sq;
   guardar(); pintar();
-}
-function quitar(i){
-  if(!PL[i]) return;
-  if(PL[i].j){ PL[i].s='o' } else { PL.splice(i,1) }
-  guardar(); pintar();
+  say('pm',T('saving'));
+  rpc('roster_edit',{p_code:CODE,p_campaign:CID,p_player:p.id,p_name:p.n,p_squad:sq})
+    .then(function(r){ say('pm', (r&&r.ok)?T('saved'):T('net'), (r&&r.ok)?'ok':'bad') })
+    .catch(function(){ say('pm',T('net'),'bad') });
 }
 
+/* El mismo cuadro de pegar que antes, pero lo que se pega entra a la
+   plantilla de verdad — no a una lista de este teléfono. Es para el
+   nene que aparece en la cancha el jueves y no estaba apuntado: se
+   añade aquí sin salir de la página, y queda puesto para siempre. */
 function pegar(){
   var raw=trim($('paste').value);
-  if(!raw) return say('pm',T('pasteNone'),'bad');
-  var add=0, dup=0;
-  raw.split('\n').forEach(function(ln){
-    var n=trim(ln).replace(/^[0-9]+[.)\-\s]+/,'');
-    n=trim(n);
-    if(n.length<2) return;
-    if(PL.filter(function(x){ return x.n.toLowerCase()===n.toLowerCase() }).length){ dup++; return }
-    PL.push({n:n,s:'',j:false}); add++;
-  });
-  if(!add&&!dup) return say('pm',T('pasteNone'),'bad');
-  $('paste').value='';
-  guardar(); pintar();
-  say('pm', (add===1?T('pasteOk',{N:add}):T('pasteOkN',{N:add})) +
-    (dup ? (dup===1?T('pasteDup',{N:dup}):T('pasteDupN',{N:dup})) : ''), 'ok');
+  if(!raw) return say('am',T('pasteNone'),'bad');
+  var names=raw.split('\n').map(function(ln){
+    return trim(trim(ln).replace(/^[0-9]+[.)\-\s]+/,''));
+  }).filter(function(n){ return n.length>=2 });
+  if(!names.length) return say('am',T('pasteNone'),'bad');
+
+  say('am','\u2026');
+  rpc('roster_add',{p_code:CODE,p_campaign:CID,p_names:names,p_squad:''})
+    .then(function(r){
+      if(!r||!r.ok) return say('am',T('bad'),'bad');
+      $('paste').value='';
+      var m=(r.added===1?T('pasteOk',{N:r.added}):T('pasteOkN',{N:r.added}));
+      if(r.skipped) m+=(r.skipped===1?T('pasteDup',{N:r.skipped}):T('pasteDupN',{N:r.skipped}));
+      cargarCamp().then(function(){ say('am',m,'ok') });
+    })
+    .catch(function(){ say('am',T('net'),'bad') });
 }
 
 function lado(s){ return PL.filter(function(p){ return p.s===s }) }
 
 function pintar(){
   SA=trim($('sa').value)||T('sa'); SB_=trim($('sb').value)||T('sb');
-  var A=lado('a'), B=lado('b'), O=PL.filter(function(p){ return p.s==='' });
+  var A=lado('a'), B=lado('b'), O=PL.filter(function(p){ return !p.s });
 
   $('tally').innerHTML=
     '<div class="tal a"><b>'+A.length+'</b><span>'+esc(SA)+'</span></div>'+
@@ -509,16 +550,13 @@ function pintar(){
 
   $('plist').innerHTML = PL.length
     ? '<div class="plist">'+PL.map(function(p,i){
-        var cls = p.s==='a'?'xa':p.s==='b'?'xb':p.s==='o'?'xo':'';
+        var cls = p.s==='a'?'xa':p.s==='b'?'xb':'';
         return '<div class="pl '+cls+'">'+
-          '<span class="nm">'+esc(p.n)+
-            (p.j?'<small>'+esc(T('joined'))+'</small>':'')+'</span>'+
+          '<span class="nm">'+esc(p.n)+'</span>'+
           '<span class="pick">'+
             '<button class="a'+(p.s==='a'?' on a':'')+'" onclick="poner('+i+',\'a\')">1</button>'+
             '<button class="b'+(p.s==='b'?' on b':'')+'" onclick="poner('+i+',\'b\')">2</button>'+
-            '<button class="o'+(p.s==='o'?' on o':'')+'" onclick="poner('+i+',\'o\')">—</button>'+
           '</span>'+
-          '<button class="drop" onclick="quitar('+i+')" aria-label="x">×</button>'+
         '</div>';
       }).join('')+'</div>'
     : '<p class="help">'+esc(T('empty'))+'</p>';
