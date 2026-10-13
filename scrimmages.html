@@ -85,6 +85,12 @@ table.money td:first-child{font-weight:700}
 table.money tr:last-child td{border-bottom:0}
 .cierre{color:var(--mute);font-size:.88rem;margin:6px 0 0}
 
+.goals{border:1.5px solid var(--line);border-radius:4px;padding:14px 16px;margin:0 0 8px}
+.goals b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.goals ul{margin:0;padding-left:19px}
+.goals li{font-size:.94rem;margin-bottom:3px}
+.goals li:last-child{margin-bottom:0}
 .callout{border-left:4px solid var(--ball);background:#FFF6EF;border-radius:0 5px 5px 0;
   padding:14px 16px;margin:20px 0}
 .callout b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
@@ -96,6 +102,11 @@ table.money tr:last-child td{border-bottom:0}
   cursor:pointer;text-align:center;text-decoration:none;margin-top:12px}
 .btn.line{background:#fff;color:var(--ink)}
 .btn.go{background:var(--accent);border-color:var(--accent)}
+
+/* Para quien ya trabaja con esto. La página vende primero; el que ya
+   entró no necesita que se le venda, sólo la puerta. */
+.coach{text-align:center;margin:18px 0 0;font-size:.88rem;color:var(--mute)}
+.coach a{color:var(--accent);font-weight:800;text-decoration:none;white-space:nowrap}
 
 footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
   padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
@@ -141,20 +152,30 @@ var S={
     courtP:'Las dos escuadras son tuyas. Las familias de una apadrinan a una, las de la otra apadrinan a la otra, y <b>todos los puntos de la cancha</b> son del programa — en vez de la mitad.',
 
     whyH:'Por qué es la jugada principal',
-    w1b:'No depende de nadie.',
-    w1:'Sin liga que apruebe, sin temporada que esperar, sin rival que confirme. Se monta el martes y se juega el jueves.',
-    w2b:'Nadie se lleva una pela.',
-    w2:'Se juega por sets, cada uno a siete y empezando 0–0. El que va perdiendo dos sets sigue vivo, y el que va perdiendo el partido sigue anotando puntos que cuentan.',
-    w3b:'Recaudan las dos escuadras.',
-    w3:'Hay ganador y perdedor, pero las canastas valen lo mismo para los dos lados. En un partido parejo el que pierde se lleva el 78% de lo que se lleva el que gana.',
-    w4b:'Los papás ya estaban ahí.',
-    w4:'Es tu cancha, tu gente y cerca de una hora. No hay que mover a nadie a ningún sitio.',
+    w1b:'Es una noche que no iba a recaudar nada.',
+    w1:'El juego de liga iba a jugarse de todos modos. El jueves no. Un interescuadra no le quita nada a nada — recauda donde antes no se recaudaba.',
+    w2b:'Juegan todos.',
+    w2:'Regla 1.2 de Sietes: todo jugador inscrito juega. Y en Cada Punto el que recauda es el jugador — saca su propio enlace y busca sus propios padrinos. El nene que se queda en el banco no recauda, y su familia tampoco. Aquí no hay banco.',
+    w3b:'Hay más días de práctica que de juego.',
+    w3:'La cancha ya está cogida, los nenes ya están ahí y los papás ya están afuera esperando. Un interescuadra cabe en una práctica sin costar nada de más.',
+    w4b:'No depende de nadie.',
+    w4:'Sin liga que apruebe, sin temporada que esperar, sin rival que confirme. Se monta el martes y se juega el jueves.',
+    w5b:'Nadie se lleva una pela.',
+    w5:'Se juega por sets, cada uno a siete y empezando 0–0. El que va perdiendo dos sets sigue vivo, y el que va perdiendo el partido sigue anotando puntos que cuentan.',
+    w6b:'Recaudan las dos escuadras.',
+    w6:'Hay ganador y perdedor, pero las canastas valen lo mismo para los dos lados. En un partido parejo el que pierde se lleva el 78% de lo que se lleva el que gana.',
 
     mathH:'Lo que queda en la cancha',
     mathP:'Un partido parejo, a 50¢ el punto, por padrino:',
     mh:['Escuadra','Puntos','Por padrino'],
     mr:[['Gana','25.6','$12.80'],['Pierde','20.1','$10.05']],
     mathN:'Contra otro programa, sus puntos recaudan para ellos. En un interescuadra las dos columnas son tuyas.',
+
+    goalH:'Jugar por algo que se ve',
+    goalP:'Un programa recauda mejor cuando el dinero tiene nombre. No es «apoya al programa» — es «nos faltan $4,000 para la máquina de tiro». Un padrino puede ver eso terminarse, y vuelve para el próximo porque sabe cuánto falta.',
+    goalL:'Lo que un programa se pone de meta',
+    goals:['Uniformes para la temporada','Un tablero nuevo','Una máquina de tiro','El viaje al torneo','Balones y equipo de práctica'],
+    goalN:'El dinero es del programa, como siempre. El programa decide en qué se gasta — nosotros no somos parte de esa decisión y no retenemos nada para ningún otro fin.',
 
     coH:'Y esto es lo que lo sostiene',
     coP:'El marcador que se publica es el que se jugó. Un anotador que no sea jugador lleva la hoja, los dos entrenadores la firman, y el total se publica el mismo día con el código del entrenador. El padrino paga por un número que no vio — eso sólo funciona si el número es cierto.',
@@ -165,6 +186,7 @@ var S={
     p3b:'Mandas un enlace.', p3:'Al grupo del equipo. Cada familia se apunta sola y recibe su propio enlace de padrinos.',
     p4b:'Se juega y pones el total.', p4:'Un número por escuadra, desde el tablero con tu código.',
 
+    coachQ:'¿Ya eres entrenador?', coachL:'Mi equipo →',
     ctaA:'Montar un interescuadra',
     ctaB:'Las reglas completas de Sietes →',
     ctaC:'Inscribe tu programa',
@@ -179,20 +201,30 @@ var S={
     courtP:'Both squads are yours. One squad’s families back that squad, the other’s back theirs, and <b>every point on the floor</b> belongs to the program — instead of half of them.',
 
     whyH:'Why it is the main play',
-    w1b:'It depends on nobody.',
-    w1:'No league to ask, no season to wait for, no opponent to confirm. Set it up Tuesday and play it Thursday.',
-    w2b:'Nobody gets blown out.',
-    w2:'It is played in sets, each to seven and each starting 0–0. A squad down two sets is still alive, and a squad losing the match is still scoring points that count.',
-    w3b:'Both squads raise.',
-    w3:'There is a winner and a loser, but baskets are worth the same to both sides. In an even match the losing squad takes 78% of what the winner takes.',
-    w4b:'The parents were already there.',
-    w4:'Your gym, your people, about an hour. Nobody has to travel anywhere.',
+    w1b:'It is a night that was going to raise nothing.',
+    w1:'The league game was happening anyway. Thursday was not. A scrimmage takes nothing away from anything — it raises where nothing was being raised.',
+    w2b:'Everybody plays.',
+    w2:'Sietes rule 1.2: every rostered player plays. And in Cada Punto the player is the fundraiser — he takes his own link and finds his own padrinos. A child on the bench does not raise, and neither does his family. Here there is no bench.',
+    w3b:'There are more practice days than game days.',
+    w3:'The gym is already booked, the children are already there and the parents are already outside waiting. A scrimmage fits inside a practice at no extra cost.',
+    w4b:'It depends on nobody.',
+    w4:'No league to ask, no season to wait for, no opponent to confirm. Set it up Tuesday and play it Thursday.',
+    w5b:'Nobody gets blown out.',
+    w5:'It is played in sets, each to seven and each starting 0–0. A squad down two sets is still alive, and a squad losing the match is still scoring points that count.',
+    w6b:'Both squads raise.',
+    w6:'There is a winner and a loser, but baskets are worth the same to both sides. In an even match the losing squad takes 78% of what the winner takes.',
 
     mathH:'What stays on the floor',
     mathP:'An even match, at 50¢ a point, per padrino:',
     mh:['Squad','Points','Per padrino'],
     mr:[['Wins','25.6','$12.80'],['Loses','20.1','$10.05']],
     mathN:'Against another program, their points raise for them. In a scrimmage both columns are yours.',
+
+    goalH:'Playing for something you can see',
+    goalP:'A program raises better when the money has a name. Not \u201csupport the program\u201d \u2014 it is \u201cwe are $4,000 short of the shooting machine.\u201d A padrino can picture that finishing, and comes back for the next one because they know how much is left.',
+    goalL:'What a program sets as the goal',
+    goals:['Uniforms for the season','A new backboard','A shooting machine','The trip to the tournament','Balls and practice gear'],
+    goalN:'The money is the program\u2019s, the way it always is. The program decides what it is spent on \u2014 we are not part of that decision and we hold nothing back for any other purpose.',
 
     coH:'And this is what holds it up',
     coP:'The score that gets posted is the score that was played. Someone who is not a player keeps the sheet, both coaches sign it, and the total is posted the same day with the coach’s code. The padrino pays on a number they did not see — that only works if the number is true.',
@@ -203,6 +235,7 @@ var S={
     p3b:'Send one link.', p3:'To the team chat. Each family signs up on their own and gets their own padrino link.',
     p4b:'Play it and post the total.', p4:'One number per squad, from the board with your code.',
 
+    coachQ:'Already a coach?', coachL:'My team →',
     ctaA:'Set up a scrimmage',
     ctaB:'The full Sietes rules →',
     ctaC:'Sign up my program',
@@ -264,12 +297,19 @@ function paint(){
     '</div>'+
 
     '<h2>'+esc(T('whyH'))+'</h2>'+
-    '<div class="why">'+why(1)+why(2)+why(3)+why(4)+'</div>'+
+    '<div class="why">'+why(1)+why(2)+why(3)+why(4)+why(5)+why(6)+'</div>'+
 
     '<h2>'+esc(T('mathH'))+'</h2>'+
     '<p class="cierre">'+esc(T('mathP'))+'</p>'+
     tabla()+
     '<p class="cierre">'+esc(T('mathN'))+'</p>'+
+
+    '<h2>'+esc(T('goalH'))+'</h2>'+
+    '<p class="cierre" style="margin-bottom:12px">'+esc(T('goalP'))+'</p>'+
+    '<div class="goals"><b>'+esc(T('goalL'))+'</b><ul>'+
+      T('goals').map(function(g){ return '<li>'+esc(g)+'</li>' }).join('')+
+    '</ul></div>'+
+    '<p class="cierre">'+esc(T('goalN'))+'</p>'+
 
     '<div class="callout"><b>'+esc(T('coH'))+'</b><p>'+esc(T('coP'))+'</p></div>'+
 
@@ -278,7 +318,9 @@ function paint(){
 
     '<a class="btn go" href="escuadras.html">'+esc(T('ctaA'))+'</a>'+
     '<a class="btn line" href="sietes.html">'+esc(T('ctaB'))+'</a>'+
-    '<a class="btn line" href="equipo.html">'+esc(T('ctaC'))+'</a>';
+    '<a class="btn line" href="equipo.html">'+esc(T('ctaC'))+'</a>'+
+    '<p class="coach">'+esc(T('coachQ'))+
+      ' <a href="mi-equipo.html">'+esc(T('coachL'))+'</a></p>';
 }
 paint();
 </script>
