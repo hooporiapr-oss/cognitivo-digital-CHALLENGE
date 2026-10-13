@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Interescuadra — Cada Punto</title>
+<meta name="description" content="Un programa no necesita rival para recaudar. Parte su matrícula en dos escuadras y juega en su propia cancha.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cada Punto">
+<meta property="og:title" content="Interescuadra — Cada Punto">
+<meta property="og:description" content="No hace falta rival. Partes tu matrícula en dos y todos los puntos de la cancha son del programa.">
+<meta property="og:locale" content="es_PR">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* El interescuadra es la jugada principal del programa: la única forma
+   de recaudar que no depende de que otro programa diga que sí. Esta
+   página la vende. Las reglas completas viven en sietes.html y el
+   montaje en escuadras.html — aquí no se repite ninguna de las dos. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--good:#0B7A5A}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(600px,93vw);margin:0 auto}
+
+header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{flex:1 1 auto;overflow-x:hidden}
+main .wrap{padding:clamp(20px,5vw,34px) 0 36px}
+
+.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(1.6rem,5.4vw,2.25rem);letter-spacing:-.035em;line-height:1.08;
+  margin:0 0 12px;font-weight:900}
+.lede{color:var(--mute);margin:0 0 26px;font-size:1.02rem}
+h2{font-size:1.02rem;margin:32px 0 10px;font-weight:900;letter-spacing:-.02em}
+
+/* la cancha: dos escuadras del mismo programa */
+.court{border:2px solid var(--line);border-radius:6px;overflow:hidden;margin:0 0 26px}
+.court .top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  background:var(--tint);border-bottom:2px solid var(--line)}
+.court .sq{padding:15px 12px;text-align:center}
+.court .sq b{display:block;font-size:1.02rem;font-weight:900;letter-spacing:-.02em}
+.court .sq span{display:block;font-size:.58rem;font-weight:900;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--mute);margin-top:3px}
+.court .sq.a b{color:#1C5F9E} .court .sq.b b{color:#9E3A1C}
+.court .vs{font-size:.6rem;font-weight:900;letter-spacing:.14em;color:var(--mute);
+  padding:0 6px}
+.court .bot{padding:14px 15px;font-size:.92rem;color:var(--mute)}
+.court .bot b{color:var(--ink)}
+
+.why{display:grid;gap:11px;margin:0 0 10px}
+.why .s{border:1.5px solid var(--line);border-radius:4px;padding:14px 16px}
+.why .s b{display:block;font-size:.98rem;margin-bottom:3px}
+.why .s span{color:var(--mute);font-size:.92rem;display:block}
+
+.how{display:grid;gap:10px;margin:0 0 18px;counter-reset:p}
+.how .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px 13px 46px;
+  position:relative}
+.how .s::before{counter-increment:p;content:counter(p);position:absolute;left:14px;top:13px;
+  width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
+  font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.how .s b{display:block;font-size:.96rem}
+.how .s span{color:var(--mute);font-size:.9rem}
+
+table.money{width:100%;border-collapse:collapse;margin:10px 0 8px;font-size:.92rem}
+table.money th{text-align:left;font-size:.56rem;font-weight:900;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--mute);padding:0 8px 6px 0;border-bottom:2px solid var(--line)}
+table.money td{padding:9px 8px 9px 0;border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
+table.money td:first-child{font-weight:700}
+table.money tr:last-child td{border-bottom:0}
+.cierre{color:var(--mute);font-size:.88rem;margin:6px 0 0}
+
+.callout{border-left:4px solid var(--ball);background:#FFF6EF;border-radius:0 5px 5px 0;
+  padding:14px 16px;margin:20px 0}
+.callout b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.callout p{margin:0;font-size:.93rem}
+
+.btn{display:block;width:100%;padding:15px;border:2px solid var(--ink);border-radius:4px;
+  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1rem;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:12px}
+.btn.line{background:#fff;color:var(--ink)}
+.btn.go{background:var(--accent);border-color:var(--accent)}
+
+footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+footer p{margin:0 0 7px}
+footer .f-co{color:#fff;font-weight:700}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-legal{margin:7px 0 0;font-size:.78rem}
+footer .f-dot{padding:0 7px;opacity:.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main><div class="wrap" id="app"></div></main>
+
+<footer>
+  <div class="wrap">
+    <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
+    <p class="f-mail"><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+    <p class="f-legal">
+      <a href="index.html">Cada Punto</a><span class="f-dot">·</span>
+      <a href="sietes.html" id="fRules">Reglas</a><span class="f-dot">·</span>
+      <a href="terms.html" id="fTerms">Términos</a><span class="f-dot">·</span>
+      <a href="custodia.html">Dinero</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+var S={
+  es:{
+    kick:'La jugada principal',
+    h1:'No hace falta rival.',
+    lede:'Un programa no tiene que esperar a que otro programa diga que sí. Parte su propia matrícula en dos escuadras, juega en su cancha, y recauda con las dos.',
+
+    sqA:'Escuadra A', sqB:'Escuadra B', sqN:'tu programa', vs:'vs',
+    courtP:'Las dos escuadras son tuyas. Las familias de una apadrinan a una, las de la otra apadrinan a la otra, y <b>todos los puntos de la cancha</b> son del programa — en vez de la mitad.',
+
+    whyH:'Por qué es la jugada principal',
+    w1b:'No depende de nadie.',
+    w1:'Sin liga que apruebe, sin temporada que esperar, sin rival que confirme. Se monta el martes y se juega el jueves.',
+    w2b:'Nadie se lleva una pela.',
+    w2:'Se juega por sets, cada uno a siete y empezando 0–0. El que va perdiendo dos sets sigue vivo, y el que va perdiendo el partido sigue anotando puntos que cuentan.',
+    w3b:'Recaudan las dos escuadras.',
+    w3:'Hay ganador y perdedor, pero las canastas valen lo mismo para los dos lados. En un partido parejo el que pierde se lleva el 78% de lo que se lleva el que gana.',
+    w4b:'Los papás ya estaban ahí.',
+    w4:'Es tu cancha, tu gente y cerca de una hora. No hay que mover a nadie a ningún sitio.',
+
+    mathH:'Lo que queda en la cancha',
+    mathP:'Un partido parejo, a 50¢ el punto, por padrino:',
+    mh:['Escuadra','Puntos','Por padrino'],
+    mr:[['Gana','25.6','$12.80'],['Pierde','20.1','$10.05']],
+    mathN:'Contra otro programa, sus puntos recaudan para ellos. En un interescuadra las dos columnas son tuyas.',
+
+    coH:'Y esto es lo que lo sostiene',
+    coP:'El marcador que se publica es el que se jugó. Un anotador que no sea jugador lleva la hoja, los dos entrenadores la firman, y el total se publica el mismo día con el código del entrenador. El padrino paga por un número que no vio — eso sólo funciona si el número es cierto.',
+
+    howH:'Cómo se monta',
+    p1b:'Partes la plantilla.', p1:'Dos escuadras, los nombres que quieras. Blancos y Azules sirve.',
+    p2b:'Pones fecha y hora.', p2:'Se crean los dos juegos de una vez, uno por escuadra.',
+    p3b:'Mandas un enlace.', p3:'Al grupo del equipo. Cada familia se apunta sola y recibe su propio enlace de padrinos.',
+    p4b:'Se juega y pones el total.', p4:'Un número por escuadra, desde el tablero con tu código.',
+
+    ctaA:'Montar un interescuadra',
+    ctaB:'Las reglas completas de Sietes →',
+    ctaC:'Inscribe tu programa',
+    rules:'Reglas', terms:'Términos'
+  },
+  en:{
+    kick:'The main play',
+    h1:'You do not need an opponent.',
+    lede:'A program does not have to wait for another program to say yes. It splits its own roster into two squads, plays in its own gym, and raises on both.',
+
+    sqA:'Squad A', sqB:'Squad B', sqN:'your program', vs:'vs',
+    courtP:'Both squads are yours. One squad’s families back that squad, the other’s back theirs, and <b>every point on the floor</b> belongs to the program — instead of half of them.',
+
+    whyH:'Why it is the main play',
+    w1b:'It depends on nobody.',
+    w1:'No league to ask, no season to wait for, no opponent to confirm. Set it up Tuesday and play it Thursday.',
+    w2b:'Nobody gets blown out.',
+    w2:'It is played in sets, each to seven and each starting 0–0. A squad down two sets is still alive, and a squad losing the match is still scoring points that count.',
+    w3b:'Both squads raise.',
+    w3:'There is a winner and a loser, but baskets are worth the same to both sides. In an even match the losing squad takes 78% of what the winner takes.',
+    w4b:'The parents were already there.',
+    w4:'Your gym, your people, about an hour. Nobody has to travel anywhere.',
+
+    mathH:'What stays on the floor',
+    mathP:'An even match, at 50¢ a point, per padrino:',
+    mh:['Squad','Points','Per padrino'],
+    mr:[['Wins','25.6','$12.80'],['Loses','20.1','$10.05']],
+    mathN:'Against another program, their points raise for them. In a scrimmage both columns are yours.',
+
+    coH:'And this is what holds it up',
+    coP:'The score that gets posted is the score that was played. Someone who is not a player keeps the sheet, both coaches sign it, and the total is posted the same day with the coach’s code. The padrino pays on a number they did not see — that only works if the number is true.',
+
+    howH:'How you set one up',
+    p1b:'Split the roster.', p1:'Two squads, whatever names you like. Blancos and Azules works.',
+    p2b:'Set a date and a time.', p2:'Both games are created at once, one per squad.',
+    p3b:'Send one link.', p3:'To the team chat. Each family signs up on their own and gets their own padrino link.',
+    p4b:'Play it and post the total.', p4:'One number per squad, from the board with your code.',
+
+    ctaA:'Set up a scrimmage',
+    ctaB:'The full Sietes rules →',
+    ctaC:'Sign up my program',
+    rules:'Rules', terms:'Terms'
+  }
+};
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+function T(k){ var v=(S[LANG]&&S[LANG][k]); return v===undefined?(S.es[k]||''):v }
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG) }catch(e){}
+  paint();
+}
+
+function why(n){
+  return '<div class="s"><b>'+esc(T('w'+n+'b'))+'</b><span>'+esc(T('w'+n))+'</span></div>';
+}
+function paso(n){
+  return '<div class="s"><b>'+esc(T('p'+n+'b'))+'</b><span>'+esc(T('p'+n))+'</span></div>';
+}
+function tabla(){
+  var th=T('mh'), tr=T('mr');
+  var h='<table class="money"><thead><tr>';
+  th.forEach(function(x){ h+='<th>'+esc(x)+'</th>' });
+  h+='</tr></thead><tbody>';
+  tr.forEach(function(r){
+    h+='<tr>'; r.forEach(function(c){ h+='<td>'+esc(c)+'</td>' }); h+='</tr>';
+  });
+  return h+'</tbody></table>';
+}
+
+function paint(){
+  document.documentElement.lang=LANG;
+  document.getElementById('langBtn').textContent=LANG==='es'?'EN':'ES';
+  document.title=(LANG==='es')
+    ? 'Interescuadra — Cada Punto' : 'Scrimmages — Cada Punto';
+  document.getElementById('fRules').textContent=T('rules');
+  document.getElementById('fTerms').textContent=T('terms');
+
+  document.getElementById('app').innerHTML=
+    '<p class="kick">'+esc(T('kick'))+'</p>'+
+    '<h1>'+esc(T('h1'))+'</h1>'+
+    '<p class="lede">'+esc(T('lede'))+'</p>'+
+
+    '<div class="court">'+
+      '<div class="top">'+
+        '<div class="sq a"><b>'+esc(T('sqA'))+'</b><span>'+esc(T('sqN'))+'</span></div>'+
+        '<div class="vs">'+esc(T('vs'))+'</div>'+
+        '<div class="sq b"><b>'+esc(T('sqB'))+'</b><span>'+esc(T('sqN'))+'</span></div>'+
+      '</div>'+
+      '<div class="bot">'+T('courtP')+'</div>'+
+    '</div>'+
+
+    '<h2>'+esc(T('whyH'))+'</h2>'+
+    '<div class="why">'+why(1)+why(2)+why(3)+why(4)+'</div>'+
+
+    '<h2>'+esc(T('mathH'))+'</h2>'+
+    '<p class="cierre">'+esc(T('mathP'))+'</p>'+
+    tabla()+
+    '<p class="cierre">'+esc(T('mathN'))+'</p>'+
+
+    '<div class="callout"><b>'+esc(T('coH'))+'</b><p>'+esc(T('coP'))+'</p></div>'+
+
+    '<h2>'+esc(T('howH'))+'</h2>'+
+    '<div class="how">'+paso(1)+paso(2)+paso(3)+paso(4)+'</div>'+
+
+    '<a class="btn go" href="escuadras.html">'+esc(T('ctaA'))+'</a>'+
+    '<a class="btn line" href="sietes.html">'+esc(T('ctaB'))+'</a>'+
+    '<a class="btn line" href="equipo.html">'+esc(T('ctaC'))+'</a>';
+}
+paint();
+</script>
+</body>
+</html>
