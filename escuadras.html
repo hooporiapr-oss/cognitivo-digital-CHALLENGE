@@ -265,6 +265,8 @@ var S={
     errNames:'Ponle nombre a las dos escuadras.',
     errSame:'Las dos escuadras no pueden llamarse igual.',
     errThin:'Hace falta al menos un nene en cada escuadra.',
+    demoAsk:'Ojo: ésta es la campa\u00f1a de DEMOSTRACI\u00d3N \u2014 el tablero que ve un programa nuevo antes de decir que s\u00ed. Los juegos que crees aqu\u00ed se los va a ense\u00f1ar a todo el mundo. \u00bfLos creo igual?',
+    demoTag:'Campa\u00f1a de demostraci\u00f3n',
     making:'Creando…',
     madeL:'Listo',
     made:'Se crearon los dos juegos del {D}: {A} y {B}. Cada escuadra recauda en su propia fila.',
@@ -311,6 +313,8 @@ var S={
     errNames:'Name both squads.',
     errSame:'The two squads cannot have the same name.',
     errThin:'You need at least one child on each squad.',
+    demoAsk:'Careful: this is the DEMO campaign \u2014 the board a new program sees before they say yes. Games you create here get shown to everyone. Create them anyway?',
+    demoTag:'Demo campaign',
     making:'Creating…',
     madeL:'Done',
     made:'Both games for {D} were created: {A} and {B}. Each squad raises on its own row.',
@@ -339,6 +343,10 @@ function T(k,v){
   if(v)Object.keys(v).forEach(function(x){ s=s.split('{'+x+'}').join(v[x]) });
   return s;
 }
+
+/* Los mismos ids que marca scoreboard.html como demostración. */
+var DEMOS={'8d0d1f66-29a8-4406-90f2-3c3cf9479d55':1,
+           'd941a507-4588-45e1-9b52-9bfce5ef015d':1};
 
 var CODE=null, BY=null, CAMPS=[], CID=null;
 /* PL = [{n:nombre, s:'a'|'b'|'o'|'', j:true si se apuntó solo}] */
@@ -422,7 +430,8 @@ function arrancar(){
     return;
   }
   $('camp').innerHTML=CAMPS.map(function(c){
-    return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>' }).join('');
+    return '<option value="'+esc(c.id)+'">'+esc(c.name)+
+      (DEMOS[c.id]?' — '+esc(T('demoTag')):'')+'</option>' }).join('');
   CID=CAMPS[0].id;
   cargarCamp();
 }
@@ -539,6 +548,10 @@ function crear(){
   if(!fechaOk(on)) return say('cm',T('errDate'),'bad');
   if(!SA||!SB_) return say('cm',T('errNames'),'bad');
   if(SA.toLowerCase()===SB_.toLowerCase()) return say('cm',T('errSame'),'bad');
+  /* Los tableros de demostración son los que ve un programa nuevo antes
+     de decir que sí. Un juego de verdad metido ahí se queda enseñándose
+     a todo el mundo, así que se pregunta antes. */
+  if(DEMOS[CID] && !confirm(T('demoAsk'))) return;
   /* La plantilla NO hace falta para crear los juegos. La noche que se
      monta el programa no hay nadie apuntado todavía: se crean los dos
      juegos, se manda el enlace, y las familias se apuntan solas. El
@@ -570,9 +583,17 @@ function crear(){
     .catch(function(e){ console.error(e); $('tMake').disabled=false; say('cm',T('net'),'bad') });
 }
 
+/* Los enlaces se arman contra el sitio, no contra donde esté abierta la
+   página. Abierta desde Descargas, location.origin es file:// y salían
+   enlaces a C:\Users\... que no abren nada en el teléfono de nadie. */
+var SITIO='https://cadapunto.com';
+function base(){
+  return /^https?:$/.test(location.protocol)
+    ? location.origin+location.pathname.replace(/[^/]*$/,'')
+    : SITIO+'/';
+}
 function enlace(sq){
-  return location.origin+location.pathname.replace(/[^/]*$/,'')+
-    'jugador.html?c='+encodeURIComponent(CID)+
+  return base()+'jugador.html?c='+encodeURIComponent(CID)+
     (sq?'&d='+encodeURIComponent(sq):'');
 }
 /* Lo que el entrenador se lleva de aquí es UN enlace para el grupo del
