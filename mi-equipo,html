@@ -175,6 +175,7 @@ var S={
     todoGo:'Poner el marcador',
     nUp:'por jugar', nNo:'sin marcador', nPad:'padrinos · próximo',
     aBoard:'Ver el tablero', aGames:'Poner juegos', aScore:'Poner el marcador',
+    aRoster:'La plantilla',
     payNo:'Todavía no nos has dicho a dónde pagarte. <a href="cobro.html">Dínoslo aquí</a>.',
     payOk:'Te pagamos a <b>{A}</b> el día 1 y el día 15.'
   },
@@ -195,6 +196,7 @@ var S={
     todoGo:'Enter the score',
     nUp:'to play', nNo:'no score', nPad:'padrinos · next',
     aBoard:'See the board', aGames:'Post games', aScore:'Enter the score',
+    aRoster:'The roster',
     payNo:'You have not told us where to pay you yet. <a href="cobro.html">Tell us here</a>.',
     payOk:'We pay you at <b>{A}</b> on the 1st and the 15th.'
   }
@@ -378,6 +380,7 @@ function pintar(){
       '<div class="acts">'+
         '<a class="fill" href="scoreboard.html?c='+esc(c.id)+'">'+T('aBoard')+'</a>'+
         '<a href="calendario.html">'+T('aGames')+'</a>'+
+        '<a class="wide" href="plantilla.html">'+T('aRoster')+'</a>'+
         (sin.length?'<a class="wide" href="scoreboard.html?c='+esc(c.id)+'">'+T('aScore')+'</a>':'')+
       '</div>'+
       pay+
