@@ -127,6 +127,8 @@ var S = {
     doneH:'Listo, {N}',
     doneP:'Este es tu enlace. Mándaselo a tu familia por WhatsApp.',
     backH:'Ya estabas en la lista, {N}',
+    waitH:'Apuntado, {N}',
+    waitP:'Falta que tu entrenador lo apruebe. En cuanto lo haga, este mismo enlace es el tuyo para mandárselo a tu familia — guárdalo.',
     share:'Mandar por WhatsApp',
     copy:'Copiar el enlace',
     copied:'✓ Copiado',
@@ -150,6 +152,8 @@ var S = {
     doneH:'Done, {N}',
     doneP:'This is your link. Send it to your family on WhatsApp.',
     backH:'You were already on the roster, {N}',
+    waitH:'Signed up, {N}',
+    waitP:'Your coach has to approve it. As soon as he does, this same link is yours to send your family \u2014 keep it.',
     share:'Send on WhatsApp',
     copy:'Copy the link',
     copied:'✓ Copied',
@@ -252,9 +256,10 @@ function draw(){
     app.innerHTML =
       crest + team +
       '<div class="done">' +
-        '<div class="tick">✓</div>' +
-        '<h1>' + T(ME.existing ? 'backH' : 'doneH', { N: esc(ME.name) }) + '</h1>' +
-        '<p class="lede">' + T('doneP') + '</p>' +
+        '<div class="tick">' + (ME.waiting ? '\u2026' : '\u2713') + '</div>' +
+        '<h1>' + T(ME.waiting ? 'waitH' : ME.existing ? 'backH' : 'doneH',
+                   { N: esc(ME.name) }) + '</h1>' +
+        '<p class="lede">' + T(ME.waiting ? 'waitP' : 'doneP') + '</p>' +
         '<div class="linkbox">' + esc(link) + '</div>' +
         '<a class="btn" href="https://wa.me/?text=' +
           encodeURIComponent(bothLangs() + '\n\n' + link) + '">' + T('share') + '</a>' +
