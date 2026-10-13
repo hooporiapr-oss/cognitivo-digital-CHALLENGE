@@ -344,10 +344,35 @@ function copyLink(){
 }
 
 // Si ya se añadió en este teléfono, no hace falta otra vez.
+//
+// Pero lo guardado dice cómo estaba el día que se apuntó, no cómo está
+// hoy. Si se guarda "esperando" y nunca se vuelve a mirar, el papá ve
+// "falta que tu entrenador lo apruebe" para siempre — también después
+// de que el entrenador lo aprobó. Así que al abrir se pregunta.
 try {
   var saved = JSON.parse(localStorage.getItem('cp-me-' + CAMPAIGN) || 'null');
   if (saved && saved.id) { ME = saved; ME.existing = true; }
 } catch(e){}
+
+function refrescar(){
+  if (!ME || !ME.id) return;
+  rpc('player_state', { p_id: ME.id })
+    .then(function(r){
+      if (!r || !r.ok){
+        // Lo rechazaron, o ya no está. Que vuelva a empezar.
+        ME = null;
+        try { localStorage.removeItem('cp-me-' + CAMPAIGN); } catch(e){}
+        draw();
+        return;
+      }
+      ME.name    = r.name || ME.name;
+      ME.waiting = (r.state === 'pending');
+      try { localStorage.setItem('cp-me-' + CAMPAIGN, JSON.stringify(ME)); } catch(e){}
+      draw();
+    })
+    .catch(function(){ /* sin red se queda con lo guardado */ });
+}
+refrescar();
 
 document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
 
