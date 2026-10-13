@@ -68,6 +68,16 @@ textarea{font-weight:500;min-height:104px;resize:vertical;line-height:1.5}
 .tal b{display:block;font-size:1.3rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
 .tal span{font-size:.54rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--mute)}
 
+.tally.three{grid-template-columns:repeat(3,1fr)}
+.tal.wait b{color:var(--ball)}
+/* Los que esperan: aparte, y con borde naranja, porque es lo único
+   aquí que no avanza solo si el entrenador no lo mira. */
+.waits{border:3px solid var(--ball);background:#FFF6EF;border-radius:6px;
+  padding:14px 15px;margin:0 0 16px}
+.waits b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.waits p{margin:0 0 11px;font-size:.87rem;color:var(--mute)}
+.waits .plist{background:#fff}
 .plist{border:2px solid var(--line);border-radius:6px;overflow:hidden}
 .pl{display:flex;align-items:center;gap:10px;padding:9px 11px;border-bottom:1px solid var(--line)}
 .pl:last-child{border-bottom:0}
@@ -128,6 +138,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
       </div>
 
       <div id="tally" class="tally"></div>
+      <div id="wait"></div>
       <div id="plist"></div>
       <p class="msg" id="lm"></p>
 
@@ -181,7 +192,12 @@ var S={
     out:'Salir',
     h1b:'Tu plantilla', ledeb:'Los nenes de este equipo. Añade, arregla un nombre, o saca a quien ya no está.',
     campL:'División',
-    tIn:'en la lista', tOut:'fuera',
+    tIn:'en la lista', tOut:'fuera', tWait:'esperando',
+    waitH:'Esperando que digas que sí',
+    waitP:'Se apuntaron solos con el enlace del equipo. Hasta que no los apruebes no salen en la plantilla ni en el tablero.',
+    yes:'Aprobar', no:'Rechazar',
+    askNo:'¿Rechazar a {N}? Si se apuntó por error, desaparece.',
+    okYes:'{N} está en la plantilla.', okNo:'{N} fuera.',
     empty:'Todavía no hay nadie. Añade los nombres abajo.',
     joined:'se apuntó solo',
     noSquad:'sin escuadra',
@@ -211,7 +227,12 @@ var S={
     out:'Sign out',
     h1b:'Your roster', ledeb:'The children on this team. Add, fix a name, or take out whoever has left.',
     campL:'Division',
-    tIn:'on the list', tOut:'out',
+    tIn:'on the list', tOut:'out', tWait:'waiting',
+    waitH:'Waiting on you',
+    waitP:'They signed themselves up with the team link. Until you approve them they do not appear on the roster or on the board.',
+    yes:'Approve', no:'Decline',
+    askNo:'Decline {N}? If they signed up by mistake, they disappear.',
+    okYes:'{N} is on the roster.', okNo:'{N} declined.',
     empty:'Nobody yet. Add the names below.',
     joined:'signed up on their own',
     noSquad:'no squad',
@@ -322,29 +343,68 @@ function cargar(){
     .catch(function(e){ console.error(e); say('lm',T('net'),'bad') });
 }
 
+/* Tres estados, no dos: esperando, en la lista, y fuera. Los que
+   esperan van arriba y aparte — son lo único de esta página que pide
+   una decisión, y mezclados con los demás no se ven. */
 function pintar(){
-  var on=PL.filter(function(p){ return p.active });
-  var off=PL.filter(function(p){ return !p.active });
+  var wait=PL.filter(function(p){ return p.state==='pending' });
+  var on  =PL.filter(function(p){ return p.state==='active' });
+  var off =PL.filter(function(p){ return p.state!=='pending' && p.state!=='active' });
 
   $('tally').innerHTML=
+    (wait.length?'<div class="tal wait"><b>'+wait.length+'</b><span>'+esc(T('tWait'))+'</span></div>':'')+
     '<div class="tal"><b>'+on.length+'</b><span>'+esc(T('tIn'))+'</span></div>'+
     '<div class="tal"><b>'+off.length+'</b><span>'+esc(T('tOut'))+'</span></div>';
+  $('tally').className='tally'+(wait.length?' three':'');
 
-  if(!PL.length){ $('plist').innerHTML='<p class="help">'+esc(T('empty'))+'</p>'; return }
+  $('wait').innerHTML = wait.length
+    ? '<div class="waits"><b>'+esc(T('waitH'))+'</b>'+
+      '<p>'+esc(T('waitP'))+'</p>'+
+      '<div class="plist">'+wait.map(function(p){
+        var i=PL.indexOf(p);
+        return '<div class="pl">'+
+          '<span class="nm">'+esc(p.name)+
+            '<small>'+esc(p.squad||T('noSquad'))+'</small></span>'+
+          '<span class="act">'+
+            '<button class="on" onclick="decidir('+i+',true)">'+esc(T('yes'))+'</button>'+
+            '<button onclick="decidir('+i+',false)">'+esc(T('no'))+'</button>'+
+          '</span>'+
+        '</div>';
+      }).join('')+'</div></div>'
+    : '';
 
-  $('plist').innerHTML='<div class="plist">'+PL.map(function(p,i){
+  var rest=on.concat(off);
+  if(!rest.length){ $('plist').innerHTML=wait.length?'':'<p class="help">'+esc(T('empty'))+'</p>'; return }
+
+  $('plist').innerHTML='<div class="plist">'+rest.map(function(p){
+    var i=PL.indexOf(p);
     if(EDIT===p.id) return fila_edit(p,i);
-    return '<div class="pl'+(p.active?'':' off')+'">'+
+    var act = p.state==='active';
+    return '<div class="pl'+(act?'':' off')+'">'+
       '<span class="nm">'+esc(p.name)+
         '<small>'+esc(p.squad||T('noSquad'))+'</small></span>'+
       '<span class="act">'+
-        (p.active
+        (act
           ? '<button onclick="abrir('+i+')">'+esc(T('edit'))+'</button>'+
             '<button onclick="sacar('+i+')">'+esc(T('take'))+'</button>'
           : '<button class="on" onclick="devolver('+i+')">'+esc(T('back'))+'</button>')+
       '</span>'+
     '</div>';
   }).join('')+'</div>';
+}
+
+function decidir(i,yes){
+  var p=PL[i]; if(!p) return;
+  if(!yes && !confirm(T('askNo',{N:p.name}))) return;
+  say('lm','…');
+  rpc('roster_decide',{p_code:CODE,p_campaign:CID,p_player:p.id,p_yes:yes})
+    .then(function(r){
+      if(!r||!r.ok) return say('lm',T('bad'),'bad');
+      cargar().then(function(){
+        say('lm', yes?T('okYes',{N:p.name}):T('okNo',{N:p.name}), 'ok');
+      });
+    })
+    .catch(function(e){ console.error(e); say('lm',T('net'),'bad') });
 }
 
 function fila_edit(p,i){
