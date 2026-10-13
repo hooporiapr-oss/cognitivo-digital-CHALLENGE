@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Escuadras — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Armar un interescuadra. El entrenador escoge la división, parte la
+   plantilla en dos, pone fecha y hora, y se crean los dos juegos.
+
+   Dos cosas que esta página cuida y que a mano se olvidan:
+
+   1. Un interescuadra son DOS juegos, no uno. Cada escuadra tiene que
+      ser el equipo en su propia fila, porque los padrinos prometen por
+      juego. Si sólo se crea una fila, las familias de la otra mitad de
+      la plantilla no tienen nada que apadrinar ese día. Aquí no se
+      puede crear una sola: se crean las dos o ninguna.
+
+   2. Los nombres de los nenes no salen de este aparato. La lista se
+      guarda en el teléfono o la tableta del entrenador y se imprime.
+      Al servidor sólo le llegan "Blancos" y "Azules" y la fecha. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--good:#0B7A5A;--bad:#B4231C;
+      --sqA:#1C5F9E;--sqAbg:#EAF2FA;--sqB:#9E3A1C;--sqBbg:#FBF0EA}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(760px,93vw);margin:0 auto}
+
+header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.hright{display:flex;align-items:center;gap:10px}
+.who{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#C8D6E2}
+.out,.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{padding:22px 0 60px}
+h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 4px}
+.lede{color:var(--mute);font-size:.9rem;margin:0 0 20px}
+h2{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin:26px 0 8px}
+label{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+input[type=text],input[type=date],select,textarea{width:100%;font:inherit;font-weight:700;
+  padding:9px 10px;border:2px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+textarea{font-weight:500;min-height:110px;resize:vertical;line-height:1.5}
+.btn{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--ink);
+  color:#fff;font:inherit;font-weight:900;padding:12px 16px;cursor:pointer;margin-top:10px;
+  text-align:center;text-decoration:none}
+.btn.go{background:var(--accent)}
+.btn.line{background:none;color:var(--ink);border:2px solid var(--ink)}
+.btn[disabled]{opacity:.4;cursor:default}
+.msg{font-size:.85rem;font-weight:700;margin-top:8px;min-height:1px}
+.msg.bad{color:var(--bad)} .msg.ok{color:var(--good)}
+.gate{border:2px solid var(--ink);border-radius:4px;padding:14px;max-width:420px}
+.hide{display:none}
+.help{color:var(--mute);font-size:.85rem;margin:6px 0 0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{border:2px solid var(--line);border-radius:6px;padding:15px 16px;margin:0 0 14px}
+
+/* los dos nombres de escuadra, con su color */
+.sqn{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sqn .a input{border-color:var(--sqA);background:var(--sqAbg)}
+.sqn .b input{border-color:var(--sqB);background:var(--sqBbg)}
+
+/* la plantilla */
+.tally{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 0 12px}
+.tal{border:1px solid var(--line);border-radius:5px;padding:8px 6px;text-align:center;
+  background:var(--tint)}
+.tal b{display:block;font-size:1.3rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.tal span{font-size:.54rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--mute)}
+.tal.a b{color:var(--sqA)} .tal.b b{color:var(--sqB)}
+
+.plist{border:2px solid var(--line);border-radius:6px;overflow:hidden}
+.pl{display:flex;align-items:center;gap:10px;padding:8px 11px;border-bottom:1px solid var(--line)}
+.pl:last-child{border-bottom:0}
+.pl .nm{flex:1 1 auto;font-weight:700;font-size:.95rem;min-width:0;overflow-wrap:anywhere}
+.pl .nm small{display:block;font-size:.6rem;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mute)}
+.pick{display:flex;gap:5px;flex:0 0 auto}
+.pick button{border:2px solid var(--line);background:#fff;color:var(--mute);border-radius:4px;
+  width:36px;height:34px;font:inherit;font-weight:900;font-size:.82rem;cursor:pointer;padding:0}
+.pick button.on.a{border-color:var(--sqA);background:var(--sqA);color:#fff}
+.pick button.on.b{border-color:var(--sqB);background:var(--sqB);color:#fff}
+.pick button.on.o{border-color:var(--mute);background:var(--mute);color:#fff}
+.pl.xa{background:var(--sqAbg)} .pl.xb{background:var(--sqBbg)} .pl.xo{opacity:.5}
+.drop{border:0;background:none;color:var(--mute);font:inherit;font-size:1.1rem;font-weight:900;
+  cursor:pointer;padding:0 2px;flex:0 0 auto}
+
+.warn{border:3px solid var(--ball);background:#FFF6EF;border-radius:6px;padding:13px 15px;
+  margin:0 0 14px;font-size:.88rem;font-weight:700}
+.warn b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+.done{border:3px solid var(--good);border-radius:6px;padding:16px;margin:0 0 14px}
+.done b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--good);margin-bottom:6px}
+.lk{background:var(--tint);border:1px solid var(--line);border-radius:5px;padding:9px 11px;
+  margin:9px 0 0;font-size:.8rem;overflow-wrap:anywhere}
+.lk em{font-style:normal;display:block;font-size:.56rem;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:3px}
+
+footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-dot{padding:0 7px;opacity:.5}
+
+/* La hoja. Se imprime o se guarda en PDF; es lo que va a la cancha. */
+#sheet{display:none}
+@media print{
+  header,footer,main{display:none !important}
+  html,body{background:#fff}
+  #sheet{display:block !important}
+  @page{size:letter portrait;margin:14mm}
+}
+#sheet .sh{font-family:Archivo,Arial,sans-serif;color:#000}
+#sheet .shh{display:flex;justify-content:space-between;align-items:flex-end;
+  border-bottom:3px solid #000;padding-bottom:7px;margin-bottom:14px}
+#sheet .shh h3{margin:0;font-size:17pt;font-weight:900;letter-spacing:-.02em}
+#sheet .shh div{text-align:right;font-size:9pt;font-weight:700;line-height:1.35}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:12mm}
+#sheet .col h4{margin:0 0 7px;font-size:12pt;font-weight:900;border-bottom:2px solid #000;
+  padding-bottom:4px}
+#sheet .col ol{margin:0;padding-left:20px;font-size:11pt;line-height:2.05}
+#sheet .col li{border-bottom:1px dotted #999}
+#sheet .sc{margin-top:12mm;display:grid;grid-template-columns:1fr 1fr;gap:12mm}
+#sheet .sc div{border:2px solid #000;border-radius:3px;padding:7px 9px}
+#sheet .sc span{display:block;font-size:7.5pt;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase}
+#sheet .sc i{display:block;font-style:normal;height:16mm}
+#sheet .shf{margin-top:9mm;font-size:8pt;line-height:1.45}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <div class="hright">
+      <span class="who hide" id="hwho"></span>
+      <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+      <button class="out hide" id="hout" onclick="salir()">Salir</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="gate" id="gate">
+      <h1 id="tH1"></h1>
+      <p class="lede" id="tLede"></p>
+      <label for="code" id="tCodeL"></label>
+      <input id="code" type="text" autocapitalize="characters" autocorrect="off"
+             spellcheck="false" enterkeyhint="go">
+      <button class="btn go" id="tGo" onclick="entrar(false)"></button>
+      <p class="msg" id="gm"></p>
+    </div>
+
+    <div id="app" class="hide">
+      <h1 id="tH1b"></h1>
+      <p class="lede" id="tLedeb"></p>
+
+      <div class="box">
+        <label for="camp" id="tCampL"></label>
+        <select id="camp" onchange="cambiarCamp()"></select>
+        <div class="row2" style="margin-top:12px">
+          <div><label for="on" id="tOnL"></label><input id="on" type="date"></div>
+          <div><label for="hora" id="tHoraL"></label>
+            <input id="hora" type="text" placeholder="6:00 PM" autocomplete="off"></div>
+        </div>
+        <div class="sqn" style="margin-top:12px">
+          <div class="a"><label for="sa" id="tSaL"></label>
+            <input id="sa" type="text" maxlength="24" oninput="guardar();pintar()"></div>
+          <div class="b"><label for="sb" id="tSbL"></label>
+            <input id="sb" type="text" maxlength="24" oninput="guardar();pintar()"></div>
+        </div>
+      </div>
+
+      <h2 id="tRosterH"></h2>
+      <div id="tally" class="tally"></div>
+      <div id="warn"></div>
+      <div id="plist"></div>
+      <p class="help" id="tRosterHelp"></p>
+
+      <h2 id="tAddH"></h2>
+      <div class="box">
+        <label for="paste" id="tPasteL"></label>
+        <textarea id="paste" spellcheck="false"></textarea>
+        <button class="btn line" id="tPasteGo" onclick="pegar()"></button>
+        <p class="msg" id="pm"></p>
+      </div>
+
+      <h2 id="tMakeH"></h2>
+      <button class="btn go" id="tMake" onclick="crear()"></button>
+      <p class="msg" id="cm"></p>
+      <div id="res"></div>
+
+      <button class="btn line" id="tPrint" onclick="window.print()"></button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
+  </div>
+</footer>
+
+<div id="sheet"></div>
+
+<script>
+var SB='https://sdaphocueugzfvjovuxd.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(name,args){
+  return fetch(SB+'/rest/v1/rpc/'+name,{
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(args||{})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc '+r.status); return r.json() });
+}
+function $(id){ return document.getElementById(id) }
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]});
+}
+function trim(s){ return String(s==null?'':s).replace(/^\s+|\s+$/g,'') }
+
+var S={
+  es:{
+    h1:'Escuadras', lede:'Entra con tu código.',
+    codeL:'Tu código', go:'Entrar',
+    bad:'Ese código no sirve.', net:'No entró. Inténtalo otra vez.',
+    none:'Tu código no alcanza ningún equipo. Escríbenos.',
+    out:'Salir',
+    h1b:'Armar un interescuadra',
+    ledeb:'Parte la plantilla en dos, pon la fecha, y se crean los dos juegos. Los nombres de los nenes no salen de este aparato — se guardan aquí y se imprimen.',
+    campL:'División', onL:'Fecha', horaL:'Hora',
+    saL:'Escuadra 1', sbL:'Escuadra 2',
+    sa:'Blancos', sb:'Azules',
+    rosterH:'La plantilla',
+    rosterHelp:'Toca 1, 2 o — para cada nene. Los que dejes en blanco no salen en la hoja.',
+    tA:'escuadra 1', tB:'escuadra 2', tOut:'sin poner',
+    empty:'Todavía no hay nadie en esta división. Pega los nombres abajo.',
+    joined:'se apuntó',
+    addH:'Añadir nombres',
+    pasteL:'Un nombre por línea',
+    pasteGo:'Añadir a la plantilla',
+    pasteNone:'No salió ningún nombre de ahí.',
+    pasteOk:'{N} añadido.', pasteOkN:'{N} añadidos.',
+    pasteDup:' {N} ya estaba.', pasteDupN:' {N} ya estaban.',
+    makeH:'Crear el interescuadra',
+    make:'Crear los dos juegos',
+    errDate:'Revisa la fecha — el año completo.',
+    errNames:'Ponle nombre a las dos escuadras.',
+    errSame:'Las dos escuadras no pueden llamarse igual.',
+    errThin:'Hace falta al menos un nene en cada escuadra.',
+    making:'Creando…',
+    madeL:'Listo',
+    made:'Se crearon los dos juegos del {D}: {A} y {B}. Cada escuadra recauda en su propia fila.',
+    madeHalf:'Se creó un lado pero el otro no. Abre el calendario y añade a mano la fila de {B} contra {A} el {D} — si no, las familias de {B} no tienen nada que apadrinar ese día.',
+    madeNone:'No se creó ninguno de los dos. Inténtalo otra vez.',
+    lkA:'Enlace para las familias de {N}',
+    lkTeam:'Enlace para el grupo del equipo',
+    wa:'Mandarlo por WhatsApp', copy:'Copiar el enlace', copied:'Copiado.',
+    waMsg:'Apunta a tu nene en {E}. Te sale tu propio enlace para mandarle a la familia — lo que prometan por punto se le acredita a él. El primer juego es el {D}.',
+    emptyRoster:'Todavía no hay nadie apuntado, y está bien. Manda este enlace al grupo del equipo: cada familia se apunta sola y recibe su propio enlace de padrinos. El reparto en escuadras lo haces después, aquí mismo, con los que se hayan apuntado.',
+    board:'Ver el tablero', openCal:'Abrir el calendario',
+    print:'Imprimir la hoja',
+    warnL:'Ojo',
+    warnThin:'{A} tiene {N} y {B} tiene {M}. Se puede jugar así, pero revísalo.',
+    warnOdd:'Hay {N} sin poner. Si te sobran, déjalos en — y no salen en la hoja.',
+    shWho:'Entrenador', shWhen:'Fecha', shPts:'Puntos',
+    shFoot:'Los puntos de cada escuadra se ponen en el marcador de Cada Punto. Mientras no se pongan, no se le cobra a ningún padrino.'
+  },
+  en:{
+    h1:'Squads', lede:'Sign in with your code.',
+    codeL:'Your code', go:'Enter',
+    bad:'That code does not work.', net:'That did not go through. Try again.',
+    none:'Your code does not reach any team. Write to us.',
+    out:'Sign out',
+    h1b:'Set up a scrimmage',
+    ledeb:'Split the roster in two, set the date, and both games get created. The children’s names never leave this device — they are kept here and printed.',
+    campL:'Division', onL:'Date', horaL:'Time',
+    saL:'Squad 1', sbL:'Squad 2',
+    sa:'Blancos', sb:'Azules',
+    rosterH:'The roster',
+    rosterHelp:'Tap 1, 2 or — for each child. Anyone left blank does not appear on the sheet.',
+    tA:'squad 1', tB:'squad 2', tOut:'unassigned',
+    empty:'Nobody in this division yet. Paste the names below.',
+    joined:'signed up',
+    addH:'Add names',
+    pasteL:'One name per line',
+    pasteGo:'Add to the roster',
+    pasteNone:'No names came out of that.',
+    pasteOk:'{N} added.', pasteOkN:'{N} added.',
+    pasteDup:' {N} was already there.', pasteDupN:' {N} were already there.',
+    makeH:'Create the scrimmage',
+    make:'Create both games',
+    errDate:'Check the date — the full year.',
+    errNames:'Name both squads.',
+    errSame:'The two squads cannot have the same name.',
+    errThin:'You need at least one child on each squad.',
+    making:'Creating…',
+    madeL:'Done',
+    made:'Both games for {D} were created: {A} and {B}. Each squad raises on its own row.',
+    madeHalf:'One side was created and the other was not. Open the schedule and add the {B} against {A} row for {D} by hand — otherwise the {B} families have nothing to pledge on that day.',
+    madeNone:'Neither one was created. Try again.',
+    lkA:'Link for the {N} families',
+    lkTeam:'Link for the team chat',
+    wa:'Send it on WhatsApp', copy:'Copy the link', copied:'Copied.',
+    waMsg:'Sign your child up for {E}. You get your own link to send the family \u2014 whatever they pledge per point is credited to them. The first game is {D}.',
+    emptyRoster:'Nobody has signed up yet, and that is fine. Send this link to the team chat: each family signs up on their own and gets their own padrino link. You split the squads later, right here, from whoever signed up.',
+    board:'See the board', openCal:'Open the schedule',
+    print:'Print the sheet',
+    warnL:'Careful',
+    warnThin:'{A} has {N} and {B} has {M}. It can be played that way, but take a look.',
+    warnOdd:'{N} still unassigned. If you have spares, leave them on — and they stay off the sheet.',
+    shWho:'Coach', shWhen:'Date', shPts:'Points',
+    shFoot:'Each squad’s points go into the Cada Punto scoreboard. Until they do, no padrino is charged.'
+  }
+};
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+function T(k,v){
+  var s=(S[LANG]&&S[LANG][k])||S.es[k]||'';
+  if(v)Object.keys(v).forEach(function(x){ s=s.split('{'+x+'}').join(v[x]) });
+  return s;
+}
+
+var CODE=null, BY=null, CAMPS=[], CID=null;
+/* PL = [{n:nombre, s:'a'|'b'|'o'|'', j:true si se apuntó solo}] */
+var PL=[], SA='', SB_='';
+
+try{ CODE = localStorage.getItem('cp_build') || localStorage.getItem('cp_code') || null; }catch(e){}
+function recordar(k){ try{ localStorage.setItem('cp_build',k) }catch(e){} }
+function olvidar(){ try{ localStorage.removeItem('cp_build') }catch(e){} }
+function salir(){ olvidar(); location.reload() }
+
+function llave(){ return 'cp_sq_'+(CID||'x') }
+function guardar(){
+  if(!CID) return;
+  SA=trim($('sa').value); SB_=trim($('sb').value);
+  try{ localStorage.setItem(llave(),JSON.stringify({a:SA,b:SB_,pl:PL})) }catch(e){}
+}
+function leer(){
+  var d=null;
+  try{ d=JSON.parse(localStorage.getItem(llave())||'null') }catch(e){}
+  SA=(d&&d.a)||T('sa'); SB_=(d&&d.b)||T('sb');
+  return (d&&Array.isArray(d.pl))?d.pl:[];
+}
+
+function say(e,t,c){ var x=$(e); if(x){ x.textContent=t||''; x.className='msg '+(c||'') } }
+
+function paintStatic(){
+  $('tH1').textContent=T('h1');
+  $('tLede').textContent=T('lede');
+  $('tCodeL').textContent=T('codeL');
+  $('tGo').textContent=T('go');
+  $('tH1b').textContent=T('h1b');
+  $('tLedeb').textContent=T('ledeb');
+  $('tCampL').textContent=T('campL');
+  $('tOnL').textContent=T('onL');
+  $('tHoraL').textContent=T('horaL');
+  $('tSaL').textContent=T('saL');
+  $('tSbL').textContent=T('sbL');
+  $('tRosterH').textContent=T('rosterH');
+  $('tRosterHelp').textContent=T('rosterHelp');
+  $('tAddH').textContent=T('addH');
+  $('tPasteL').textContent=T('pasteL');
+  $('tPasteGo').textContent=T('pasteGo');
+  $('tMakeH').textContent=T('makeH');
+  $('tMake').textContent=T('make');
+  $('tPrint').textContent=T('print');
+  $('hout').textContent=T('out');
+  $('langBtn').textContent=LANG==='es'?'EN':'ES';
+  document.documentElement.lang=LANG;
+}
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG) }catch(e){}
+  paintStatic();
+  if(CID) pintar();
+}
+
+function entrar(auto){
+  var k = auto ? CODE : trim($('code').value);
+  if(!k || k.length<4) return say('gm',T('bad'),'bad');
+  say('gm','…');
+  rpc('builder_check',{p_code:k})
+    .then(function(r){
+      if(!r||!r.ok){ if(auto) olvidar(); return say('gm',T('bad'),'bad') }
+      CODE=k; BY=r.by; CAMPS=r.campaigns||[];
+      recordar(k);
+      say('gm','');
+      $('gate').className='gate hide';
+      $('app').className='';
+      $('hwho').className='who'; $('hwho').textContent=BY;
+      $('hout').className='out';
+      arrancar();
+    })
+    .catch(function(e){ console.error(e); say('gm',T('net'),'bad') });
+}
+
+function arrancar(){
+  paintStatic();
+  if(!CAMPS.length){
+    $('app').innerHTML='<p class="help">'+esc(T('none'))+'</p>';
+    return;
+  }
+  $('camp').innerHTML=CAMPS.map(function(c){
+    return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>' }).join('');
+  CID=CAMPS[0].id;
+  cargarCamp();
+}
+
+function cambiarCamp(){ CID=$('camp').value; cargarCamp() }
+
+/* La plantilla se junta de dos sitios: quien se apuntó solo por su
+   enlace, y los nombres que el entrenador puso aquí. Los que se
+   apuntaron se marcan, porque ésos sí tienen enlace propio. */
+function cargarCamp(){
+  PL=leer();
+  $('sa').value=SA; $('sb').value=SB_;
+  $('res').innerHTML=''; say('cm',''); say('pm','');
+  pintar();
+  rpc('game_roster',{p_campaign:CID})
+    .then(function(r){
+      (Array.isArray(r)?r:[]).forEach(function(p){
+        var n=trim(p.name); if(!n) return;
+        var hay=PL.filter(function(x){ return x.n.toLowerCase()===n.toLowerCase() })[0];
+        if(hay){ hay.j=true } else { PL.push({n:n,s:'',j:true}) }
+      });
+      guardar(); pintar();
+    })
+    .catch(function(){ /* sin red la lista del aparato sirve igual */ });
+}
+
+function poner(i,s){
+  if(!PL[i]) return;
+  PL[i].s = (PL[i].s===s) ? '' : s;
+  guardar(); pintar();
+}
+function quitar(i){
+  if(!PL[i]) return;
+  if(PL[i].j){ PL[i].s='o' } else { PL.splice(i,1) }
+  guardar(); pintar();
+}
+
+function pegar(){
+  var raw=trim($('paste').value);
+  if(!raw) return say('pm',T('pasteNone'),'bad');
+  var add=0, dup=0;
+  raw.split('\n').forEach(function(ln){
+    var n=trim(ln).replace(/^[0-9]+[.)\-\s]+/,'');
+    n=trim(n);
+    if(n.length<2) return;
+    if(PL.filter(function(x){ return x.n.toLowerCase()===n.toLowerCase() }).length){ dup++; return }
+    PL.push({n:n,s:'',j:false}); add++;
+  });
+  if(!add&&!dup) return say('pm',T('pasteNone'),'bad');
+  $('paste').value='';
+  guardar(); pintar();
+  say('pm', (add===1?T('pasteOk',{N:add}):T('pasteOkN',{N:add})) +
+    (dup ? (dup===1?T('pasteDup',{N:dup}):T('pasteDupN',{N:dup})) : ''), 'ok');
+}
+
+function lado(s){ return PL.filter(function(p){ return p.s===s }) }
+
+function pintar(){
+  SA=trim($('sa').value)||T('sa'); SB_=trim($('sb').value)||T('sb');
+  var A=lado('a'), B=lado('b'), O=PL.filter(function(p){ return p.s==='' });
+
+  $('tally').innerHTML=
+    '<div class="tal a"><b>'+A.length+'</b><span>'+esc(SA)+'</span></div>'+
+    '<div class="tal b"><b>'+B.length+'</b><span>'+esc(SB_)+'</span></div>'+
+    '<div class="tal"><b>'+O.length+'</b><span>'+esc(T('tOut'))+'</span></div>';
+
+  var w='';
+  if(A.length&&B.length&&Math.abs(A.length-B.length)>=2)
+    w+='<div class="warn"><b>'+esc(T('warnL'))+'</b>'+
+        esc(T('warnThin',{A:SA,N:A.length,B:SB_,M:B.length}))+'</div>';
+  else if(O.length&&(A.length||B.length))
+    w+='<div class="warn"><b>'+esc(T('warnL'))+'</b>'+
+        esc(T('warnOdd',{N:O.length}))+'</div>';
+  $('warn').innerHTML=w;
+
+  $('plist').innerHTML = PL.length
+    ? '<div class="plist">'+PL.map(function(p,i){
+        var cls = p.s==='a'?'xa':p.s==='b'?'xb':p.s==='o'?'xo':'';
+        return '<div class="pl '+cls+'">'+
+          '<span class="nm">'+esc(p.n)+
+            (p.j?'<small>'+esc(T('joined'))+'</small>':'')+'</span>'+
+          '<span class="pick">'+
+            '<button class="a'+(p.s==='a'?' on a':'')+'" onclick="poner('+i+',\'a\')">1</button>'+
+            '<button class="b'+(p.s==='b'?' on b':'')+'" onclick="poner('+i+',\'b\')">2</button>'+
+            '<button class="o'+(p.s==='o'?' on o':'')+'" onclick="poner('+i+',\'o\')">—</button>'+
+          '</span>'+
+          '<button class="drop" onclick="quitar('+i+')" aria-label="x">×</button>'+
+        '</div>';
+      }).join('')+'</div>'
+    : '<p class="help">'+esc(T('empty'))+'</p>';
+
+  hoja();
+}
+
+function fechaOk(v){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  var a=parseInt(v.slice(0,4),10), m=parseInt(v.slice(5,7),10), d=parseInt(v.slice(8,10),10);
+  if(a<2020||a>2100) return false;
+  if(m<1||m>12||d<1||d>31) return false;
+  return true;
+}
+function campName(){
+  var c=CAMPS.filter(function(x){ return x.id===CID })[0];
+  return c?c.name:'';
+}
+
+/* Las dos filas van juntas o no van. Si una pasa y la otra no, se dice
+   exactamente qué falta y dónde ponerlo — no se deja a medias en
+   silencio. */
+function crear(){
+  var on=trim($('on').value), hora=trim($('hora').value);
+  var A=lado('a'), B=lado('b');
+  SA=trim($('sa').value)||T('sa'); SB_=trim($('sb').value)||T('sb');
+  if(!fechaOk(on)) return say('cm',T('errDate'),'bad');
+  if(!SA||!SB_) return say('cm',T('errNames'),'bad');
+  if(SA.toLowerCase()===SB_.toLowerCase()) return say('cm',T('errSame'),'bad');
+  /* La plantilla NO hace falta para crear los juegos. La noche que se
+     monta el programa no hay nadie apuntado todavía: se crean los dos
+     juegos, se manda el enlace, y las familias se apuntan solas. El
+     reparto en escuadras es para la hoja que va a la cancha y se hace
+     después, con los que se hayan apuntado. Pedir la plantilla aquí era
+     poner a cinco entrenadores a teclear setenta nombres en el celular
+     antes de poder empezar. */
+
+  say('cm',T('making'));
+  $('tMake').disabled=true;
+
+  var uno={opponent:SB_,on:on,time:hora,home:true,note:SA};
+  var dos={opponent:SA,on:on,time:hora,home:true,note:SB_};
+
+  rpc('add_games',{p_code:CODE,p_campaign:CID,p_rows:[uno,dos]})
+    .then(function(r){
+      $('tMake').disabled=false;
+      var n=(r&&r.ok)?(Number(r.added)||0)+(Number(r.skipped)||0):0;
+      if(n>=2){ say('cm',''); listo(on); return }
+      if(n===1){
+        say('cm','');
+        $('res').innerHTML='<div class="warn"><b>'+esc(T('warnL'))+'</b>'+
+          esc(T('madeHalf',{A:SA,B:SB_,D:on}))+
+          '</div><a class="btn line" href="calendario.html">'+esc(T('openCal'))+'</a>';
+        return;
+      }
+      say('cm',T('madeNone'),'bad');
+    })
+    .catch(function(e){ console.error(e); $('tMake').disabled=false; say('cm',T('net'),'bad') });
+}
+
+function enlace(sq){
+  return location.origin+location.pathname.replace(/[^/]*$/,'')+
+    'jugador.html?c='+encodeURIComponent(CID)+
+    (sq?'&d='+encodeURIComponent(sq):'');
+}
+/* Lo que el entrenador se lleva de aquí es UN enlace para el grupo del
+   equipo. Cada familia se apunta sola y le sale su propio enlace de
+   padrinos — nadie teclea plantillas. Los enlaces por escuadra sólo
+   salen cuando ya hay reparto, porque antes no significan nada. */
+function listo(on){
+  var A=lado('a'), B=lado('b'), hay=A.length&&B.length;
+  var txt=T('waMsg',{E:campName(),D:on})+'\n\n'+enlace('');
+  $('res').innerHTML=
+    '<div class="done"><b>'+esc(T('madeL'))+'</b>'+
+      esc(T('made',{D:on,A:SA,B:SB_}))+
+      (hay?'':'<p style="margin:9px 0 0;font-size:.86rem">'+esc(T('emptyRoster'))+'</p>')+
+      '<div class="lk"><em>'+esc(T('lkTeam'))+'</em>'+esc(enlace(''))+'</div>'+
+      (hay
+        ? '<div class="lk"><em>'+esc(T('lkA',{N:SA}))+'</em>'+esc(enlace(SA))+'</div>'+
+          '<div class="lk"><em>'+esc(T('lkA',{N:SB_}))+'</em>'+esc(enlace(SB_))+'</div>'
+        : '')+
+      '<a class="btn go" href="https://wa.me/?text='+encodeURIComponent(txt)+'">'+
+        esc(T('wa'))+'</a>'+
+      '<button class="btn line" onclick="copiar('+JSON.stringify(enlace('')).replace(/"/g,'&quot;')+')">'+
+        esc(T('copy'))+'</button>'+
+    '</div>'+
+    '<a class="btn line" href="scoreboard.html?c='+esc(CID)+'">'+esc(T('board'))+'</a>';
+  hoja();
+}
+function copiar(u){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(function(){ say('cm',T('copied'),'ok') },
+      function(){ say('cm',u,'') });
+  } else { say('cm',u,'') }
+}
+
+/* La hoja que va a la cancha: las dos escuadras, y dos cuadros en
+   blanco para los puntos. Nada más. */
+function hoja(){
+  var A=lado('a'), B=lado('b');
+  var on=trim($('on').value), hora=trim($('hora').value);
+  function col(t,l){
+    return '<div class="col"><h4>'+esc(t)+'</h4><ol>'+
+      l.map(function(p){ return '<li>'+esc(p.n)+'</li>' }).join('')+'</ol></div>';
+  }
+  $('sheet').innerHTML='<div class="sh">'+
+    '<div class="shh"><h3>'+esc(campName())+'</h3>'+
+      '<div>'+esc(T('shWhen'))+': '+esc(on||'—')+(hora?' · '+esc(hora):'')+'<br>'+
+        esc(T('shWho'))+': '+esc(BY||'—')+'</div></div>'+
+    '<div class="cols">'+col(SA,A)+col(SB_,B)+'</div>'+
+    '<div class="sc">'+
+      '<div><span>'+esc(SA)+' — '+esc(T('shPts'))+'</span><i></i></div>'+
+      '<div><span>'+esc(SB_)+' — '+esc(T('shPts'))+'</span><i></i></div>'+
+    '</div>'+
+    '<p class="shf">'+esc(T('shFoot'))+'</p>'+
+  '</div>';
+}
+
+$('code').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){ e.preventDefault(); entrar(false) }
+});
+$('on').addEventListener('change',hoja);
+$('hora').addEventListener('input',hoja);
+
+paintStatic();
+if(CODE) entrar(true);
+</script>
+</body>
+</html>
