@@ -41,7 +41,30 @@ header .bar{display:flex;align-items:center;justify-content:space-between;gap:12
 .langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
-main{padding:24px 0 60px}
+main{padding:0 0 60px}
+
+/* La cancha, arriba del todo. El que abre esto a las nueve de la noche
+   está solo y atascado; que lo primero que vea sea una cancha
+   encendida y no un formulario. La foto va en un <img> con srcset para
+   que el teléfono se baje la pequeña. */
+/* El título va ARRIBA, no abajo: arriba el cielo está oscuro y el texto
+   blanco se lee solo, y abajo queda libre el banco mojado con el
+   teléfono encendido, que es lo único que de verdad hay que ver. */
+.hero{position:relative;margin:0 0 22px;border-radius:0 0 6px 6px;overflow:hidden;
+  min-height:330px;display:flex;flex-direction:column;justify-content:flex-start}
+/* Abajo del encuadre: el banco mojado y el teléfono encendido. Eso es
+   lo que hay que ver, no el cielo. */
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:30% 86%}
+.hero .scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(18,32,46,.93) 0%, rgba(18,32,46,.86) 28%,
+    rgba(18,32,46,.52) 52%, rgba(18,32,46,.14) 78%,
+    rgba(18,32,46,0) 100%)}
+.hero .ht{position:relative;padding:20px}
+.hero h1{color:#fff;margin:0 0 4px}
+.hero .lede{color:#C8D6E2;margin:0}
+@media (min-width:760px){ .hero{min-height:360px;border-radius:6px;margin-top:20px} }
 h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 6px}
 .lede{color:var(--mute);font-size:.95rem;margin:0 0 10px}
 .hint{color:var(--mute);font-size:.85rem;margin:0 0 22px}
@@ -116,11 +139,13 @@ footer .f-dot{padding:0 7px;opacity:.5}
   </div>
 </header>
 
-<main><div class="wrap">
+<main>
   <div id="head"></div>
+  <div class="wrap">
   <div id="chatbox"></div>
   <div id="app"></div>
-</div></main>
+  </div>
+</main>
 
 <footer>
   <div class="wrap">
@@ -145,6 +170,7 @@ var S={
     askB:'¿No está aquí?',
     askP:'Escríbenos a <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> y dinos tu división. Contestamos el mismo día.',
     terms:'Términos',
+    alt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco',
     chatB:'Pregúntame',
     chatP:'Esto es para entrenadores. Pon tu código y pregúntame lo que no te salga — a cualquier hora.',
     chatCode:'Tu código',
@@ -261,6 +287,7 @@ var S={
     askB:'Not here?',
     askP:'Write to <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> and tell us your division. We answer the same day.',
     terms:'Terms',
+    alt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench',
     chatB:'Ask me',
     chatP:'This is for coaches. Enter your code and ask me whatever will not work — at any hour.',
     chatCode:'Your code',
@@ -514,8 +541,21 @@ function paint(){
      contenedores distintos a propósito: cambiar de idioma repinta
      estos dos y la conversación se queda donde estaba. */
   $('head').innerHTML =
-    '<h1>'+esc(T('h1'))+'</h1>'+
-    '<p class="lede">'+esc(T('lede'))+'</p>'+
+    '<div class="hero">'+
+      /* Un solo archivo a propósito. El srcset pedía tres tamaños y
+         Render sólo dejó subir éste; con los otros dos ausentes la foto
+         no salía ni en teléfono ni en escritorio. 62 KB sirven en todas
+         partes. Cuando los otros dos estén arriba se vuelve a poner el
+         srcset y el teléfono baja 40 KB en vez de 62. */
+      '<img src="coach-cancha-1024.webp" '+
+        'width="1024" height="683" '+
+        'decoding="async" alt="'+esc(T('alt'))+'">'+
+      '<span class="scrim" aria-hidden="true"></span>'+
+      '<div class="ht">'+
+        '<h1>'+esc(T('h1'))+'</h1>'+
+        '<p class="lede">'+esc(T('lede'))+'</p>'+
+      '</div>'+
+    '</div>'+
     '<p class="hint">'+esc(T('hint'))+'</p>';
 
   $('app').innerHTML =
