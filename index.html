@@ -263,6 +263,25 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   border:2px solid #16304a}
 .live-card:hover{border-color:var(--ball,#FF7A18)}
 
+/* La tarjeta de Coach Cada Punto lleva la cancha detrás. La foto va en
+   un <img> y no en un background para que el teléfono se baje la
+   pequeña: 40 KB en vez de 111. Y encima un velo de abajo a arriba,
+   porque el texto tiene que leerse igual — la foto no manda sobre lo
+   que dice. */
+.coach-card{min-height:420px;display:flex;flex-direction:column;justify-content:flex-end}
+/* 30% desde la izquierda: ahí está el banco con el teléfono. Centrada,
+   el recorte de la tarjeta se lo comía justo. */
+.cc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:30% 72%}
+/* El velo sólo donde va el texto. Arriba se deja ver la cancha — que es
+   para lo que está la foto. */
+.cc-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,
+    rgba(11,23,36,.97) 0%, rgba(11,23,36,.93) 30%,
+    rgba(11,23,36,.70) 48%, rgba(11,23,36,.18) 68%,
+    rgba(11,23,36,.05) 100%)}
+@media (max-width:560px){ .coach-card{min-height:440px} }
+
 .lc-glow{position:absolute;inset:-40% -10%;pointer-events:none;
   background:radial-gradient(circle at 20% 50%, rgba(255,122,24,.28), transparent 42%);
   animation:sweep 7s ease-in-out infinite}
@@ -405,7 +424,13 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
        contesta cuando se atasque un sábado por la noche. La respuesta
        es: alguien, siempre, y sin esperar a que abramos. -->
   <a class="live-card coach-card" href="ayuda.html">
-    <span class="lc-glow" aria-hidden="true"></span>
+    <!-- Un solo tamaño: es el único de los tres que Render dejó subir,
+         y con los otros ausentes la tarjeta se quedaba sin foto. 62 KB
+         valen para todo. El srcset vuelve cuando estén los tres. -->
+    <img class="cc-bg" src="coach-cancha-1024.webp"
+         width="1024" height="683" loading="lazy" decoding="async"
+         data-t-alt="ccAlt" alt="A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench">
+    <span class="cc-scrim" aria-hidden="true"></span>
     <span class="lc-top"><span class="lc-dot"></span><span data-t="ccTag">For coaches</span></span>
     <span class="lc-name">coach <em>cada punto</em></span>
     <span class="lc-p" data-t="ccP">Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.</span>
@@ -515,7 +540,8 @@ var T = {
     dcKick:'See it working', dcH:'See it start to finish',
     dcP:'One game, the whole way through — from the coach setting it up to the money reaching the program. And a real team board to look around: the games open for pledges, the points scored in each one, and the sheet a padrino fills out.',
     dcGoM:'How it works →', dcGoB:'Basketball Demo →',
-    mCoach:'Coach Cada Punto', ccTag:'For coaches', ccGo:'Open Coach Cada Punto →',
+    mCoach:'Coach Cada Punto', ccTag:'For coaches',
+    ccAlt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench', ccGo:'Open Coach Cada Punto →',
     ccP:'Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.',
     stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a game that is never played is never charged.',
@@ -559,7 +585,8 @@ var T = {
     dcKick:'Míralo funcionando', dcH:'Míralo de principio a fin',
     dcP:'Un juego completo, desde que el entrenador lo monta hasta que al programa le entra el dinero. Y el tablero de un equipo de verdad, para darte una vuelta — los juegos abiertos a promesas, los puntos que anotó el equipo en cada uno, y la hoja que llena un padrino.',
     dcGoM:'Cómo funciona →', dcGoB:'Demo de Baloncesto →',
-    mCoach:'Coach Cada Punto', ccTag:'Para entrenadores', ccGo:'Abrir Coach Cada Punto →',
+    mCoach:'Coach Cada Punto', ccTag:'Para entrenadores',
+    ccAlt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco', ccGo:'Abrir Coach Cada Punto →',
     ccP:'Todo lo que pregunta un entrenador, contestado en una página — y un chat que contesta lo demás, con tu código, a cualquier hora. Sin esperar a que abramos.',
     stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y un juego que no se juega no se cobra.',
