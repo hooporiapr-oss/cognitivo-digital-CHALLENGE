@@ -172,8 +172,8 @@ var S = {
     rowsH:'Los entrenadores',
     divL:'División o equipo', divPh:'Infantil',
     codeL:'Su código', codePh:'Déjalo en blanco para escribirlo a mano',
-    linkL:'Enlace de su tablero', linkPh:'cadapunto.com/scoreboard.html?c=…',
-    joinL:'Enlace para apuntarse', joinPh:'cadapunto.com/jugador.html?c=…',
+    linkL:'Enlace de su tablero', linkPh:'https://cadapunto.com/scoreboard.html?c=…',
+    joinL:'Enlace para apuntarse', joinPh:'https://cadapunto.com/jugador.html?c=…',
     add:'Añadir otro',
     rm:'Quitar',
     blank:'Imprimir los códigos en la hoja. Si lo dejas sin marcar, sale una raya y lo escribes a mano al entregarla.',
@@ -196,6 +196,7 @@ var S = {
     mUno:'Te remitimos el <b>día 1</b> y el <b>día 15</b> de cada mes, por lo cobrado hasta ese día.',
     mDos:'El programa recibe el <b>100%</b> de lo prometido. Nuestro 20% se le añade al pago del padrino, nunca se saca de lo tuyo.',
     mTres:'Nada por adelantado y nada mensual.',
+    mHelp:'Si algo no sale: <b>https://cadapunto.com/ayuda.html</b>',
     mMail:'Dudas: gostardigital@gmail.com'
   },
   en:{
@@ -206,8 +207,8 @@ var S = {
     rowsH:'The coaches',
     divL:'Division or team', divPh:'Infantil',
     codeL:'Their code', codePh:'Leave blank to write it in by hand',
-    linkL:'Their board link', linkPh:'cadapunto.com/scoreboard.html?c=…',
-    joinL:'Their sign-up link', joinPh:'cadapunto.com/jugador.html?c=…',
+    linkL:'Their board link', linkPh:'https://cadapunto.com/scoreboard.html?c=…',
+    joinL:'Their sign-up link', joinPh:'https://cadapunto.com/jugador.html?c=…',
     add:'Add another',
     rm:'Remove',
     blank:'Print the codes on the sheet. Left unticked, a blank line prints and you write it in as you hand it over.',
@@ -230,6 +231,7 @@ var S = {
     mUno:'We remit on the <b>1st</b> and the <b>15th</b> of each month, for whatever was collected up to that day.',
     mDos:'The program receives <b>100%</b> of what was pledged. Our 20% is added to the padrino’s payment, never taken out of yours.',
     mTres:'Nothing up front and nothing monthly.',
+    mHelp:'If something will not work: <b>https://cadapunto.com/ayuda.html</b>',
     mMail:'Questions: gostardigital@gmail.com'
   }
 };
@@ -360,6 +362,26 @@ function drawSetup(){
     '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
 }
 
+/* Un enlace sin https:// delante no es un enlace: pegado en el grupo de
+   WhatsApp sale como texto pelado, sin vista previa y en algunas apps
+   ni se puede tocar. Y el de apuntarse es justo el que queremos que
+   toquen las familias.
+
+   Asi que lo que se imprime siempre lleva https://, lo haya escrito
+   quien lo haya escrito. Si ya viene con http:// se sube a https. */
+function conHttps(u){
+  var t = String(u==null?'':u).trim();
+  if(!t) return '';
+  if(/^https:\/\//i.test(t)) return t;
+  if(/^http:\/\//i.test(t))  return t.replace(/^http:\/\//i,'https://');
+  /* Pegado desde la barra del navegador a veces viene sólo la ruta:
+     /jugador.html?c=... Ahí hay que ponerle el dominio entero, porque
+     si no sale un enlace que parece bueno en el papel y no lleva a
+     ningún sitio. */
+  if(t.charAt(0)==='/') return 'https://cadapunto.com' + t;
+  return 'https://' + t;
+}
+
 function drawSheets(){
   document.getElementById('sheets').innerHTML = ROWS.map(function(r){
     var codeBox = (SHOWCODE && (r.code||'').trim())
@@ -367,14 +389,14 @@ function drawSheets(){
       : '<span class="blank"></span>';
 
     var board = (r.link||'').trim()
-      ? '<span class="lnk">' + esc((r.link||'').trim()) + '</span>'
+      ? '<span class="lnk">' + esc(conHttps(r.link)) + '</span>'
       : '<span class="lnk">' + T('s2blank') + '</span>';
 
     // El que de verdad mueve el dinero. Sin esto el entrenador se va
     // con una hoja completa y sin la dirección que hace que alguien
     // prometa algo.
     var join = (r.join||'').trim()
-      ? '<span class="lnk">' + esc((r.join||'').trim()) + '</span>'
+      ? '<span class="lnk">' + esc(conHttps(r.join)) + '</span>'
       : '<span class="lnk">' + T('s2blank') + '</span>';
 
     return '<div class="sheet">' +
@@ -389,7 +411,7 @@ function drawSheets(){
 
       '<ol class="steps">' +
         '<li><b>' + T('s1b') + '</b>' +
-          '<span class="lnk">cadapunto.com/mi-equipo.html</span>' +
+          '<span class="lnk">https://cadapunto.com/mi-equipo.html</span>' +
           '<span>' + T('s1') + '</span></li>' +
         '<li><b>' + T('sJb') + '</b>' + join +
           '<span>' + T('sJ') + '</span></li>' +
@@ -400,13 +422,14 @@ function drawSheets(){
       '</ol>' +
 
       '<div class="once"><b>' + T('onceB') + '</b>' +
-        '<span class="lnk">cadapunto.com/cobro.html</span>' +
+        '<span class="lnk">https://cadapunto.com/cobro.html</span>' +
         '<span>' + T('once') + '</span></div>' +
 
       '<div class="money">' +
         '<p>' + T('mUno') + '</p>' +
         '<p>' + T('mDos') + '</p>' +
         '<p>' + T('mTres') + '</p>' +
+        '<p>' + T('mHelp') + '</p>' +
         '<p class="mail">' + T('mMail') + '</p>' +
       '</div>' +
     '</div>';
