@@ -76,6 +76,8 @@ p.b em{font-style:italic}
 .close b{font-weight:900}
 .go{display:inline-block;background:var(--ball);color:#12202E;text-decoration:none;
   font-weight:900;padding:13px 22px;border-radius:5px;font-size:1rem}
+.wall{color:var(--mute);font-size:.9rem;margin:30px 0 0}
+.wall a{color:var(--accent);font-weight:800;text-decoration:none}
 .cap{color:var(--mute);font-size:.82rem;margin:0}
 .cap a{color:var(--accent);font-weight:800;text-decoration:none}
 
@@ -133,6 +135,8 @@ var S={
       ['end','No se apagó nada. Ni los focos, ni el teléfono, ni la vecina.']
     ],
     go:'Cada Punto →',
+    wall:'¿La quieres en tu teléfono?',
+    wallGo:'Bájala ↓',
     cap:'Loíza, Puerto Rico.'
   },
   en:{
@@ -149,6 +153,8 @@ var S={
       ['end','Nothing got switched off. Not the lights, not the phone, not the neighbour.']
     ],
     go:'Cada Punto →',
+    wall:'Want it on your phone?',
+    wallGo:'Download it ↓',
     cap:'Loíza, Puerto Rico.'
   }
 };
@@ -183,6 +189,10 @@ function paint(){
   /* Ni moraleja ni botón. El cuento termina y lo único que queda es de
      dónde es la cancha y un enlace pequeño por si alguien quiere seguir.
      Explicar lo que significa sería quitárselo al que lo leyó. */
+  /* Un regalo, no una llamada a la acción: va en gris, en una línea, y
+     se baja el archivo en vez de abrir otra página. */
+  out+='<p class="wall">'+esc(T('wall'))+' '+
+       '<a href="todavia-encendida-vertical.jpg" download>'+esc(T('wallGo'))+'</a></p>';
   out+='<hr class="rule">';
   out+='<p class="cap">'+esc(T('cap'))+' · <a href="index.html">'+esc(T('go'))+'</a></p>';
   document.getElementById('body').innerHTML=out;
