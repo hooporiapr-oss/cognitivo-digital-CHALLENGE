@@ -308,7 +308,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <a href="sietes.html" data-t="navLive">Sietes</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
     <a href="programa.html" data-t="navProg">For players and families</a>
-    <a href="preguntas.html" data-t="navFaq">Questions</a><button id="lang" onclick="flip()">ES</button>
+    <a href="ayuda.html" data-t="navFaq">Coach Cada Punto</a><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -320,7 +320,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <a href="sietes.html" data-t="mLive">Sietes</a>
   <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
   <a href="programa.html" data-t="mProg">For players and families</a>
-  <a href="preguntas.html" data-t="mFaq">Questions</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
+  <a href="ayuda.html" data-t="mCoach">Coach Cada Punto</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
 
@@ -400,6 +400,18 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   </section>
 
 
+  <!-- Coach Cada Punto. Va aquí, después de lo que cuesta, porque a
+       estas alturas el que lee ya se está preguntando quién le
+       contesta cuando se atasque un sábado por la noche. La respuesta
+       es: alguien, siempre, y sin esperar a que abramos. -->
+  <a class="live-card coach-card" href="ayuda.html">
+    <span class="lc-glow" aria-hidden="true"></span>
+    <span class="lc-top"><span class="lc-dot"></span><span data-t="ccTag">For coaches</span></span>
+    <span class="lc-name">coach <em>cada punto</em></span>
+    <span class="lc-p" data-t="ccP">Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. The money answers are the written ones, word for word, never improvised.</span>
+    <span class="lc-go" data-t="ccGo">Open Coach Cada Punto →</span>
+  </a>
+
   <!-- Secondary now: a reason the platform is more than a donate
        button, and something to run between seasons. -->
   <!-- Sietes: baloncesto por sets. Un programa puede montarlo sin
@@ -466,6 +478,8 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <span class="f-dot">·</span>
     <a href="escuadras.html" data-t="fSquads">Squads</a>
     <span class="f-dot">·</span>
+    <a href="ayuda.html" data-t="fHelp">Coach help</a>
+    <span class="f-dot">·</span>
     <a href="sietes.html" data-t="fRules">Rules</a>
   </p>
   <p class="f-legal">
@@ -481,7 +495,7 @@ var T = {
     lcTag:'Start here', lcGo:'How it works →',
     lcP:'Basketball in sets. Every set is played to seven points, first team to win three sets takes the match — no clock, no referees, and nobody gets blown out. Both teams raise on every basket they score, including the ones in sets they lost.',
     mLive:'Sietes', navScrim:'Scrimmages', navLive:'Sietes',
-    mFaq:'Questions', navFaq:'Questions',
+    navFaq:'Coach Cada Punto',
     mProg:'For players and families', navProg:'For players and families',
     hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
     nsH:'Nothing to sell. Nothing to deliver.',
@@ -501,6 +515,8 @@ var T = {
     dcKick:'See it working', dcH:'See it start to finish',
     dcP:'One game, the whole way through — from the coach setting it up to the money reaching the program. And a real team board to look around: the games open for pledges, the points scored in each one, and the sheet a padrino fills out.',
     dcGoM:'How it works →', dcGoB:'Basketball Demo →',
+    mCoach:'Coach Cada Punto', ccTag:'For coaches', ccGo:'Open Coach Cada Punto →',
+    ccP:'Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. The money answers are the written ones, word for word, never improvised.',
     stepGo:'Sign up my team →',
     seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a game that is never played is never charged.',
     boardH:'One page your families will actually check.',
@@ -517,13 +533,13 @@ var T = {
     costH:'Free for your program.',
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
     closeH:'We will set it up for you.',
-    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fMine:'My team', fCal:'Schedule', fSquads:'Squads', fRules:'Rules', fTerms:'Terms', fPrivacy:'Privacy'
+    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fMine:'My team', fCal:'Schedule', fSquads:'Squads', fHelp:'Coach help', fRules:'Rules', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
     lcTag:'Empieza aquí', lcGo:'Cómo funciona →',
     lcP:'Baloncesto por sets. Cada set se juega a siete puntos y gana el partido el primero que gane tres — sin reloj, sin árbitros, y sin que nadie se lleve una pela. Los dos equipos recaudan por cada canasta, también las de los sets que perdieron.',
     mLive:'Sietes', navScrim:'Interescuadra', navLive:'Sietes',
-    mFaq:'Preguntas', navFaq:'Preguntas',
+    navFaq:'Coach Cada Punto',
     mProg:'Para jugadores y familias', navProg:'Para jugadores y familias',
     hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
     nsH:'Nada que vender. Nada que entregar.',
@@ -543,6 +559,8 @@ var T = {
     dcKick:'Míralo funcionando', dcH:'Míralo de principio a fin',
     dcP:'Un juego completo, desde que el entrenador lo monta hasta que al programa le entra el dinero. Y el tablero de un equipo de verdad, para darte una vuelta — los juegos abiertos a promesas, los puntos que anotó el equipo en cada uno, y la hoja que llena un padrino.',
     dcGoM:'Cómo funciona →', dcGoB:'Demo de Baloncesto →',
+    mCoach:'Coach Cada Punto', ccTag:'Para entrenadores', ccGo:'Abrir Coach Cada Punto →',
+    ccP:'Todo lo que pregunta un entrenador, contestado en una página — y un chat que contesta lo demás, con tu código, a cualquier hora. Lo de dinero sale escrito, palabra por palabra, nunca improvisado.',
     stepGo:'Inscribir mi equipo →',
     seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y un juego que no se juega no se cobra.',
     boardH:'Una página que tus familias sí van a mirar.',
@@ -559,7 +577,7 @@ var T = {
     costH:'Gratis para tu programa.',
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
     closeH:'Te lo montamos nosotros.',
-    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.', fSignin:'Acceder', fMine:'Mi equipo', fCal:'Calendario', fSquads:'Escuadras', fRules:'Reglas', fTerms:'Términos', fPrivacy:'Privacidad'
+    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.', fSignin:'Acceder', fMine:'Mi equipo', fCal:'Calendario', fSquads:'Escuadras', fHelp:'Ayuda', fRules:'Reglas', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
