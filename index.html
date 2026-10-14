@@ -164,6 +164,16 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;co
 footer a{color:var(--mute)}
 footer p{margin:0 0 7px}
 footer .f-co{font-weight:700;color:var(--ink)}
+footer .f-story{margin:0 0 20px}
+/* El pie es oscuro, así que el título va en blanco. Puesto en --ink
+   quedaba azul marino sobre azul marino: invisible. */
+footer .f-story a{display:inline-block;text-decoration:none;
+  border:2px solid rgba(255,255,255,.22);
+  border-radius:6px;padding:13px 20px;max-width:34ch}
+footer .f-story a:hover{border-color:var(--ball,#FF7A18)}
+footer .fs-n{display:block;font-weight:900;font-size:1.08rem;color:#fff;
+  letter-spacing:-.01em}
+footer .fs-p{display:block;font-size:.84rem;color:#9FB3C4;margin-top:3px}
 footer .f-nav{margin-top:12px}
 footer .f-legal{margin:7px 0 0;font-size:.8rem}
 footer .f-dot{padding:0 7px;opacity:.5}
@@ -490,6 +500,16 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
 })();
 </script>
+  <!-- Todavía encendida va sola, antes que nada y con su propio peso.
+       Metida en la fila de enlaces se pierde, y es lo único del pie que
+       alguien podría querer leer por gusto. -->
+  <p class="f-story">
+    <a href="todavia-encendida.html">
+      <span class="fs-n" data-t="fsN">Todavía encendida</span>
+      <span class="fs-p" data-t="fsP">Un cuento — la noche que no se jugó →</span>
+    </a>
+  </p>
+
   <p class="f-mail"><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
   <p class="f-nav">
     <a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a>
@@ -502,10 +522,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <a href="calendario.html" data-t="fCal">Schedule</a>
     <span class="f-dot">·</span>
     <a href="escuadras.html" data-t="fSquads">Squads</a>
-    <span class="f-dot">·</span>
-    <a href="ayuda.html" data-t="fHelp">Coach help</a>
-    <span class="f-dot">·</span>
-    <a href="sietes.html" data-t="fRules">Rules</a>
   </p>
   <p class="f-legal">
     <a href="terms.html" data-t="fTerms">Terms</a>
@@ -559,7 +575,8 @@ var T = {
     costH:'Free for your program.',
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
     closeH:'We will set it up for you.',
-    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fMine:'My team', fCal:'Schedule', fSquads:'Squads', fHelp:'Coach help', fRules:'Rules', fTerms:'Terms', fPrivacy:'Privacy'
+    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fMine:'My team', fCal:'Schedule', fSquads:'Squads',
+    fsN:'Still On', fsP:'A story — the night nobody played →', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
     lcTag:'Empieza aquí', lcGo:'Cómo funciona →',
@@ -604,7 +621,8 @@ var T = {
     costH:'Gratis para tu programa.',
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
     closeH:'Te lo montamos nosotros.',
-    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.', fSignin:'Acceder', fMine:'Mi equipo', fCal:'Calendario', fSquads:'Escuadras', fHelp:'Ayuda', fRules:'Reglas', fTerms:'Términos', fPrivacy:'Privacidad'
+    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.', fSignin:'Acceder', fMine:'Mi equipo', fCal:'Calendario', fSquads:'Escuadras',
+    fsN:'Todavía encendida', fsP:'Un cuento — la noche que no se jugó →', fTerms:'Términos', fPrivacy:'Privacidad'
   }
 };
 
