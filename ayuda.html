@@ -430,7 +430,10 @@ function mandar(){
   fetch(API+'/coach/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({code:CODE,messages:MSGS.map(function(m){
+    /* El idioma va aquí: lo decide el botón de arriba, no la frase que
+       escribió. Preguntar algo en inglés en medio de una conversación
+       en español no debería cambiarle el idioma al que lee. */
+    body:JSON.stringify({code:CODE,lang:LANG,messages:MSGS.map(function(m){
       return {role:m.role,content:m.content} })})
   })
   .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j} }) })
