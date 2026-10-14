@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ayuda del entrenador — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Las preguntas que de verdad hace un entrenador, y las respuestas que
+   no se pueden equivocar. Está abierta a propósito: alguien atascado a
+   las nueve de la noche no debe tener que entrar con un código para
+   poder leer cómo se destraba.
+
+   Nada aquí se inventa sobre dinero. Lo que dice de pagos, del 20% y
+   de cuándo se cobra está escrito a mano y cuadra con terms.html y con
+   custodia.html. Si una de esas cambia, esta cambia. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(680px,93vw);margin:0 auto}
+
+header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+main{padding:24px 0 60px}
+h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 6px}
+.lede{color:var(--mute);font-size:.95rem;margin:0 0 10px}
+.hint{color:var(--mute);font-size:.85rem;margin:0 0 22px}
+h2{font-size:.58rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin:30px 0 10px}
+
+details{border:2px solid var(--line);border-radius:6px;margin:0 0 9px;background:#fff}
+details[open]{border-color:var(--ink)}
+summary{cursor:pointer;padding:13px 15px;font-weight:800;font-size:.97rem;
+  list-style:none;display:flex;gap:10px;align-items:flex-start}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'+';color:var(--accent);font-weight:900;flex:0 0 auto;
+  font-size:1.05rem;line-height:1.35}
+details[open] summary::before{content:'–'}
+.a{padding:0 15px 15px 40px;font-size:.93rem;color:#2B3B4A}
+.a p{margin:0 0 9px}
+.a p:last-child{margin:0}
+.a b{color:var(--ink)}
+.a a{color:var(--accent);font-weight:800}
+.a code{background:var(--tint);border:1px solid var(--line);border-radius:4px;
+  padding:1px 6px;font-size:.88em;overflow-wrap:anywhere}
+
+.ask{border:3px solid var(--ball);background:#FFF6EF;border-radius:6px;
+  padding:15px 17px;margin:28px 0 0}
+.ask b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.ask p{margin:0;font-size:.93rem}
+.ask a{color:var(--accent);font-weight:800}
+
+footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
+  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-dot{padding:0 7px;opacity:.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main><div class="wrap" id="app"></div></main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Cada Punto</a><span class="f-dot">·</span>
+    <a href="sietes.html">Sietes</a><span class="f-dot">·</span>
+    <a href="terms.html" id="fTerms">Términos</a><span class="f-dot">·</span>
+    <a href="custodia.html">Dinero</a>
+  </div>
+</footer>
+
+<script>
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+/* Cada pregunta: [sección, pregunta, respuesta en HTML]. El HTML de la
+   respuesta es nuestro, no de nadie de fuera, así que va tal cual. */
+var S={
+  es:{
+    h1:'Ayuda del entrenador',
+    lede:'Lo que preguntan los entrenadores, y qué hacer cuando algo no sale.',
+    hint:'Si lo tuyo no está aquí, escríbenos — al final de la página.',
+    askB:'¿No está aquí?',
+    askP:'Escríbenos a <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> y dinos tu división. Contestamos el mismo día.',
+    terms:'Términos',
+    secs:['Entrar','La plantilla','Los juegos','El marcador','El dinero'],
+    qs:[
+      [0,'¿Dónde entro?',
+       '<p>En <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, con el código que te dimos.</p>'+
+       '<p>Lo escribes <b>una sola vez</b>. De ahí en adelante ese teléfono ya te conoce — para el calendario, para la plantilla, para el marcador, para todo.</p>'],
+      [0,'¿Tengo que escribir el código en cada página?',
+       '<p>No. Una vez, en Mi equipo, y listo.</p>'+
+       '<p>Si te lo vuelve a pedir es porque estás en otro teléfono, en otro navegador, o en una ventana privada. Escríbelo otra vez y ya.</p>'],
+      [0,'Perdí mi código.',
+       '<p>Escríbenos y te hacemos uno nuevo. No lo podemos buscar: se guarda cifrado, así que ni nosotros lo sabemos.</p>'],
+      [0,'Dice que mi código no sirve.',
+       '<p>Fíjate que no tenga espacios al principio o al final — al copiarlo y pegarlo se arrastran solos.</p>'+
+       '<p>Si sigue sin entrar, escríbenos. Puede que esté apagado.</p>'],
+
+      [1,'¿Cómo apunto a mis jugadores?',
+       '<p>De dos maneras, y las dos valen a la vez.</p>'+
+       '<p><b>Tú:</b> en <a href="plantilla.html">La plantilla</a>, pegas los nombres, uno por línea.</p>'+
+       '<p><b>Ellos:</b> mandas el enlace de apuntarse al grupo del equipo y cada familia se apunta sola. Ésa es la buena — cada nene recibe su propio enlace para sus padrinos, y tú no tecleas nada.</p>'],
+      [1,'Un nene se apuntó y no lo veo en la plantilla.',
+       '<p>Está esperando que tú digas que sí. Ábrela y lo verás arriba, en un recuadro anaranjado, con <b>Aprobar</b> y <b>Rechazar</b>.</p>'+
+       '<p>Mientras no lo apruebes no sale en ningún sitio. Es a propósito: con el enlace del equipo cualquiera podría apuntar a quien sea.</p>'],
+      [1,'Se fue un nene del equipo.',
+       '<p>En La plantilla, <b>Sacar</b>. Baja al final de la lista en gris y deja de salir en el tablero.</p>'+
+       '<p>No se borra, y vuelve con un toque si fue un error. Si de verdad quieres borrarlo, el botón <b>Borrar</b> sale después de sacarlo — menos si ya tiene promesas encima, que entonces no se puede y se queda fuera de la lista.</p>'],
+      [1,'Escribí mal un nombre.',
+       '<p><b>Arreglar</b>, en su fila. También puedes cambiarle la escuadra ahí mismo.</p>'],
+
+      [2,'¿Cómo pongo un juego?',
+       '<p>Desde Mi equipo, <b>Poner juegos</b>. Fecha, hora y contra quién.</p>'+
+       '<p>Puedes poner toda la temporada de una vez si ya la tienes.</p>'],
+      [2,'¿Cómo armo un interescuadra?',
+       '<p>Desde Mi equipo, <b>Escuadras</b>. Partes tu plantilla en dos, pones fecha y hora, y se crean los dos juegos de una vez.</p>'+
+       '<p>Son dos juegos y no uno a propósito: cada escuadra tiene que ser el equipo en su propia fila, porque los padrinos prometen por juego. Si sólo hubiera uno, las familias de la otra mitad no tendrían nada que apadrinar ese día.</p>'],
+      [2,'Nadie puede prometer en un juego.',
+       '<p>Las promesas se cierran a la hora del juego. Después de esa hora ya no entra ninguna.</p>'+
+       '<p>Si la hora está mal puesta, arréglala y vuelve a abrirse.</p>'],
+      [2,'Se canceló el juego.',
+       '<p>Avísanos y lo cancelamos. No se le cobra nada a nadie por un juego que no se jugó.</p>'],
+
+      [3,'¿Cómo pongo el marcador?',
+       '<p>En el tablero de tu equipo. Entras con tu código, certificas una vez, y de ahí cada juego son dos números y <b>Guardar</b>.</p>'],
+      [3,'No me deja poner el marcador.',
+       '<p>Casi siempre es que el juego todavía no ha pasado. No se puede poner el marcador de un juego que no se ha jugado.</p>'+
+       '<p>Si la fecha quedó mal, arréglala o avísanos.</p>'],
+      [3,'Me equivoqué en el marcador.',
+       '<p>Avísanos el mismo día. Se corrige y se les dice a los padrinos.</p>'+
+       '<p>Esto importa: el padrino paga por un número que no vio. Un marcador que se cambia sin decirlo es de las tres cosas que tumban un partido en las reglas de Sietes.</p>'],
+      [3,'¿Por qué me insiste tanto con el marcador?',
+       '<p>Porque mientras no esté puesto, <b>no se le cobra a ningún padrino y el programa no recibe nada</b>. El juego se jugó, la gente prometió, y el dinero se queda parado esperando dos números.</p>'+
+       '<p>Por eso Mi equipo te lo pone arriba, en anaranjado, hasta que lo pongas.</p>'],
+      [3,'Perdimos. ¿Igual recaudamos?',
+       '<p>Sí. Se recauda por los puntos que anotó tu equipo, no por ganar.</p>'+
+       '<p>En un interescuadra recaudan las dos escuadras, cada una por lo suyo.</p>'],
+
+      [4,'¿Cuándo le llega la cuenta al padrino?',
+       '<p>Cuando pones el marcador, el juego se cierra y se calcula lo de cada padrino. Las cuentas salen desde el admin, así que puede haber unas horas entre que pones el marcador y que les llega.</p>'],
+      [4,'¿Cuándo me pagan a mí?',
+       '<p>El <b>día 1</b> y el <b>día 15</b> de cada mes, por lo cobrado hasta ese día.</p>'+
+       '<p>Si por alguna razón no podemos remitir en esa fecha, te lo decimos antes de que pase.</p>'],
+      [4,'¿A dónde me pagan?',
+       '<p>A donde nos digas en <a href="cobro.html">cadapunto.com/cobro.html</a>, con el mismo código. Es la cuenta ATH Móvil Business de la organización.</p>'+
+       '<p>Hazlo una vez, al principio. Si no nos lo has dicho, Mi equipo te lo recuerda.</p>'],
+      [4,'¿Cuánto se quedan ustedes?',
+       '<p>Nada de lo tuyo. El programa recibe el <b>100%</b> de lo prometido.</p>'+
+       '<p>Nuestro 20% se le suma al pago del padrino, encima de la promesa: una promesa de $25 es un pago de $25.00 más $5.00, y al programa le llegan los $25 completos.</p>'+
+       '<p>Sin cuota de entrada, sin mensualidad y sin contrato.</p>'],
+      [4,'¿Un padrino puede terminar debiendo una fortuna?',
+       '<p>No. El padrino pone su propio tope cuando promete, y el tope manda. También hay un cobro mínimo de $5.</p>'],
+      [4,'Un padrino me preguntó algo que no sé contestar.',
+       '<p>Las preguntas de los padrinos — cuánto van a pagar, cuándo, qué pasa si el equipo anota muchísimo — están contestadas en <a href="preguntas.html">cadapunto.com/preguntas.html</a>. Mandar ese enlace contesta mejor que explicarlo de memoria.</p>'+
+       '<p>Si es algo que no está ahí, pásanoslo y lo contestamos nosotros.</p>'],
+      [4,'¿Esto es deducible de impuestos?',
+       '<p>No decimos que lo sea. Gostar Digital LLC es una empresa con fines de lucro, no una organización sin fines de lucro, y no emitimos recibos para impuestos.</p>'+
+       '<p>Si a un padrino le importa cómo se trata su pago, que lo consulte con su asesor.</p>']
+    ]
+  },
+  en:{
+    h1:'Coach help',
+    lede:'What coaches ask, and what to do when something will not work.',
+    hint:'If yours is not here, write to us — at the bottom of the page.',
+    askB:'Not here?',
+    askP:'Write to <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> and tell us your division. We answer the same day.',
+    terms:'Terms',
+    secs:['Signing in','The roster','The games','The score','The money'],
+    qs:[
+      [0,'Where do I sign in?',
+       '<p>At <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, with the code we gave you.</p>'+
+       '<p>You type it <b>once</b>. After that this phone knows you — for the schedule, the roster, the scoreboard, all of it.</p>'],
+      [0,'Do I have to type my code on every page?',
+       '<p>No. Once, at My team, and that is it.</p>'+
+       '<p>If it asks again you are on another phone, another browser, or a private window. Type it again and carry on.</p>'],
+      [0,'I lost my code.',
+       '<p>Write to us and we will make you a new one. We cannot look it up: it is stored encrypted, so not even we know it.</p>'],
+      [0,'It says my code does not work.',
+       '<p>Check for a space at the start or the end — copying and pasting drags them along.</p>'+
+       '<p>If it still will not go in, write to us. It may have been turned off.</p>'],
+
+      [1,'How do I get my players on?',
+       '<p>Two ways, and both work at once.</p>'+
+       '<p><b>You:</b> in <a href="plantilla.html">The roster</a>, paste the names, one per line.</p>'+
+       '<p><b>Them:</b> send the sign-up link to the team chat and each family signs up on their own. That is the good one — every child gets their own link for their padrinos, and you type nothing.</p>'],
+      [1,'Someone signed up and I cannot see them on the roster.',
+       '<p>They are waiting on you. Open it and they are at the top, in an orange box, with <b>Approve</b> and <b>Decline</b>.</p>'+
+       '<p>Until you approve them they appear nowhere. That is deliberate: with the team link, anyone could put anyone on your roster.</p>'],
+      [1,'A child left the team.',
+       '<p>In The roster, <b>Take out</b>. They drop to the bottom in grey and stop appearing on the board.</p>'+
+       '<p>Nothing is deleted, and one tap puts them back if it was a mistake. If you really want them gone, a <b>Delete</b> button appears once they are out — unless they already have pledges against them, in which case it cannot be done and they simply stay off the list.</p>'],
+      [1,'I spelled a name wrong.',
+       '<p><b>Fix</b>, on their row. You can change their squad there too.</p>'],
+
+      [2,'How do I post a game?',
+       '<p>From My team, <b>Post games</b>. Date, time and who against.</p>'+
+       '<p>You can put the whole season in at once if you have it.</p>'],
+      [2,'How do I set up a scrimmage?',
+       '<p>From My team, <b>Squads</b>. Split your roster in two, set a date and time, and both games are created at once.</p>'+
+       '<p>It is two games rather than one on purpose: each squad has to be the team on its own row, because padrinos pledge per game. With only one row, the families of the other half would have nothing to pledge on that day.</p>'],
+      [2,'Nobody can pledge on a game.',
+       '<p>Pledging closes at the game’s start time. After that, nothing more comes in.</p>'+
+       '<p>If the time is wrong, fix it and pledging opens again.</p>'],
+      [2,'The game was cancelled.',
+       '<p>Tell us and we will cancel it. Nobody is charged for a game that was not played.</p>'],
+
+      [3,'How do I post the score?',
+       '<p>On your team’s board. You go in with your code, certify once, and from then on each game is two numbers and <b>Save</b>.</p>'],
+      [3,'It will not let me post the score.',
+       '<p>Nearly always the game has not happened yet. A score cannot be posted on a game that has not been played.</p>'+
+       '<p>If the date is wrong, fix it or tell us.</p>'],
+      [3,'I posted the wrong score.',
+       '<p>Tell us the same day. It gets corrected and the padrinos are told.</p>'+
+       '<p>This matters: a padrino pays on a number they did not see. A total changed without saying so is one of the three things that voids a match under the Sietes rules.</p>'],
+      [3,'Why does it keep nagging me about the score?',
+       '<p>Because until it is in, <b>no padrino is charged and the program receives nothing</b>. The game was played, people pledged, and the money sits still waiting on two numbers.</p>'+
+       '<p>That is why My team puts it at the top in orange until you do it.</p>'],
+      [3,'We lost. Do we still raise?',
+       '<p>Yes. You raise on the points your team scored, not on winning.</p>'+
+       '<p>In a scrimmage both squads raise, each on their own.</p>'],
+
+      [4,'When does the padrino get their bill?',
+       '<p>When you post the score the game closes and every padrino’s amount is worked out. The bills go out from the admin side, so there can be a few hours between your posting the score and their receiving it.</p>'],
+      [4,'When do I get paid?',
+       '<p>On the <b>1st</b> and the <b>15th</b> of each month, for whatever has been collected by then.</p>'+
+       '<p>If for any reason we cannot send on that date, we tell you before it passes.</p>'],
+      [4,'Where do you pay me?',
+       '<p>Wherever you tell us at <a href="cobro.html">cadapunto.com/cobro.html</a>, with the same code. It is the organisation’s ATH Móvil Business account.</p>'+
+       '<p>Do it once, at the start. If you have not told us, My team reminds you.</p>'],
+      [4,'How much do you keep?',
+       '<p>Nothing of yours. The program receives <b>100%</b> of what was pledged.</p>'+
+       '<p>Our 20% is added to the padrino’s payment, on top of the pledge: a $25 pledge is a payment of $25.00 plus $5.00, and the program receives the full $25.</p>'+
+       '<p>No setup fee, no monthly fee, no contract.</p>'],
+      [4,'Could a padrino end up owing a fortune?',
+       '<p>No. The padrino sets their own cap when they pledge, and the cap wins. There is also a $5 minimum charge.</p>'],
+      [4,'A padrino asked me something I cannot answer.',
+       '<p>The padrino questions — how much they will pay, when, what happens if the team scores a lot — are answered at <a href="preguntas.html">cadapunto.com/preguntas.html</a>. Sending that link answers better than explaining from memory.</p>'+
+       '<p>If it is not in there, pass it to us and we will answer it.</p>'],
+      [4,'Is this tax deductible?',
+       '<p>We do not say that it is. Gostar Digital LLC is a for-profit company, not a non-profit, and we do not issue tax receipts.</p>'+
+       '<p>If how their payment is treated matters to a padrino, they should ask their own advisor.</p>']
+    ]
+  }
+};
+
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+function T(k){ var v=(S[LANG]&&S[LANG][k]); return v===undefined?S.es[k]:v }
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG) }catch(e){}
+  paint();
+}
+
+function paint(){
+  document.documentElement.lang=LANG;
+  document.getElementById('langBtn').textContent=LANG==='es'?'EN':'ES';
+  document.getElementById('fTerms').textContent=T('terms');
+  document.title=(LANG==='es')
+    ? 'Ayuda del entrenador — Cada Punto' : 'Coach help — Cada Punto';
+
+  var secs=T('secs'), qs=T('qs'), out='';
+  secs.forEach(function(name, i){
+    out += '<h2>'+esc(name)+'</h2>';
+    qs.filter(function(q){ return q[0]===i }).forEach(function(q){
+      out += '<details><summary>'+esc(q[1])+'</summary>'+
+             '<div class="a">'+q[2]+'</div></details>';
+    });
+  });
+
+  document.getElementById('app').innerHTML =
+    '<h1>'+esc(T('h1'))+'</h1>'+
+    '<p class="lede">'+esc(T('lede'))+'</p>'+
+    '<p class="hint">'+esc(T('hint'))+'</p>'+
+    out+
+    '<div class="ask"><b>'+esc(T('askB'))+'</b><p>'+T('askP')+'</p></div>';
+}
+paint();
+</script>
+</body>
+</html>
