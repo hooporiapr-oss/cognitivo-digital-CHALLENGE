@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ayuda del entrenador — Cada Punto</title>
+<title>Coach Cada Punto</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,8 +139,8 @@ function esc(s){ return String(s==null?'':s)
    respuesta es nuestro, no de nadie de fuera, así que va tal cual. */
 var S={
   es:{
-    h1:'Ayuda del entrenador',
-    lede:'Lo que preguntan los entrenadores, y qué hacer cuando algo no sale.',
+    h1:'Coach Cada Punto',
+    lede:'Lo que preguntan los entrenadores y los padrinos. Y si eres entrenador, un chat con tu código.',
     hint:'Si lo tuyo no está aquí, escríbenos — al final de la página.',
     askB:'¿No está aquí?',
     askP:'Escríbenos a <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> y dinos tu división. Contestamos el mismo día.',
@@ -159,7 +159,7 @@ var S={
     chatWait:'Pensando…',
     chatFix:'Texto oficial',
     chatErr:'Algo falló de mi lado. Pregúntalo otra vez, o escríbenos.',
-    secs:['Entrar','La plantilla','Los juegos','El marcador','El dinero'],
+    secs:['Entrar','La plantilla','Los juegos','El marcador','El dinero','Si vas a prometer'],
     qs:[
       [0,'¿Dónde entro?',
        '<p>En <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, con el código que te dimos.</p>'+
@@ -228,16 +228,35 @@ var S={
       [4,'¿Un padrino puede terminar debiendo una fortuna?',
        '<p>No. El padrino pone su propio tope cuando promete, y el tope manda. También hay un cobro mínimo de $5.</p>'],
       [4,'Un padrino me preguntó algo que no sé contestar.',
-       '<p>Las preguntas de los padrinos — cuánto van a pagar, cuándo, qué pasa si el equipo anota muchísimo — están contestadas en <a href="preguntas.html">cadapunto.com/preguntas.html</a>. Mandar ese enlace contesta mejor que explicarlo de memoria.</p>'+
-       '<p>Si es algo que no está ahí, pásanoslo y lo contestamos nosotros.</p>'],
+       '<p>Baja a <b>Si vas a prometer</b>, al final de esta página: ahí está contestado lo que preguntan ellos — cuánto van a pagar, cuándo se les cobra, el tope, y a dónde va el dinero.</p>'+
+       '<p>Mandarles esta misma página contesta mejor que explicarlo de memoria. Y si es algo que no está ahí, pásanoslo y lo contestamos nosotros.</p>'],
       [4,'¿Esto es deducible de impuestos?',
        '<p>No decimos que lo sea. Gostar Digital LLC es una empresa con fines de lucro, no una organización sin fines de lucro, y no emitimos recibos para impuestos.</p>'+
-       '<p>Si a un padrino le importa cómo se trata su pago, que lo consulte con su asesor.</p>']
+       '<p>Si a un padrino le importa cómo se trata su pago, que lo consulte con su asesor.</p>'],
+
+      /* De aquí para abajo no habla el entrenador: habla el padrino. Son
+         las preguntas que hace quien va a pagar, contestadas como se le
+         contestan a él y no como se le explican a un coach. Un
+         entrenador que no sabe qué decirle a una familia manda este
+         enlace y ya. */
+      [5,'¿Cuándo me cobran?',
+       '<p>Después del juego, nunca antes. Prometes una cantidad por punto, el equipo juega, y entonces te llega un correo con el marcador y un enlace para pagar.</p>'],
+      [5,'¿Cuánto voy a pagar exactamente?',
+       '<p>Tu tarifa por los puntos que anotó el equipo. A diez centavos el punto, un juego de 68 son $6.80.</p>'+
+       '<p>El correo te lo desglosa antes de que pagues, y la mínima es $5 por promesa.</p>'],
+      [5,'¿Puedo poner un tope?',
+       '<p>Sí. Al prometer pones lo máximo que quieres pagar y nunca se cobra por encima de eso, anoten lo que anoten.</p>'],
+      [5,'¿Y si pierden?',
+       '<p>Pagas igual, por los puntos que anotaron. Tu promesa es para el programa, no para el resultado.</p>'],
+      [5,'¿A dónde va el dinero?',
+       '<p>Al programa que escogiste, completo. Nuestro 20% se añade encima de tu pago, no se saca del suyo.</p>'+
+       '<p>Lo que ese programa haga con lo recaudado es suyo, igual que cualquier otra contribución: a veces comparten parte con su liga o con el programa que los trajo. Eso es entre ellos.</p>'+
+       '<p>No se gana ni se rifa nada: es una contribución voluntaria cuya cantidad depende del marcador.</p>']
     ]
   },
   en:{
-    h1:'Coach help',
-    lede:'What coaches ask, and what to do when something will not work.',
+    h1:'Coach Cada Punto',
+    lede:'What coaches and padrinos ask. And if you are a coach, a chat with your code.',
     hint:'If yours is not here, write to us — at the bottom of the page.',
     askB:'Not here?',
     askP:'Write to <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> and tell us your division. We answer the same day.',
@@ -256,7 +275,7 @@ var S={
     chatWait:'Thinking…',
     chatFix:'Official wording',
     chatErr:'Something failed on my side. Ask again, or write to us.',
-    secs:['Signing in','The roster','The games','The score','The money'],
+    secs:['Signing in','The roster','The games','The score','The money','If you are pledging'],
     qs:[
       [0,'Where do I sign in?',
        '<p>At <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, with the code we gave you.</p>'+
@@ -325,11 +344,25 @@ var S={
       [4,'Could a padrino end up owing a fortune?',
        '<p>No. The padrino sets their own cap when they pledge, and the cap wins. There is also a $5 minimum charge.</p>'],
       [4,'A padrino asked me something I cannot answer.',
-       '<p>The padrino questions — how much they will pay, when, what happens if the team scores a lot — are answered at <a href="preguntas.html">cadapunto.com/preguntas.html</a>. Sending that link answers better than explaining from memory.</p>'+
-       '<p>If it is not in there, pass it to us and we will answer it.</p>'],
+       '<p>Scroll down to <b>If you are pledging</b>, at the end of this page: what they ask is answered there — how much they will pay, when they are charged, the cap, and where the money goes.</p>'+
+       '<p>Sending them this same page answers better than explaining from memory. And if it is not in there, pass it to us and we will answer it.</p>'],
       [4,'Is this tax deductible?',
        '<p>We do not say that it is. Gostar Digital LLC is a for-profit company, not a non-profit, and we do not issue tax receipts.</p>'+
-       '<p>If how their payment is treated matters to a padrino, they should ask their own advisor.</p>']
+       '<p>If how their payment is treated matters to a padrino, they should ask their own advisor.</p>'],
+
+      [5,'When am I charged?',
+       '<p>After the game, never before. You pledge an amount per point, the team plays, and then you get an email with the score and a link to pay.</p>'],
+      [5,'How much exactly will I pay?',
+       '<p>Your rate times the points your team scored. At ten cents a point, a 68-point game is $6.80.</p>'+
+       '<p>The email breaks it down before you pay, and the minimum is $5 a pledge.</p>'],
+      [5,'Can I set a limit?',
+       '<p>Yes. When you pledge you set the most you are willing to pay, and you are never charged above it, however much they score.</p>'],
+      [5,'What if they lose?',
+       '<p>You pay the same, on the points they scored. Your pledge is for the program, not for the result.</p>'],
+      [5,'Where does the money go?',
+       '<p>To the program you chose, in full. Our 20% is added on top of your payment, not taken out of theirs.</p>'+
+       '<p>What that program does with what it raises is theirs, like any other contribution: sometimes they share part of it with their league or with the program that brought them in. That is between them.</p>'+
+       '<p>Nothing is won and nothing is raffled: it is a voluntary contribution whose amount depends on the scoreboard.</p>']
     ]
   }
 };
@@ -463,8 +496,7 @@ function paint(){
   document.documentElement.lang=LANG;
   document.getElementById('langBtn').textContent=LANG==='es'?'EN':'ES';
   document.getElementById('fTerms').textContent=T('terms');
-  document.title=(LANG==='es')
-    ? 'Ayuda del entrenador — Cada Punto' : 'Coach help — Cada Punto';
+  document.title='Coach Cada Punto';
 
   var secs=T('secs'), qs=T('qs'), out='';
   secs.forEach(function(name, i){
