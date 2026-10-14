@@ -10,9 +10,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* Las preguntas que de verdad hace un entrenador, y las respuestas que
-   no se pueden equivocar. Está abierta a propósito: alguien atascado a
-   las nueve de la noche no debe tener que entrar con un código para
-   poder leer cómo se destraba.
+   no se pueden equivocar. Dos cosas en una página, y a propósito:
+
+   Las 24 preguntas están ABIERTAS. Alguien atascado a las nueve de la
+   noche no debe tener que entrar con un código para poder leer cómo se
+   destraba, y nada de lo que dicen es secreto.
+
+   El chat PIDE CÓDIGO. Ahí sí, porque cuesta dinero por pregunta y
+   porque el que pregunta tiene que ser un entrenador. La puerta de
+   verdad no está aquí: está en el servidor, que vuelve a comprobar el
+   código en cada pregunta. Si el chat está apagado o se cae, las 24
+   preguntas siguen ahí — la página nunca depende de él.
 
    Nada aquí se inventa sobre dinero. Lo que dice de pagos, del 20% y
    de cuándo se cobra está escrito a mano y cuadra con terms.html y con
@@ -63,6 +71,36 @@ details[open] summary::before{content:'–'}
 .ask p{margin:0;font-size:.93rem}
 .ask a{color:var(--accent);font-weight:800}
 
+/* El chat. Pide código porque el entrenador que pregunta tiene que ser
+   un entrenador — y porque el servidor lo vuelve a comprobar de todas
+   formas. Las 24 preguntas de abajo siguen abiertas sin código: el que
+   está atascado a las nueve de la noche puede leer igual. */
+.chat{border:3px solid var(--ball);background:#FFF6EF;border-radius:6px;
+  padding:15px 16px;margin:0 0 26px}
+.chat>b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.chat .cp{margin:0 0 11px;font-size:.92rem}
+.chat label{display:block;font-size:.72rem;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+.chat input,.chat textarea{width:100%;border:2px solid var(--line);border-radius:5px;
+  padding:11px 12px;font:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+.chat textarea{min-height:66px;resize:vertical}
+.chat input:focus,.chat textarea:focus{outline:none;border-color:var(--ink)}
+.chat .btn{display:block;width:100%;margin-top:9px;border:none;border-radius:5px;
+  background:var(--ball);color:#12202E;font:inherit;font-size:1rem;font-weight:900;
+  padding:12px;cursor:pointer}
+.chat .btn[disabled]{opacity:.55;cursor:default}
+.chat .who{font-size:.8rem;color:var(--mute);margin:0 0 10px}
+.chat .m{border-radius:6px;padding:10px 12px;margin:0 0 8px;font-size:.93rem}
+.chat .m.you{background:#12202E;color:#E8F0F6;margin-left:18%}
+.chat .m.me{background:#fff;border:1px solid var(--line);margin-right:8%}
+.chat .m.me.fix{border-color:var(--accent);border-left-width:4px}
+.chat .m .tag{display:block;font-size:.56rem;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.chat .m.bad{background:#fff;border:1px solid var(--bad,#B4231C);color:#B4231C}
+.chat .log{margin:0 0 11px}
+.chat .msg{margin:9px 0 0;font-size:.85rem;font-weight:800;color:#B4231C}
+
 footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
   padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
 footer a{color:#8FA8C0;text-decoration:none}
@@ -78,7 +116,11 @@ footer .f-dot{padding:0 7px;opacity:.5}
   </div>
 </header>
 
-<main><div class="wrap" id="app"></div></main>
+<main><div class="wrap">
+  <div id="head"></div>
+  <div id="chatbox"></div>
+  <div id="app"></div>
+</div></main>
 
 <footer>
   <div class="wrap">
@@ -103,6 +145,20 @@ var S={
     askB:'¿No está aquí?',
     askP:'Escríbenos a <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> y dinos tu división. Contestamos el mismo día.',
     terms:'Términos',
+    chatB:'Pregúntame',
+    chatP:'Esto es para entrenadores. Pon tu código y pregúntame lo que no te salga — a cualquier hora.',
+    chatCode:'Tu código',
+    chatGo:'Entrar',
+    chatBad:'Ese código no sirve.',
+    chatNet:'No entró. Inténtalo otra vez.',
+    chatOff:'El chat todavía no está encendido. Las preguntas de abajo están completas, y si no está lo tuyo escríbenos a gostardigital@gmail.com.',
+    chatWho:'Hola, {B}. Dime qué no te sale.',
+    chatHi:'Lo de dinero te lo doy con el texto oficial, no con un número de memoria. Lo demás, pregúntalo como te salga.',
+    chatPh:'Escribe tu pregunta',
+    chatSend:'Mandar',
+    chatWait:'Pensando…',
+    chatFix:'Texto oficial',
+    chatErr:'Algo falló de mi lado. Pregúntalo otra vez, o escríbenos.',
     secs:['Entrar','La plantilla','Los juegos','El marcador','El dinero'],
     qs:[
       [0,'¿Dónde entro?',
@@ -186,6 +242,20 @@ var S={
     askB:'Not here?',
     askP:'Write to <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a> and tell us your division. We answer the same day.',
     terms:'Terms',
+    chatB:'Ask me',
+    chatP:'This is for coaches. Enter your code and ask me whatever will not work — at any hour.',
+    chatCode:'Your code',
+    chatGo:'Enter',
+    chatBad:'That code does not work.',
+    chatNet:'That did not go through. Try again.',
+    chatOff:'The chat is not switched on yet. The questions below are complete, and if yours is not there write to gostardigital@gmail.com.',
+    chatWho:'Hello, {B}. Tell me what will not work.',
+    chatHi:'Money questions come back in the official wording, not a number from memory. Everything else, ask however it comes out.',
+    chatPh:'Type your question',
+    chatSend:'Send',
+    chatWait:'Thinking…',
+    chatFix:'Official wording',
+    chatErr:'Something failed on my side. Ask again, or write to us.',
     secs:['Signing in','The roster','The games','The score','The money'],
     qs:[
       [0,'Where do I sign in?',
@@ -268,12 +338,125 @@ var LANG='es';
 try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
   localStorage.getItem('fc-lang')||
   ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
-function T(k){ var v=(S[LANG]&&S[LANG][k]); return v===undefined?S.es[k]:v }
+function T(k,v){
+  var t=(S[LANG]&&S[LANG][k]); if(t===undefined) t=S.es[k];
+  if(v&&typeof t==='string') Object.keys(v).forEach(function(x){ t=t.split('{'+x+'}').join(v[x]) });
+  return t;
+}
+function $(id){ return document.getElementById(id) }
+
+/* ── El chat ────────────────────────────────────────────
+
+   La puerta de aquí es para que el entrenador no vea una caja que no va
+   a funcionar. La puerta de verdad está en el servidor, que vuelve a
+   comprobar el código en cada pregunta — cualquiera puede llamar al
+   endpoint a mano, así que lo que diga esta página no cuenta.
+
+   Y lo de dinero no lo contesta el modelo: viene del servidor con
+   fixed, palabra por palabra igual que la sección El dinero de esta
+   misma página. */
+var SB='https://sdaphocueugzfvjovuxd.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+var API='https://basketball-money-payments.onrender.com';
+
+var CODE=null, BY=null, MSGS=[], BUSY=false, ERR='';
+
+/* Si ya entró en Mi equipo en este teléfono, no le pedimos el código
+   otra vez. Las dos páginas viejas guardan en sitios distintos. */
+try{ CODE=localStorage.getItem('cp_build')||localStorage.getItem('cp_code')||null }catch(e){}
+
+function rpc(name,args){
+  return fetch(SB+'/rest/v1/rpc/'+name,{
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(args||{})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc '+r.status); return r.json() });
+}
+
+function entrar(auto){
+  var k=auto?CODE:(($('cCode')||{}).value||'').trim();
+  if(!k) return;
+  ERR=''; paintChat();
+  rpc('builder_check',{p_code:k})
+    .then(function(r){
+      if(!r||!r.ok){ CODE=null; if(!auto){ ERR=T('chatBad'); } paintChat(); return; }
+      CODE=k; BY=r.by||'';
+      paintChat();
+      var box=$('cAsk'); if(box&&!auto) box.focus();
+    })
+    .catch(function(e){ console.error(e); CODE=null; if(!auto) ERR=T('chatNet'); paintChat() });
+}
+
+function mandar(){
+  var box=$('cAsk'); if(!box||BUSY) return;
+  var q=(box.value||'').trim(); if(!q) return;
+  box.value=''; ERR='';
+  MSGS.push({role:'user',content:q});
+  BUSY=true; paintChat();
+
+  fetch(API+'/coach/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({code:CODE,messages:MSGS.map(function(m){
+      return {role:m.role,content:m.content} })})
+  })
+  .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j} }) })
+  .then(function(o){
+    BUSY=false;
+    if(o.s===503){ MSGS.push({role:'assistant',content:T('chatOff'),bad:true}) }
+    else if(o.s===401){ CODE=null; ERR=T('chatBad') }
+    else if(o.j&&o.j.reply){ MSGS.push({role:'assistant',content:o.j.reply,fixed:!!o.j.fixed}) }
+    else { MSGS.push({role:'assistant',content:T('chatErr'),bad:true}) }
+    paintChat();
+  })
+  .catch(function(e){
+    console.error(e); BUSY=false;
+    MSGS.push({role:'assistant',content:T('chatErr'),bad:true});
+    paintChat();
+  });
+}
+
+function paintChat(){
+  var out='<b>'+esc(T('chatB'))+'</b>';
+  if(!CODE){
+    out+='<p class="cp">'+esc(T('chatP'))+'</p>'+
+      '<label for="cCode">'+esc(T('chatCode'))+'</label>'+
+      '<input id="cCode" type="text" autocapitalize="characters" autocorrect="off" '+
+        'spellcheck="false" enterkeyhint="go">'+
+      '<button class="btn" onclick="entrar(false)">'+esc(T('chatGo'))+'</button>'+
+      (ERR?'<p class="msg">'+esc(ERR)+'</p>':'');
+  } else {
+    out+='<p class="who">'+esc(T('chatWho',{B:BY||''}))+'</p>';
+    out+='<div class="log">';
+    if(!MSGS.length) out+='<div class="m me">'+esc(T('chatHi'))+'</div>';
+    MSGS.forEach(function(m){
+      if(m.role==='user'){ out+='<div class="m you">'+esc(m.content)+'</div>'; return }
+      out+='<div class="m me'+(m.fixed?' fix':'')+(m.bad?' bad':'')+'">'+
+        (m.fixed?'<span class="tag">'+esc(T('chatFix'))+'</span>':'')+
+        esc(m.content)+'</div>';
+    });
+    if(BUSY) out+='<div class="m me">'+esc(T('chatWait'))+'</div>';
+    out+='</div>';
+    out+='<textarea id="cAsk" placeholder="'+esc(T('chatPh'))+'"'+(BUSY?' disabled':'')+'></textarea>'+
+      '<button class="btn" onclick="mandar()"'+(BUSY?' disabled':'')+'>'+esc(T('chatSend'))+'</button>'+
+      (ERR?'<p class="msg">'+esc(ERR)+'</p>':'');
+  }
+  $('chatbox').innerHTML='<div class="chat">'+out+'</div>';
+
+  var ask=$('cAsk');
+  if(ask) ask.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); mandar() }
+  });
+  var cc=$('cCode');
+  if(cc) cc.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){ e.preventDefault(); entrar(false) }
+  });
+}
 function toggleLang(){
   LANG=LANG==='es'?'en':'es';
   try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
        localStorage.setItem('fc-lang',LANG) }catch(e){}
-  paint();
+  toda();
 }
 
 function paint(){
@@ -292,14 +475,22 @@ function paint(){
     });
   });
 
-  document.getElementById('app').innerHTML =
+  /* El título va arriba del chat, y las preguntas abajo. Están en
+     contenedores distintos a propósito: cambiar de idioma repinta
+     estos dos y la conversación se queda donde estaba. */
+  $('head').innerHTML =
     '<h1>'+esc(T('h1'))+'</h1>'+
     '<p class="lede">'+esc(T('lede'))+'</p>'+
-    '<p class="hint">'+esc(T('hint'))+'</p>'+
+    '<p class="hint">'+esc(T('hint'))+'</p>';
+
+  $('app').innerHTML =
     out+
     '<div class="ask"><b>'+esc(T('askB'))+'</b><p>'+T('askP')+'</p></div>';
 }
-paint();
+
+function toda(){ paint(); paintChat() }
+toda();
+if(CODE) entrar(true);
 </script>
 </body>
 </html>
