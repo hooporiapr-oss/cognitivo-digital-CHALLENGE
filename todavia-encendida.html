@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Todavía encendida — Cada Punto</title>
+<meta name="description" content="Una cancha vacía después de la lluvia, con la luz prendida. Por qué es ésta la foto de Cada Punto.">
+<meta property="og:title" content="Todavía encendida">
+<meta property="og:description" content="Paró de llover, todo el mundo se fue, y los focos siguen prendidos.">
+<meta property="og:image" content="https://cadapunto.com/coach-cancha-og.jpg">
+<meta property="og:url" content="https://cadapunto.com/todavia-encendida.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Una página de una sola cosa: la foto, y por qué es ésta y no otra.
+   No vende nada y no pide nada. Al final hay un enlace, y nada más.
+
+   Usa la imagen que ya está subida (coach-cancha-1024.webp), sin
+   srcset: los otros dos tamaños no llegaron a subir y una foto que no
+   aparece es peor que una foto pequeña. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--accent:#A84200;--ball:#FF7A18}
+*{box-sizing:border-box}
+html{background:#12202E}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.65;-webkit-text-size-adjust:100%}
+.wrap{width:min(640px,91vw);margin:0 auto}
+
+header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+
+/* La foto manda. Ocupa todo el ancho y buena parte de la pantalla, con
+   el título sobre el cielo oscuro y el banco libre abajo. */
+.shot{position:relative;overflow:hidden;min-height:62vh;
+  display:flex;flex-direction:column;justify-content:flex-start;background:#12202E}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:30% 86%}
+.shot .scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(18,32,46,.90) 0%, rgba(18,32,46,.78) 26%,
+    rgba(18,32,46,.42) 52%, rgba(18,32,46,.08) 80%,
+    rgba(18,32,46,0) 100%)}
+.shot .t{position:relative;padding:26px 0 0}
+.kick{font-size:.58rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ball);margin:0 0 7px}
+h1{font-size:clamp(1.9rem,8vw,3rem);font-weight:900;letter-spacing:-.03em;
+  color:#fff;margin:0;line-height:1.08}
+.sub{color:#C8D6E2;font-size:.95rem;margin:9px 0 0;max-width:30ch}
+@media (min-width:760px){ .shot{min-height:70vh} .shot .t{padding-top:40px} }
+
+main{padding:34px 0 10px}
+p.b{font-size:1.06rem;margin:0 0 20px}
+p.b.lead{font-size:1.2rem;font-weight:700;line-height:1.5}
+p.b em{font-style:italic}
+
+.rule{border:0;border-top:1px solid var(--line);margin:30px 0}
+.close{font-size:1.06rem;margin:0 0 22px}
+.close b{font-weight:900}
+.go{display:inline-block;background:var(--ball);color:#12202E;text-decoration:none;
+  font-weight:900;padding:13px 22px;border-radius:5px;font-size:1rem}
+.cap{color:var(--mute);font-size:.82rem;margin:30px 0 0}
+
+footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;margin-top:46px;
+  padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
+footer a{color:#8FA8C0;text-decoration:none}
+footer .f-dot{padding:0 7px;opacity:.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<section class="shot">
+  <img src="coach-cancha-1024.webp" width="1024" height="683" decoding="async" id="shotImg" alt="">
+  <span class="scrim" aria-hidden="true"></span>
+  <div class="wrap t">
+    <p class="kick" id="kick"></p>
+    <h1 id="h1"></h1>
+    <p class="sub" id="sub"></p>
+  </div>
+</section>
+
+<main><div class="wrap" id="body"></div></main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Cada Punto</a><span class="f-dot">·</span>
+    <a href="ayuda.html">Coach Cada Punto</a><span class="f-dot">·</span>
+    <a href="sietes.html">Sietes</a>
+  </div>
+</footer>
+
+<script>
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+var S={
+  es:{
+    kick:'La foto',
+    h1:'Todavía encendida',
+    sub:'Paró de llover, todo el mundo se fue, y los focos siguen prendidos.',
+    alt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco',
+    body:[
+      ['lead','No está pasando nada, y no hace falta que pase.'],
+      ['','Paró de llover. El juego terminó, o nunca empezó. Todo el mundo se fue a su casa. Y los focos siguen prendidos, la cancha sigue ahí, el teléfono sigue despierto en el banco.'],
+      ['','Es lo contrario de una foto de acción. Nadie está haciendo nada heroico. Algo simplemente se está cuidando.'],
+      ['','Y esa sensación dura más que la de un triunfo. La foto de un nene clavando una canasta te dura diez segundos. Ésta te da la hora de después — que es cuando pasa casi todo el trabajo de verdad.'],
+      ['','El teléfono hace algo preciso ahí: es lo único encendido en todo el cuadro. Pequeño y tibio contra todo ese cemento mojado. No es poderoso. Sólo está.']
+    ],
+    closeA:'Así queremos que se sienta esto.',
+    closeB:' Recaudar para un programa no se parece a un partido. Se parece a alguien que deja la luz prendida — la noche que no iba a recaudar nada, el juego de un martes, el nene que anotó cuatro puntos. Cada punto cuenta porque alguien se quedó contando.',
+    go:'Cómo funciona →',
+    cap:'Loíza, Puerto Rico.'
+  },
+  en:{
+    kick:'The photograph',
+    h1:'Still On',
+    sub:'The rain stopped, everyone went home, and the floodlights are still burning.',
+    alt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench',
+    body:[
+      ['lead','Nothing is happening, and nothing needs to.'],
+      ['','The rain stopped. The game ended, or never started. Everyone went home. And the floodlights are still burning, the court is still there, the phone is still awake on the bench.'],
+      ['','It is the opposite of an action shot. Nobody is being heroic. Something is simply being kept.'],
+      ['','And that feeling lasts longer than triumph does. A photo of a kid dunking gives you ten seconds. This one gives you the hour after — which is when nearly all of the real work happens.'],
+      ['','The phone is doing something precise in there: it is the only thing switched on in the whole frame. Small and warm against all that wet concrete. Not powerful. Just present.']
+    ],
+    closeA:'This is how we want it to feel.',
+    closeB:' Raising money for a program is not like a game. It is like someone leaving a light on — the night that was never going to raise anything, the Tuesday fixture, the kid who scored four points. Every point counts because somebody stayed to count them.',
+    go:'How it works →',
+    cap:'Loíza, Puerto Rico.'
+  }
+};
+
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+function T(k){ var v=(S[LANG]&&S[LANG][k]); return v===undefined?S.es[k]:v }
+function toggleLang(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG) }catch(e){}
+  paint();
+}
+
+function paint(){
+  document.documentElement.lang=LANG;
+  document.getElementById('langBtn').textContent=LANG==='es'?'EN':'ES';
+  document.title=(LANG==='es')
+    ? 'Todavía encendida — Cada Punto' : 'Still On — Cada Punto';
+
+  document.getElementById('kick').textContent=T('kick');
+  document.getElementById('h1').textContent=T('h1');
+  document.getElementById('sub').textContent=T('sub');
+  document.getElementById('shotImg').setAttribute('alt',T('alt'));
+
+  var out='';
+  T('body').forEach(function(p){
+    out+='<p class="b'+(p[0]?' '+p[0]:'')+'">'+esc(p[1])+'</p>';
+  });
+  out+='<hr class="rule">';
+  out+='<p class="close"><b>'+esc(T('closeA'))+'</b>'+esc(T('closeB'))+'</p>';
+  out+='<a class="go" href="index.html">'+esc(T('go'))+'</a>';
+  out+='<p class="cap">'+esc(T('cap'))+'</p>';
+  document.getElementById('body').innerHTML=out;
+}
+paint();
+</script>
+</body>
+</html>
