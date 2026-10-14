@@ -68,6 +68,7 @@ h1{font-size:clamp(1.9rem,8vw,3rem);font-weight:900;letter-spacing:-.03em;
 main{padding:34px 0 10px}
 p.b{font-size:1.06rem;margin:0 0 20px}
 p.b.lead{font-size:1.2rem;font-weight:700;line-height:1.5}
+p.b.end{font-size:1.15rem;font-weight:700;margin-top:28px}
 p.b em{font-style:italic}
 
 .rule{border:0;border-top:1px solid var(--line);margin:30px 0}
@@ -75,7 +76,8 @@ p.b em{font-style:italic}
 .close b{font-weight:900}
 .go{display:inline-block;background:var(--ball);color:#12202E;text-decoration:none;
   font-weight:900;padding:13px 22px;border-radius:5px;font-size:1rem}
-.cap{color:var(--mute);font-size:.82rem;margin:30px 0 0}
+.cap{color:var(--mute);font-size:.82rem;margin:0}
+.cap a{color:var(--accent);font-weight:800;text-decoration:none}
 
 footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;margin-top:46px;
   padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
@@ -118,37 +120,35 @@ function esc(s){ return String(s==null?'':s)
 
 var S={
   es:{
-    kick:'La foto',
+    kick:'Un cuento',
     h1:'Todavía encendida',
-    sub:'Paró de llover, todo el mundo se fue, y los focos siguen prendidos.',
+    sub:'El juego del martes se canceló a las seis y veinte.',
     alt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco',
     body:[
-      ['lead','No está pasando nada, y no hace falta que pase.'],
-      ['','Paró de llover. El juego terminó, o nunca empezó. Todo el mundo se fue a su casa. Y los focos siguen prendidos, la cancha sigue ahí, el teléfono sigue despierto en el banco.'],
-      ['','Es lo contrario de una foto de acción. Nadie está haciendo nada heroico. Algo simplemente se está cuidando.'],
-      ['','Y esa sensación dura más que la de un triunfo. La foto de un nene clavando una canasta te dura diez segundos. Ésta te da la hora de después — que es cuando pasa casi todo el trabajo de verdad.'],
-      ['','El teléfono hace algo preciso ahí: es lo único encendido en todo el cuadro. Pequeño y tibio contra todo ese cemento mojado. No es poderoso. Sólo está.']
+      ['lead','El juego del martes se canceló a las seis y veinte, cuando empezó a llover de lado.'],
+      ['','Para las ocho había parado. La cancha quedó brillando como si alguien la hubiera encerado.'],
+      ['','El entrenador volvió por las bolas que había dejado en el banco. El teléfono también se le había quedado — boca arriba, encendido, cogiendo agua.'],
+      ['','Tenía tres mensajes. El papá de un nene, preguntando si se juega el jueves. Una vecina que no tiene hijos en el equipo, preguntando lo mismo. Y una mamá que se mudó a Orlando en agosto, diciendo que ella sigue puesta: que si el nene anota, ella paga desde allá.'],
+      ['','Se quedó un rato parado ahí, con el teléfono en la mano, debajo de dos focos encendidos sobre una cancha donde esa noche no jugó nadie.'],
+      ['end','No se apagó nada. Ni los focos, ni el teléfono, ni la vecina.']
     ],
-    closeA:'Así queremos que se sienta esto.',
-    closeB:' Recaudar para un programa no se parece a un partido. Se parece a alguien que deja la luz prendida — la noche que no iba a recaudar nada, el juego de un martes, el nene que anotó cuatro puntos. Cada punto cuenta porque alguien se quedó contando.',
-    go:'Cómo funciona →',
+    go:'Cada Punto →',
     cap:'Loíza, Puerto Rico.'
   },
   en:{
-    kick:'The photograph',
+    kick:'A story',
     h1:'Still On',
-    sub:'The rain stopped, everyone went home, and the floodlights are still burning.',
+    sub:'Tuesday\u2019s game was called off at twenty past six.',
     alt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench',
     body:[
-      ['lead','Nothing is happening, and nothing needs to.'],
-      ['','The rain stopped. The game ended, or never started. Everyone went home. And the floodlights are still burning, the court is still there, the phone is still awake on the bench.'],
-      ['','It is the opposite of an action shot. Nobody is being heroic. Something is simply being kept.'],
-      ['','And that feeling lasts longer than triumph does. A photo of a kid dunking gives you ten seconds. This one gives you the hour after — which is when nearly all of the real work happens.'],
-      ['','The phone is doing something precise in there: it is the only thing switched on in the whole frame. Small and warm against all that wet concrete. Not powerful. Just present.']
+      ['lead','Tuesday’s game was called off at twenty past six, when the rain started coming in sideways.'],
+      ['','By eight it had stopped. The court was left shining, like somebody had waxed it.'],
+      ['','The coach came back for the balls he had left on the bench. His phone was still there too — face up, lit, taking on water.'],
+      ['','Three messages. A boy’s father, asking whether they play on Thursday. A neighbour with no children on the team, asking the same thing. And a mother who moved to Orlando in August, saying she is still in: if the boy scores, she pays from there.'],
+      ['','He stood there a while with the phone in his hand, under two floodlights burning over a court where nobody had played that night.'],
+      ['end','Nothing got switched off. Not the lights, not the phone, not the neighbour.']
     ],
-    closeA:'This is how we want it to feel.',
-    closeB:' Raising money for a program is not like a game. It is like someone leaving a light on — the night that was never going to raise anything, the Tuesday fixture, the kid who scored four points. Every point counts because somebody stayed to count them.',
-    go:'How it works →',
+    go:'Cada Punto →',
     cap:'Loíza, Puerto Rico.'
   }
 };
@@ -180,10 +180,11 @@ function paint(){
   T('body').forEach(function(p){
     out+='<p class="b'+(p[0]?' '+p[0]:'')+'">'+esc(p[1])+'</p>';
   });
+  /* Ni moraleja ni botón. El cuento termina y lo único que queda es de
+     dónde es la cancha y un enlace pequeño por si alguien quiere seguir.
+     Explicar lo que significa sería quitárselo al que lo leyó. */
   out+='<hr class="rule">';
-  out+='<p class="close"><b>'+esc(T('closeA'))+'</b>'+esc(T('closeB'))+'</p>';
-  out+='<a class="go" href="index.html">'+esc(T('go'))+'</a>';
-  out+='<p class="cap">'+esc(T('cap'))+'</p>';
+  out+='<p class="cap">'+esc(T('cap'))+' · <a href="index.html">'+esc(T('go'))+'</a></p>';
   document.getElementById('body').innerHTML=out;
 }
 paint();
