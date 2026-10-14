@@ -91,6 +91,12 @@ input[type=text]{width:100%;font:inherit;font-weight:700;padding:9px 10px;
 .pay b{font-weight:900}
 .pay a{color:var(--accent);font-weight:900}
 
+/* La salida para el que está atascado. Va dentro de la página y no sólo
+   en el pie, porque el que no puede entrar es justo el que más la
+   necesita y no va a bajar a buscarla. */
+.stuck{margin:26px 0 0;text-align:center;font-size:.88rem;color:var(--mute)}
+.stuck a{color:var(--accent);font-weight:900;text-decoration:none}
+
 footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
   padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
 footer a{color:#8FA8C0;text-decoration:none}
@@ -131,12 +137,14 @@ footer .f-dot{padding:0 7px;opacity:.5}
       <div id="teams"></div>
     </div>
 
+    <p class="stuck" id="tStuck"></p>
+
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
+    <a href="ayuda.html" id="fAyuda">Ayuda</a><span class="f-dot">·</span><a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
   </div>
 </footer>
 
@@ -177,7 +185,9 @@ var S={
     aBoard:'Ver el tablero', aGames:'Poner juegos', aScore:'Poner el marcador',
     aRoster:'La plantilla',
     payNo:'Todavía no nos has dicho a dónde pagarte. <a href="cobro.html">Dínoslo aquí</a>.',
-    payOk:'Te pagamos a <b>{A}</b> el día 1 y el día 15.'
+    payOk:'Te pagamos a <b>{A}</b> el día 1 y el día 15.',
+    stuck:'¿Algo no sale? <a href="ayuda.html">Ayuda del entrenador →</a>',
+    fAyuda:'Ayuda'
   },
   en:{
     h1:'My team',
@@ -198,7 +208,9 @@ var S={
     aBoard:'See the board', aGames:'Post games', aScore:'Enter the score',
     aRoster:'The roster',
     payNo:'You have not told us where to pay you yet. <a href="cobro.html">Tell us here</a>.',
-    payOk:'We pay you at <b>{A}</b> on the 1st and the 15th.'
+    payOk:'We pay you at <b>{A}</b> on the 1st and the 15th.',
+    stuck:'Something will not work? <a href="ayuda.html">Coach help →</a>',
+    fAyuda:'Help'
   }
 };
 var LANG='es';
@@ -226,6 +238,8 @@ function paintStatic(){
   $('tGo').textContent=T('go');
   $('tTeams').textContent=T('teams');
   $('hout').textContent=T('out');
+  $('tStuck').innerHTML=T('stuck');
+  $('fAyuda').textContent=T('fAyuda');
   $('langBtn').textContent=LANG==='es'?'EN':'ES';
   document.documentElement.lang=LANG;
 }
