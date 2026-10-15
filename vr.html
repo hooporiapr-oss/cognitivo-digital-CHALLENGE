@@ -131,7 +131,7 @@ var boton=document.getElementById('go');
    del panel de dentro — así que antes de leer cualquier otra cosa se
    sabe si lo que corre es lo último o lo de hace una hora.
    SUBE ESTE NÚMERO en cada cambio. */
-var SELLO='v12';
+var SELLO='v13';
 var nota=document.getElementById('nota');
 try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
@@ -438,6 +438,28 @@ function orientacionPantalla(){
    ────────────────────────────────────────────────────────────────── */
 var qCero=new THREE.Quaternion(), hayCero=false;
 var rayoVivo={o:new THREE.Vector3(), d:new THREE.Vector3(0,0,-1)};
+
+/* El primer intento centraba en la primera lectura de dentro, y eso
+   caía justo cuando el casco todavía iba camino de la cara: el frente
+   se quedaba fijado hacia donde apuntaba en ese instante y la cancha
+   salía de lado — había que mirar a la izquierda para llegar a la bola
+   del medio.
+
+   Ahora hay una cuenta corta. Durante esos segundos el frente va
+   siguiendo a la cabeza, así que lo único que hay que hacer es mirar al
+   frente y esperar; al terminar se queda ahí. Y mientras dura no se
+   cuenta nada: mirar sin querer no gasta una bola. */
+var CENTRADO_MS=3500;
+var centrando=0;
+function empezarCentrado(){ centrando=performance.now(); hayCero=false }
+
+/* La vuelta a casa, sin mando: si pasan unos segundos sin que la
+   mirada toque ninguna bola, es que la cancha se fue de sitio — por
+   deriva del sensor o porque se giró el cuerpo. Entonces se centra
+   otra vez sola. Jugando no salta, porque jugando se mira a las
+   bolas. */
+var PERDIDO_MS=4500;
+var sinBolaDesde=0;
 var qUso=new THREE.Quaternion();
 function recentrar(){
   if(!giroVivo) return false;
@@ -456,7 +478,6 @@ function alLlegarElGiro(ev){
   diag.giro=Math.round(ev.alpha)+'/'+Math.round(ev.beta);
   // La primera lectura buena de dentro fija el frente, para no entrar
   // mirando a una pared vacía.
-  if(dentro && !hayCero) recentrar();
   /* Y también fuera del casco, en la página plana, para poder probarlo
      con el casco en la mano antes de ponérselo. */
   giros++;
@@ -511,6 +532,9 @@ function mirada(xrFrame){
     o.setFromMatrixPosition(cam.matrixWorld);
     // Medido contra el frente que se fijó al entrar, no contra el cero
     // que traía el sensor de fábrica.
+    /* Mientras dura la cuenta, el frente sigue a la cabeza: se vuelve a
+       fijar en cada cuadro, así que al acabar queda donde esté mirando. */
+    if(centrando) recentrar();
     if(hayCero) qUso.copy(qCero).multiply(qGiro); else qUso.copy(qGiro);
     d.set(0,0,-1).applyQuaternion(qUso).normalize();
     deDonde='giro';
@@ -536,12 +560,39 @@ function mirada(xrFrame){
      esas líneas sólo quitaban sitio. Lo vivo es el giroscopio: se ve
      si llegan datos DENTRO y no sólo fuera, que es lo que faltaba
      por saber. */
+  /* La cuenta de centrado manda en el panel mientras dura: es una
+     instrucción, no un diagnóstico, y es lo único que hay que leer en
+     ese momento. */
+  if(centrando){
+    var queda=Math.ceil((CENTRADO_MS-(performance.now()-centrando))/1000);
+    if(queda<=0){ centrando=0; sinBolaDesde=0; }
+    else{
+      pintarPanel([
+        SELLO+'   CENTERING',
+        'look straight at the court',
+        'holding '+queda+'...',
+        ''
+      ]);
+      // Nada cuenta mientras se centra: ni luz ni acierto.
+      if(mirando>=0 && balls[mirando]) balls[mirando].material.emissive.setHex(0x000000);
+      mirando=-1;
+      return;
+    }
+  }
+
   pintarPanel([
     SELLO+'   mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
     'pose de '+deDonde,
     'giro '+diag.giro+'   ('+girosDentro+' dentro)',
     'tocando '+(sobre<0?'ninguna':('bola '+sobre))
   ]);
+
+  /* Perderse tiene salida y no hace falta mando: unos segundos sin
+     tocar ninguna bola y se centra otra vez. */
+  if(sobre<0){
+    if(!sinBolaDesde) sinBolaDesde=performance.now();
+    else if(performance.now()-sinBolaDesde>PERDIDO_MS){ empezarCentrado(); return }
+  }else sinBolaDesde=0;
 
   if(sobre!==mirando){
     if(mirando>=0 && balls[mirando]) balls[mirando].material.emissive.setHex(0x000000);
@@ -594,6 +645,7 @@ window.addEventListener('scroll',function(){ if(dentro) window.scrollTo(0,0) },{
 
 function entrarModo(on){
   dentro=on;
+  if(on) empezarCentrado();   // la cuenta empieza al entrar, no antes
   document.body.classList.toggle('dentro',on);
   document.documentElement.style.overflow = on? 'hidden':'';
   if(on) window.scrollTo(0,0);
