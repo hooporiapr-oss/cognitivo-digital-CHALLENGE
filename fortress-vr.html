@@ -68,7 +68,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
 
 /* Sello a la vista en el panel de dentro. Este navegador se guarda la
    página con ganas y ya nos costó una tarde. SUBIRLO en cada cambio. */
-var SELLO='v4';
+var SELLO='v5';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA
@@ -262,7 +262,6 @@ function construir(){
 
   hacerPanel();
   hacerPunto();
-  hacerInterruptor();
   raycaster=new THREE.Raycaster();
   /* Un pelo de margen: con la cabeza no se apunta tan fino como con el
      dedo, y una bola que se escapa por dos grados se siente como un
@@ -348,63 +347,6 @@ function hacerPanel(){
    vista — el tiempo que falta para que cuente. Va colgado de la
    cámara, así que se queda clavado en el centro mire uno donde mire.
    ══════════════════════════════════════════════════════════════════ */
-/* El cartel del interruptor: a la izquierda, a la altura de los ojos,
-   mirando a quien juega. Se llega girando la cabeza de lado — el eje
-   que sí responde — y se cambia mirándolo un segundo. */
-var interruptor, intCtx, intTex, intDesde=0;
-function hacerInterruptor(){
-  var c=document.createElement('canvas');
-  c.width=512; c.height=256;
-  intCtx=c.getContext('2d');
-  intTex=new THREE.CanvasTexture(c);
-  interruptor=new THREE.Mesh(
-    new THREE.PlaneGeometry(1.25,0.62),
-    new THREE.MeshBasicMaterial({map:intTex, transparent:true})
-  );
-  interruptor.position.set(-2.40, OJO, -2.75);
-  interruptor.rotation.y=Math.atan2(2.40,2.75);   // de cara a quien mira
-  scene.add(interruptor);
-  pintarInterruptor(0);
-}
-function pintarInterruptor(t){
-  if(!intCtx) return;
-  intCtx.clearRect(0,0,512,256);
-  intCtx.fillStyle='rgba(5,14,24,.90)';
-  intCtx.fillRect(0,0,512,256);
-  if(t>0){                                   // se llena mientras miras
-    intCtx.fillStyle='rgba(111,216,60,.30)';
-    intCtx.fillRect(0,0,512*Math.min(1,t),256);
-  }
-  intCtx.textAlign='center';
-  intCtx.fillStyle='#9FB3C4';
-  intCtx.font='bold 40px monospace';
-  intCtx.fillText(LANG==='es'?'ARRIBA/ABAJO':'UP/DOWN',256,74);
-  intCtx.fillStyle='#FFC247';
-  intCtx.font='bold 76px monospace';
-  intCtx.fillText(nombreAjuste(),256,160);
-  intCtx.fillStyle='#5E7488';
-  intCtx.font='30px monospace';
-  intCtx.fillText(LANG==='es'?'míralo para cambiar':'look to change',256,212);
-  intTex.needsUpdate=true;
-}
-/* Mirar el cartel un segundo pasa a la siguiente corrección. Después
-   se vuelve a fijar el frente, porque al cambiar el eje el cero de
-   antes ya no vale. */
-function mirarInterruptor(hayMirada){
-  if(!interruptor) return false;
-  var h = hayMirada ? raycaster.intersectObject(interruptor) : [];
-  if(!h.length){ intDesde=0; pintarInterruptor(0); return false }
-  if(!intDesde) intDesde=performance.now();
-  var t=(performance.now()-intDesde)/1400;
-  if(t>=1){
-    intDesde=0;
-    ajusteIdx=(ajusteIdx+1)%AJUSTES.length;
-    recentrar();
-    pintarInterruptor(0);
-  }else pintarInterruptor(t);
-  return true;
-}
-
 var punto, puntoRelleno;
 function hacerPunto(){
   punto=new THREE.Mesh(
@@ -466,11 +408,8 @@ function pintarPanel(grande, chica, color){
   panelCtx.fillText(chica||'',384,232);
   panelCtx.fillStyle='#44586B';
   panelCtx.font='26px monospace';
-  panelCtx.fillText(SELLO+'   '+crudo,384,268);
-  panelCtx.fillStyle='#FFC247';
-  panelCtx.font='bold 28px monospace';
-  panelCtx.fillText((LANG==='es'?'¿no llegas arriba? mira a la izquierda  ':
-                                 'cannot reach up? look left  ')+nombreAjuste(),384,304);
+  panelCtx.fillText(SELLO+'   '+crudo,384,296);
+
   panelTex.needsUpdate=true;
 }
 
@@ -486,72 +425,135 @@ function pintarPanel(grande, chica, color){
 //  esos segundos el frente va siguiendo a la cabeza, y al acabar queda
 //  donde estés mirando.
 // ══════════════════════════════════════════════════════════════════
-var qGiro=new THREE.Quaternion(), giroVivo=false, girosN=0;
-var zEje=new THREE.Vector3(0,0,1), eGiro=new THREE.Euler();
-var qPantalla=new THREE.Quaternion();
-var qAlFrente=new THREE.Quaternion(-Math.sqrt(0.5),0,0,Math.sqrt(0.5));
 var GRADO=Math.PI/180;
-var qCero=new THREE.Quaternion(), hayCero=false, qUso=new THREE.Quaternion();
+var giroVivo=false, girosN=0;
+var crudoA=0, crudoB=0, crudoG=0, crudo='-';
 
 /* ══════════════════════════════════════════════════════════════════
-   EL INTERRUPTOR DEL CABECEO
+   EL BASE: SE MIDE LA CABEZA, NO SE ADIVINA
 
-   De lado a lado la cabeza va bien. De arriba abajo no llega. Eso pasa
-   cuando el navegador dice que la pantalla está de pie y en realidad
-   está apaisada, como en un casco: el cabeceo y el balanceo se cambian
-   de sitio, miras arriba y el mundo se va de canto.
+   Cinco intentos con el punto de mira y los cinco fallados. Pero el
+   punto nunca tuvo la culpa: está clavado en el centro y lo que gira
+   es el mundo, así que cuando el mundo gira mal, el que parece roto
+   es el punto.
 
-   La corrección es un ángulo y sólo hay cuatro posibles. Desde fuera no
-   se puede saber cuál — este navegador es de 2020 y miente sobre la
-   pantalla. Así que el interruptor va DENTRO, a la izquierda y a la
-   altura de los ojos, donde se llega girando la cabeza de lado, que es
-   lo que sí funciona. Se mira un segundo y cambia.
+   Lo que fallaba es de dónde salía ese giro. La cuenta de siempre
+   (alfa, beta, gamma → cuaternión, más una corrección por cómo está
+   puesta la pantalla) da por buenas unas convenciones que este
+   navegador de 2020 no cumple: dice que la pantalla está de pie
+   cuando en el casco está apaisada. Con eso, el cabeceo se va al eje
+   del balanceo — miras arriba y el mundo se tuerce — y no hay manera
+   de acertar desde fuera cuál de las cuatro correcciones es.
 
-   'auto' es lo que diga el navegador, que es como estaba. Si con auto
-   no se llega arriba, se prueban los otros: uno de los cuatro es el
-   bueno y se nota al instante.
+   Así que no se adivina: se MIDE, en el casco, una vez.
+
+     1. Mira al frente       →  el cero
+     2. Mira arriba          →  cuál de los tres números es el cabeceo,
+                                y hacia dónde crece
+     3. Mira a la izquierda  →  hacia dónde crece el giro
+
+   Con eso se arma el giro a mano: guiñada y cabeceo, y el balanceo
+   SIEMPRE a cero. Eso último es la mitad del arreglo — un casco de
+   tres grados no necesita inclinar el horizonte, y era justo lo que
+   hacía que esto se sintiera a la deriva.
+
+   Y se guarda. Cada casco se mide una vez y ya: los otros veinte se
+   configuran solos la primera vez que alguien se los pone.
    ══════════════════════════════════════════════════════════════════ */
-var AJUSTES=[-1,90,270,180,0];      // -1 = lo que diga el navegador
-var ajusteIdx=0;
-function nombreAjuste(){ return AJUSTES[ajusteIdx]<0 ? 'auto' : String(AJUSTES[ajusteIdx]) }
 
-function orientacionPantalla(){
-  if(AJUSTES[ajusteIdx]>=0) return AJUSTES[ajusteIdx]*GRADO;
-  var o=0;
-  try{
-    o=(screen.orientation && typeof screen.orientation.angle==='number')
-      ? screen.orientation.angle
-      : (typeof window.orientation==='number' ? window.orientation : 0);
-  }catch(e){}
-  return o*GRADO;
+// Lo medido. Si ya está guardado, no se vuelve a preguntar.
+var ejeCabeceo='beta', signoCabeceo=1, signoGiro=1;
+var ceroGiro=0, ceroCabeceo=0, calHecha=false;
+try{
+  var gg=JSON.parse(localStorage.getItem('fvr-cal')||'null');
+  if(gg && gg.e){ ejeCabeceo=gg.e; signoCabeceo=gg.s; signoGiro=gg.g; calHecha=true }
+}catch(e){}
+function guardarCal(){
+  try{ localStorage.setItem('fvr-cal',
+    JSON.stringify({e:ejeCabeceo,s:signoCabeceo,g:signoGiro})) }catch(e){}
 }
+/* Para volver a medir sin tener que borrar nada: ?medir en la
+   dirección. Útil cuando un casco viene de otra persona. */
+try{ if(/[?&]medir/.test(location.search)) calHecha=false }catch(e){}
+
+// Diferencia de ángulos por el camino corto, que alfa da la vuelta en 360.
+function difAng(a,b){
+  var d=(a-b)%360;
+  if(d>180) d-=360;
+  if(d<-180) d+=360;
+  return d;
+}
+function valorCabeceo(){ return ejeCabeceo==='beta' ? crudoB : crudoG }
+
 function alLlegarElGiro(ev){
   if(ev.alpha===null||ev.alpha===undefined) return;
-  eGiro.set(ev.beta*GRADO, ev.alpha*GRADO, -ev.gamma*GRADO, 'YXZ');
-  qGiro.setFromEuler(eGiro);
-  qGiro.multiply(qAlFrente);
-  qGiro.multiply(qPantalla.setFromAxisAngle(zEje, -orientacionPantalla()));
+  crudoA=ev.alpha; crudoB=ev.beta; crudoG=ev.gamma;
+  if(!giroVivo && !calHecha && fase!=='tapa' && !medir.activo) arrancarMedida=true;
   giroVivo=true; girosN++;
-  /* Los tres números tal como llegan, sin tocar, y el ángulo que dice
-     el navegador que tiene la pantalla. Esto no es decoración: con la
-     cabeza funcionando de lado a lado pero no de arriba abajo, lo que
-     hay que saber es CUÁL de los tres se mueve al mirar hacia arriba.
-     En un casco la pantalla es apaisada, y si el navegador dice 0 como
-     si fuera un teléfono de pie, el cabeceo y el balanceo se cambian
-     de sitio: miras arriba y el mundo gira de canto. */
-  crudo = Math.round(ev.alpha)+' '+Math.round(ev.beta)+' '+Math.round(ev.gamma)
-        + '  p'+Math.round(orientacionPantalla()/GRADO);
+  crudo=Math.round(crudoA)+' '+Math.round(crudoB)+' '+Math.round(crudoG);
 }
-var crudo='-';
 try{
   addEventListener('deviceorientationabsolute', alLlegarElGiro, true);
   addEventListener('deviceorientation', alLlegarElGiro, true);
 }catch(e){}
 
-function recentrar(){ if(!giroVivo) return false; qCero.copy(qGiro).invert(); hayCero=true; return true }
+/* ── La medición, de tres pasos ──────────────────────────────────── */
+var PASO_MS=2300;
+var medir={activo:false, paso:0, t0:0, a0:0, b0:0, g0:0};
+var arrancarMedida=false;
+function empezarMedida(){
+  medir.activo=true; medir.paso=0; medir.t0=performance.now();
+}
+function textoMedida(){
+  var n=['1','2','3'][medir.paso]||'';
+  var q=Math.max(0,Math.ceil((PASO_MS-(performance.now()-medir.t0))/1000));
+  if(medir.paso===0) return [LANG==='es'?'MIRA AL FRENTE':'LOOK STRAIGHT AHEAD', n+'/3   '+q];
+  if(medir.paso===1) return [LANG==='es'?'MIRA ARRIBA':'LOOK UP', n+'/3   '+q];
+  return [LANG==='es'?'MIRA A LA IZQUIERDA':'LOOK LEFT', n+'/3   '+q];
+}
+function pasoDeMedida(){
+  if(performance.now()-medir.t0 < PASO_MS) return;
+  if(medir.paso===0){
+    medir.a0=crudoA; medir.b0=crudoB; medir.g0=crudoG;
+  }else if(medir.paso===1){
+    // Cuál de los dos se movió al mirar arriba, y hacia dónde.
+    var dB=difAng(crudoB,medir.b0), dG=difAng(crudoG,medir.g0);
+    if(Math.abs(dB)>=Math.abs(dG)){ ejeCabeceo='beta';  signoCabeceo = dB>0?1:-1 }
+    else                          { ejeCabeceo='gamma'; signoCabeceo = dG>0?1:-1 }
+  }else{
+    // Hacia dónde crece alfa al girar a la izquierda. En three.js,
+    // girar a la izquierda es Y positiva.
+    var dA=difAng(crudoA,medir.a0);
+    signoGiro = dA>0 ? 1 : -1;
+    ceroGiro=medir.a0;
+    ceroCabeceo = (ejeCabeceo==='beta') ? medir.b0 : medir.g0;
+    calHecha=true; guardarCal();
+    medir.activo=false;
+    /* NADA de cuenta de centrado después de medir. El paso 1 ya fue
+       "mira al frente": ese es el cero y ya está tomado. Encadenar
+       luego una cuenta era pedir el mismo dato dos veces, y además la
+       cuenta vieja — la que arrancó al pulsar Empezar, antes de que
+       hubiera sensor — caducaba justo al acabar la medida y cogía como
+       frente el último paso, que es MIRAR A LA IZQUIERDA. El frente
+       quedaba 35 grados torcido. Un dato, una vez, del paso que lo
+       midió. */
+    centrando=0;
+    temporizadores.push(setTimeout(siguienteNivel, 700));
+    return;
+  }
+  medir.paso++; medir.t0=performance.now();
+}
+
+/* Poner el frente donde está la cara: el cero pasa a ser lo que marca
+   el sensor ahora mismo. */
+function recentrar(){
+  if(!giroVivo) return false;
+  ceroGiro=crudoA; ceroCabeceo=valorCabeceo();
+  return true;
+}
 
 var CENTRADO_MS=3500, centrando=0;
-function empezarCentrado(){ centrando=performance.now(); hayCero=false }
+function empezarCentrado(){ centrando=performance.now() }
 
 /* Perderse tiene salida y no hace falta mando — en este casco el
    gatillo no llega a la página. Unos segundos sin tocar ninguna bola y
@@ -575,16 +577,26 @@ addEventListener('touchmove',function(e){
 },{passive:false});
 
 var dirMirada=new THREE.Vector3(0,0,-1);
+var eulerVista=new THREE.Euler();
 function ponerRayo(){
-  if(giroVivo){
-    if(centrando) recentrar();
-    if(hayCero) qUso.copy(qCero).multiply(qGiro); else qUso.copy(qGiro);
-    dirMirada.set(0,0,-1).applyQuaternion(qUso).normalize();
+  if(giroVivo && calHecha){
+
+    /* Guiñada y cabeceo, cada uno de su número medido, y el balanceo a
+       cero SIEMPRE. El horizonte no se tuerce nunca: un casco que sólo
+       gira no tiene por qué inclinar el mundo, y era eso lo que hacía
+       que la puntería se sintiera a la deriva. */
+    var gir = signoGiro   * difAng(crudoA, ceroGiro)        * GRADO;
+    var cab = signoCabeceo* difAng(valorCabeceo(), ceroCabeceo) * GRADO;
+    // Sin esto, un tropiezo del sensor te manda boca abajo.
+    if(cab> 1.30) cab= 1.30;
+    if(cab<-1.30) cab=-1.30;
+
+    eulerVista.set(cab, gir, 0, 'YXZ');
+    camera.quaternion.setFromEuler(eulerVista);
+
+    dirMirada.set(0,0,-1).applyQuaternion(camera.quaternion).normalize();
     raycaster.ray.origin.set(0,OJO,0);
     raycaster.ray.direction.copy(dirMirada);
-    /* Que la vista siga a la cabeza, no sólo el rayo: si no, se mueve
-       la puntería pero la imagen se queda quieta y marea. */
-    camera.quaternion.copy(qUso);
     return 'giro';
   }
   if(hayPuntero){
@@ -668,6 +680,14 @@ function empezarTirada(){
   limpiarT(); apagarTodas();
   cadena=[]; nivel=0; voy=0; mirando=-1;
   fase='mirando';
+  /* Si este casco no se ha medido nunca, primero se mide. Son ocho
+     segundos y pasa UNA vez en la vida del casco: después queda
+     guardado y arranca directo. */
+  if(!calHecha && giroVivo){ empezarMedida(); return }
+  /* Sin sensor — una computadora, un teléfono que no lo publica — no
+     hay nada que medir: se juega con el puntero y se arranca normal. Y
+     si el sensor aparece tarde, arrancarMedida lo coge y la medida
+     interrumpe lo que haya, apagando esta cuenta. */
   empezarCentrado();
   // El primer nivel espera a que termine el centrado.
   temporizadores.push(setTimeout(siguienteNivel, CENTRADO_MS+400));
@@ -740,26 +760,36 @@ function bucle(){
   requestAnimationFrame(bucle);
   if(!renderer) return;
 
+  /* Mientras se mide, la vista se queda QUIETA a propósito: lo que se
+     está midiendo es la cabeza, no la imagen, y moverla falsearía la
+     lectura. Sólo hay una instrucción grande y una cuenta. */
+  if(arrancarMedida){ arrancarMedida=false; limpiarT(); empezarMedida() }
+  if(medir.activo){
+    var tx=textoMedida();
+    pintarPanel(tx[0], tx[1], '#FFC247');
+    apagarTodas();
+    pasoDeMedida();
+    renderer.render(scene,camera);
+    return;
+  }
+
   var fuente=ponerRayo();
 
   // Centrado: manda en el panel mientras dura y no cuenta nada.
   if(centrando){
     var queda=Math.ceil((CENTRADO_MS-(performance.now()-centrando))/1000);
-    if(queda<=0){ centrando=0; sinBolaDesde=0 }
+    /* El cero se coge UNA vez, al acabar la cuenta, no en cada cuadro.
+       Cogiéndolo en cada cuadro mandaba el último cuadro que llegara, y
+       entonces el orden de las cosas decidía hacia dónde quedaba el
+       frente — así se quedó una vez mirando a 35 grados de donde
+       tocaba. Una cuenta, un cero. */
+    if(queda<=0){ recentrar(); centrando=0; sinBolaDesde=0 }
     else{
       pintarPanel(T('centrar'), T('centrarA')+'  '+queda, '#FFC247');
       apagarTodas();
       renderer.render(scene,camera);
       return;
     }
-  }
-
-  /* El interruptor del cabeceo va antes que las bolas: si lo estás
-     mirando, no estás contestando. */
-  if(mirarInterruptor(fuente!=='quieto')){
-    pintarPunto(-1,true);
-    renderer.render(scene,camera);
-    return;
   }
 
   // Sin mirada de verdad no se toca nada (ver ponerRayo).
