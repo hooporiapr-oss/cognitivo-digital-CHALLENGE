@@ -110,6 +110,28 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .money p{margin:0 0 5px}
 .money .mail{margin-top:9px;font-size:.84rem}
 
+/* ---- mandárselo al teléfono ----
+   El papel explica; el teléfono es donde se empieza. Un enlace de
+   sesenta caracteres copiado a mano desde una hoja no lo teclea nadie,
+   y el que no lo abre no arranca. Esto arma el mensaje con lo que ya
+   está escrito arriba y lo manda por donde el entrenador ya habla. */
+.enviar{border-top:1px solid var(--line);margin:34px 0 0;padding:26px 0 0}
+.enviar h2{font-size:1.25rem;font-weight:900;margin:0 0 6px}
+.enviar .lede{color:var(--mute);font-size:.94rem;margin:0 0 20px;max-width:62ch}
+.env-row{border:1px solid var(--line);border-radius:7px;padding:14px;margin:0 0 13px}
+.env-row .ttl{font-weight:900;font-size:1rem;margin:0 0 9px}
+.env-row textarea{width:100%;min-height:148px;font:inherit;font-size:.84rem;
+  line-height:1.5;color:var(--ink);border:1px solid var(--line);border-radius:5px;
+  padding:10px;background:#FAFCFD;resize:vertical}
+.env-bts{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.env-bts a,.env-bts button{display:inline-block;border:1px solid var(--line);
+  background:#fff;color:var(--ink);border-radius:5px;padding:9px 15px;font:inherit;
+  font-size:.86rem;font-weight:800;text-decoration:none;cursor:pointer}
+.env-bts a.wa{background:#25D366;border-color:#25D366;color:#06301A}
+.env-nota{color:var(--mute);font-size:.8rem;margin:9px 0 0}
+.env-nota.ojo{color:var(--accent);font-weight:800}
+.env-falta{color:var(--mute);font-size:.88rem;margin:0}
+
 /* ---- impresión: una hoja por entrenador, nada de la pantalla ---- */
 @media print{
   @page{size:letter;margin:14mm}
@@ -147,6 +169,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 <main>
   <div class="wrap">
     <div class="setup" id="setup"></div>
+    <div class="enviar no-print" id="enviar"></div>
     <div id="sheets"></div>
   </div>
 </main>
@@ -197,7 +220,22 @@ var S = {
     mDos:'El programa recibe el <b>100%</b> de lo prometido. Nuestro 20% se le añade al pago del padrino, nunca se saca de lo tuyo.',
     mTres:'Nada por adelantado y nada mensual.',
     mHelp:'Si algo no sale: <b>https://cadapunto.com/ayuda.html</b>',
-    mMail:'Dudas: gostardigital@gmail.com'
+    mMail:'Dudas: gostardigital@gmail.com',
+
+    envH:'Mándaselo al teléfono',
+    envP:'La hoja de papel sirve para explicar. Pero nadie teclea un enlace largo en un teléfono — y si no lo abre, no empieza. Mándale a cada entrenador lo mismo que lleva en la hoja, pero para tocar.',
+    envWa:'WhatsApp', envSms:'Texto', envMail:'Correo', envCopy:'Copiar',
+    envCopiado:'Copiado',
+    envSinCod:'Sin el código — márcalo arriba si quieres mandarlo también.',
+    envConCod:'Va con el código dentro. Mándaselo sólo a quien es.',
+    envFalta:'Esta división no tiene enlaces todavía.',
+    mPara:'Para',
+    mEntra:'1) Entra una vez, con tu código:',
+    mGrupo:'2) Manda esto al grupo del equipo — cada familia se apunta sola:',
+    mTab:'3) Tu tablero, para los padrinos:',
+    mPon:'4) Al acabar el juego, pon el marcador en ese mismo tablero.',
+    mAyuda:'Si algo no sale:',
+    mCod:'Tu código:'
   },
   en:{
     kick:'Coach sheet',
@@ -232,7 +270,22 @@ var S = {
     mDos:'The program receives <b>100%</b> of what was pledged. Our 20% is added to the padrino’s payment, never taken out of yours.',
     mTres:'Nothing up front and nothing monthly.',
     mHelp:'If something will not work: <b>https://cadapunto.com/ayuda.html</b>',
-    mMail:'Questions: gostardigital@gmail.com'
+    mMail:'Questions: gostardigital@gmail.com',
+
+    envH:'Send it to their phone',
+    envP:'The paper sheet is for explaining. But nobody types a long link into a phone — and if they never open it, they never start. Send each coach the same thing the sheet says, but tappable.',
+    envWa:'WhatsApp', envSms:'Text', envMail:'Email', envCopy:'Copy',
+    envCopiado:'Copied',
+    envSinCod:'Without the code — tick the box above if you want to send it too.',
+    envConCod:'This includes the code. Send it only to the right person.',
+    envFalta:'This division has no links yet.',
+    mPara:'For',
+    mEntra:'1) Sign in once, with your code:',
+    mGrupo:'2) Send this to the team chat — each family signs up on their own:',
+    mTab:'3) Your board, for the padrinos:',
+    mPon:'4) When the game ends, put the score on that same board.',
+    mAyuda:'If something will not work:',
+    mCod:'Your code:'
   }
 };
 
@@ -316,10 +369,10 @@ function read(){
   save();
 }
 
-function sync(){ read(); drawSheets(); }
+function sync(){ read(); drawSheets(); drawEnviar(); }
 
-function addRow(){ read(); ROWS.push({ div:'', code:'', link:'', join:'' }); drawSetup(); drawSheets(); }
-function rmRow(i){ read(); ROWS.splice(i, 1); if (!ROWS.length) ROWS.push({ div:'', code:'', link:'', join:'' }); drawSetup(); drawSheets(); }
+function addRow(){ read(); ROWS.push({ div:'', code:'', link:'', join:'' }); drawSetup(); drawSheets(); drawEnviar(); }
+function rmRow(i){ read(); ROWS.splice(i, 1); if (!ROWS.length) ROWS.push({ div:'', code:'', link:'', join:'' }); drawSetup(); drawSheets(); drawEnviar(); }
 
 function drawSetup(){
   var rows = ROWS.map(function(r, i){
@@ -382,6 +435,117 @@ function conHttps(u){
   return 'https://' + t;
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   MANDÁRSELO AL TELÉFONO
+
+   La hoja de papel explica bien, pero termina con tres enlaces que hay
+   que teclear a mano en un teléfono. Eso no lo hace nadie, y el que no
+   los abre no empieza — así que la hoja sola deja el trabajo a medias.
+
+   Esto arma el mismo mensaje con lo que ya está escrito arriba y lo
+   manda por donde el entrenador ya habla: WhatsApp, un texto o un
+   correo. El mensaje se puede editar antes de mandarlo.
+
+   Sobre el código: va dentro SÓLO si está marcada la casilla de
+   imprimirlo. La misma decisión vale para el papel y para el teléfono
+   — y lo dice en cada tarjeta, porque un mensaje se reenvía más fácil
+   que una hoja.
+   ══════════════════════════════════════════════════════════════════ */
+
+function mensajeDe(r){
+  var L=[];
+  L.push(T('mPara')+': '+(r.div||'').trim()+' — '+PROG);
+  L.push('');
+  L.push(T('mEntra'));
+  L.push('https://cadapunto.com/mi-equipo.html');
+  if(SHOWCODE && (r.code||'').trim()) L.push(T('mCod')+' '+(r.code||'').trim());
+  L.push('');
+  if((r.join||'').trim()){
+    L.push(T('mGrupo'));
+    L.push(conHttps(r.join));
+    L.push('');
+  }
+  if((r.link||'').trim()){
+    L.push(T('mTab'));
+    L.push(conHttps(r.link));
+    L.push('');
+  }
+  L.push(T('mPon'));
+  L.push('');
+  L.push(T('mAyuda')+' https://cadapunto.com/ayuda.html');
+  return L.join('\n');
+}
+
+/* iPhone y Android no se ponen de acuerdo en cómo lleva el texto un
+   enlace de SMS. Uno quiere &body y el otro ?body, y el que se
+   equivoca abre el mensaje vacío. */
+function enlaceSms(txt){
+  var iOS=/iPad|iPhone|iPod/.test(navigator.userAgent||'');
+  return 'sms:'+(iOS?'&':'?')+'body='+encodeURIComponent(txt);
+}
+
+function copiar(i){
+  var ta=document.getElementById('m'+i);
+  if(!ta) return;
+  try{
+    ta.focus(); ta.select(); ta.setSelectionRange(0,999999);
+    var ok=false;
+    try{ ok=document.execCommand('copy') }catch(e){}
+    if(!ok && navigator.clipboard) navigator.clipboard.writeText(ta.value);
+    var b=document.getElementById('cp'+i);
+    if(b){ var antes=b.textContent; b.textContent=T('envCopiado');
+           setTimeout(function(){ b.textContent=antes },1400) }
+  }catch(e){}
+}
+
+/* Los botones se rearman con lo que haya en el cuadro de texto en ese
+   momento, no con lo que se generó: si el entrenador le añade una
+   línea, se manda lo que ve. */
+function refrescarEnlaces(i){
+  var ta=document.getElementById('m'+i);
+  if(!ta) return;
+  var t=ta.value;
+  var wa=document.getElementById('wa'+i), sm=document.getElementById('sm'+i),
+      ml=document.getElementById('ml'+i);
+  if(wa) wa.href='https://wa.me/?text='+encodeURIComponent(t);
+  if(sm) sm.href=enlaceSms(t);
+  if(ml) ml.href='mailto:?subject='+encodeURIComponent('Cada Punto — '+PROG)+
+                 '&body='+encodeURIComponent(t);
+}
+
+function drawEnviar(){
+  var cajas = ROWS.map(function(r,i){
+    var hayAlgo = (r.join||'').trim() || (r.link||'').trim();
+    var titulo = esc((r.div||'').trim() || '—');
+    if(!hayAlgo){
+      return '<div class="env-row"><p class="ttl">'+titulo+'</p>'+
+             '<p class="env-falta">'+T('envFalta')+'</p></div>';
+    }
+    var txt = mensajeDe(r);
+    var conCod = SHOWCODE && (r.code||'').trim();
+    return '<div class="env-row">'+
+      '<p class="ttl">'+titulo+'</p>'+
+      '<textarea id="m'+i+'" oninput="refrescarEnlaces('+i+')">'+esc(txt)+'</textarea>'+
+      '<div class="env-bts">'+
+        '<a class="wa" id="wa'+i+'" target="_blank" rel="noopener" href="#">'+T('envWa')+'</a>'+
+        '<a id="sm'+i+'" href="#">'+T('envSms')+'</a>'+
+        '<a id="ml'+i+'" href="#">'+T('envMail')+'</a>'+
+        '<button id="cp'+i+'" onclick="copiar('+i+')">'+T('envCopy')+'</button>'+
+      '</div>'+
+      '<p class="env-nota'+(conCod?' ojo':'')+'">'+
+        (conCod ? T('envConCod') : T('envSinCod'))+'</p>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('enviar').innerHTML =
+    '<h2>'+T('envH')+'</h2>'+
+    '<p class="lede">'+T('envP')+'</p>'+
+    cajas;
+
+  for(var i=0;i<ROWS.length;i++) refrescarEnlaces(i);
+}
+
 function drawSheets(){
   document.getElementById('sheets').innerHTML = ROWS.map(function(r){
     var codeBox = (SHOWCODE && (r.code||'').trim())
@@ -440,6 +604,7 @@ document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
 paintWhat();
 drawSetup();
 drawSheets();
+drawEnviar();
 </script>
 </body>
 </html>
