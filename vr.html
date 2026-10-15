@@ -182,6 +182,7 @@ function construir(){
     scene.add(m); balls.push(m);
   }
   raycaster=new THREE.Raycaster(); tmpM=new THREE.Matrix4();
+  hacerPanel();
 }
 
 /* Un casco de tres grados pone los ojos en el origen: altura cero. Yo
@@ -190,6 +191,47 @@ function construir(){
    sube o las baja a la altura real de los ojos de este casco. */
 function alturaOjos(y){
   balls.forEach(function(b,i){ b.position.y = POS[i][1] + y; });
+}
+
+/* ═════════════════════════════════════════════════════
+   UN PANEL DENTRO
+
+   Desde fuera estoy adivinando. Esto pinta los números de verdad en un
+   cartel flotando delante, para ver qué dice el casco: cuántos cuadros
+   van, dónde pone los ojos, hacia dónde cree que miras, y qué bola
+   está tocando el rayo.
+   ═════════════════════════════════════════════════════ */
+var panelCv,panelCtx,panelTex,panel,cuadros=0;
+function hacerPanel(){
+  panelCv=document.createElement('canvas');
+  panelCv.width=512; panelCv.height=256;
+  panelCtx=panelCv.getContext('2d');
+  panelTex=new THREE.CanvasTexture(panelCv);
+  panel=new THREE.Mesh(new THREE.PlaneGeometry(1.6,.8),
+        new THREE.MeshBasicMaterial({map:panelTex,transparent:true}));
+  panel.position.set(0,0,-2.2);
+  scene.add(panel);
+}
+function pintarPanel(lineas){
+  if(!panelCtx) return;
+  panelCtx.fillStyle='rgba(0,0,0,.82)';
+  panelCtx.fillRect(0,0,512,256);
+  panelCtx.fillStyle='#6FD83C';
+  panelCtx.font='bold 26px monospace';
+  for(var i=0;i<lineas.length;i++) panelCtx.fillText(lineas[i],16,40+i*32);
+  panelTex.needsUpdate=true;
+}
+
+/* La altura de los ojos no se adivina: se mide. El primer cuadro dice
+   dónde está la cámara de verdad y las bolas se colocan ahí, valga lo
+   que valga el espacio de referencia. */
+var colocadas=false;
+function colocarAlaAltura(cam){
+  if(colocadas) return;
+  var y=new THREE.Vector3().setFromMatrixPosition(cam.matrixWorld).y;
+  balls.forEach(function(b,i){ b.position.y = y + (POS[i][1]-1.3); });
+  if(panel) panel.position.y = y;
+  colocadas=true;
 }
 
 function encender(){
@@ -242,11 +284,25 @@ function camaraReal(){
 }
 
 function mirada(){
+  cuadros++;
   var cam=camaraReal();
-  raycaster.ray.origin.setFromMatrixPosition(cam.matrixWorld);
+  colocarAlaAltura(cam);
+  var o=new THREE.Vector3().setFromMatrixPosition(cam.matrixWorld);
+  raycaster.ray.origin.copy(o);
   raycaster.ray.direction.set(0,0,-1).transformDirection(cam.matrixWorld);
+  var d=raycaster.ray.direction;
   var hit=raycaster.intersectObjects(balls);
   var sobre = hit.length ? hit[0].object.userData.i : -1;
+
+  var r1=function(v){ return Math.round(v*100)/100 };
+  pintarPanel([
+    'cuadros '+cuadros,
+    'ojos  x'+r1(o.x)+' y'+r1(o.y)+' z'+r1(o.z),
+    'mira  x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
+    'bola0 y'+r1(balls[0].position.y),
+    'tocando '+(sobre<0?'ninguna':('bola '+sobre)),
+    'blanca  bola '+lit
+  ]);
 
   if(sobre!==mirando){
     if(mirando>=0 && balls[mirando]) balls[mirando].material.emissive.setHex(0x000000);
