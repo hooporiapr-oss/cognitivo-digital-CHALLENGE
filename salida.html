@@ -68,7 +68,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
 
 /* Sello a la vista en el panel de dentro. Este navegador se guarda la
    página con ganas y ya nos costó una tarde. SUBIRLO en cada cambio. */
-var SELLO='s1';
+var SELLO='s2';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA
@@ -207,7 +207,19 @@ var OJO=1.55;                       // altura de los ojos, de pie
                           2
                         (tú)
    ══════════════════════════════════════════════════════════════════ */
-var GRADOS_SALIDA=[-95,-48,0,48,95];
+/* NOVENTA Y CINCO GRADOS NO ES GIRAR LA CABEZA, ES GIRAR EL CUERPO.
+   Primer intento: los de fuera a 95°. En una pantalla se alcanza con
+   el ratón sin pensarlo, y por eso pasó la prueba. Con el casco
+   puesto y de pie, llegar ahí obliga a girar el tronco — y por el
+   camino se pierde la cancha entera y no se sabe ni dónde se está.
+   Eso no es "sentirse perdido", que es lo que queremos: eso es no
+   poder jugar.
+
+   A 62° se llega con el cuello. Y sigue sin caber: la vista enseña
+   unos 80 grados, o sea unos 40 a cada lado, así que de frente se ven
+   tres y los dos de fuera siguen estando donde no estás mirando. La
+   idea se mantiene, la nuca lo aguanta. */
+var GRADOS_SALIDA=[-62,-32,0,32,62];
 var POS=(function(){
   var R=5.5, p=[];
   for(var i=0;i<5;i++){
@@ -513,6 +525,39 @@ try{
   addEventListener('deviceorientation', alLlegarElGiro, true);
 }catch(e){}
 
+/* ══════════════════════════════════════════════════════════════════
+   EL PERMISO DEL IPHONE
+
+   Android entrega el giroscopio sin preguntar, y como los cascos son
+   Android esto nunca salió a relucir. El iPhone no: desde iOS 13 hay
+   que PEDIRLO, y sólo vale si se pide dentro de un toque de verdad.
+   Sin eso no llega ni un solo evento — y entonces el juego se cae al
+   modo puntero, donde hay que ARRASTRAR. Quien mueve el teléfono en
+   el aire esperando que gire la vista no ve moverse nada y piensa que
+   está roto.
+
+   Se pide al pulsar Empezar, que es el toque que ya existe. Si dice
+   que no, o si es un aparato que no pregunta, el arrastre sigue ahí.
+   ══════════════════════════════════════════════════════════════════ */
+function pedirElGiro(){
+  try{
+    if(typeof DeviceOrientationEvent!=='undefined' &&
+       typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission()
+        .then(function(r){
+          if(r==='granted'){
+            // Los oyentes ya están puestos; a partir de aquí reciben.
+            try{
+              addEventListener('deviceorientationabsolute', alLlegarElGiro, true);
+              addEventListener('deviceorientation', alLlegarElGiro, true);
+            }catch(e){}
+          }
+        })
+        .catch(function(){});
+    }
+  }catch(e){}
+}
+
 /* ── La medición, de tres pasos ──────────────────────────────────── */
 var PASO_MS=2300;
 var medir={activo:false, paso:0, t0:0, a0:0, b0:0, g0:0};
@@ -637,7 +682,7 @@ function ponerRayo(){
        completaba UN pase y se acababa el reloj.
        Así el ratón y el casco se juegan igual: el punto de mira
        siempre en el centro, y el mundo girando detrás. */
-    var girP = -punteroX * 105 * GRADO;   // a los lados, como el arco
+    var girP = -punteroX * 70 * GRADO;    // a los lados, como el arco
     var cabP =  punteroY * 28  * GRADO;
     eulerVista.set(cabP, girP, 0, 'YXZ');
     camera.quaternion.setFromEuler(eulerVista);
@@ -915,7 +960,14 @@ function bucle(){
 
   var segs=Math.max(0,reloj).toFixed(1);
   var color = reloj<3 ? '#C2261B' : (reloj<6 ? '#FFC247' : '#6FD83C');
-  pintarPanel(String(pases), T('busca')+'   ·   '+T('reloj')+' '+segs, color);
+  /* Si no hay giroscopio, decirlo. Mover el teléfono en el aire
+     esperando que gire la vista y que no pase nada parece un juego
+     roto, y no lo está: es que este aparato quiere el dedo. */
+  var pie = (fuente==='puntero')
+    ? (LANG==='es'?'arrastra para mirar':'drag to look')
+    : T('reloj')+' '+segs;
+  pintarPanel(String(pases), T('busca')+'   ·   '+
+    (fuente==='puntero' ? pie+'   ·   '+segs : pie), color);
 
   renderer.render(scene,camera);
 }
@@ -930,6 +982,7 @@ document.getElementById('go').onclick=function(){
     return;
   }
   abrirAudio();                       // el audio sólo abre con un toque
+  pedirElGiro();                      // y el iPhone sólo da el giro si se pide aquí
   document.getElementById('tapa').style.display='none';
   document.getElementById('lang').style.display='none';
   if(!renderer){ construir(); bucle() }
