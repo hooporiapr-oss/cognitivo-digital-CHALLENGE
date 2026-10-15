@@ -9,8 +9,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C;
-      --ball:#FF7A18;--cyan:#22D3EE;--violet:#A78BFA}
+/* La paleta de Cada Punto, igual que ayuda.html: naranja y verde, sin
+   cian ni violeta — esos venían de cuando esto era su propia cosa.
+   El naranja es el de "punto" y el verde el de "cuenta", así que los
+   dos juegos se reparten las dos mitades del logo. */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
+      --ball:#FF7A18;--gold:#FF8A2B;--leaf:#6FD83C;--moss:#2A7D08}
 *{box-sizing:border-box}
 html{background:#12202E}
 body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
@@ -22,8 +26,8 @@ header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
   padding-top:env(safe-area-inset-top,0px)}
 header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
 .mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#4FD3F0}
-.mark i{font-style:normal;color:#9FB3C4}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
 .langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
@@ -33,7 +37,7 @@ main .wrap{padding:clamp(20px,4vw,32px) 0 30px}
 footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
   padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
 footer b{color:#fff;display:block;font-weight:800}
-footer a{color:#4FD3F0;text-decoration:none}
+footer a{color:#8FA8C0;text-decoration:none}
 
 .kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
   color:var(--accent);margin-bottom:8px}
@@ -53,10 +57,11 @@ p{margin:0 0 12px}
 .game .zone{font-size:.62rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
   padding:4px 9px;border-radius:3px;display:inline-block;margin-bottom:10px}
 .game.fortress .zone{background:var(--ball);color:#1A0C00}
-.game.rebound .zone{background:var(--cyan);color:#04121A}
+.game.rebound .zone{background:var(--leaf);color:#0C2200}
 .game .nm{display:block;font-size:1.2rem;font-weight:900;letter-spacing:-.02em}
 .game .ds{display:block;color:var(--mute);font-size:.94rem;margin:4px 0 12px}
 .game .go{display:block;font-weight:800;color:var(--accent)}
+.game.rebound .go{color:var(--moss)}
 
 
 
@@ -67,7 +72,7 @@ footer p{margin:0 0 7px}
 footer .f-co{color:#fff;font-weight:700}
 footer .f-legal{margin:7px 0 0;font-size:.78rem}
 footer .f-dot{padding:0 7px;opacity:.5}
-footer a{color:#4FD3F0;text-decoration:none}
+footer a{color:#8FA8C0;text-decoration:none}
 .f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
   margin-left:auto;margin-right:auto}
 </style>
