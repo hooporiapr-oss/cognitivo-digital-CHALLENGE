@@ -184,6 +184,14 @@ function construir(){
   raycaster=new THREE.Raycaster(); tmpM=new THREE.Matrix4();
 }
 
+/* Un casco de tres grados pone los ojos en el origen: altura cero. Yo
+   había puesto las bolas a 1,30 m como si midiera desde el suelo, así
+   que la mirada les pasaba por debajo y no tocaba ninguna. Esto las
+   sube o las baja a la altura real de los ojos de este casco. */
+function alturaOjos(y){
+  balls.forEach(function(b,i){ b.position.y = POS[i][1] + y; });
+}
+
 function encender(){
   var n; do{ n=Math.floor(Math.random()*5) }while(n===lit);
   lit=n;
@@ -218,9 +226,25 @@ function acertar(i){
 var DWELL_MS=1000;
 var mirando=-1, mirandoDesde=0, selects=0;
 
+/* La cámara que de verdad mira es la del casco, no la que yo creé.
+   three.js le copia la matriz a la mía en cada cuadro, pero NO le
+   actualiza el quaternion — así que sacar la dirección de camera.quaternion
+   daba siempre el mismo rayo hacia adelante, mirara uno donde mirara.
+   De la matriz sí sale bien. */
+function camaraReal(){
+  try{
+    if(renderer.xr && renderer.xr.isPresenting && renderer.xr.getCamera){
+      var c=renderer.xr.getCamera(camera);
+      if(c && c.matrixWorld) return c;
+    }
+  }catch(e){}
+  return camera;
+}
+
 function mirada(){
-  raycaster.ray.origin.setFromMatrixPosition(camera.matrixWorld);
-  raycaster.ray.direction.set(0,0,-1).applyQuaternion(camera.quaternion);
+  var cam=camaraReal();
+  raycaster.ray.origin.setFromMatrixPosition(cam.matrixWorld);
+  raycaster.ray.direction.set(0,0,-1).transformDirection(cam.matrixWorld);
   var hit=raycaster.intersectObjects(balls);
   var sobre = hit.length ? hit[0].object.userData.i : -1;
 
@@ -251,11 +275,29 @@ function apuntar(ctrl){
   }else{
     // Sin mando se apunta con la cabeza, que es lo que queda en un
     // casco de tres grados de libertad.
-    raycaster.ray.origin.setFromMatrixPosition(camera.matrixWorld);
-    raycaster.ray.direction.set(0,0,-1).applyQuaternion(camera.quaternion);
+    var cam=camaraReal();
+    raycaster.ray.origin.setFromMatrixPosition(cam.matrixWorld);
+    raycaster.ray.direction.set(0,0,-1).transformDirection(cam.matrixWorld);
   }
   var hit=raycaster.intersectObjects(balls);
   if(hit.length) acertar(hit[0].object.userData.i);
+}
+
+/* El casco manda eventos de desplazamiento por su cuenta — del trackpad
+   del mando, o de la cabeza — y con esconder la barra no bastaba. Esto
+   los corta en seco y, por si alguno se cuela, devuelve la página a cero
+   en cada cuadro. */
+var dentro=false;
+function cortaScroll(e){ if(dentro){ e.preventDefault(); e.stopPropagation(); } }
+window.addEventListener('wheel',cortaScroll,{passive:false});
+window.addEventListener('touchmove',cortaScroll,{passive:false});
+window.addEventListener('scroll',function(){ if(dentro) window.scrollTo(0,0) },{passive:true});
+
+function entrarModo(on){
+  dentro=on;
+  document.body.classList.toggle('dentro',on);
+  document.documentElement.style.overflow = on? 'hidden':'';
+  if(on) window.scrollTo(0,0);
 }
 
 boton.onclick=function(){
@@ -267,12 +309,12 @@ boton.onclick=function(){
       ).then(function(se){
         renderer.xr.setSession(se);
         se.addEventListener('end',function(){
-          document.body.classList.remove('dentro');
+          entrarModo(false);
           try{ renderer.setAnimationLoop(null) }catch(e){}
           boton.disabled=false; boton.textContent='Enter again';
         });
-        renderer.setAnimationLoop(function(){ mirada(); renderer.render(scene,camera) });
-        document.body.classList.add('dentro');
+        renderer.setAnimationLoop(function(){ if(window.scrollY) window.scrollTo(0,0); mirada(); renderer.render(scene,camera) });
+        entrarModo(true);
         boton.disabled=true; boton.textContent='You are inside — leave with the back button';
       }).catch(function(e){ nota.textContent='Could not enter: '+e });
       return;
@@ -293,10 +335,12 @@ boton.onclick=function(){
       // casco que sólo gira.
       session.requestReferenceSpace('local-floor').then(function(){
         renderer.xr.setReferenceSpaceType('local-floor');
+        alturaOjos(0);               // ya se mide desde el suelo
         celdaSuelo.textContent='yes — six degrees, you move';
         celdaSuelo.className='si';
       }).catch(function(){
         renderer.xr.setReferenceSpaceType('local');
+        alturaOjos(-1.3);            // los ojos están en el origen
         celdaSuelo.textContent='no — three degrees, it only turns';
         celdaSuelo.className='quiz';
       });
@@ -319,8 +363,8 @@ boton.onclick=function(){
       });
 
       encender();
-      renderer.setAnimationLoop(function(){ mirada(); renderer.render(scene,camera) });
-      document.body.classList.add('dentro');
+      renderer.setAnimationLoop(function(){ if(window.scrollY) window.scrollTo(0,0); mirada(); renderer.render(scene,camera) });
+      entrarModo(true);
       boton.textContent='You are inside — leave with the back button';
       boton.disabled=true;
 
@@ -329,7 +373,7 @@ boton.onclick=function(){
          dentro" cuando ya no lo está, y la única salida es recargar. */
       session.addEventListener('end', function(){
         try{ renderer.setAnimationLoop(null) }catch(e){}
-        document.body.classList.remove('dentro');
+        entrarModo(false);
         boton.disabled=false;
         boton.textContent='Enter again';
         nota.textContent='You are out. The last two rows now say what was found '+
