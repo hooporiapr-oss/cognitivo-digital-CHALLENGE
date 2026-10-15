@@ -131,7 +131,7 @@ var boton=document.getElementById('go');
    del panel de dentro — así que antes de leer cualquier otra cosa se
    sabe si lo que corre es lo último o lo de hace una hora.
    SUBE ESTE NÚMERO en cada cambio. */
-var SELLO='v11';
+var SELLO='v12';
 var nota=document.getElementById('nota');
 try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
@@ -422,6 +422,30 @@ function orientacionPantalla(){
   return o*GRADO;
 }
 
+/* ──────────────────────────────────────────────────────────────────
+   PONER EL FRENTE DONDE ESTÁ LA CARA
+
+   El giroscopio no sabe dónde está el norte de la cancha: su cero es
+   hacia donde apuntaba el casco cuando despertó, que puede ser la
+   pared de atrás. Sin corregirlo, las bolas quedan al lado o detrás y
+   parece que no responde.
+
+   Se guarda la primera lectura buena como "esto es el frente" y de ahí
+   en adelante se mide contra ella. Y se puede repetir en cualquier
+   momento: mirar al frente y apretar el gatillo vuelve a poner el cero
+   donde está la cara. Eso también arregla la deriva, que en estos
+   sensores llega sola al cabo de un rato.
+   ────────────────────────────────────────────────────────────────── */
+var qCero=new THREE.Quaternion(), hayCero=false;
+var rayoVivo={o:new THREE.Vector3(), d:new THREE.Vector3(0,0,-1)};
+var qUso=new THREE.Quaternion();
+function recentrar(){
+  if(!giroVivo) return false;
+  qCero.copy(qGiro).invert();
+  hayCero=true;
+  return true;
+}
+
 function alLlegarElGiro(ev){
   if(ev.alpha===null||ev.alpha===undefined){ diag.giro='sin datos'; return }
   eGiro.set(ev.beta*GRADO, ev.alpha*GRADO, -ev.gamma*GRADO, 'YXZ');
@@ -430,6 +454,9 @@ function alLlegarElGiro(ev){
   qGiro.multiply(qPantalla.setFromAxisAngle(zEje, -orientacionPantalla()));
   giroVivo=true;
   diag.giro=Math.round(ev.alpha)+'/'+Math.round(ev.beta);
+  // La primera lectura buena de dentro fija el frente, para no entrar
+  // mirando a una pared vacía.
+  if(dentro && !hayCero) recentrar();
   /* Y también fuera del casco, en la página plana, para poder probarlo
      con el casco en la mano antes de ponérselo. */
   giros++;
@@ -482,7 +509,10 @@ function mirada(xrFrame){
        ojos, que es donde los pusimos, y la dirección sale del giro. Para
        mirar una bola que está delante es todo lo que hace falta. */
     o.setFromMatrixPosition(cam.matrixWorld);
-    d.set(0,0,-1).applyQuaternion(qGiro).normalize();
+    // Medido contra el frente que se fijó al entrar, no contra el cero
+    // que traía el sensor de fábrica.
+    if(hayCero) qUso.copy(qCero).multiply(qGiro); else qUso.copy(qGiro);
+    d.set(0,0,-1).applyQuaternion(qUso).normalize();
     deDonde='giro';
   }else if(mOjo){
     o.setFromMatrixPosition(mOjo);
@@ -495,6 +525,7 @@ function mirada(xrFrame){
   }
   raycaster.ray.origin.copy(o);
   raycaster.ray.direction.copy(d);
+  rayoVivo.o.copy(o); rayoVivo.d.copy(d);   // para el gatillo
   var hit=raycaster.intersectObjects(balls);
   var sobre = hit.length ? hit[0].object.userData.i : -1;
 
@@ -537,14 +568,18 @@ function apuntar(ctrl){
     raycaster.ray.origin.setFromMatrixPosition(ctrl.matrixWorld);
     raycaster.ray.direction.set(0,0,-1).applyMatrix4(tmpM);
   }else{
-    // Sin mando se apunta con la cabeza, que es lo que queda en un
-    // casco de tres grados de libertad.
-    var cam=camaraReal();
-    raycaster.ray.origin.setFromMatrixPosition(cam.matrixWorld);
-    raycaster.ray.direction.set(0,0,-1).transformDirection(cam.matrixWorld);
+    /* Sin mando se apunta con la cabeza. Se reusa el rayo que ya
+       calculó mirada() este cuadro — ése sale del giroscopio y está
+       recentrado; el de la cámara de three.js no se mueve. */
+    raycaster.ray.origin.copy(rayoVivo.o);
+    raycaster.ray.direction.copy(rayoVivo.d);
   }
   var hit=raycaster.intersectObjects(balls);
-  if(hit.length) acertar(hit[0].object.userData.i);
+  if(hit.length){ acertar(hit[0].object.userData.i); return }
+  /* El gatillo al aire no se desperdicia: pone el frente donde está la
+     cara. Es la salida cuando la cancha se queda de lado, por la deriva
+     del sensor o porque se entró mirando a otro sitio. */
+  if(recentrar()) diag.giro+=' ·centrado';
 }
 
 /* El casco manda eventos de desplazamiento por su cuenta — del trackpad
