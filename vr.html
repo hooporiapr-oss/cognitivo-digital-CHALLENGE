@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prueba de VR — Cada Punto</title>
+<title>VR check — Cada Punto</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
 /* Una página de diagnóstico, no un producto. Abre en el navegador que
@@ -37,14 +37,14 @@ pre{background:#0A1830;border:1px solid #20395C;border-radius:6px;padding:11px;
 </head>
 <body>
 <div class="wrap">
-  <h1>Prueba de VR</h1>
-  <p class="sub">Qué puede hacer este casco, sin instalar nada.</p>
+  <h1>VR check</h1>
+  <p class="sub">What this headset can do, with nothing installed.</p>
 
   <table id="t"></table>
 
-  <button id="go" disabled>Comprobando…</button>
-  <p class="nota">Dentro no se ve esta tabla. Para volver a ella, el botón de
-     atrás del casco — y si se queda trabada, recarga la página.</p>
+  <button id="go" disabled>Checking…</button>
+  <p class="nota">This table is not visible from inside. To get back to it, use
+     the headset's back button — and if it sticks, reload the page.</p>
   <p class="nota" id="nota"></p>
 
   <pre id="ua"></pre>
@@ -68,21 +68,21 @@ document.getElementById('ua').textContent=navigator.userAgent;
 /* Qué casco es, sacado de lo que dice el navegador de sí mismo. Si no
    se reconoce, el texto de abajo lo dice igual y con eso basta. */
 var ua=navigator.userAgent;
-var casco='no lo sé — mira el texto gris del final';
+var casco='unknown — see the grey text at the bottom';
 if(/Pico ?4/i.test(ua)) casco='Pico 4';
 else if(/Neo ?3/i.test(ua)) casco='Pico Neo 3';
 else if(/G2 ?4K/i.test(ua)) casco='Pico G2 4K';
-else if(/Pico/i.test(ua)) casco='Pico (modelo sin identificar)';
+else if(/Pico/i.test(ua)) casco='Pico (model not identified)';
 else if(/Quest ?3/i.test(ua)) casco='Meta Quest 3';
 else if(/Quest ?2/i.test(ua)) casco='Meta Quest 2';
 else if(/OculusBrowser|Quest/i.test(ua)) casco='Meta Quest';
-fila('Casco', casco);
+fila('Headset', casco);
 
 var nav=/Wolvic/i.test(ua) ? 'Wolvic'
       : /Firefox/i.test(ua) ? 'Firefox Reality (o Firefox)'
-      : /OculusBrowser/i.test(ua) ? 'Navegador de Meta'
-      : /Chrome/i.test(ua) ? 'Chrome o derivado' : 'otro';
-fila('Navegador', nav);
+      : /OculusBrowser/i.test(ua) ? 'Meta Browser'
+      : /Chrome/i.test(ua) ? 'Chrome or similar' : 'other';
+fila('Browser', nav);
 
 /* Sin WebGL no hay nada que hacer, y conviene saber si es WebGL 2. */
 var gl=null, glv='no';
@@ -91,15 +91,15 @@ try{
   if(cv.getContext('webgl2')) glv='WebGL 2';
   else if(cv.getContext('webgl')||cv.getContext('experimental-webgl')) glv='WebGL 1';
 }catch(e){}
-fila('Dibujo 3D', glv, glv==='no'?'no':'si');
-fila('three.js', (typeof THREE!=='undefined')? ('cargado ('+THREE.REVISION+')') : 'NO cargó',
+fila('3D drawing', glv, glv==='no'?'no':'si');
+fila('three.js', (typeof THREE!=='undefined')? ('loaded (r'+THREE.REVISION+')') : 'did NOT load',
      (typeof THREE!=='undefined')?'si':'no');
 
-var celdaXR=fila('WebXR', navigator.xr? 'sí lo tiene':'NO lo tiene',
+var celdaXR=fila('WebXR', navigator.xr? 'yes, present':'NOT present',
                  navigator.xr?'si':'no');
-var celdaVR=fila('Modo inmersivo', 'comprobando…','quiz');
-var celdaSuelo=fila('Se mueve en el espacio', 'se sabe al entrar','quiz');
-var celdaMando=fila('Mandos o manos', 'se sabe al entrar','quiz');
+var celdaVR=fila('Immersive mode', 'checking…','quiz');
+var celdaSuelo=fila('Moves through space', 'known once inside','quiz');
+var celdaMando=fila('Controllers or hands', 'known once inside','quiz');
 
 var boton=document.getElementById('go');
 var nota=document.getElementById('nota');
@@ -107,36 +107,36 @@ var nota=document.getElementById('nota');
 /* three.js viene de fuera. Si no llegó no es culpa del casco, es la red
    — y conviene decirlo aquí para no andar buscando donde no es. */
 if(typeof THREE==='undefined'){
-  nota.textContent='Aviso: three.js no se descargó. Eso es la red de este '+
-    'casco, no el casco. La tabla de arriba vale igual; lo que no va a '+
-    'poder es entrar a la escena.';
+  nota.textContent='Heads up: three.js did not download. That is this '+
+    'headset\u2019s network, not the headset. The table above still counts; '+
+    'what it will not be able to do is enter the scene.';
 }
 
 if(!navigator.xr){
-  celdaVR.textContent='no hay WebXR'; celdaVR.className='no';
-  boton.textContent='Este navegador no puede';
-  nota.textContent='Sin WebXR no entra en modo inmersivo. Si es un Pico con '+
-    'Firefox Reality viejo, el siguiente paso es probar Wolvic por ADB. '+
-    'Enséñame el texto gris de abajo y te digo.';
+  celdaVR.textContent='no WebXR'; celdaVR.className='no';
+  boton.textContent='This browser cannot';
+  nota.textContent='Without WebXR there is no immersive mode. If this is a Pico '+
+    'on an old Firefox Reality, the next step is trying Wolvic over ADB. '+
+    'Show me the grey text below and I will tell you.';
   return;
 }
 
 navigator.xr.isSessionSupported('immersive-vr').then(function(ok){
-  celdaVR.textContent = ok? 'sí, puede entrar' : 'no lo admite';
+  celdaVR.textContent = ok? 'yes, it can enter' : 'not supported';
   celdaVR.className = ok? 'si':'no';
   if(ok){
     boton.disabled=false;
-    boton.textContent='Entrar — cinco defensas en un 2-1-2';
-    nota.textContent='Al entrar verás cinco balones en la forma de un 2-1-2. '+
-      'Uno se enciende. Apunta y dispara, o mira y espera. Para salir, el '+
-      'botón de atrás del casco.';
+    boton.textContent='Enter — five defenders in a 2-1-2';
+    nota.textContent='Inside you will see five balls in the shape of a 2-1-2. '+
+      'One lights up. Point and pull the trigger, or look at it. To leave, the '+
+      'headset\u2019s back button.';
   }else{
-    boton.textContent='No admite modo inmersivo';
-    nota.textContent='Tiene WebXR pero no VR inmersiva. Pasa en navegadores '+
-      'de escritorio sin casco conectado.';
+    boton.textContent='No immersive mode';
+    nota.textContent='It has WebXR but not immersive VR. That happens on desktop '+
+      'browsers with no headset attached.';
   }
 }).catch(function(e){
-  celdaVR.textContent='falló al preguntar'; celdaVR.className='no';
+  celdaVR.textContent='the check itself failed'; celdaVR.className='no';
   nota.textContent=String(e);
 });
 
@@ -204,7 +204,7 @@ function apuntar(ctrl){
 }
 
 boton.onclick=function(){
-  if(typeof THREE==='undefined'){ nota.textContent='three.js no cargó — sin red o bloqueado.'; return; }
+  if(typeof THREE==='undefined'){ nota.textContent='three.js did not load — no network, or blocked.'; return; }
   try{
     if(renderer){                      // ya se montó antes: sólo re-entrar
       navigator.xr.requestSession('immersive-vr',
@@ -212,11 +212,11 @@ boton.onclick=function(){
       ).then(function(se){
         renderer.xr.setSession(se);
         se.addEventListener('end',function(){
-          boton.disabled=false; boton.textContent='Entrar otra vez';
+          boton.disabled=false; boton.textContent='Enter again';
         });
         renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
-        boton.disabled=true; boton.textContent='Estás dentro — sal con el botón de atrás';
-      }).catch(function(e){ nota.textContent='No entró: '+e });
+        boton.disabled=true; boton.textContent='You are inside — leave with the back button';
+      }).catch(function(e){ nota.textContent='Could not enter: '+e });
       return;
     }
     renderer=new THREE.WebGLRenderer({antialias:true});
@@ -235,11 +235,11 @@ boton.onclick=function(){
       // casco que sólo gira.
       session.requestReferenceSpace('local-floor').then(function(){
         renderer.xr.setReferenceSpaceType('local-floor');
-        celdaSuelo.textContent='sí — seis grados, te mueves';
+        celdaSuelo.textContent='yes — six degrees, you move';
         celdaSuelo.className='si';
       }).catch(function(){
         renderer.xr.setReferenceSpaceType('local');
-        celdaSuelo.textContent='no — tres grados, sólo gira';
+        celdaSuelo.textContent='no — three degrees, it only turns';
         celdaSuelo.className='quiz';
       });
 
@@ -256,13 +256,13 @@ boton.onclick=function(){
       session.addEventListener('inputsourceschange',function(){
         var n=0,manos=0;
         session.inputSources.forEach(function(s){ n++; if(s.hand) manos++; });
-        celdaMando.textContent = n? (n+' mando'+(n>1?'s':'')+(manos?' + manos':'')) : 'ninguno — se apunta con la cabeza';
+        celdaMando.textContent = n? (n+' controller'+(n>1?'s':'')+(manos?' + hands':'')) : 'none — aim with your head';
         celdaMando.className = n?'si':'quiz';
       });
 
       encender();
       renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
-      boton.textContent='Estás dentro — sal con el botón de atrás del casco';
+      boton.textContent='You are inside — leave with the back button';
       boton.disabled=true;
 
       /* Al salir hay que devolver el botón a como estaba. Sin esto, el
@@ -271,15 +271,15 @@ boton.onclick=function(){
       session.addEventListener('end', function(){
         try{ renderer.setAnimationLoop(null) }catch(e){}
         boton.disabled=false;
-        boton.textContent='Entrar otra vez';
-        nota.textContent='Saliste. Las dos últimas filas de la tabla ya dicen '+
-          'lo que se vio dentro.';
+        boton.textContent='Enter again';
+        nota.textContent='You are out. The last two rows of the table now say '+
+          'what was found inside.';
       });
     }).catch(function(e){
-      nota.textContent='No entró: '+e;
+      nota.textContent='Could not enter: '+e;
     });
   }catch(e){
-    nota.textContent='Falló al montar la escena: '+e;
+    nota.textContent='Failed to build the scene: '+e;
   }
 };
 })();
