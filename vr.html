@@ -299,13 +299,21 @@ function camaraReal(){
    mPose guarda esa matriz; de ella salen el origen y la dirección. Si
    el casco no diera pose, se vuelve a la cámara de antes y el panel lo
    dice, para no volver a quedarnos a oscuras. */
-/* three.js no nos da ni el cuadro del casco ni su espacio de
-   referencia en esta versión de WebXR, así que no contamos con ello.
-   Pedimos nuestro propio espacio al abrir la sesión, y corremos nuestro
-   propio bucle contra la sesión — session.requestAnimationFrame — que
-   SÍ entrega el cuadro. De ahí sale la pose, y la guardamos en mPose
-   para que el dibujo la use. Dos bucles conviviendo: el de three.js
-   pinta, el nuestro mira. */
+/* UN SOLO BUCLE, Y LA POSE SALE DE ÉL.
+   El panel del casco contestó lo que no se podía adivinar desde fuera:
+   espacio local-floor conseguido, pero nuestro bucle propio con cero
+   vueltas. O sea que session.requestAnimationFrame nunca nos llamó ni
+   una vez. Este Gecko se queda con UNA sola devolución de llamada por
+   sesión, y three.js registra la suya después de la nuestra: la pisa.
+   Nuestro bucle estaba muerto desde el primer cuadro, y por eso todos
+   los intentos de leer la pose dentro de él no decían nada.
+
+   Así que no hay dos bucles. El de three.js es el único que corre, y ya
+   recibe el cuadro del casco como segundo argumento — lo que faltaba no
+   era el cuadro, era el espacio: three.js le pasaba su propio espacio de
+   referencia, que en esta versión no está puesto, y getViewerPose
+   devolvía null. Le pasamos el nuestro, el local-floor que sí
+   conseguimos, y la pose sale del mismo cuadro que ya estaba llegando. */
 var mPose=new THREE.Matrix4(), deDonde='-';
 var miEspacio=null, miSesion=null, poseViva=false;
 
@@ -313,31 +321,33 @@ var miEspacio=null, miSesion=null, poseViva=false;
    en el panel en vez de suponerla desde fuera. */
 var diag={espacio:'-', vueltas:0, pose:'-', sub:'-'};
 
-function bucleDelCasco(t, frame){
-  if(!miSesion) return;
-  diag.vueltas++;
+/* Lee la cabeza del cuadro que ya nos llega, contra NUESTRO espacio.
+   Devuelve true si la pose quedó guardada en mPose. */
+function leerPose(frame){
   try{
-    if(!frame) diag.pose='sin cuadro';
-    else if(!miEspacio) diag.pose='sin espacio';
-    else if(!frame.getViewerPose) diag.pose='no hay getViewerPose';
-    else{
-      var p=frame.getViewerPose(miEspacio);
-      if(!p) diag.pose='devolvio null';
-      else if(!p.transform) diag.pose='sin transform';
-      else if(!p.transform.matrix) diag.pose='sin matriz';
-      else{
-        mPose.fromArray(p.transform.matrix);
-        poseViva=true; diag.pose='ok';
-      }
-      // la vista de un ojo suele traer la matriz aunque el visor no
-      if(!poseViva && p && p.views && p.views.length && p.views[0].transform
-         && p.views[0].transform.matrix){
-        mPose.fromArray(p.views[0].transform.matrix);
-        poseViva=true; diag.pose='ok (por la vista)';
-      }
+    if(!frame){ diag.pose='sin cuadro'; return false }
+    diag.vueltas++;
+    if(!miEspacio){ diag.pose='sin espacio'; return false }
+    if(!frame.getViewerPose){ diag.pose='no hay getViewerPose'; return false }
+
+    var p=frame.getViewerPose(miEspacio);
+    if(!p){ diag.pose='devolvio null'; return false }
+
+    if(p.transform && p.transform.matrix){
+      mPose.fromArray(p.transform.matrix);
+      poseViva=true; diag.pose='ok';
+      return true;
     }
-  }catch(e){ diag.pose='error: '+(e && e.message ? e.message.slice(0,22) : e); }
-  try{ miSesion.requestAnimationFrame(bucleDelCasco) }catch(e){ diag.pose='rAF: '+e }
+    // la vista de un ojo suele traer la matriz aunque el visor no
+    if(p.views && p.views.length && p.views[0].transform
+       && p.views[0].transform.matrix){
+      mPose.fromArray(p.views[0].transform.matrix);
+      poseViva=true; diag.pose='ok (por la vista)';
+      return true;
+    }
+    diag.pose='sin matriz';
+  }catch(e){ diag.pose='error: '+(e && e.message ? e.message.slice(0,22) : e) }
+  return false;
 }
 
 /* Último recurso: la sub-cámara de un ojo. three.js puede dejar la
@@ -354,6 +364,9 @@ function matrizDeOjo(){
 }
 function mirada(xrFrame){
   cuadros++;
+  /* Aquí, en el único bucle que corre, y con el cuadro que ya venía. */
+  leerPose(xrFrame);
+
   var cam=camaraReal();
   colocarAlaAltura(cam);
 
@@ -382,7 +395,11 @@ function mirada(xrFrame){
     'mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
     'pose de '+deDonde+'   ojo '+diag.sub,
     'espacio '+diag.espacio,
-    'vueltas '+diag.vueltas,
+    /* Ya no cuenta vueltas de un bucle nuestro: cuenta los cuadros del
+       casco que de verdad llegaron al dibujo. Si esto se queda en cero,
+       three.js no nos pasa el cuadro y no hay nada más que probar
+       desde la página. */
+    'cuadros xr '+diag.vueltas,
     'pose: '+diag.pose,
     'tocando '+(sobre<0?'ninguna':('bola '+sobre))
   ]);
@@ -453,9 +470,10 @@ function engancharPose(session){
   diag.espacio='pidiendo'; diag.vueltas=0; diag.pose='-';
   session.addEventListener('end',function(){ miSesion=null; poseViva=false; colocadas=false; });
 
-  // Arrancar el bucle no depende de que llegue el espacio: el bucle
-  // ya sabe decir 'sin espacio' y se corrige solo en cuanto llegue.
-  try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){ diag.espacio='rAF no!' }
+  /* Nada de pedir cuadros por nuestra cuenta: este navegador sólo
+     guarda una devolución de llamada por sesión y la de three.js la
+     pisa, así que el nuestro nunca corría — cero vueltas en el panel.
+     La pose se lee en mirada(), dentro del bucle de three.js. */
 
   // 'local-floor' quiere decir que el casco sabe dónde está el suelo y
   // que te mueves de verdad. 'local' a secas suele ser un casco que
