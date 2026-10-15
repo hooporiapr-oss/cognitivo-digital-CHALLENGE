@@ -131,7 +131,7 @@ var boton=document.getElementById('go');
    del panel de dentro — así que antes de leer cualquier otra cosa se
    sabe si lo que corre es lo último o lo de hace una hora.
    SUBE ESTE NÚMERO en cada cambio. */
-var SELLO='v10';
+var SELLO='v11';
 var nota=document.getElementById('nota');
 try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
@@ -433,6 +433,7 @@ function alLlegarElGiro(ev){
   /* Y también fuera del casco, en la página plana, para poder probarlo
      con el casco en la mano antes de ponérselo. */
   giros++;
+  if(dentro) girosDentro++;   // lo que faltaba por saber: si sigue vivo dentro
   if(!dentro){
     try{
       document.getElementById('giroNota').textContent =
@@ -441,7 +442,7 @@ function alLlegarElGiro(ev){
     }catch(e){}
   }
 }
-var giros=0;
+var giros=0, girosDentro=0;
 /* Los dos nombres: el absoluto trae norte de verdad, el otro es
    relativo a donde estaba al empezar. Para apuntar a una bola que
    está delante, el relativo sirve igual. */
@@ -498,16 +499,16 @@ function mirada(xrFrame){
   var sobre = hit.length ? hit[0].object.userData.i : -1;
 
   var r1=function(v){ return Math.round(v*100)/100 };
+  /* El panel se queda con lo que todavía se puede contestar. Lo de
+     WebXR ya está contestado: este navegador no pasa el cuadro del
+     casco ('sin cuadro'), así que no hay pose ni estéreo por ahí, y
+     esas líneas sólo quitaban sitio. Lo vivo es el giroscopio: se ve
+     si llegan datos DENTRO y no sólo fuera, que es lo que faltaba
+     por saber. */
   pintarPanel([
     SELLO+'   mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
-    'pose de '+deDonde+'   giro '+diag.giro,
-    'espacio '+diag.espacio,
-    /* Ya no cuenta vueltas de un bucle nuestro: cuenta los cuadros del
-       casco que de verdad llegaron al dibujo. Si esto se queda en cero,
-       three.js no nos pasa el cuadro y no hay nada más que probar
-       desde la página. */
-    'cuadros xr '+diag.vueltas,
-    'pose: '+diag.pose,
+    'pose de '+deDonde,
+    'giro '+diag.giro+'   ('+girosDentro+' dentro)',
     'tocando '+(sobre<0?'ninguna':('bola '+sobre))
   ]);
 
