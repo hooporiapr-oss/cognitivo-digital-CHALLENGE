@@ -50,7 +50,8 @@ h2{font-size:clamp(1.1rem,3vw,1.35rem);letter-spacing:-.025em;margin:28px 0 8px;
 p{margin:0 0 12px}
 
 .games{display:grid;gap:14px}
-@media(min-width:680px){.games{grid-template-columns:1fr 1fr}}
+@media(min-width:680px){.games{grid-template-columns:1fr 1fr}
+  .games.one{grid-template-columns:1fr}}
 .game{display:block;border:2px solid var(--ink);border-radius:4px;padding:20px;
   text-decoration:none;color:var(--ink);background:#fff}
 .game:hover{background:var(--tint)}
@@ -64,6 +65,11 @@ p{margin:0 0 12px}
 .game.rebound .go{color:var(--moss)}
 
 
+
+.h2h-kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin:26px 0 4px}
+.h2h-note{color:var(--mute);font-size:.92rem;margin:0 0 12px;max-width:52ch}
+.game.h2h{border-style:dashed}
 
 .cta{display:block;text-align:center;background:var(--ink);color:#fff;border:2px solid var(--ink);
   border-radius:4px;padding:16px;font-weight:800;text-decoration:none;margin-top:18px}
@@ -111,8 +117,23 @@ footer a{color:#8FA8C0;text-decoration:none}
       </a>
     </div>
 
+    <!-- Cara a cara. Estaban construidos y no los enlazaba nadie: sólo
+         llegaba quien tuviera la dirección. Van debajo de los juegos
+         solos porque primero se aprende el juego y después se reta a
+         alguien. -->
+    <p class="h2h-kick" data-t="h2hKick">Cara a cara</p>
+    <p class="h2h-note" data-t="h2hNote">Un teléfono, dos jugadores. La misma cadena para los dos, cada uno en su cancha. Un toque malo y ese sale.</p>
 
-
+    <!-- Uno solo, así que ocupa el ancho entero en vez de quedarse a
+         media página con un hueco al lado. -->
+    <div class="games one">
+      <a class="game fortress h2h" href="versus.html">
+        <span class="zone">2-1-2</span>
+        <span class="nm" data-t="v1">The Fortress · Cara a cara</span>
+        <span class="ds" data-t="vd1">El último que quede en pie gana. Si aguantan los dos, la cadena crece.</span>
+        <span class="go" data-t="duel">Retar →</span>
+      </a>
+    </div>
 
 
     <a class="cta" href="index.html" data-t="cta1">See the fundraiser →</a>
@@ -156,6 +177,9 @@ var S = {
     n1:'The Fortress', d1:'The zone holds its shape. The chain grows by one every round.',
     n2:'The Rebound', d2:'A brand new look every round, one longer. Nothing carries over.',
     play:'Play →',
+    h2hKick:'Head to head', h2hNote:'One phone, two players. The same chain for both, each on their own court. One wrong tap and that player is out.',
+    v1:'The Fortress · Head to Head', vd1:'Last one standing wins. If you both survive, the chain gets one longer.',
+    duel:'Challenge →',
     cta1:'See the fundraiser →', cta2:'Bring this to my program'
   },
   es:{
@@ -166,6 +190,9 @@ var S = {
     n1:'The Fortress', d1:'La zona mantiene su forma. La cadena crece uno cada ronda.',
     n2:'The Rebound', d2:'Algo nuevo cada ronda, uno más. Nada se arrastra.',
     play:'Jugar →',
+    h2hKick:'Cara a cara', h2hNote:'Un teléfono, dos jugadores. La misma cadena para los dos, cada uno en su cancha. Un toque malo y ese sale.',
+    v1:'The Fortress · Cara a cara', vd1:'El último que quede en pie gana. Si aguantan los dos, la cadena crece.',
+    duel:'Retar →',
     cta1:'Ver la recaudación →', cta2:'Tráelo a mi programa'
   }
 };
