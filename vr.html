@@ -139,7 +139,8 @@ navigator.xr.isSessionSupported('immersive-vr').then(function(ok){
     boton.disabled=false;
     boton.textContent='Enter — five defenders in a 2-1-2';
     nota.textContent='Inside you will see five balls in the shape of a 2-1-2. '+
-      'One lights up. Point and pull the trigger, or look at it. To leave, the '+
+      'One turns white. LOOK at it and hold your gaze for a second \u2014 no '+
+      'controller needed. It fills with light while you hold. To leave, the '+
       'headset\u2019s back button.';
   }else{
     boton.textContent='No immersive mode';
@@ -199,6 +200,49 @@ function acertar(i){
     balls[i].material.color.setHex(balls[i].userData.base) },320); }
 }
 
+/* ═════════════════════════════════════════════════════
+   MIRAR Y AGUANTAR
+
+   El gatillo del mando no llega a la escena en este casco — un Pico
+   viejo con un WebXR de 2020 no entrega la entrada como la entrega uno
+   de hoy, y three.js no la encuentra.
+
+   Así que esto no depende de ningún mando: miras una bola, la aguantas
+   mirando un segundo, y cuenta. Es lo único que funciona seguro en
+   cualquier casco, con mando o sin él, y para leer una zona tampoco
+   hace falta más — lo que se entrena es la mirada.
+
+   La bola que se está mirando se enciende por dentro y se va llenando,
+   para que se vea que el casco te está siguiendo la cabeza.
+   ═════════════════════════════════════════════════════ */
+var DWELL_MS=1000;
+var mirando=-1, mirandoDesde=0, selects=0;
+
+function mirada(){
+  raycaster.ray.origin.setFromMatrixPosition(camera.matrixWorld);
+  raycaster.ray.direction.set(0,0,-1).applyQuaternion(camera.quaternion);
+  var hit=raycaster.intersectObjects(balls);
+  var sobre = hit.length ? hit[0].object.userData.i : -1;
+
+  if(sobre!==mirando){
+    if(mirando>=0 && balls[mirando]) balls[mirando].material.emissive.setHex(0x000000);
+    mirando=sobre; mirandoDesde=performance.now();
+  }
+  if(mirando<0) return;
+
+  var t=(performance.now()-mirandoDesde)/DWELL_MS;
+  if(t>=1){
+    var i=mirando;
+    balls[i].material.emissive.setHex(0x000000);
+    mirando=-1;
+    acertar(i);
+    return;
+  }
+  // se va llenando de luz mientras aguantas
+  var v=Math.round(t*120);
+  balls[mirando].material.emissive.setRGB(v/255,v/255,v/255);
+}
+
 function apuntar(ctrl){
   if(ctrl){
     tmpM.identity().extractRotation(ctrl.matrixWorld);
@@ -227,7 +271,7 @@ boton.onclick=function(){
           try{ renderer.setAnimationLoop(null) }catch(e){}
           boton.disabled=false; boton.textContent='Enter again';
         });
-        renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
+        renderer.setAnimationLoop(function(){ mirada(); renderer.render(scene,camera) });
         document.body.classList.add('dentro');
         boton.disabled=true; boton.textContent='You are inside — leave with the back button';
       }).catch(function(e){ nota.textContent='Could not enter: '+e });
@@ -262,10 +306,10 @@ boton.onclick=function(){
       var ctrls=[];
       for(var c=0;c<2;c++){
         var g=renderer.xr.getController(c);
-        g.addEventListener('selectstart',(function(gg){ return function(){ apuntar(gg) } })(g));
+        g.addEventListener('selectstart',(function(gg){ return function(){ selects++; apuntar(gg) } })(g));
         scene.add(g); ctrls.push(g);
       }
-      session.addEventListener('select',function(){ apuntar(null) });
+      session.addEventListener('select',function(){ selects++; apuntar(null) });
 
       session.addEventListener('inputsourceschange',function(){
         var n=0,manos=0;
@@ -275,7 +319,7 @@ boton.onclick=function(){
       });
 
       encender();
-      renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
+      renderer.setAnimationLoop(function(){ mirada(); renderer.render(scene,camera) });
       document.body.classList.add('dentro');
       boton.textContent='You are inside — leave with the back button';
       boton.disabled=true;
@@ -288,8 +332,9 @@ boton.onclick=function(){
         document.body.classList.remove('dentro');
         boton.disabled=false;
         boton.textContent='Enter again';
-        nota.textContent='You are out. The last two rows of the table now say '+
-          'what was found inside.';
+        nota.textContent='You are out. The last two rows now say what was found '+
+          'inside. Trigger presses that reached the scene: '+selects+
+          (selects? '' : ' — none, so gaze is the only input that works here.');
       });
     }).catch(function(e){
       nota.textContent='Could not enter: '+e;
