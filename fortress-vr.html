@@ -261,6 +261,7 @@ function construir(){
   }
 
   hacerPanel();
+  hacerPunto();
   raycaster=new THREE.Raycaster();
   /* Un pelo de margen: con la cabeza no se apunta tan fino como con el
      dedo, y una bola que se escapa por dos grados se siente como un
@@ -333,6 +334,52 @@ function hacerPanel(){
   panelMesh.rotation.x=0.42;
   scene.add(panelMesh);
 }
+/* ══════════════════════════════════════════════════════════════════
+   EL PUNTO DE MIRA
+
+   Faltaba esto y por eso el juego parecía muerto: con la cabeza no se
+   ve dónde se está apuntando. El rayo sale del centro de la vista,
+   pero el centro de la vista no está dibujado en ningún sitio, así que
+   acertar una bola era cuestión de suerte y parecía que no respondía.
+
+   Dos piezas: un aro fino siempre visible, que dice dónde estás
+   apuntando, y dentro un disco que se va llenando mientras aguantas la
+   vista — el tiempo que falta para que cuente. Va colgado de la
+   cámara, así que se queda clavado en el centro mire uno donde mire.
+   ══════════════════════════════════════════════════════════════════ */
+var punto, puntoRelleno;
+function hacerPunto(){
+  punto=new THREE.Mesh(
+    new THREE.RingGeometry(0.013,0.017,28),
+    new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:.75,
+      depthTest:false})
+  );
+  punto.position.set(0,0,-1);
+  punto.renderOrder=999;
+  camera.add(punto);
+
+  puntoRelleno=new THREE.Mesh(
+    new THREE.CircleGeometry(0.011,28),
+    new THREE.MeshBasicMaterial({color:0x6FD83C, transparent:true, opacity:.95,
+      depthTest:false})
+  );
+  puntoRelleno.position.set(0,0,-1);
+  puntoRelleno.renderOrder=1000;
+  puntoRelleno.scale.setScalar(0.001);
+  camera.add(puntoRelleno);
+
+  // La cámara tiene hijos, así que tiene que estar en la escena.
+  scene.add(camera);
+}
+/* t va de 0 a 1 mientras se aguanta la vista; -1 quiere decir que no
+   hay nada debajo del punto. */
+function pintarPunto(t, sobreBola){
+  if(!punto) return;
+  punto.material.opacity = sobreBola ? 1 : .5;
+  punto.scale.setScalar(sobreBola ? 1.35 : 1);
+  puntoRelleno.scale.setScalar(t>0 ? Math.max(0.001, t) : 0.001);
+}
+
 function pintarPanel(grande, chica, color){
   if(!panelCtx) return;
   panelCtx.clearRect(0,0,768,320);
@@ -401,7 +448,7 @@ function empezarCentrado(){ centrando=performance.now(); hayCero=false }
    gatillo no llega a la página. Unos segundos sin tocar ninguna bola y
    se centra otra vez sola. Jugando no salta, porque jugando se mira a
    las bolas. */
-var PERDIDO_MS=5000, sinBolaDesde=0;
+var PERDIDO_MS=8000, sinBolaDesde=0;
 
 /* Sin giroscopio (una computadora, o un casco que no lo publique) se
    apunta con el ratón o el dedo. Así esto se puede probar sin casco,
@@ -473,10 +520,16 @@ var mirando=-1, mirandoDesde=0;
    y como al acabar la cadena uno se queda mirando al medio, contestaba
    la del medio una y otra vez sin que nadie decidiera nada.
 
-   Así que hay que salir de una bola para poder elegirla: la mirada se
-   arma cuando no toca ninguna, y se desarma en cuanto contesta. Mirar
-   fijo no cuenta dos veces, y el turno no empieza contestando. */
+   Pero pedir que se salga AL AIRE era demasiado duro: entre dos bolas
+   casi siempre hay otra bola, y el que no sabe que tiene que salir
+   primero ve un juego que no le contesta.
+
+   Basta con moverse: se arma en cuanto la mirada deja la bola en la
+   que estaba al empezar el turno. Si llegas mirando al medio puedes
+   elegir cualquier otra en el acto, y el medio en cuanto lo sueltes y
+   vuelvas. No contesta sola y no hay que adivinar nada. */
 var armado=false;
+var bolaAlEmpezar=-1;
 var temporizadores=[];
 var mejor=0;
 try{ mejor=parseInt(localStorage.getItem('fvr-best')||'0',10)||0 }catch(e){}
@@ -516,7 +569,11 @@ function mostrar(i){
   if(fase==='roto') return;
   if(i>=cadena.length){
     fase='turno'; mirando=-1; sinBolaDesde=0;
-    armado=false;        // hay que salir de la bola antes de elegirla
+    /* Se arma en cuanto la mirada se mueva de donde estaba al empezar.
+       Lo que hubiera debajo en este instante se apunta aquí. */
+    var h0=raycaster.intersectObjects(balls);
+    bolaAlEmpezar = h0.length ? h0[0].object.userData.i : -1;
+    armado=false;
     return;
   }
   var idx=cadena[i];
@@ -598,10 +655,12 @@ function bucle(){
     return;
   }
 
-  // Perderse: unos segundos sin tocar bola y se recentra. Sólo tiene
-  // sentido con el giroscopio — con el ratón no te pierdes, y parado
-  // saltaría sin parar.
-  if(sobre<0 && fuente==='giro'){
+  /* Perderse: sólo con el giroscopio, y sólo cuando te toca a ti. Si
+     salta mientras se está mostrando la cadena, borra el centro en
+     mitad de la secuencia y el juego se vuelve loco — y ocho segundos,
+     no cinco: mirar un rato alrededor es lo normal cuando se está
+     aprendiendo dónde está cada bola, no estar perdido. */
+  if(sobre<0 && fuente==='giro' && fase==='turno'){
     if(!sinBolaDesde) sinBolaDesde=performance.now();
     else if(performance.now()-sinBolaDesde>PERDIDO_MS){
       sinBolaDesde=0; empezarCentrado();
@@ -610,27 +669,32 @@ function bucle(){
   }else sinBolaDesde=0;
 
   if(fase==='turno'){
-    // La mirada se arma al quedarse en el aire, no sobre una bola.
-    if(sobre<0) armado=true;
+    // Se arma en cuanto la mirada se mueve de donde empezó el turno.
+    if(sobre!==bolaAlEmpezar) armado=true;
 
     if(sobre!==mirando){
       if(mirando>=0) apagar(mirando);
       mirando=sobre; mirandoDesde=performance.now();
     }
+    var prog=-1;
     if(mirando>=0 && armado){
       var t=(performance.now()-mirandoDesde)/DWELL_MS;
       if(t>=1){
         var i=mirando;
-        apagar(i); mirando=-1;
-        armado=false;            // para la siguiente hay que salir otra vez
+        apagar(i); mirando=-1; prog=-1;
+        armado=false; bolaAlEmpezar=i;   // suéltala antes de repetirla
         contestar(i);
       }else{
         // se va llenando de luz mientras aguantas
+        prog=t;
         var v=Math.round(t*150);
-        balls[i=mirando].material.emissive.setRGB(v/255,v/255*.82,v/255*.5);
+        balls[mirando].material.emissive.setRGB(v/255,v/255*.82,v/255*.5);
         balls[mirando].scale.setScalar(1+t*0.12);
       }
     }
+    pintarPunto(prog, sobre>=0);
+  }else{
+    pintarPunto(-1, sobre>=0);
   }
 
   var etiqueta = fase==='turno' ? T('turno') : T('mira');
