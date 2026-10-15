@@ -289,14 +289,39 @@ function camaraReal(){
   return camera;
 }
 
-function mirada(){
+/* three.js no le está sacando el giro de la cabeza a este WebXR de
+   2020: el rayo salía siempre recto hacia adelante mirara uno donde
+   mirara. Así que no le preguntamos a three.js — se lee la pose
+   directamente del cuadro que manda el casco, que es la fuente.
+
+   mPose guarda esa matriz; de ella salen el origen y la dirección. Si
+   el casco no diera pose, se vuelve a la cámara de antes y el panel lo
+   dice, para no volver a quedarnos a oscuras. */
+var mPose=new THREE.Matrix4(), deDonde='-';
+function mirada(xrFrame){
   cuadros++;
   var cam=camaraReal();
   colocarAlaAltura(cam);
-  var o=new THREE.Vector3().setFromMatrixPosition(cam.matrixWorld);
+
+  var o=new THREE.Vector3(), d=new THREE.Vector3();
+  var pose=null;
+  try{
+    var rs=renderer.xr.getReferenceSpace && renderer.xr.getReferenceSpace();
+    if(xrFrame && rs && xrFrame.getViewerPose) pose=xrFrame.getViewerPose(rs);
+  }catch(e){}
+
+  if(pose && pose.transform && pose.transform.matrix){
+    mPose.fromArray(pose.transform.matrix);
+    o.setFromMatrixPosition(mPose);
+    d.set(0,0,-1).transformDirection(mPose);
+    deDonde='casco';
+  }else{
+    o.setFromMatrixPosition(cam.matrixWorld);
+    d.set(0,0,-1).transformDirection(cam.matrixWorld);
+    deDonde= pose? 'pose sin matriz' : 'camara';
+  }
   raycaster.ray.origin.copy(o);
-  raycaster.ray.direction.set(0,0,-1).transformDirection(cam.matrixWorld);
-  var d=raycaster.ray.direction;
+  raycaster.ray.direction.copy(d);
   var hit=raycaster.intersectObjects(balls);
   var sobre = hit.length ? hit[0].object.userData.i : -1;
 
@@ -307,7 +332,8 @@ function mirada(){
     'mira  x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
     'bola0 y'+r1(balls[0].position.y),
     'tocando '+(sobre<0?'ninguna':('bola '+sobre)),
-    'blanca  bola '+lit
+    'blanca  bola '+lit,
+    'pose de '+deDonde
   ]);
 
   if(sobre!==mirando){
@@ -375,7 +401,7 @@ boton.onclick=function(){
           try{ renderer.setAnimationLoop(null) }catch(e){}
           boton.disabled=false; boton.textContent='Enter again';
         });
-        renderer.setAnimationLoop(function(){ if(window.scrollY) window.scrollTo(0,0); mirada(); renderer.render(scene,camera) });
+        renderer.setAnimationLoop(function(t,frame){ if(window.scrollY) window.scrollTo(0,0); mirada(frame); renderer.render(scene,camera) });
         entrarModo(true);
         boton.disabled=true; boton.textContent='You are inside — leave with the back button';
       }).catch(function(e){ nota.textContent='Could not enter: '+e });
@@ -425,7 +451,7 @@ boton.onclick=function(){
       });
 
       encender();
-      renderer.setAnimationLoop(function(){ if(window.scrollY) window.scrollTo(0,0); mirada(); renderer.render(scene,camera) });
+      renderer.setAnimationLoop(function(t,frame){ if(window.scrollY) window.scrollTo(0,0); mirada(frame); renderer.render(scene,camera) });
       entrarModo(true);
       boton.textContent='You are inside — leave with the back button';
       boton.disabled=true;
