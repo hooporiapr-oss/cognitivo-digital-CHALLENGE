@@ -68,7 +68,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
 
 /* Sello a la vista en el panel de dentro. Este navegador se guarda la
    página con ganas y ya nos costó una tarde. SUBIRLO en cada cambio. */
-var SELLO='v1';
+var SELLO='v3';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA
@@ -373,8 +373,22 @@ function hacerPunto(){
 }
 /* t va de 0 a 1 mientras se aguanta la vista; -1 quiere decir que no
    hay nada debajo del punto. */
+/* Con la cabeza, el rayo sale del centro de la vista y el punto está
+   en el centro: coinciden sin hacer nada. Con el ratón o el dedo no —
+   el rayo va donde está el puntero y el punto se quedaría clavado en
+   el medio, enseñando una puntería que no es la de verdad. Como las
+   pruebas sin casco se hacen así, el punto se mueve con el puntero. */
+function ponerPuntoEnPuntero(){
+  if(!punto) return;
+  var mediaAlto=Math.tan(camera.fov*GRADO/2);
+  var mediaAncho=mediaAlto*camera.aspect;
+  var x=punteroX*mediaAncho, y=punteroY*mediaAlto;
+  punto.position.set(x,y,-1);
+  puntoRelleno.position.set(x,y,-1);
+}
 function pintarPunto(t, sobreBola){
   if(!punto) return;
+  if(!giroVivo && hayPuntero) ponerPuntoEnPuntero();
   punto.material.opacity = sobreBola ? 1 : .5;
   punto.scale.setScalar(sobreBola ? 1.35 : 1);
   puntoRelleno.scale.setScalar(t>0 ? Math.max(0.001, t) : 0.001);
@@ -394,7 +408,7 @@ function pintarPanel(grande, chica, color){
   panelCtx.fillText(chica||'',384,232);
   panelCtx.fillStyle='#44586B';
   panelCtx.font='26px monospace';
-  panelCtx.fillText(SELLO,384,296);
+  panelCtx.fillText(SELLO+'   '+crudo,384,296);
   panelTex.needsUpdate=true;
 }
 
@@ -433,7 +447,17 @@ function alLlegarElGiro(ev){
   qGiro.multiply(qAlFrente);
   qGiro.multiply(qPantalla.setFromAxisAngle(zEje, -orientacionPantalla()));
   giroVivo=true; girosN++;
+  /* Los tres números tal como llegan, sin tocar, y el ángulo que dice
+     el navegador que tiene la pantalla. Esto no es decoración: con la
+     cabeza funcionando de lado a lado pero no de arriba abajo, lo que
+     hay que saber es CUÁL de los tres se mueve al mirar hacia arriba.
+     En un casco la pantalla es apaisada, y si el navegador dice 0 como
+     si fuera un teléfono de pie, el cabeceo y el balanceo se cambian
+     de sitio: miras arriba y el mundo gira de canto. */
+  crudo = Math.round(ev.alpha)+' '+Math.round(ev.beta)+' '+Math.round(ev.gamma)
+        + '  p'+Math.round(orientacionPantalla()/GRADO);
 }
+var crudo='-';
 try{
   addEventListener('deviceorientationabsolute', alLlegarElGiro, true);
   addEventListener('deviceorientation', alLlegarElGiro, true);
@@ -520,16 +544,24 @@ var mirando=-1, mirandoDesde=0;
    y como al acabar la cadena uno se queda mirando al medio, contestaba
    la del medio una y otra vez sin que nadie decidiera nada.
 
-   Pero pedir que se salga AL AIRE era demasiado duro: entre dos bolas
-   casi siempre hay otra bola, y el que no sabe que tiene que salir
-   primero ve un juego que no le contesta.
+   El segundo intento — "arma cuando te muevas de donde empezaste" —
+   tenía el fallo al revés, y lo enseñó la prueba: si la bola que toca
+   es justo la que ya estabas mirando, no se arma nunca y el juego NO
+   TE DEJA contestarla. Imposible de adivinar desde dentro.
 
-   Basta con moverse: se arma en cuanto la mirada deja la bola en la
-   que estaba al empezar el turno. Si llegas mirando al medio puedes
-   elegir cualquier otra en el acto, y el medio en cuanto lo sueltes y
-   vuelvas. No contesta sola y no hay que adivinar nada. */
-var armado=false;
-var bolaAlEmpezar=-1;
+   Son dos cosas distintas y se arreglan por separado:
+
+   · Al empezar tu turno, un respiro. La cuenta de la bola que ya
+     tenías debajo empieza con retraso, así que mirar fijo la contesta
+     — pero más de un segundo después, que ya es querer.
+
+   · La que acabas de contestar queda bloqueada hasta que la sueltes.
+     Si no, quedarte mirándola la contestaría otra vez, y como la
+     cadena nunca repite sitio seguido, eso es siempre un fallo.
+
+   Nada más. Nunca hay una bola que no se pueda elegir. */
+var bloqueada=-1;
+var GRACIA_MS=650;
 var temporizadores=[];
 var mejor=0;
 try{ mejor=parseInt(localStorage.getItem('fvr-best')||'0',10)||0 }catch(e){}
@@ -568,12 +600,12 @@ function siguienteNivel(){
 function mostrar(i){
   if(fase==='roto') return;
   if(i>=cadena.length){
-    fase='turno'; mirando=-1; sinBolaDesde=0;
-    /* Se arma en cuanto la mirada se mueva de donde estaba al empezar.
-       Lo que hubiera debajo en este instante se apunta aquí. */
+    fase='turno'; sinBolaDesde=0; bloqueada=-1;
+    /* El respiro: si ya estabas mirando una bola, su cuenta arranca
+       con retraso en vez de dispararse a los seis décimos. */
     var h0=raycaster.intersectObjects(balls);
-    bolaAlEmpezar = h0.length ? h0[0].object.userData.i : -1;
-    armado=false;
+    mirando = h0.length ? h0[0].object.userData.i : -1;
+    mirandoDesde = performance.now() + (mirando>=0 ? GRACIA_MS : 0);
     return;
   }
   var idx=cadena[i];
@@ -669,20 +701,20 @@ function bucle(){
   }else sinBolaDesde=0;
 
   if(fase==='turno'){
-    // Se arma en cuanto la mirada se mueve de donde empezó el turno.
-    if(sobre!==bolaAlEmpezar) armado=true;
+    // Soltar la bloqueada la desbloquea.
+    if(sobre!==bloqueada) bloqueada=-1;
 
     if(sobre!==mirando){
       if(mirando>=0) apagar(mirando);
       mirando=sobre; mirandoDesde=performance.now();
     }
     var prog=-1;
-    if(mirando>=0 && armado){
+    if(mirando>=0 && mirando!==bloqueada){
       var t=(performance.now()-mirandoDesde)/DWELL_MS;
       if(t>=1){
         var i=mirando;
         apagar(i); mirando=-1; prog=-1;
-        armado=false; bolaAlEmpezar=i;   // suéltala antes de repetirla
+        bloqueada=i;                     // suéltala antes de repetirla
         contestar(i);
       }else{
         // se va llenando de luz mientras aguantas
