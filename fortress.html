@@ -952,7 +952,49 @@ function playThump(){
   noise.start(now);
 }
 
-function lightTarget(idx){targetEls[idx].classList.add('lit');playThump()}
+
+// ═════════════════════════════════════════════════════
+//  THE BUGLE NOTES
+//
+//  Simon, 1978, did one thing that made it playable for an hour
+//  instead of maddening: Ralph Baer tuned its four tones to the notes
+//  a bugle can play. A bugle has no valves, so those are the only
+//  notes it gets — which means ANY sequence of them comes out sounding
+//  like a tune instead of noise.
+//
+//  That is not decoration. It hands the player a second channel to
+//  remember on. You do not memorise red-blue-red; you memorise a
+//  little melody, and the melody is far easier to hold.
+//
+//  These five are the same idea: 110 Hz times 2, 3, 4, 5 and 6 — the
+//  natural harmonic series, exactly what a bugle sounds. No two of
+//  them clash, in any order.
+//
+//  The pitch belongs to the POSITION, not to the colour. Colours get
+//  shuffled each run; the spot on the floor does not. So the same
+//  corner always sings the same note, which is the whole point — a
+//  pattern can only become a tune if it sounds the same every time.
+// ═════════════════════════════════════════════════════
+var TONES=[220,330,440,550,660];
+function playTone(i){
+  if(!audioCtx)return;
+  var f=TONES[i%TONES.length];
+  var now=audioCtx.currentTime;
+  try{
+    var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    // Triangle rather than sine: it carries over the thump without
+    // having to be loud about it.
+    o.type='triangle';
+    o.frequency.setValueAtTime(f,now);
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(.3,now+0.012);
+    g.gain.exponentialRampToValueAtTime(.0001,now+0.30);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+0.32);
+  }catch(e){}
+}
+
+function lightTarget(idx){targetEls[idx].classList.add('lit');playThump();playTone(idx)}
 function unlightTarget(idx){targetEls[idx].classList.remove('lit')}
 
 // Whether the balls are currently accepting taps. Kept as state
