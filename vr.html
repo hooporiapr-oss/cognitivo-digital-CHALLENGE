@@ -309,17 +309,48 @@ function camaraReal(){
 var mPose=new THREE.Matrix4(), deDonde='-';
 var miEspacio=null, miSesion=null, poseViva=false;
 
+/* Instrumentado: cada paso deja dicho cómo le fue, para leer la causa
+   en el panel en vez de suponerla desde fuera. */
+var diag={espacio:'-', vueltas:0, pose:'-', sub:'-'};
+
 function bucleDelCasco(t, frame){
   if(!miSesion) return;
+  diag.vueltas++;
   try{
-    var p = (frame && miEspacio && frame.getViewerPose)
-          ? frame.getViewerPose(miEspacio) : null;
-    if(p && p.transform && p.transform.matrix){
-      mPose.fromArray(p.transform.matrix);
-      poseViva=true;
+    if(!frame) diag.pose='sin cuadro';
+    else if(!miEspacio) diag.pose='sin espacio';
+    else if(!frame.getViewerPose) diag.pose='no hay getViewerPose';
+    else{
+      var p=frame.getViewerPose(miEspacio);
+      if(!p) diag.pose='devolvio null';
+      else if(!p.transform) diag.pose='sin transform';
+      else if(!p.transform.matrix) diag.pose='sin matriz';
+      else{
+        mPose.fromArray(p.transform.matrix);
+        poseViva=true; diag.pose='ok';
+      }
+      // la vista de un ojo suele traer la matriz aunque el visor no
+      if(!poseViva && p && p.views && p.views.length && p.views[0].transform
+         && p.views[0].transform.matrix){
+        mPose.fromArray(p.views[0].transform.matrix);
+        poseViva=true; diag.pose='ok (por la vista)';
+      }
     }
-  }catch(e){}
-  try{ miSesion.requestAnimationFrame(bucleDelCasco) }catch(e){}
+  }catch(e){ diag.pose='error: '+(e && e.message ? e.message.slice(0,22) : e); }
+  try{ miSesion.requestAnimationFrame(bucleDelCasco) }catch(e){ diag.pose='rAF: '+e }
+}
+
+/* Último recurso: la sub-cámara de un ojo. three.js puede dejar la
+   cámara de fuera plana y tener la del ojo bien. */
+function matrizDeOjo(){
+  try{
+    var c=renderer.xr.getCamera(camera);
+    if(c && c.cameras && c.cameras.length && c.cameras[0].matrixWorld){
+      diag.sub='si'; return c.cameras[0].matrixWorld;
+    }
+    diag.sub='no hay';
+  }catch(e){ diag.sub='error' }
+  return null;
 }
 function mirada(xrFrame){
   cuadros++;
@@ -327,10 +358,15 @@ function mirada(xrFrame){
   colocarAlaAltura(cam);
 
   var o=new THREE.Vector3(), d=new THREE.Vector3();
+  var mOjo = poseViva? null : matrizDeOjo();
   if(poseViva){
     o.setFromMatrixPosition(mPose);
     d.set(0,0,-1).transformDirection(mPose);
     deDonde='casco';
+  }else if(mOjo){
+    o.setFromMatrixPosition(mOjo);
+    d.set(0,0,-1).transformDirection(mOjo);
+    deDonde='ojo';
   }else{
     o.setFromMatrixPosition(cam.matrixWorld);
     d.set(0,0,-1).transformDirection(cam.matrixWorld);
@@ -343,13 +379,12 @@ function mirada(xrFrame){
 
   var r1=function(v){ return Math.round(v*100)/100 };
   pintarPanel([
-    'cuadros '+cuadros,
-    'ojos  x'+r1(o.x)+' y'+r1(o.y)+' z'+r1(o.z),
-    'mira  x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
-    'bola0 y'+r1(balls[0].position.y),
-    'tocando '+(sobre<0?'ninguna':('bola '+sobre)),
-    'blanca  bola '+lit,
-    'pose de '+deDonde
+    'mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
+    'pose de '+deDonde+'   ojo '+diag.sub,
+    'espacio '+diag.espacio,
+    'vueltas '+diag.vueltas,
+    'pose: '+diag.pose,
+    'tocando '+(sobre<0?'ninguna':('bola '+sobre))
   ]);
 
   if(sobre!==mirando){
@@ -404,6 +439,49 @@ function entrarModo(on){
   if(on) window.scrollTo(0,0);
 }
 
+/* TODO LO QUE HACE FALTA PARA LEER LA CABEZA, EN UN SOLO SITIO.
+   Estaba escrito dos veces y la segunda vez — la de volver a entrar
+   después de salir con el botón de atrás — se había quedado sin la
+   mitad: pedía la sesión y pintaba, pero nunca pedía espacio de
+   referencia ni arrancaba el bucle que lee la pose. Resultado: a la
+   segunda entrada la mirada se quedaba clavada en z-1 y el panel decía
+   'pose de camara', porque no había de dónde sacarla. Una sola función
+   para las dos entradas: lo que se arregla aquí queda arreglado en las
+   dos. */
+function engancharPose(session){
+  miSesion=session; poseViva=false; colocadas=false;
+  diag.espacio='pidiendo'; diag.vueltas=0; diag.pose='-';
+  session.addEventListener('end',function(){ miSesion=null; poseViva=false; colocadas=false; });
+
+  // Arrancar el bucle no depende de que llegue el espacio: el bucle
+  // ya sabe decir 'sin espacio' y se corrige solo en cuanto llegue.
+  try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){ diag.espacio='rAF no!' }
+
+  // 'local-floor' quiere decir que el casco sabe dónde está el suelo y
+  // que te mueves de verdad. 'local' a secas suele ser un casco que
+  // sólo gira.
+  session.requestReferenceSpace('local-floor').then(function(sp){
+    miEspacio=sp; diag.espacio='local-floor';
+    try{ renderer.xr.setReferenceSpaceType('local-floor') }catch(e){}
+    alturaOjos(0);               // ya se mide desde el suelo
+    celdaSuelo.textContent='yes — six degrees, you move';
+    celdaSuelo.className='si';
+  }).catch(function(){
+    // sin suelo: se pide el de toda la vida, y si tampoco, el del visor
+    session.requestReferenceSpace('local').then(function(sp){
+      miEspacio=sp; diag.espacio='local';
+    }).catch(function(){
+      session.requestReferenceSpace('viewer').then(function(sp){
+        miEspacio=sp; diag.espacio='viewer';
+      }).catch(function(){ diag.espacio='ninguno sirvio' });
+    });
+    try{ renderer.xr.setReferenceSpaceType('local') }catch(e){}
+    alturaOjos(-1.3);            // los ojos están en el origen
+    celdaSuelo.textContent='no — three degrees, it only turns';
+    celdaSuelo.className='quiz';
+  });
+}
+
 boton.onclick=function(){
   if(typeof THREE==='undefined'){ nota.textContent='three.js did not load — no network, or blocked.'; return; }
   try{
@@ -412,6 +490,7 @@ boton.onclick=function(){
         {optionalFeatures:['local-floor','bounded-floor','hand-tracking']}
       ).then(function(se){
         renderer.xr.setSession(se);
+        engancharPose(se);
         se.addEventListener('end',function(){
           entrarModo(false);
           try{ renderer.setAnimationLoop(null) }catch(e){}
@@ -434,37 +513,8 @@ boton.onclick=function(){
       {optionalFeatures:['local-floor','bounded-floor','hand-tracking']}
     ).then(function(session){
 
-      // 'local-floor' quiere decir que el casco sabe dónde está el
-      // suelo y que te mueves de verdad. 'local' a secas suele ser un
-      // casco que sólo gira.
-      miSesion=session;
-      session.addEventListener('end',function(){ miSesion=null; poseViva=false; colocadas=false; });
-
-      session.requestReferenceSpace('local-floor').then(function(sp){
-        miEspacio=sp;
-        try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
-        renderer.xr.setReferenceSpaceType('local-floor');
-        alturaOjos(0);               // ya se mide desde el suelo
-        celdaSuelo.textContent='yes — six degrees, you move';
-        celdaSuelo.className='si';
-      }).catch(function(){
-        // sin suelo: se pide el de toda la vida
-        session.requestReferenceSpace('local').then(function(sp){
-          miEspacio=sp;
-          try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
-        }).catch(function(){
-          session.requestReferenceSpace('viewer').then(function(sp){
-            miEspacio=sp;
-            try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
-          }).catch(function(){});
-        });
-        renderer.xr.setReferenceSpaceType('local');
-        alturaOjos(-1.3);            // los ojos están en el origen
-        celdaSuelo.textContent='no — three degrees, it only turns';
-        celdaSuelo.className='quiz';
-      });
-
       renderer.xr.setSession(session);
+      engancharPose(session);
 
       var ctrls=[];
       for(var c=0;c<2;c++){
