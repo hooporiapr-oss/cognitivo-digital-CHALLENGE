@@ -26,11 +26,11 @@ html,body{
 .names{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:min(760px,92vw)}
 .namebox{flex:1 1 300px;min-width:260px;border:2px solid;border-radius:14px;padding:16px}
 .namebox.left{border-color:#FF7A18}
-.namebox.right{border-color:#22D3EE}
+.namebox.right{border-color:#6FD83C}
 .namebox label{display:block;font-size:.66rem;font-weight:900;letter-spacing:.2em;
   text-transform:uppercase;margin-bottom:8px}
 .namebox.left label{color:#FF7A18}
-.namebox.right label{color:#22D3EE}
+.namebox.right label{color:#6FD83C}
 .namebox input{
   width:100%;padding:14px;border-radius:10px;border:2px solid rgba(255,255,255,.18);
   background:#0D1826;color:#fff;font:inherit;font-size:1.1rem;text-align:center;
@@ -57,7 +57,7 @@ html,body{
 .hud .val{font-size:1.2rem;font-weight:900}
 .msg{text-align:center;padding:6px;font-size:1rem;font-weight:900;letter-spacing:.08em;
   text-transform:uppercase;flex-shrink:0;min-height:32px}
-.msg.watch{color:#22D3EE}
+.msg.watch{color:#6FD83C}
 .msg.go{color:#00D9A5}
 .msg.miss{color:#FF1493}
 
@@ -65,7 +65,7 @@ html,body{
 .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
 .side .who{font-size:.8rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
 .side.left .who{color:#FF7A18}
-.side.right .who{color:#22D3EE}
+.side.right .who{color:#6FD83C}
 .side .state{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA4BD;min-height:14px}
 
 .court{
@@ -74,8 +74,8 @@ html,body{
 }
 .side.left .court{border-color:rgba(255,122,24,.45);
   box-shadow:0 0 50px rgba(255,122,24,.15),inset 0 0 40px rgba(255,122,24,.04)}
-.side.right .court{border-color:rgba(34,211,238,.45);
-  box-shadow:0 0 50px rgba(34,211,238,.15),inset 0 0 40px rgba(34,211,238,.04)}
+.side.right .court{border-color:rgba(111,216,60,.45);
+  box-shadow:0 0 50px rgba(111,216,60,.15),inset 0 0 40px rgba(111,216,60,.04)}
 .court.out{opacity:.3}
 .court.won{box-shadow:0 0 70px rgba(0,217,165,.6)}
 
@@ -119,19 +119,19 @@ html,body{
   background:rgba(255,255,255,.02);text-align:center;transition:transform .2s;
 }
 .board .col.left{border-color:rgba(255,122,24,.5)}
-.board .col.right{border-color:rgba(34,211,238,.5)}
+.board .col.right{border-color:rgba(111,216,60,.5)}
 .board .col.win{transform:translateY(-6px)}
 .board .col.left.win{border-color:#FF7A18;box-shadow:0 0 46px rgba(255,122,24,.35)}
-.board .col.right.win{border-color:#22D3EE;box-shadow:0 0 46px rgba(34,211,238,.35)}
+.board .col.right.win{border-color:#6FD83C;box-shadow:0 0 46px rgba(111,216,60,.35)}
 .board .col.lose{opacity:.62}
 .board .crown{font-size:1.4rem;line-height:1;margin-bottom:6px;opacity:0}
 .board .col.win .crown{opacity:1}
 .board .col.left .crown{color:#FF7A18}
-.board .col.right .crown{color:#22D3EE}
+.board .col.right .crown{color:#6FD83C}
 .board .nm{font-size:clamp(.95rem,2.4vw,1.3rem);font-weight:900;letter-spacing:.02em;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px}
 .board .col.left .nm{color:#FF7A18}
-.board .col.right .nm{color:#22D3EE}
+.board .col.right .nm{color:#6FD83C}
 .board .pts{font-size:clamp(2.6rem,9vw,4.4rem);font-weight:900;line-height:1;letter-spacing:-.03em}
 .board .cap{font-size:.62rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
   color:#8AA4BD;margin-top:2px}
@@ -234,6 +234,44 @@ var $ = function(id){ return document.getElementById(id); };
 // The 2-1-2, as cells of a 5x5: two high, one in the middle, two low.
 var SPOTS  = [0, 4, 12, 20, 24];
 var COLORS = ['#ff1e3c', '#ffd35a', '#00D9A5', '#3b82f6', '#ff6b35'];
+
+// ═════════════════════════════════════════════════════
+//  THE BUGLE NOTES — same five as the solo games
+//
+//  110 Hz times 2, 3, 4, 5 and 6: the natural harmonic series, the only
+//  notes a bugle can sound. None of them clash in any order, which is
+//  what lets a chain be remembered as a tune instead of a list.
+//
+//  Here it matters more than in the solo games. Both players watch the
+//  same chain at the same time out of the same speaker, so one melody
+//  serves both and neither is favoured — and the people standing around
+//  can follow the pattern by ear.
+//
+//  The note belongs to the spot, so the same ball always sings the same
+//  note. The chain plays once for both courts, so it is sounded from
+//  flash() rather than from show(), which would double every note.
+// ═════════════════════════════════════════════════════
+var TONES = [220, 330, 440, 550, 660];
+var audioCtx = null;
+function ensureAudio(){
+  if (audioCtx) return;
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
+}
+function playTone(i, ms){
+  if (!audioCtx) return;
+  try {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    var now = audioCtx.currentTime;
+    var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(TONES[i % TONES.length], now);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.3, now + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + (ms || 300) / 1000);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(now); o.stop(now + (ms || 300) / 1000 + 0.02);
+  } catch(e){}
+}
 
 // Chain scoring, the same as every other challenge — so a head-to-head
 // result means the same thing as a solo run.
@@ -381,6 +419,7 @@ function flash(i){
 
   if (i < chain.length){
     bothCourts(function(p){ if (!p.out) p.show(chain[i], 'lit'); });
+    playTone(chain[i], 300);
     later(function(){ flash(i + 1); }, 620);
     return;
   }
@@ -410,6 +449,7 @@ function tap(p, target){
   // The tap flashes and then clears. Leaving it lit turns a finished
   // board into a cheat sheet for whoever is still playing beside you.
   p.show(target, 'correct');
+  playTone(target, 170);
   p.fade(target);
   p.idx++;
   if (p.idx < chain.length) p.stateEl.textContent = p.idx + ' / ' + chain.length;
@@ -488,12 +528,13 @@ function finish(){
 
   $('resultKick').textContent = 'Final';
   $('winner').textContent = winner.name + ' wins';
-  $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#22D3EE';
+  $('winner').style.color = winner.side === 'L' ? '#FF7A18' : '#6FD83C';
   $('resultLine').textContent = '';
 }
 
 // ---- starting and restarting ----
 function begin(){
+  ensureAudio();
   L = new Player('L', 'courtL', 'whoL', 'stateL');
   R = new Player('R', 'courtR', 'whoR', 'stateR');
 
