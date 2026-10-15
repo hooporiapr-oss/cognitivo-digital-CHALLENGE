@@ -299,28 +299,42 @@ function camaraReal(){
    mPose guarda esa matriz; de ella salen el origen y la dirección. Si
    el casco no diera pose, se vuelve a la cámara de antes y el panel lo
    dice, para no volver a quedarnos a oscuras. */
+/* three.js no nos da ni el cuadro del casco ni su espacio de
+   referencia en esta versión de WebXR, así que no contamos con ello.
+   Pedimos nuestro propio espacio al abrir la sesión, y corremos nuestro
+   propio bucle contra la sesión — session.requestAnimationFrame — que
+   SÍ entrega el cuadro. De ahí sale la pose, y la guardamos en mPose
+   para que el dibujo la use. Dos bucles conviviendo: el de three.js
+   pinta, el nuestro mira. */
 var mPose=new THREE.Matrix4(), deDonde='-';
+var miEspacio=null, miSesion=null, poseViva=false;
+
+function bucleDelCasco(t, frame){
+  if(!miSesion) return;
+  try{
+    var p = (frame && miEspacio && frame.getViewerPose)
+          ? frame.getViewerPose(miEspacio) : null;
+    if(p && p.transform && p.transform.matrix){
+      mPose.fromArray(p.transform.matrix);
+      poseViva=true;
+    }
+  }catch(e){}
+  try{ miSesion.requestAnimationFrame(bucleDelCasco) }catch(e){}
+}
 function mirada(xrFrame){
   cuadros++;
   var cam=camaraReal();
   colocarAlaAltura(cam);
 
   var o=new THREE.Vector3(), d=new THREE.Vector3();
-  var pose=null;
-  try{
-    var rs=renderer.xr.getReferenceSpace && renderer.xr.getReferenceSpace();
-    if(xrFrame && rs && xrFrame.getViewerPose) pose=xrFrame.getViewerPose(rs);
-  }catch(e){}
-
-  if(pose && pose.transform && pose.transform.matrix){
-    mPose.fromArray(pose.transform.matrix);
+  if(poseViva){
     o.setFromMatrixPosition(mPose);
     d.set(0,0,-1).transformDirection(mPose);
     deDonde='casco';
   }else{
     o.setFromMatrixPosition(cam.matrixWorld);
     d.set(0,0,-1).transformDirection(cam.matrixWorld);
-    deDonde= pose? 'pose sin matriz' : 'camara';
+    deDonde='camara';
   }
   raycaster.ray.origin.copy(o);
   raycaster.ray.direction.copy(d);
@@ -423,12 +437,27 @@ boton.onclick=function(){
       // 'local-floor' quiere decir que el casco sabe dónde está el
       // suelo y que te mueves de verdad. 'local' a secas suele ser un
       // casco que sólo gira.
-      session.requestReferenceSpace('local-floor').then(function(){
+      miSesion=session;
+      session.addEventListener('end',function(){ miSesion=null; poseViva=false; colocadas=false; });
+
+      session.requestReferenceSpace('local-floor').then(function(sp){
+        miEspacio=sp;
+        try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
         renderer.xr.setReferenceSpaceType('local-floor');
         alturaOjos(0);               // ya se mide desde el suelo
         celdaSuelo.textContent='yes — six degrees, you move';
         celdaSuelo.className='si';
       }).catch(function(){
+        // sin suelo: se pide el de toda la vida
+        session.requestReferenceSpace('local').then(function(sp){
+          miEspacio=sp;
+          try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
+        }).catch(function(){
+          session.requestReferenceSpace('viewer').then(function(sp){
+            miEspacio=sp;
+            try{ session.requestAnimationFrame(bucleDelCasco) }catch(e){}
+          }).catch(function(){});
+        });
         renderer.xr.setReferenceSpaceType('local');
         alturaOjos(-1.3);            // los ojos están en el origen
         celdaSuelo.textContent='no — three degrees, it only turns';
