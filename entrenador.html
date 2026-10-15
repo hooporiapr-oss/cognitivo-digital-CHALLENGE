@@ -131,6 +131,13 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .env-nota{color:var(--mute);font-size:.8rem;margin:9px 0 0}
 .env-nota.ojo{color:var(--accent);font-weight:800}
 .env-falta{color:var(--mute);font-size:.88rem;margin:0}
+.paso{border:2px solid var(--accent);border-radius:7px;padding:15px;margin:20px 0 0;
+  background:#FFF8F3}
+.paso .ttl{font-weight:900;font-size:1.05rem;margin:0 0 6px}
+.paso .dice{color:var(--mute);font-size:.88rem;margin:0 0 11px;max-width:60ch}
+.paso input{width:100%;font:inherit;font-size:.78rem;color:var(--mute);
+  border:1px solid var(--line);border-radius:5px;padding:9px;background:#fff}
+.llego{color:#1C7A3A;font-weight:800;font-size:.9rem;margin:0 0 14px}
 
 /* ---- impresión: una hoja por entrenador, nada de la pantalla ---- */
 @media print{
@@ -235,7 +242,15 @@ var S = {
     mTab:'3) Tu tablero, para los padrinos:',
     mPon:'4) Al acabar el juego, pon el marcador en ese mismo tablero.',
     mAyuda:'Si algo no sale:',
-    mCod:'Tu código:'
+    mCod:'Tu código:',
+
+    pasoH:'Pásalo a tu teléfono',
+    pasoP:'Llenaste esto en la computadora, pero WhatsApp lo tienes en el teléfono. Este enlace lleva lo que escribiste — una sola vez, de tu computadora a tu mano. Lo abres en el teléfono y sale todo puesto, listo para mandar.',
+    pasoCopiar:'Copiar el enlace',
+    pasoMail:'Mandármelo por correo',
+    pasoWa:'Mandármelo por WhatsApp',
+    pasoOjo:'Este enlace lleva los códigos dentro. Es para ti, no para el grupo del equipo. Ábrelo y mándalo desde ahí; no hace falta guardarlo.',
+    pasoListo:'Llegó lo que escribiste en la computadora.'
   },
   en:{
     kick:'Coach sheet',
@@ -285,7 +300,15 @@ var S = {
     mTab:'3) Your board, for the padrinos:',
     mPon:'4) When the game ends, put the score on that same board.',
     mAyuda:'If something will not work:',
-    mCod:'Your code:'
+    mCod:'Your code:',
+
+    pasoH:'Move it to your phone',
+    pasoP:'You filled this in on the computer, but WhatsApp is on your phone. This link carries what you typed — once, from your computer to your hand. Open it on the phone and everything is there, ready to send.',
+    pasoCopiar:'Copy the link',
+    pasoMail:'Email it to myself',
+    pasoWa:'Send it to myself on WhatsApp',
+    pasoOjo:'This link has the codes inside it. It is for you, not for the team chat. Open it, send from there, and there is no need to keep it.',
+    pasoListo:'What you typed on the computer came through.'
   }
 };
 
@@ -514,6 +537,96 @@ function refrescarEnlaces(i){
                  '&body='+encodeURIComponent(t);
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   DE LA COMPUTADORA A LA MANO
+
+   Esto se llena sentado, en la computadora. Pero WhatsApp está en el
+   teléfono, y lo escrito vive sólo en esa pestaña: abrir la página en
+   el teléfono daba un formulario en blanco y había que escribirlo todo
+   otra vez.
+
+   Un enlace lo lleva. Todo lo escrito va dentro del propio enlace,
+   detrás del #, que es la parte que el navegador NO manda a ningún
+   servidor: no pasa por nosotros ni queda en ningún registro. Se abre
+   en el teléfono y sale puesto.
+
+   Y al abrirlo, lo primero que hace la página es quitarlo de la barra
+   de direcciones. Lleva códigos dentro; que no se quede ahí a la vista
+   ni en el historial más de lo necesario. Tampoco se guarda — la regla
+   de arriba sigue en pie: un código guardado en el navegador es un
+   código que sobrevive a quien lo escribió.
+   ══════════════════════════════════════════════════════════════════ */
+
+function aBase64(txt){
+  // btoa no traga acentos; esto los pasa a bytes antes.
+  return btoa(unescape(encodeURIComponent(txt))).replace(/\+/g,'-').replace(/\//g,'_');
+}
+function deBase64(b64){
+  var t=String(b64||'').replace(/-/g,'+').replace(/_/g,'/');
+  return decodeURIComponent(escape(atob(t)));
+}
+
+function enlaceParaElTelefono(){
+  var datos={ p:PROG, s:SHOWCODE?1:0,
+    r:ROWS.map(function(r){ return [r.div||'', r.code||'', r.link||'', r.join||'']; }) };
+  var base=location.href.split('#')[0];
+  return base+'#d='+aBase64(JSON.stringify(datos));
+}
+
+/* Al cargar: si viene con datos, se ponen y se limpia la barra. */
+var LLEGO_DE_OTRO=false;
+(function leerDelEnlace(){
+  try{
+    var h=location.hash||'';
+    if(h.indexOf('#d=')!==0) return;
+    var d=JSON.parse(deBase64(h.slice(3)));
+    if(d && typeof d.p==='string') PROG=d.p;
+    if(d) SHOWCODE = !!d.s;
+    if(d && Array.isArray(d.r) && d.r.length){
+      ROWS=d.r.map(function(a){
+        return { div:String(a[0]||''), code:String(a[1]||''),
+                 link:String(a[2]||''), join:String(a[3]||'') };
+      });
+    }
+    LLEGO_DE_OTRO=true;
+    // Fuera de la barra de direcciones en cuanto esté leído.
+    try{ history.replaceState(null,'',location.pathname+location.search) }catch(e){ location.hash='' }
+  }catch(e){}
+})();
+
+function copiarEnlace(){
+  var inp=document.getElementById('pasoInp');
+  if(!inp) return;
+  try{
+    inp.focus(); inp.select(); inp.setSelectionRange(0,999999);
+    var ok=false;
+    try{ ok=document.execCommand('copy') }catch(e){}
+    if(!ok && navigator.clipboard) navigator.clipboard.writeText(inp.value);
+    var b=document.getElementById('pasoCp');
+    if(b){ var antes=b.textContent; b.textContent=T('envCopiado');
+           setTimeout(function(){ b.textContent=antes },1400) }
+  }catch(e){}
+}
+
+function bloquePaso(){
+  var url=enlaceParaElTelefono();
+  var asunto=encodeURIComponent('Cada Punto — '+(PROG||''));
+  return '<div class="paso">'+
+    '<p class="ttl">'+T('pasoH')+'</p>'+
+    '<p class="dice">'+T('pasoP')+'</p>'+
+    '<input id="pasoInp" type="text" readonly value="'+esc(url)+'">'+
+    '<div class="env-bts">'+
+      '<button id="pasoCp" onclick="copiarEnlace()">'+T('pasoCopiar')+'</button>'+
+      '<a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text='+
+        encodeURIComponent(url)+'">'+T('pasoWa')+'</a>'+
+      '<a href="mailto:?subject='+asunto+'&body='+encodeURIComponent(url)+'">'+
+        T('pasoMail')+'</a>'+
+    '</div>'+
+    '<p class="env-nota ojo">'+T('pasoOjo')+'</p>'+
+  '</div>';
+}
+
 function drawEnviar(){
   var cajas = ROWS.map(function(r,i){
     var hayAlgo = (r.join||'').trim() || (r.link||'').trim();
@@ -541,7 +654,9 @@ function drawEnviar(){
   document.getElementById('enviar').innerHTML =
     '<h2>'+T('envH')+'</h2>'+
     '<p class="lede">'+T('envP')+'</p>'+
-    cajas;
+    (LLEGO_DE_OTRO ? '<p class="llego">'+T('pasoListo')+'</p>' : '')+
+    cajas+
+    bloquePaso();
 
   for(var i=0;i<ROWS.length;i++) refrescarEnlaces(i);
 }
