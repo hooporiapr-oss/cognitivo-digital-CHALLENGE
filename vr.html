@@ -127,7 +127,7 @@ var boton=document.getElementById('go');
    del panel de dentro — así que antes de leer cualquier otra cosa se
    sabe si lo que corre es lo último o lo de hace una hora.
    SUBE ESTE NÚMERO en cada cambio. */
-var SELLO='v8';
+var SELLO='v9';
 var nota=document.getElementById('nota');
 try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
@@ -335,7 +335,7 @@ var miEspacio=null, miSesion=null, poseViva=false, espacioVisor=null;
 
 /* Instrumentado: cada paso deja dicho cómo le fue, para leer la causa
    en el panel en vez de suponerla desde fuera. */
-var diag={espacio:'-', vueltas:0, pose:'-', sub:'-'};
+var diag={espacio:'-', vueltas:0, pose:'-', sub:'-', giro:'-'};
 
 /* Lee la cabeza del cuadro que ya nos llega, contra NUESTRO espacio.
    Devuelve true si la pose quedó guardada en mPose. */
@@ -381,6 +381,60 @@ function leerPose(frame){
   return false;
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   EL GIROSCOPIO, POR DEBAJO DE WEBXR
+
+   Lo de arriba está cerrado: este navegador no le da la pose del casco
+   a la página, ni por getViewerPose ni por getPose. Y como three.js la
+   pide igual que nosotros y también recibe null, lo que se ve dentro no
+   es estéreo con seguimiento — es una vista plana repartida en los dos
+   ojos. Por ese lado no queda nada.
+
+   Pero el casco tiene giroscopio, y Android lo publica por su cuenta,
+   fuera de WebXR: el evento deviceorientation. Así se hacía la realidad
+   virtual en el navegador antes de que WebXR existiera — la época del
+   Cardboard. Da giro, no posición. Para un casco de tres grados el giro
+   es justo lo único que había.
+
+   Alpha, beta y gamma vienen en grados y en un orden propio del
+   teléfono; la conversión es la de siempre: Euler YXZ, un cuarto de
+   vuelta hacia atrás en X porque el teléfono mira al suelo y el casco
+   mira al frente, y la corrección por cómo está girada la pantalla.
+   ══════════════════════════════════════════════════════════════════ */
+var qGiro=new THREE.Quaternion(), giroVivo=false;
+var zEje=new THREE.Vector3(0,0,1);
+var eGiro=new THREE.Euler();
+var qPantalla=new THREE.Quaternion();
+var qAlFrente=new THREE.Quaternion(-Math.sqrt(0.5),0,0,Math.sqrt(0.5));
+var GRADO=Math.PI/180;
+
+function orientacionPantalla(){
+  var o=0;
+  try{
+    o = (screen.orientation && typeof screen.orientation.angle==='number')
+        ? screen.orientation.angle
+        : (typeof window.orientation==='number' ? window.orientation : 0);
+  }catch(e){}
+  return o*GRADO;
+}
+
+function alLlegarElGiro(ev){
+  if(ev.alpha===null||ev.alpha===undefined){ diag.giro='sin datos'; return }
+  eGiro.set(ev.beta*GRADO, ev.alpha*GRADO, -ev.gamma*GRADO, 'YXZ');
+  qGiro.setFromEuler(eGiro);
+  qGiro.multiply(qAlFrente);
+  qGiro.multiply(qPantalla.setFromAxisAngle(zEje, -orientacionPantalla()));
+  giroVivo=true;
+  diag.giro=Math.round(ev.alpha)+'/'+Math.round(ev.beta);
+}
+/* Los dos nombres: el absoluto trae norte de verdad, el otro es
+   relativo a donde estaba al empezar. Para apuntar a una bola que
+   está delante, el relativo sirve igual. */
+try{
+  window.addEventListener('deviceorientationabsolute', alLlegarElGiro, true);
+  window.addEventListener('deviceorientation', alLlegarElGiro, true);
+}catch(e){ diag.giro='no se pudo' }
+
 /* Último recurso: la sub-cámara de un ojo. three.js puede dejar la
    cámara de fuera plana y tener la del ojo bien. */
 function matrizDeOjo(){
@@ -407,6 +461,13 @@ function mirada(xrFrame){
     o.setFromMatrixPosition(mPose);
     d.set(0,0,-1).transformDirection(mPose);
     deDonde='casco';
+  }else if(giroVivo){
+    /* Sin pose del casco pero con giroscopio: el origen se queda en los
+       ojos, que es donde los pusimos, y la dirección sale del giro. Para
+       mirar una bola que está delante es todo lo que hace falta. */
+    o.setFromMatrixPosition(cam.matrixWorld);
+    d.set(0,0,-1).applyQuaternion(qGiro).normalize();
+    deDonde='giro';
   }else if(mOjo){
     o.setFromMatrixPosition(mOjo);
     d.set(0,0,-1).transformDirection(mOjo);
@@ -424,7 +485,7 @@ function mirada(xrFrame){
   var r1=function(v){ return Math.round(v*100)/100 };
   pintarPanel([
     SELLO+'   mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
-    'pose de '+deDonde+'   ojo '+diag.sub,
+    'pose de '+deDonde+'   giro '+diag.giro,
     'espacio '+diag.espacio,
     /* Ya no cuenta vueltas de un bucle nuestro: cuenta los cuadros del
        casco que de verdad llegaron al dibujo. Si esto se queda en cero,
