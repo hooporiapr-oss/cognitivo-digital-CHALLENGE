@@ -68,7 +68,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
 
 /* Sello a la vista en el panel de dentro. Este navegador se guarda la
    página con ganas y ya nos costó una tarde. SUBIRLO en cada cambio. */
-var SELLO='v5';
+var SELLO='v6';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA
@@ -201,28 +201,55 @@ var OJO=1.55;                       // altura de los ojos, de pie
    Primer intento: las cinco en el suelo, a su sitio real, vistas desde
    donde está uno parado. No sirve — a esa altura las cinco caen en la
    misma línea de la pantalla y lo que se ve es una fila de cinco bolas
-   de distinto tamaño. La forma del 2-1-2, que es lo único que hay que
-   aprender, desaparece.
+   de distinto tamaño. La forma del 2-1-2 desaparece.
 
    El juego de tocar enseña la zona como un diagrama. Así que aquí el
-   diagrama se pone de pie, delante, un poco echado hacia atrás: dos
-   arriba, uno en medio, dos abajo y más abiertos. Se lee de un vistazo
-   y se recorre girando la cabeza a los lados y arriba y abajo, que es
-   justo el movimiento que queremos.
+   diagrama se pone de pie, delante: dos arriba, uno en medio, dos
+   abajo y más abiertos. Se lee de un vistazo y se recorre girando la
+   cabeza a los lados y arriba y abajo.
 
            0       1
                2
          3           4
-
-   Todas a parecida distancia, para que ninguna sea más fácil de
-   acertar que otra por estar más cerca. */
-var POS=[
+*/
+var POS_DEPIE=[
   [-1.55, 2.38, -4.15],   // 0 arriba izq
   [ 1.55, 2.38, -4.15],   // 1 arriba der
   [ 0.00, 1.62, -3.95],   // 2 el del medio
   [-1.95, 0.88, -3.75],   // 3 abajo izq
   [ 1.95, 0.88, -3.75]    // 4 abajo der
 ];
+
+/* LA ZONA EN ABANICO, PARA UN CASCO QUE SÓLO GIRA.
+
+   Si el navegador del casco no publica el cabeceo, no hay arriba y
+   abajo y no lo va a haber: la zona de pie deja tres bolas fuera del
+   alcance para siempre. Entonces se cambia la cancha, no la cabeza.
+
+   Las cinco se abren en abanico a la misma distancia, cada una en su
+   ángulo, y todas se alcanzan girando — que es lo que sí responde. El
+   orden de izquierda a derecha mantiene la zona legible: la de abajo,
+   la de arriba, el medio, la de arriba, la de abajo.
+
+        3    0    2    1    4
+
+   Y conservan su altura, un poco arriba las de arriba y un poco abajo
+   las de abajo, lo justo para que se vea la forma — pero tan poco que
+   el rayo, que va siempre plano, las sigue tocando todas. La zona se
+   lee, y nada queda fuera del alcance.
+*/
+var POS_ABANICO=(function(){
+  var R=4.0, alturas=[0.26,0.26,0.0,-0.26,-0.26];
+  var grados={3:-36, 0:-18, 2:0, 1:18, 4:36};
+  var p=[];
+  for(var i=0;i<5;i++){
+    var a=grados[i]*Math.PI/180;
+    p.push([R*Math.sin(a), 1.55+alturas[i], -R*Math.cos(a)]);
+  }
+  return p;
+})();
+
+var POS=POS_DEPIE;
 var RADIO=0.36;
 
 function construir(){
@@ -260,6 +287,7 @@ function construir(){
     scene.add(m); balls.push(m);
   }
 
+  colocarBolas();
   hacerPanel();
   hacerPunto();
   raycaster=new THREE.Raycaster();
@@ -278,6 +306,13 @@ function construir(){
 /* Algo debajo y detrás, para que las bolas estén EN un sitio. Sin esto
    son cinco puntos flotando en negro y se pierde la idea de la zona:
    el suelo y las líneas son la mitad de lo que se está entrenando. */
+/* Las bolas van a un sitio o a otro según lo que dé el casco, y se
+   pueden recolocar cuando la medida conteste. */
+function colocarBolas(){
+  POS = hayCabeceo ? POS_DEPIE : POS_ABANICO;
+  for(var i=0;i<balls.length;i++) balls[i].position.set(POS[i][0],POS[i][1],POS[i][2]);
+}
+
 function dibujarCancha(){
   var suelo=new THREE.Mesh(
     new THREE.PlaneGeometry(26,26),
@@ -394,6 +429,20 @@ function pintarPunto(t, sobreBola){
   puntoRelleno.scale.setScalar(t>0 ? Math.max(0.001, t) : 0.001);
 }
 
+/* En abanico uno juega girado hasta 36 grados, así que el panel fijo
+   al frente se queda fuera de la vista — y con él el "mírame para
+   jugar otra vez", que entonces no hay manera de alcanzar. Al acabar
+   una tirada el panel se pone donde esté mirando. */
+function ponerPanelDelante(){
+  if(!panelMesh) return;
+  var f=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+  f.y=0;
+  if(f.lengthSq()<1e-6) f.set(0,0,-1);
+  f.normalize();
+  panelMesh.position.set(f.x*2.25, OJO-1.08, f.z*2.25);
+  panelMesh.rotation.set(0.42, Math.atan2(-f.x,-f.z), 0, 'YXZ');
+}
+
 function pintarPanel(grande, chica, color){
   if(!panelCtx) return;
   panelCtx.clearRect(0,0,768,320);
@@ -462,15 +511,16 @@ var crudoA=0, crudoB=0, crudoG=0, crudo='-';
    ══════════════════════════════════════════════════════════════════ */
 
 // Lo medido. Si ya está guardado, no se vuelve a preguntar.
-var ejeCabeceo='beta', signoCabeceo=1, signoGiro=1;
+var ejeCabeceo='beta', signoCabeceo=1, signoGiro=1, hayCabeceo=true;
 var ceroGiro=0, ceroCabeceo=0, calHecha=false;
 try{
   var gg=JSON.parse(localStorage.getItem('fvr-cal')||'null');
-  if(gg && gg.e){ ejeCabeceo=gg.e; signoCabeceo=gg.s; signoGiro=gg.g; calHecha=true }
+  if(gg && gg.e){ ejeCabeceo=gg.e; signoCabeceo=gg.s; signoGiro=gg.g;
+                  hayCabeceo=(gg.c!==false); calHecha=true }
 }catch(e){}
 function guardarCal(){
   try{ localStorage.setItem('fvr-cal',
-    JSON.stringify({e:ejeCabeceo,s:signoCabeceo,g:signoGiro})) }catch(e){}
+    JSON.stringify({e:ejeCabeceo,s:signoCabeceo,g:signoGiro,c:hayCabeceo})) }catch(e){}
 }
 /* Para volver a medir sin tener que borrar nada: ?medir en la
    dirección. Útil cuando un casco viene de otra persona. */
@@ -497,6 +547,39 @@ try{
   addEventListener('deviceorientation', alLlegarElGiro, true);
 }catch(e){}
 
+/* ══════════════════════════════════════════════════════════════════
+   EL PERMISO DEL IPHONE
+
+   Android entrega el giroscopio sin preguntar, y como los cascos son
+   Android esto nunca salió a relucir. El iPhone no: desde iOS 13 hay
+   que PEDIRLO, y sólo vale si se pide dentro de un toque de verdad.
+   Sin eso no llega ni un solo evento — y entonces el juego se cae al
+   modo puntero, donde hay que ARRASTRAR. Quien mueve el teléfono en
+   el aire esperando que gire la vista no ve moverse nada y piensa que
+   está roto.
+
+   Se pide al pulsar Empezar, que es el toque que ya existe. Si dice
+   que no, o si es un aparato que no pregunta, el arrastre sigue ahí.
+   ══════════════════════════════════════════════════════════════════ */
+function pedirElGiro(){
+  try{
+    if(typeof DeviceOrientationEvent!=='undefined' &&
+       typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission()
+        .then(function(r){
+          if(r==='granted'){
+            // Los oyentes ya están puestos; a partir de aquí reciben.
+            try{
+              addEventListener('deviceorientationabsolute', alLlegarElGiro, true);
+              addEventListener('deviceorientation', alLlegarElGiro, true);
+            }catch(e){}
+          }
+        })
+        .catch(function(){});
+    }
+  }catch(e){}
+}
+
 /* ── La medición, de tres pasos ──────────────────────────────────── */
 var PASO_MS=2300;
 var medir={activo:false, paso:0, t0:0, a0:0, b0:0, g0:0};
@@ -507,19 +590,30 @@ function empezarMedida(){
 function textoMedida(){
   var n=['1','2','3'][medir.paso]||'';
   var q=Math.max(0,Math.ceil((PASO_MS-(performance.now()-medir.t0))/1000));
-  if(medir.paso===0) return [LANG==='es'?'MIRA AL FRENTE':'LOOK STRAIGHT AHEAD', n+'/3   '+q];
-  if(medir.paso===1) return [LANG==='es'?'MIRA ARRIBA':'LOOK UP', n+'/3   '+q];
-  return [LANG==='es'?'MIRA A LA IZQUIERDA':'LOOK LEFT', n+'/3   '+q];
+  if(medir.paso===0) return [LANG==='es'?'MIRA AL FRENTE':'LOOK STRAIGHT AHEAD', n+'/3   '+q+'    '+crudo];
+  if(medir.paso===1) return [LANG==='es'?'MIRA ARRIBA':'LOOK UP', n+'/3   '+q+'    '+crudo];
+  return [LANG==='es'?'MIRA A LA IZQUIERDA':'LOOK LEFT', n+'/3   '+q+'    '+crudo];
 }
 function pasoDeMedida(){
   if(performance.now()-medir.t0 < PASO_MS) return;
   if(medir.paso===0){
     medir.a0=crudoA; medir.b0=crudoB; medir.g0=crudoG;
   }else if(medir.paso===1){
-    // Cuál de los dos se movió al mirar arriba, y hacia dónde.
+    /* Cuál de los dos se movió al mirar arriba, y hacia dónde. Y antes
+       de eso, la pregunta que llevábamos sin hacer: ¿SE MOVIÓ ALGUNO?
+       Hay cascos de tres grados cuyo navegador publica el giro y nada
+       más — ni cabeceo ni balanceo. Si es el caso, no hay corrección
+       que valga y seguir buscándola es perder la tarde. Se dice y se
+       juega de otra manera. */
     var dB=difAng(crudoB,medir.b0), dG=difAng(crudoG,medir.g0);
-    if(Math.abs(dB)>=Math.abs(dG)){ ejeCabeceo='beta';  signoCabeceo = dB>0?1:-1 }
-    else                          { ejeCabeceo='gamma'; signoCabeceo = dG>0?1:-1 }
+    var mayor=Math.max(Math.abs(dB),Math.abs(dG));
+    if(mayor<6){
+      hayCabeceo=false;                 // este casco sólo gira
+    }else{
+      hayCabeceo=true;
+      if(Math.abs(dB)>=Math.abs(dG)){ ejeCabeceo='beta';  signoCabeceo = dB>0?1:-1 }
+      else                          { ejeCabeceo='gamma'; signoCabeceo = dG>0?1:-1 }
+    }
   }else{
     // Hacia dónde crece alfa al girar a la izquierda. En three.js,
     // girar a la izquierda es Y positiva.
@@ -528,6 +622,7 @@ function pasoDeMedida(){
     ceroGiro=medir.a0;
     ceroCabeceo = (ejeCabeceo==='beta') ? medir.b0 : medir.g0;
     calHecha=true; guardarCal();
+    colocarBolas();          // la cancha se adapta a lo que dé el casco
     medir.activo=false;
     /* NADA de cuenta de centrado después de medir. El paso 1 ya fue
        "mira al frente": ese es el cero y ya está tomado. Encadenar
@@ -586,7 +681,9 @@ function ponerRayo(){
        gira no tiene por qué inclinar el mundo, y era eso lo que hacía
        que la puntería se sintiera a la deriva. */
     var gir = signoGiro   * difAng(crudoA, ceroGiro)        * GRADO;
-    var cab = signoCabeceo* difAng(valorCabeceo(), ceroCabeceo) * GRADO;
+    var cab = hayCabeceo
+      ? signoCabeceo * difAng(valorCabeceo(), ceroCabeceo) * GRADO
+      : 0;   // este casco no da arriba/abajo: ni se intenta
     // Sin esto, un tropiezo del sensor te manda boca abajo.
     if(cab> 1.30) cab= 1.30;
     if(cab<-1.30) cab=-1.30;
@@ -746,6 +843,7 @@ function romper(){
   if(final>mejor){ mejor=final; try{ localStorage.setItem('fvr-best',String(mejor)) }catch(e){} }
   temporizadores.push(setTimeout(function(){
     apagarTodas();
+    ponerPanelDelante();     // que se pueda alcanzar desde donde quedaste
     finalNivel=final;
     fase='fin';
     mirando=-1; mirandoDesde=0;
@@ -869,6 +967,7 @@ document.getElementById('go').onclick=function(){
     return;
   }
   abrirAudio();                       // el audio sólo abre con un toque
+  pedirElGiro();                      // y el iPhone sólo da el giro si se pide aquí
   document.getElementById('tapa').style.display='none';
   document.getElementById('lang').style.display='none';
   if(!renderer){ construir(); bucle() }
