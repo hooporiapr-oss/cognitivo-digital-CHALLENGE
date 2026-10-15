@@ -43,6 +43,8 @@ pre{background:#0A1830;border:1px solid #20395C;border-radius:6px;padding:11px;
   <table id="t"></table>
 
   <button id="go" disabled>Comprobando…</button>
+  <p class="nota">Dentro no se ve esta tabla. Para volver a ella, el botón de
+     atrás del casco — y si se queda trabada, recarga la página.</p>
   <p class="nota" id="nota"></p>
 
   <pre id="ua"></pre>
@@ -204,6 +206,19 @@ function apuntar(ctrl){
 boton.onclick=function(){
   if(typeof THREE==='undefined'){ nota.textContent='three.js no cargó — sin red o bloqueado.'; return; }
   try{
+    if(renderer){                      // ya se montó antes: sólo re-entrar
+      navigator.xr.requestSession('immersive-vr',
+        {optionalFeatures:['local-floor','bounded-floor','hand-tracking']}
+      ).then(function(se){
+        renderer.xr.setSession(se);
+        se.addEventListener('end',function(){
+          boton.disabled=false; boton.textContent='Entrar otra vez';
+        });
+        renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
+        boton.disabled=true; boton.textContent='Estás dentro — sal con el botón de atrás';
+      }).catch(function(e){ nota.textContent='No entró: '+e });
+      return;
+    }
     renderer=new THREE.WebGLRenderer({antialias:true});
     renderer.setPixelRatio(1);
     renderer.setSize(innerWidth,innerHeight);
@@ -247,8 +262,19 @@ boton.onclick=function(){
 
       encender();
       renderer.setAnimationLoop(function(){ renderer.render(scene,camera) });
-      boton.textContent='Dentro — quítate el casco para ver esta tabla';
+      boton.textContent='Estás dentro — sal con el botón de atrás del casco';
       boton.disabled=true;
+
+      /* Al salir hay que devolver el botón a como estaba. Sin esto, el
+         que sale se queda mirando un botón muerto que dice "estás
+         dentro" cuando ya no lo está, y la única salida es recargar. */
+      session.addEventListener('end', function(){
+        try{ renderer.setAnimationLoop(null) }catch(e){}
+        boton.disabled=false;
+        boton.textContent='Entrar otra vez';
+        nota.textContent='Saliste. Las dos últimas filas de la tabla ya dicen '+
+          'lo que se vio dentro.';
+      });
     }).catch(function(e){
       nota.textContent='No entró: '+e;
     });
