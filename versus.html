@@ -368,12 +368,67 @@ Player.prototype.show = function(t, cls){
 
 var L, R, chain = [], phase = 'idle', round = 0, timers = [];
 
-// Never the same ball twice running: it lights, clears and lights
-// again in the same place, which reads as one flash rather than two.
+
+// ══════════════════════════════════════════════════════════════════
+//  LA ZONA SE MUEVE COMO SE MUEVE DE VERDAD
+//
+//  Hasta aquí la secuencia era al azar puro: cualquier bola podía
+//  seguir a cualquier otra. Eso convertía la cancha en adorno — el
+//  nene se hacía bueno recordando puntos sueltos que por casualidad
+//  estaban dibujados sobre un 2-1-2.
+//
+//  Una zona no se mueve así. El balón va de mano en mano y la
+//  responsabilidad pasa al de al lado o al del medio. Lo único que no
+//  pasa nunca es el salto en diagonal: del ala izquierda al poste bajo
+//  derecho no se llega sin que el balón pase por alguien.
+//
+//  El 2-1-2 en el 5x5: dos arriba (0 y 1), uno en el medio (2), dos
+//  abajo (3 y 4).
+//
+//          0 . . . 1
+//          . . . . .
+//          . . 2 . .
+//          . . . . .
+//          3 . . . 4
+//
+//  Quién puede seguir a quién:
+//    0 arriba izq  → 1 (reversión arriba), 2 (medio), 3 (su lado)
+//    1 arriba der  → 0, 2, 4
+//    2 el del medio→ todos: ayuda a los cuatro lados
+//    3 abajo izq   → 0 (su lado), 2, 4 (por el fondo)
+//    4 abajo der   → 1, 2, 3
+//
+//  Las dos que faltan son las diagonales, 0↔4 y 1↔3, y faltan a
+//  propósito.
+//
+//  Y la primera bola sale de arriba, donde sube el balón.
+//
+//  CONSECUENCIA, y hay que saberla: esto hace las cadenas MÁS FÁCILES
+//  de recordar, porque ya no son azar. Un nene que sabe cómo rota una
+//  zona va a llegar más lejos que uno que no — y eso es justo lo que
+//  queríamos entrenar. Pero también quiere decir que una puntuación de
+//  hoy no se compara con una de ayer: es otro juego.
+// ══════════════════════════════════════════════════════════════════
+var ROTATION = {
+  0:[1,2,3],
+  1:[0,2,4],
+  2:[0,1,3,4],
+  3:[0,2,4],
+  4:[1,2,3]
+};
+var BALL_UP = [0,1];        // el balón sube por arriba
+
+// La siguiente bola de la cadena: una de las que pueden recibir de la
+// anterior, nunca ella misma — repetir el mismo sitio se ve como un
+// solo destello largo, no como dos.
+function nextInRotation(prev){
+  if(prev===undefined||prev===null) return BALL_UP[Math.floor(Math.random()*BALL_UP.length)];
+  var opts=ROTATION[prev]||[0,1,2,3,4];
+  return opts[Math.floor(Math.random()*opts.length)];
+}
+
 function nextBall(){
-  var n, last = chain.length ? chain[chain.length - 1] : -1;
-  do { n = Math.floor(Math.random() * SPOTS.length); } while (n === last);
-  return n;
+  return nextInRotation(chain.length ? chain[chain.length - 1] : null);
 }
 
 function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
