@@ -63,6 +63,10 @@ pre{background:#0A1830;border:1px solid #20395C;border-radius:6px;padding:11px;
   <p class="nota">This table is not visible from inside. To get back to it, use
      the headset's back button — and if it sticks, reload the page.</p>
   <p class="nota" id="nota"></p>
+  <!-- El giroscopio se puede comprobar sin ponerse el casco: coge el
+       casco en la mano, muévelo, y mira si estos números cambian. Si
+       cambian aquí fuera, el sensor está bueno. -->
+  <p class="nota" id="giroNota">Gyro: waiting — pick the headset up and turn it.</p>
 
   <pre id="ua"></pre>
 </div>
@@ -127,7 +131,7 @@ var boton=document.getElementById('go');
    del panel de dentro — así que antes de leer cualquier otra cosa se
    sabe si lo que corre es lo último o lo de hace una hora.
    SUBE ESTE NÚMERO en cada cambio. */
-var SELLO='v9';
+var SELLO='v10';
 var nota=document.getElementById('nota');
 try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
@@ -426,7 +430,18 @@ function alLlegarElGiro(ev){
   qGiro.multiply(qPantalla.setFromAxisAngle(zEje, -orientacionPantalla()));
   giroVivo=true;
   diag.giro=Math.round(ev.alpha)+'/'+Math.round(ev.beta);
+  /* Y también fuera del casco, en la página plana, para poder probarlo
+     con el casco en la mano antes de ponérselo. */
+  giros++;
+  if(!dentro){
+    try{
+      document.getElementById('giroNota').textContent =
+        'Gyro: alive — turn '+Math.round(ev.alpha)+'°, tilt '+Math.round(ev.beta)+
+        '°, roll '+Math.round(ev.gamma)+'°   ('+giros+' readings)';
+    }catch(e){}
+  }
 }
+var giros=0;
 /* Los dos nombres: el absoluto trae norte de verdad, el otro es
    relativo a donde estaba al empezar. Para apuntar a una bola que
    está delante, el relativo sirve igual. */
