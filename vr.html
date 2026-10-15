@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VR check — Cada Punto</title>
 <meta name="robots" content="noindex,nofollow">
+<!-- Este navegador se guarda la página con ganas y ya nos costó una
+     tarde: cuatro arreglos distintos dando el mismo resultado exacto.
+     Que no se la guarde. -->
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
 /* Una página de diagnóstico, no un producto. Abre en el navegador que
    tenga el casco y dice qué hay dentro: si habla WebXR, si el casco se
@@ -48,7 +54,7 @@ pre{background:#0A1830;border:1px solid #20395C;border-radius:6px;padding:11px;
 </head>
 <body>
 <div class="wrap">
-  <h1>VR check</h1>
+  <h1>VR check <span id="sello" style="font-size:.5em;opacity:.6;font-weight:400"></span></h1>
   <p class="sub">What this headset can do, with nothing installed.</p>
 
   <table id="t"></table>
@@ -113,7 +119,17 @@ var celdaSuelo=fila('Moves through space', 'known once inside','quiz');
 var celdaMando=fila('Controllers or hands', 'known once inside','quiz');
 
 var boton=document.getElementById('go');
+/* EL SELLO.
+   Cuatro arreglos distintos dieron exactamente el mismo resultado en el
+   casco, hasta el último decimal. Eso no lo hace el código: lo hace un
+   navegador que no vuelve a pedir el archivo. Este sello va a la vista
+   en dos sitios — en el título antes de entrar y en la primera línea
+   del panel de dentro — así que antes de leer cualquier otra cosa se
+   sabe si lo que corre es lo último o lo de hace una hora.
+   SUBE ESTE NÚMERO en cada cambio. */
+var SELLO='v8';
 var nota=document.getElementById('nota');
+try{ document.getElementById('sello').textContent=SELLO }catch(e){}
 
 /* three.js viene de fuera. Si no llegó no es culpa del casco, es la red
    — y conviene decirlo aquí para no andar buscando donde no es. */
@@ -315,7 +331,7 @@ function camaraReal(){
    devolvía null. Le pasamos el nuestro, el local-floor que sí
    conseguimos, y la pose sale del mismo cuadro que ya estaba llegando. */
 var mPose=new THREE.Matrix4(), deDonde='-';
-var miEspacio=null, miSesion=null, poseViva=false;
+var miEspacio=null, miSesion=null, poseViva=false, espacioVisor=null;
 
 /* Instrumentado: cada paso deja dicho cómo le fue, para leer la causa
    en el panel en vez de suponerla desde fuera. */
@@ -347,6 +363,21 @@ function leerPose(frame){
     }
     diag.pose='sin matriz';
   }catch(e){ diag.pose='error: '+(e && e.message ? e.message.slice(0,22) : e) }
+
+  /* Otra puerta a lo mismo. getViewerPose y getPose son dos caminos
+     distintos dentro del navegador, y uno puede estar bueno y el otro
+     no. Para éste hace falta el espacio del visor, que se pide aparte
+     al abrir la sesión. */
+  try{
+    if(frame && frame.getPose && espacioVisor && miEspacio){
+      var q=frame.getPose(espacioVisor, miEspacio);
+      if(q && q.transform && q.transform.matrix){
+        mPose.fromArray(q.transform.matrix);
+        poseViva=true; diag.pose='ok (getPose)';
+        return true;
+      }
+    }
+  }catch(e){ diag.pose+=' / getPose: '+(e && e.message ? e.message.slice(0,14) : e) }
   return false;
 }
 
@@ -392,7 +423,7 @@ function mirada(xrFrame){
 
   var r1=function(v){ return Math.round(v*100)/100 };
   pintarPanel([
-    'mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
+    SELLO+'   mira x'+r1(d.x)+' y'+r1(d.y)+' z'+r1(d.z),
     'pose de '+deDonde+'   ojo '+diag.sub,
     'espacio '+diag.espacio,
     /* Ya no cuenta vueltas de un bucle nuestro: cuenta los cuadros del
@@ -466,8 +497,13 @@ function entrarModo(on){
    para las dos entradas: lo que se arregla aquí queda arreglado en las
    dos. */
 function engancharPose(session){
-  miSesion=session; poseViva=false; colocadas=false;
+  miSesion=session; poseViva=false; colocadas=false; espacioVisor=null;
   diag.espacio='pidiendo'; diag.vueltas=0; diag.pose='-';
+
+  // El espacio del visor, para el segundo camino (frame.getPose).
+  try{ session.requestReferenceSpace('viewer')
+         .then(function(sp){ espacioVisor=sp })
+         .catch(function(){ espacioVisor=null }) }catch(e){}
   session.addEventListener('end',function(){ miSesion=null; poseViva=false; colocadas=false; });
 
   /* Nada de pedir cuadros por nuestra cuenta: este navegador sólo
