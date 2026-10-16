@@ -1,684 +1,644 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050A12">
-<title>Cada Punto — the Fortress is the fundraiser</title>
-<!-- La vista previa cuando alguien comparte el enlace: en vez de
-     un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07141E">
+<title>Cada Punto — domina el Fortress</title>
+<meta name="description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
+<!-- La vista previa cuando alguien comparte el enlace: en un grupo de
+     WhatsApp sale el cartel y no un enlace pelado. Así es como se
+     reparte esto, así que importa. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/">
-<meta property="og:title" content="Cada Punto — the Fortress is the fundraiser">
-<meta property="og:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
+<meta property="og:title" content="Cada Punto — domina el Fortress">
+<meta property="og:description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cada Punto — the Fortress is the fundraiser">
-<meta name="twitter:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
+<meta name="twitter:title" content="Cada Punto — domina el Fortress">
+<meta name="twitter:description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
-
-<meta name="description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#050A12;--paper:#EAF4FB;--mute:#93AAC2;--line:#20395C;--panel:#0A1830;--gold:#FF8A2B;--leather:#6FD83C;--ember:#A84200;--moss:#2A7D08;--edge:#5B7EA6}
-html{scroll-behavior:smooth}
+/* ── La cancha de noche ───────────────────────────────────────────
+   El color sale del juego, no de una paleta: una cancha oscura y la
+   luz en las bolas. El cian y el naranja ya son de la casa. */
+:root{
+  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
+  --viva:#4FD3F0;  --brasa:#FF8A2B;
+  --hueso:#EAF2F7; --humo:#7A96A9;
+  --ancho:min(680px,90vw);
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{width:min(940px,92vw);margin:0 auto}
+html{background:var(--noche)}
+body{margin:0;background:var(--noche);color:var(--hueso);
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:var(--ancho);margin:0 auto}
 
-/* The bar follows the page down, so the menu is always a tap
-   away rather than a scroll back to the top. */
-nav{position:sticky;top:0;z-index:70;background:var(--ink);border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
-.mark{display:block;line-height:0;text-decoration:none}
-.mark img{display:block;height:34px;width:auto}
-@media(max-width:560px){.mark img{height:26px}}
-.navr{display:flex;align-items:center;gap:16px}
-.navr a{color:var(--mute);text-decoration:none;font-size:.9rem}
-.navr a:hover{color:var(--paper)}
-@media(max-width:560px){.navr a{display:none}}
+/* ── Cabecera, la misma del sitio ─────────────────────────────── */
+.top{background:var(--noche);border-bottom:1px solid var(--linea);
+  padding-top:env(safe-area-inset-top,0px)}
+.top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
+.mark em{font-style:normal;color:var(--viva)}
+.mark i{font-style:normal;color:var(--humo)}
+.langb{border:1px solid var(--linea);background:none;color:var(--humo);border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+.langb:hover{color:var(--hueso);border-color:var(--humo)}
 
-/* ---------- the menu ---------- */
-.burger{
-  display:none;width:42px;height:42px;flex-shrink:0;
-  background:none;border:1px solid var(--line);border-radius:11px;
-  cursor:pointer;padding:0;position:relative;
+/* ── La cancha viva ───────────────────────────────────────────── */
+.ruedo{background:
+  radial-gradient(120% 90% at 50% 18%, #13304a 0%, var(--cancha) 48%, var(--noche) 100%);
+  border-bottom:1px solid var(--linea);overflow:hidden}
+.ruedo .wrap{padding:clamp(16px,4vw,30px) 0 clamp(22px,5vw,38px)}
+.pista{display:block;width:100%;height:auto}
+.piso{stroke:var(--linea);fill:none;stroke-width:2}
+
+/* ── El titular ───────────────────────────────────────────────── */
+.titular{font-size:clamp(2.6rem,12vw,5.4rem);line-height:.92;font-weight:900;
+  letter-spacing:-.045em;margin:0;text-transform:uppercase}
+.bajo{color:var(--humo);font-size:clamp(1rem,2.6vw,1.18rem);
+  max-width:34ch;margin:16px 0 0}
+
+/* ── Cuerpo ───────────────────────────────────────────────────── */
+main .wrap{padding:clamp(34px,7vw,58px) 0}
+h2{font-size:clamp(1.5rem,4.5vw,2.1rem);font-weight:900;letter-spacing:-.035em;
+  line-height:1.05;margin:0 0 14px}
+p{margin:0 0 14px;max-width:62ch}
+.sec{padding:clamp(30px,6vw,52px) 0;border-top:1px solid var(--linea)}
+.sec:first-child{border-top:none;padding-top:0}
+
+/* ── La escalera: lo que de verdad convence ───────────────────── */
+.escalera{margin:22px 0 0;display:grid;gap:11px}
+.peldano{display:grid;grid-template-columns:5rem 1fr auto;align-items:center;gap:12px}
+.ronda{font-weight:900;font-size:.9rem;color:var(--humo);font-variant-numeric:tabular-nums;
+  text-align:right;white-space:nowrap}
+.barra{height:13px;background:var(--cancha);border:1px solid var(--linea);position:relative}
+.barra span{position:absolute;inset:0 auto 0 0;background:var(--viva);display:block}
+.pts{font-weight:900;font-size:1.05rem;font-variant-numeric:tabular-nums;min-width:3.2rem;text-align:right}
+.peldano.cima .barra span{background:var(--brasa)}
+.peldano.cima .pts{color:var(--brasa)}
+.pie-esc{color:var(--humo);font-size:.95rem;margin:16px 0 0;max-width:46ch}
+
+/* ── Como clavar ──────────────────────────────────────────────── */
+.beats{margin:20px 0 0;display:grid;gap:0}
+.beat{padding:15px 0;border-top:1px solid var(--linea)}
+.beat:last-child{border-bottom:1px solid var(--linea)}
+.beat b{display:block;font-size:1.08rem;font-weight:800;margin-bottom:3px}
+.beat span{color:var(--humo);font-size:.97rem}
+
+/* ── Llamada ──────────────────────────────────────────────────── */
+.jugar{display:inline-block;background:var(--brasa);color:#0A1118;font-weight:900;
+  font-size:1.12rem;text-decoration:none;padding:17px 34px;border:2px solid var(--brasa)}
+.jugar:hover{background:var(--noche);color:var(--brasa)}
+.jugar:focus-visible,.langb:focus-visible,a:focus-visible{outline:3px solid var(--viva);outline-offset:3px}
+.gratis{color:var(--humo);font-size:.92rem;margin:13px 0 0}
+
+/* ── El coach ─────────────────────────────────────────────────── */
+.chat{border:1px solid var(--linea);background:var(--cancha);padding:17px 18px;margin:20px 0 0}
+.chat label{display:block;font-size:.85rem;font-weight:800;margin:0 0 5px;color:var(--humo)}
+.chat input,.chat textarea{width:100%;padding:12px;background:var(--noche);
+  border:1px solid var(--linea);color:var(--hueso);font:inherit;font-size:1rem}
+.chat textarea{min-height:76px;resize:vertical}
+.chat input:focus,.chat textarea:focus{outline:none;border-color:var(--viva)}
+.chat .btn{display:block;width:100%;margin-top:10px;padding:13px;background:var(--viva);
+  color:#07141E;border:1px solid var(--viva);font:inherit;font-weight:800;font-size:1rem;cursor:pointer}
+.chat .btn:disabled{opacity:.45;cursor:default}
+.chat .cp{color:var(--humo);font-size:.95rem;margin:0 0 14px;max-width:48ch}
+.chat .who{color:var(--humo);font-size:.9rem;margin:0 0 12px}
+.log{max-height:340px;overflow-y:auto;margin:0 0 12px;display:grid;gap:9px}
+.m{padding:11px 13px;font-size:.96rem;white-space:pre-wrap}
+.m.you{background:var(--noche);border:1px solid var(--linea);margin-left:12%}
+.m.me{background:#13304A;border:1px solid var(--linea);margin-right:12%}
+.m.me.bad{border-color:var(--brasa);color:var(--brasa)}
+.m .tag{display:block;font-size:.7rem;font-weight:900;color:var(--humo);margin-bottom:4px}
+.chat .msg{color:var(--brasa);font-size:.9rem;font-weight:700;margin:10px 0 0}
+
+/* Quien no tiene código no se queda mirando una caja cerrada: la
+   puerta que SÍ es suya está aquí mismo, debajo. */
+.sincodigo{border-top:1px dashed var(--linea);margin:18px 0 0;padding:16px 0 0}
+.sincodigo p{color:var(--humo);font-size:.95rem;margin:0 0 12px;max-width:48ch}
+.pedir{display:inline-block;border:2px solid var(--hueso);color:var(--hueso);
+  text-decoration:none;font-weight:800;padding:12px 22px}
+.pedir:hover{background:var(--hueso);color:var(--noche)}
+
+/* ── Pie ──────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--linea);padding:30px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  color:var(--humo);font-size:.84rem}
+footer a{color:var(--viva);text-decoration:none}
+footer a:hover{text-decoration:underline}
+.rutas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:22px 18px;margin:0 0 26px;text-align:left}
+.rutas b{display:block;color:var(--hueso);font-size:.86rem;margin:0 0 7px}
+.rutas a{display:block;padding:3px 0;font-size:.9rem}
+.abajo{text-align:center}
+.abajo p{margin:0 auto 7px;max-width:54ch}
+.legal a{color:var(--humo)}
+.legal span{padding:0 7px;opacity:.5}
+
+@media (prefers-reduced-motion:reduce){
+  .bola{transition:none !important}
 }
-.burger span{
-  position:absolute;left:11px;right:11px;height:2px;background:var(--paper);
-  border-radius:2px;transition:transform .22s,opacity .18s;
-}
-.burger span:nth-child(1){top:14px}
-.burger span:nth-child(2){top:20px}
-.burger span:nth-child(3){top:26px}
-.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.burger.open span:nth-child(2){opacity:0}
-.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-.menu{display:none}
-@media(max-width:760px){
-  .navr a{display:none}
-  .burger{display:block}
-  .menu{
-    display:block;max-height:0;overflow:hidden;
-    border-top:0 solid var(--line);transition:max-height .3s ease-out;
-  }
-  .menu.open{max-height:420px;border-top-width:1px}
-  .menu a{
-    display:block;padding:15px 0;color:var(--paper);text-decoration:none;
-    font-size:1rem;font-weight:600;border-bottom:1px solid var(--line);
-  }
-  .menu a:last-child{border-bottom:none}
-  .menu a.mtalk{color:#E8B23A;font-weight:800}
-}
-#lang{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
-
-/* ---------- the one sentence ---------- */
-header{padding:clamp(14px,3vw,24px) 0 clamp(32px,5vw,48px);text-align:center}
-/* El cartel es lo primero que se ve: ancho completo, nítido, y
-   sin nada encima que lo estorbe. */
-.hero{position:relative;max-width:860px;margin:0 auto clamp(22px,4vw,34px)}
-.heroart{display:block;width:100%;height:auto;margin:0;
-  border-radius:10px;border:1px solid rgba(255,138,43,.30);
-  box-shadow:0 18px 50px rgba(0,0,0,.55)}
-/* El titular va SOBRE la foto, no debajo: así la imagen dice algo.
-   Y como es texto de la página y no texto quemado en el jpg, cambia
-   de idioma con el botón, se lee nítido en cualquier pantalla, y un
-   lector de voz lo encuentra. */
-.hero-cap{position:absolute;left:0;right:0;bottom:0;margin:0;
-  padding:clamp(20px,4vw,34px) clamp(16px,4vw,30px);
-  border-radius:0 0 10px 10px;
-  background:linear-gradient(to top,
-    rgba(4,18,26,.94) 0%, rgba(4,18,26,.80) 38%, rgba(4,18,26,.32) 70%, rgba(4,18,26,0) 100%)}
-.hero-cap h1{font-size:clamp(1.25rem,3.5vw,2.15rem);margin:0 auto;max-width:21ch;
-  color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.55)}
-/* El nombre del juego va en naranja, igual que en su tarjeta: el que
-   lee el titular y luego baja, reconoce la misma palabra. */
-.hero-cap h1 em{font-style:normal;color:var(--gold)}
-/* En el teléfono la foto mide como 150px de alto: ahí no cabe un
-   titular encima de nada. Baja y se lee normal. */
-@media(max-width:700px){
-  .hero-cap{position:static;background:none;padding:18px 0 0;border-radius:0}
-  .hero-cap h1{font-size:clamp(2rem,7.2vw,2.6rem);text-shadow:none;max-width:19ch}
-}
-/* The logo leads, and the copy under it is centred with it — the
-   whole masthead reads as one block. */
-header h1{margin-left:auto;margin-right:auto}
-header .lede{margin-left:auto;margin-right:auto}
-header .actions{justify-content:center}
-h1{
-  font-size:clamp(2.1rem,6.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;
-  line-height:1.05;margin:0 0 .4em;max-width:19ch;
-}
-h1 em{font-style:normal;color:var(--gold)}
-.lede{font-size:clamp(1.05rem,2.4vw,1.28rem);color:#CFE3F2;max-width:46ch;margin:0 0 30px}
-/* Who it is for, stated once rather than hedged into every
-   sentence — the copy stays concrete and says "school", this line
-   does the widening. */
-.actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:16px 28px;border-radius:12px;text-decoration:none;
-  font-weight:800;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;
-}
-.btn-solid{background:var(--gold);color:#04121A}
-.btn-line{border:2px solid var(--edge);color:var(--paper)}
-
-/* ---------- the challenges, first thing under the headline ---------- */
-/* La barra es sticky, asi que cualquier ancla caia debajo de ella.
-   Esto lo arregla para todas de una vez. */
-html{scroll-padding-top:86px;scroll-behavior:smooth}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-/* ---------- the word, defined where it is first met ---------- */
-.padrino{
-  background:var(--panel);border:1px solid var(--line);border-radius:18px;
-  padding:clamp(22px,3.5vw,32px);margin:0 0 clamp(40px,7vw,64px);
-}
-
-/* ---------- the scoring, which is the product ---------- */
-.scoring{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(22px,4vw,44px);align-items:start;padding:0 0 clamp(40px,7vw,64px)}
-
-/* ---------- the cost, as one idea ---------- */
-.cost{
-  background:var(--panel);border:1px solid rgba(111,216,60,.34);border-radius:20px;
-  padding:clamp(26px,4vw,40px);text-align:center;margin-bottom:clamp(40px,7vw,64px);
-}
-.cost h2{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin:0 0 .3em;color:var(--leather)}
-.cost p{color:#CFE3F2;margin:0 auto;max-width:44ch}
-.cost .fine{color:var(--mute);font-size:.92rem;margin-top:16px;max-width:52ch;margin-left:auto;margin-right:auto}
-/* The three amounts side by side, because two sentences about a fee
-   can be read as one amount. */
-.split{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px auto 0;max-width:560px}
-
-/* ---------- the close ---------- */
-.close{text-align:center;padding:0 0 clamp(48px,8vw,80px)}
-.close h2{font-size:clamp(1.6rem,4.4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin:0 0 .4em}
-.close p{color:var(--mute);max-width:48ch;margin:0 auto 24px}
-.close .actions{justify-content:center}
-
-footer{border-top:1px solid var(--line);padding:24px 0 48px;text-align:center;color:var(--mute);font-size:.85rem}
-footer a{color:var(--mute)}
-footer p{margin:0 0 7px}
-footer .f-co{font-weight:700;color:var(--ink)}
-footer .f-story{margin:0 0 20px}
-/* El pie es oscuro, así que el título va en blanco. Puesto en --ink
-   quedaba azul marino sobre azul marino: invisible. */
-footer .f-story a{display:inline-block;text-decoration:none;
-  border:2px solid rgba(255,255,255,.22);
-  border-radius:6px;padding:13px 20px;max-width:34ch}
-footer .f-story a:hover{border-color:var(--ball,#FF7A18)}
-footer .fs-n{display:block;font-weight:900;font-size:1.08rem;color:#fff;
-  letter-spacing:-.01em}
-footer .fs-p{display:block;font-size:.84rem;color:#9FB3C4;margin-top:3px}
-footer .f-nav{margin-top:12px}
-footer .f-legal{margin:7px 0 0;font-size:.8rem}
-footer .f-dot{padding:0 7px;opacity:.5}
-
-/* ---------- the Cada Punto wordmark ---------- */
-.wm{font-family:Archivo,system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;
-  color:#EAF4FB;line-height:1;white-space:nowrap;font-size:28px}
-.wm em{font-style:normal;color:var(--gold)}
-.mark .wm{display:block}
-@media(max-width:560px){.mark .wm{font-size:23px}}
-
-/* what the free month is worth */
-
-/* ---------- how it runs ---------- */
-.how{padding:0 0 clamp(34px,5vw,52px)}
-.how h2{font-size:clamp(1.3rem,3.4vw,1.6rem);font-weight:800;letter-spacing:-.025em;margin:0 0 14px}
-ol.hw{counter-reset:hw;list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:640px}
-ol.hw li{counter-increment:hw;position:relative;padding:14px 16px 14px 52px;background:var(--panel);
-  border:1px solid var(--line);border-radius:14px;line-height:1.55}
-ol.hw li::before{content:counter(hw);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;
-  background:var(--gold);color:#0b0710;font-weight:900;font-size:.85rem;display:grid;place-content:center}
-ol.hw > li > b{display:block;margin-bottom:2px}
-ol.hw > li > span{color:var(--mute);font-size:.94rem}
-ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:.9rem}
-.hw-see{max-width:640px;margin:12px 0 0;color:var(--mute);font-size:.94rem;line-height:1.6}
-
-/* ── Lo único que ningún otro recaudador puede decir ───────
-   Va en HTML y no dentro del cartel: así cambia con el idioma,
-   se lee nítido en el teléfono, y una corrección de texto es una
-   línea y no una imagen nueva. */
-.claims{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,2vw,22px);
-  margin:0 auto clamp(26px,4vw,38px);max-width:860px}
-.claim{text-align:center}
-.claim svg{display:block;margin:0 auto 9px;width:clamp(30px,6vw,40px);height:auto}
-.claim b{display:block;font-size:clamp(.78rem,1.9vw,.95rem);font-weight:800;
-  letter-spacing:-.01em;line-height:1.25}
-.claim.paid b{color:var(--leather)}
-@media(max-width:560px){
-  .claims{grid-template-columns:repeat(2,1fr);gap:16px 10px;max-width:420px}
-}
-
-/* ---------- the one thing nobody else can say ---------- */
-.nosell{padding:0 0 clamp(34px,5vw,52px)}
-.nosell h2{font-size:clamp(1.4rem,4vw,1.9rem);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;
-  max-width:20ch;text-wrap:balance}
-.nosell p{margin:0;color:var(--mute);max-width:56ch;font-size:1rem;line-height:1.65}
-
-/* the mark says the whole line now */
-.wm i{font-style:normal;color:var(--leather)}
-/* El verde es del cartel y significa lo que cobra el programa. */
-.money{color:var(--leather);font-weight:800}
-
-/* El fundraiser va primero: tres pasos y el tablero. */
-.season{margin:34px 0}
-.steps3{display:grid;gap:12px;margin-top:14px}
-@media(min-width:760px){.steps3{grid-template-columns:repeat(3,1fr)}}
-.steps3 .st{border:2px solid var(--line,#D7E0E8);border-radius:4px;padding:16px 18px}
-.steps3 .st > b{display:block;font-size:1.02rem;margin-bottom:4px}
-.steps3 .st > span{color:var(--mute,#5A6B7C);font-size:.94rem}
-.demo-card{display:block;border:3px solid var(--moss);border-radius:6px;
-  padding:20px 22px;margin:26px 0 0;text-decoration:none;color:var(--ink,#12202E);
-  background:var(--tint,#F7FAFC)}
-/* Dos botones, uno por deporte. En el teléfono se apilan. */
-.dc-two{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
-.dc-two .dc-go{margin:0}
-@media(max-width:560px){ .dc-two{flex-direction:column} .dc-two .dc-go{width:100%} }
-/* Apilados en el telefono se veian disparejos; mismo ancho. */
-@media(max-width:560px){header .actions{flex-direction:column;align-items:center}
-  header .actions .btn{width:100%;max-width:290px}}
-.dc-kick{display:block;font-size:.62rem;font-weight:900;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--ember)}
-.dc-h{display:block;font-size:1.25rem;font-weight:900;letter-spacing:-.025em;margin:3px 0 6px}
-.dc-p{display:block;color:var(--ink,#12202E);font-size:.95rem;line-height:1.6}
-.dc-go{display:block;width:fit-content;padding:12px 22px;text-align:center;
-  border:2px solid var(--ember);border-radius:4px;
-  color:var(--ember);font-weight:800;font-size:.92rem;
-  transition:background .2s,color .2s}
-.dc-go:hover{background:var(--ember);color:#fff}
-
-.step-cta{text-align:center;margin-top:22px}
-.step-go{display:inline-block;padding:15px 30px;border:2px solid var(--ink,#12202E);
-  border-radius:4px;background:var(--ink,#12202E);color:#fff;text-decoration:none;
-  font-weight:800;font-size:1.02rem}
-.step-go:hover{background:#0B1724}
-@media(max-width:520px){.step-go{display:block}}
-.seasonnote{color:var(--mute,#5A6B7C);font-size:.9rem;margin-top:12px}
-.board{margin:30px 0;border-left:4px solid var(--gold);padding:4px 0 4px 16px}
-.board h2{margin:0 0 6px}
-.board p{color:var(--mute,#5A6B7C);margin:0;max-width:60ch}
-
-/* ── La tarjeta de Memory Basketball ──────────────────────
-   Es lo único de la portada con movimiento, y por eso funciona:
-   un resplandor que pasa despacio y un punto que late. Si el
-   visitante pidió menos movimiento, se queda quieta. */
-.live-card{position:relative;display:block;overflow:hidden;text-decoration:none;
-  background:#0B1724;color:#fff;border-radius:6px;padding:24px 26px;margin:28px 0;
-  border:2px solid #16304a}
-.live-card:hover{border-color:var(--ball,#FF7A18)}
-
-/* La tarjeta de Coach Cada Punto lleva la cancha detrás. La foto va en
-   un <img> y no en un background para que el teléfono se baje la
-   pequeña: 40 KB en vez de 111. Y encima un velo de abajo a arriba,
-   porque el texto tiene que leerse igual — la foto no manda sobre lo
-   que dice. */
-.coach-card{min-height:420px;display:flex;flex-direction:column;justify-content:flex-end}
-/* 30% desde la izquierda: ahí está el banco con el teléfono. Centrada,
-   el recorte de la tarjeta se lo comía justo. */
-.cc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:30% 72%}
-/* El velo sólo donde va el texto. Arriba se deja ver la cancha — que es
-   para lo que está la foto. */
-.cc-scrim{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top,
-    rgba(11,23,36,.97) 0%, rgba(11,23,36,.93) 30%,
-    rgba(11,23,36,.70) 48%, rgba(11,23,36,.18) 68%,
-    rgba(11,23,36,.05) 100%)}
-@media (max-width:560px){ .coach-card{min-height:440px} }
-
-.lc-glow{position:absolute;inset:-40% -10%;pointer-events:none;
-  background:radial-gradient(circle at 20% 50%, rgba(255,122,24,.28), transparent 42%);
-  animation:sweep 7s ease-in-out infinite}
-@keyframes sweep{
-  0%   {transform:translateX(-18%)}
-  50%  {transform:translateX(18%)}
-  100% {transform:translateX(-18%)}
-}
-
-.lc-top{position:relative;display:flex;align-items:center;gap:8px;
-  font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ball,#FF7A18)}
-.lc-dot{width:9px;height:9px;border-radius:50%;background:var(--ball,#FF7A18);
-  box-shadow:0 0 0 0 rgba(255,122,24,.7);animation:ping 1.8s ease-out infinite}
-@keyframes ping{
-  0%   {box-shadow:0 0 0 0 rgba(255,122,24,.7)}
-  70%  {box-shadow:0 0 0 12px rgba(255,122,24,0)}
-  100% {box-shadow:0 0 0 0 rgba(255,122,24,0)}
-}
-
-.lc-name{position:relative;display:block;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;
-  letter-spacing:-.04em;line-height:1.05;margin:8px 0 8px}
-.lc-name em{font-style:normal;color:var(--ball,#FF7A18)}
-.lc-p{position:relative;display:block;color:#A8BDD0;font-size:.95rem;max-width:46ch}
-.lc-go{position:relative;display:inline-block;margin-top:16px;padding:11px 18px;
-  border:2px solid var(--ball,#FF7A18);border-radius:4px;color:var(--ball,#FF7A18);
-  font-weight:800;font-size:.92rem}
-.live-card:hover .lc-go{background:var(--ball,#FF7A18);color:#1A0C00}
-
-@media(prefers-reduced-motion:reduce){
-  .lc-glow,.lc-dot{animation:none}
-}
-/* El marcador de cuartos de la portada. Mismo dibujo que el que sale
-   al final de un juego, para que lo que se promete y lo que se ve
-   después sean la misma cosa. */
-.caja{display:flex;gap:4px;justify-content:center;margin:18px 0 16px;flex-wrap:wrap}
-.caja div{min-width:62px;padding:9px 6px;background:#0A1830;border:1px solid var(--line);
-  border-radius:6px;text-align:center}
-.caja div.tot{background:rgba(255,138,43,.12);border-color:rgba(255,138,43,.4)}
-.caja b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
-  color:var(--mute);text-transform:uppercase}
-.caja span{display:block;font-size:1.3rem;font-weight:900;line-height:1.3;color:var(--paper)}
-.caja div.tot span{color:var(--gold)}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap navin">
-  <a class="mark" href="#top"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
-  <div class="navr">
-    <a href="#fortress" data-t="navGame">The game</a>
-    <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
-    <a href="ayuda.html" data-t="navFaq">Coach Cada Punto</a><button id="lang" onclick="flip()">ES</button>
-    <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+<header class="top">
+  <div class="wrap bar">
+    <a class="mark" href="/">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
   </div>
-</div>
-<div class="menu" id="menu"><div class="wrap">
-  <a href="index.html" data-t="mHow">How it works</a>
-  <a href="#fortress" data-t="mGame">The game</a>
-  <a href="jugador.html" data-t="mPlayer">I am a player</a>
-  <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
-  <a href="ayuda.html" data-t="mCoach">Coach Cada Punto</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
-</div></div>
-</nav>
+</header>
 
-<header id="top"><div class="wrap">
-  <figure class="hero">
-    <img class="heroart" src="fortress-cancha.jpg" width="1536" height="864"
-         data-t-alt="heroAlt" alt="Cada Punto — recaudación deportiva, baloncesto">
-    <figcaption class="hero-cap">
-      <h1 data-t="h1">The <em>Fortress</em> is the fundraiser.</h1>
-    </figcaption>
-  </figure>
-
-  <div class="claims">
-    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M17 17l-5 3 2 5 3-1.5V33h14V23.5l3 1.5 2-5-5-3-3.5-1a3.5 3.5 0 0 1-7 0z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl1">Nothing to sell.</b></div>
-    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M12 20h24v4a3 3 0 0 0 0 6v4H12v-4a3 3 0 0 0 0-6z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl2">No raffles.</b></div>
-    <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M13 19h22v16H13z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><path d="M13 25h22M24 19v16" fill="none" stroke="#93AAC2" stroke-width="2.4"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl3">Nothing to deliver.</b></div>
-    <div class="claim paid"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#2A7D08" stroke-width="3.5"/><path d="M14 31l7-7 5 5 9-9" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 20h6v6" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-t="cl4">They play. The program gets paid.</b></div>
+<!-- La cancha de verdad: las cinco bolas en las posiciones que tiene
+     el juego, y la cadena encendiéndose. Tres segundos de esto
+     explican lo que no explica un párrafo. -->
+<section class="ruedo">
+  <div class="wrap">
+    <svg class="pista" viewBox="0 58 800 420" role="img" aria-labelledby="pistaT">
+      <title id="pistaT">La cancha del Fortress: cinco bolas en 2-1-2, con la cadena encendiéndose en orden</title>
+      <ellipse class="piso" cx="400" cy="430" rx="330" ry="54"></ellipse>
+      <ellipse class="piso" cx="400" cy="430" rx="190" ry="31" opacity=".6"></ellipse>
+      <g id="bolas"></g>
+    </svg>
+    <h1 class="titular" id="h1"></h1>
+    <p class="bajo" id="bajo"></p>
   </div>
+</section>
 
-  <p class="lede" data-t="lede">On one game day, each player plays four five-minute quarters from their own phone. Padrinos pledge a few cents a point. The game produces the score — nobody enters a number — and there is nothing to sell, nothing to deliver and nothing to collect at the door.</p>
+<main>
+  <div class="wrap">
 
-  <div class="actions">
-    <a class="btn btn-solid" href="#seasonH" data-t="ctaHow">See how it works</a>
-    <a class="btn btn-line" href="equipo.html" data-t="cta1b2">Sign up my team</a>
-  </div>
-</div></header>
+    <section class="sec">
+      <h2 id="h2que"></h2>
+      <p id="pQue1"></p>
+      <p id="pQue2"></p>
+    </section>
 
-<div class="wrap">
+    <section class="sec">
+      <h2 id="h2esc"></h2>
+      <p id="pEsc"></p>
+      <div class="escalera" id="escalera"></div>
+      <p class="pie-esc" id="pieEsc"></p>
+    </section>
 
-  <!-- The fundraiser itself, before anything else: a coach should
-       understand the whole thing from this one section. -->
-  <section class="season" aria-labelledby="seasonH">
-    <h2 id="seasonH" data-t="seasonH">One game day. That is the whole campaign.</h2>
-    <div class="steps3">
-      <div class="st"><b data-t="st1b">Your program signs up.</b>
-        <span data-t="st1">We check it is really your program, usually the same day. Then each player enrols themselves and gets their own link — no roster to type, no forms to hand out.</span></div>
-      <div class="st"><b data-t="st2b">Game day.</b>
-        <span data-t="st2">A window of about two hours. Inside it each player plays four five-minute quarters, from wherever they are, on whatever phone they have. Nothing to set up and nothing to carry.</span></div>
-      <div class="st"><b data-t="st3b">The game posts the score.</b>
-        <span data-t="st3">Nobody enters a number — the game produces it. Each quarter counts that player&rsquo;s best run, the four add up, and that total is what every padrino pledged on.</span></div>
-    </div>
+    <section class="sec">
+      <h2 id="h2clav"></h2>
+      <div class="beats" id="beats"></div>
+    </section>
 
-    <div class="step-cta">
-      <a class="step-go" href="equipo.html" data-t="stepGo">Sign up my team →</a>
-    </div>
-    <p class="seasonnote" data-t="seasonNote">Nothing is charged before a game is played. A padrino can cap what they pay, and a game that is never played is never charged.</p>
-  </section>
+    <section class="sec">
+      <h2 id="h2dia"></h2>
+      <p id="pDia1"></p>
+      <p id="pDia2"></p>
+    </section>
 
-  <!-- EL JUEGO, y jugable desde aquí.
-       Describirlo no sirve de nada: se entiende en treinta segundos
-       jugándolo, y no entendiéndolo no hay campaña. El enlace va sin
-       parámetros a propósito — así abre en práctica, sin reto, sin
-       código y sin contar para nadie. -->
-  <a class="live-card" id="fortress" href="fortress-vr.html">
-    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">The game</span></span>
-    <span class="lc-name">fort<em>ress</em></span>
-    <span class="lc-p" data-t="lcP">The 2-1-2 zone lights up, one more ball each round, and you repeat it in order. Your score is the longest chain you held. It is court vision and recall — the part of basketball that does not need a gym, a ball or a free court.</span>
-    <span class="lc-go" data-t="lcGo">Play it now →</span>
-  </a>
+    <section class="sec">
+      <h2 id="h2prog"></h2>
+      <p id="pProg"></p>
+      <a class="pedir" href="equipo.html" id="btnProg"></a>
+    </section>
 
-  <!-- El marcador de cuartos. Es lo que un padrino mira al final, y
-       se entiende sin que nadie se lo explique: cuatro cuartos y un
-       total. Por eso va dibujado y no contado. -->
-  <section class="board">
-    <h2 data-t="boardH">Four quarters, read at a glance.</h2>
-    <div class="caja" aria-hidden="true">
-      <div><b>Q1</b><span>45</span></div>
-      <div><b>Q2</b><span>36</span></div>
-      <div><b>Q3</b><span>45</span></div>
-      <div><b>Q4</b><span>36</span></div>
-      <div class="tot"><b>Tot</b><span>162</span></div>
-    </div>
-    <p data-t="boardP">Each quarter counts the best run inside it, so every round matters — the only way to lift a quarter is to hold a longer chain than the one already held. The four add up, and that total is the game a padrino pledged on.</p>
-  </section>
+    <section class="sec">
+      <h2 id="h2coach"></h2>
+      <p id="pCoach"></p>
+      <div id="chatbox"></div>
+      <div class="sincodigo">
+        <p id="pSin"></p>
+        <a class="pedir" href="contact.html" id="btnPedir"></a>
+      </div>
+    </section>
 
-  <!-- What the three steps above do not cover: what it costs a
-       padrino, and what the program can see. -->
-  <section class="how">
-    <h2 data-t="hwH">What it costs, and what you see</h2>
-    <ol class="hw">
-      <li><b data-t="hw1b">Nothing until the game is played.</b> <span data-t="hw1">A pledge is a promise. Nothing is charged before game day, and a player who never plays is never charged for.</span></li>
-      <li><b data-t="hw2b">The padrino pays, the program is paid.</b> <span data-t="hw2">When the game is over they get the box score and a pay button. Minimum $5 a pledge.</span></li>
-      <li><b data-t="hw3b">You watch the money as it arrives.</b> <span data-t="hw3">Every pledge, payment and payout, listed player by player in your own panel.</span>
-        <span class="hw-fee" data-t="hw3fee">Our 20% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $30.00 payment, and the program receives the full $25.00 collected.</span></li>
-    </ol>
-    <p class="hw-see" data-t="hwSee">You see all of it as it happens — every pledge, every payment, every payout, listed for you and for the program.</p>
-  </section>
-
-
-  <!-- Coach Cada Punto. Va aquí, después de lo que cuesta, porque a
-       estas alturas el que lee ya se está preguntando quién le
-       contesta cuando se atasque un sábado por la noche. La respuesta
-       es: alguien, siempre, y sin esperar a que abramos. -->
-  <a class="live-card coach-card" href="ayuda.html">
-    <!-- Un solo tamaño: es el único de los tres que Render dejó subir,
-         y con los otros ausentes la tarjeta se quedaba sin foto. 62 KB
-         valen para todo. El srcset vuelve cuando estén los tres. -->
-    <img class="cc-bg" src="coach-cancha-1024.webp"
-         width="1024" height="683" loading="lazy" decoding="async"
-         data-t-alt="ccAlt" alt="A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench">
-    <span class="cc-scrim" aria-hidden="true"></span>
-    <span class="lc-top"><span class="lc-dot"></span><span data-t="ccTag">For coaches</span></span>
-    <span class="lc-name">coach <em>cada punto</em></span>
-    <span class="lc-p" data-t="ccP">Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.</span>
-    <span class="lc-go" data-t="ccGo">Open Coach Cada Punto →</span>
-  </a>
-
-
-  <!-- The one argument every other fundraiser cannot make. -->
-  <section class="nosell">
-    <h2 data-t="nsH">Nothing to sell. Nothing to deliver.</h2>
-    <p data-t="nsP">No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.</p>
-  </section>
-
-  <div class="cost">
-    <h2 data-t="costH">Free for your program.</h2>
-    <p data-t="costP">No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.</p>
+    <section class="sec">
+      <h2 id="h2ya"></h2>
+      <p id="pYa"></p>
+      <a class="jugar" href="fortress-vr.html" id="btnJugar"></a>
+      <p class="gratis" id="gratis"></p>
+    </section>
 
   </div>
+</main>
 
-  <div class="close">
-    <h2 data-t="closeH">We will set it up for you.</h2>
-    <p data-t="closeP">Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.</p>
-    <div class="actions">
-      <a class="btn btn-solid" href="contact.html" data-t="cta1b">Talk to us</a>
+<footer>
+  <div class="wrap">
+    <!-- Una portada tiene que llevar a todo el sitio. El entrenador
+         que viene a entrar, el nene que viene por su enlace y el
+         padrino que viene a entender entran todos por aquí. -->
+    <nav class="rutas" id="rutas"></nav>
+    <div class="abajo">
+      <p id="fWhat"></p>
+      <p>© 2026 Gostar Digital LLC · Puerto Rico ·
+         <a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
+      <p class="legal" id="legal"></p>
     </div>
   </div>
-
-</div>
-
-<footer><div class="wrap">
-  <p class="f-co">© 2026 Gostar Digital LLC — Puerto Rico</p>
-<p class="f-what" id="fWhat"></p>
-<script>
-/* Lo que somos, dicho donde se ve: una herramienta que se cobra, no
-   una obra benéfica. Lee el mismo idioma guardado que el resto del
-   sitio, así que no hace falta cablearlo a cada sistema de traducción. */
-(function(){
-  var l = 'es';
-  try{ l = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
-           localStorage.getItem('fc-lang') ||
-           ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
-  var el = document.getElementById('fWhat');
-  if (el) el.textContent = (l === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
-})();
-</script>
-  <!-- Todavía encendida va sola, antes que nada y con su propio peso.
-       Metida en la fila de enlaces se pierde, y es lo único del pie que
-       alguien podría querer leer por gusto. -->
-  <p class="f-story">
-    <a href="todavia-encendida.html">
-      <span class="fs-n" data-t="fsN">Todavía encendida</span>
-      <span class="fs-p" data-t="fsP">Un cuento — la noche que no se jugó →</span>
-    </a>
-  </p>
-
-  <p class="f-mail"><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
-  <p class="f-nav">
-    <a href="https://gostardigital.com/?signin=coach" data-t="fSignin">Sign in</a>
-    <span class="f-dot">·</span>
-    <!-- Herramientas de quien organiza: todas piden código para entrar.
-         Van aquí abajo a propósito — un padrino no las necesita, pero un
-         entrenador en febrero tiene que poder encontrarlas sin llamar. -->
-    <a href="mi-equipo.html" data-t="fMine">My team</a>
-  </p>
-  <p class="f-legal">
-    <a href="terms.html" data-t="fTerms">Terms</a>
-    <span class="f-dot">·</span>
-    <a href="custodia.html">Dinero</a><span class="f-dot">·</span><a href="privacy.html" data-t="fPrivacy">Privacy</a>
-  </p>
-</div></footer>
+</footer>
 
 <script>
-var T = {
-  en:{
-    lcTag:'The game', lcGo:'Play it now →',
-    lcP:'The 2-1-2 zone lights up, one more ball each round, and you repeat it in order. Your score is the longest chain you held. It is court vision and recall — the part of basketball that does not need a gym, a ball or a free court.',
-    navGame:'The game', mGame:'The game',
-    mLive:'Sietes', navScrim:'Scrimmages', navLive:'Sietes',
-    navFaq:'Coach Cada Punto',
-    mProg:'For players and families', navProg:'For players and families',
-    hwSee:'You see all of it as it happens — every pledge, every payment, every payout, listed for your program. Nothing counts as raised until it has actually been collected.',
-    nsH:'Nothing to sell. Nothing to deliver.',
-    nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
-    hwH:'What it costs, and what you see',
-    hw1b:'Nothing until the game is played.', hw1:'A pledge is a promise. Nothing is charged before game day, and a player who never plays is never charged for.',
-    hw2b:'The padrino pays, the program is paid.', hw2:'When the game is over they get the box score and a pay button. Minimum $5 a pledge.',
-    hw3b:'You watch the money as it arrives.', hw3:'Every pledge, payment and payout, listed player by player in your own panel.',
-    hw3fee:'Our 20% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $30.00 payment, and the program receives the full $25.00 collected.',
-    seasonH:'One game day. That is the whole campaign.',
-    st1b:'Your program signs up.',
-    st1:'We check it is really your program, usually the same day. Then each player enrols themselves and gets their own link — no roster to type, no forms to hand out.',
-    st2b:'Game day.',
-    st2:'A window of about two hours. Inside it each player plays four five-minute quarters, from wherever they are, on whatever phone they have. Nothing to set up and nothing to carry.',
-    st3b:'The game posts the score.',
-    st3:'Nobody enters a number — the game produces it. Each quarter counts that player\u2019s best run, the four add up, and that total is what every padrino pledged on.',
-    dcKick:'See it working', dcH:'See it start to finish',
-    dcP:'One game, the whole way through — from the coach setting it up to the money reaching the program. And a real team board to look around: the games open for pledges, the points scored in each one, and the sheet a padrino fills out.',
-    dcGoM:'How it works →', dcGoB:'Basketball Demo →',
-    mCoach:'Coach Cada Punto', ccTag:'For coaches',
-    ccAlt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench', ccGo:'Open Coach Cada Punto →',
-    ccP:'Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.',
-    stepGo:'Sign up my team →',
-    seasonNote:'A padrino can cap what they pay, nothing is charged before game day, and a player who never plays is never charged for.',
-    boardH:'Four quarters, read at a glance.',
-    boardP:'Each quarter counts the best run inside it, so every round matters — the only way to lift a quarter is to hold a longer chain than the one already held. The four add up, and that total is the game a padrino pledged on.',
-    mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
-    navPad:'Getting padrinos',
-    heroAlt:'A player sitting on the bleachers of a neighbourhood court in Puerto Rico at dusk after rain, playing on his phone with the ball at his feet.',
-    cl1:'Nothing to sell.', cl2:'No raffles.', cl3:'Nothing to deliver.',
-    cl4:'They play. The program gets paid.',
-    ctaHow:'See how it works',
-    h1:'The <em>Fortress</em> is the fundraiser.',
-    lede:'On one game day, each player plays four five-minute quarters from their own phone. Padrinos pledge a few cents a point. The game produces the score — nobody enters a number — and there is nothing to sell, nothing to deliver and nothing to collect at the door.',
-    cta1b2:'Sign up my team', cta1b:'Talk to us',
-    costH:'Free for your program.',
-    costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
-    closeH:'We will set it up for you.',
-    closeP:'Tell us about your school, club or group and we will build it — your roster, a link for every player — and send it over. Nothing goes live until you say so.', fSignin:'Sign in', fMine:'My team', fCal:'Schedule', fSquads:'Squads',
-    fsN:'Still On', fsP:'A story — the night nobody played →', fTerms:'Terms', fPrivacy:'Privacy'
-  },
+/* ── Las bolas, donde las pone el juego ───────────────────────────
+   Las mismas coordenadas del abanico de fortress-vr.html, para que
+   quien llegue aquí y luego juegue reconozca la cancha. Las de abajo
+   están más cerca, así que se dibujan más grandes. */
+var ABANICO=[[-0.66,1.00],[0.66,1.00],[0.00,0.07],[-1.00,-0.90],[1.00,-0.90]];
+var RADIO=[38,38,44,54,54];
+
+function pintarBolas(){
+  var g=document.getElementById('bolas'), out='';
+  for(var i=0;i<ABANICO.length;i++){
+    var x=400+ABANICO[i][0]*300;
+    var y=120+(1-ABANICO[i][1])*157.9;
+    /* Apagadas tienen que verse igual: las cinco están ahí siempre, y
+       media cancha a oscuras no enseña nada. Lo que cambia al
+       encenderse es el color, no la existencia. */
+    out+='<circle class="bola" id="b'+i+'" cx="'+x+'" cy="'+y+'" r="'+RADIO[i]+'" '+
+         'fill="#24465F" stroke="#3B6D8C" stroke-width="2.5" '+
+         'style="transition:fill .16s linear, stroke .16s linear"></circle>';
+  }
+  g.innerHTML=out;
+}
+pintarBolas();
+
+/* ── La cadena, creciendo ─────────────────────────────────────────
+   Empieza en tres y sube. Es el juego entero en quince segundos: no
+   la dificultad de una ronda, sino que cada vuelta trae una más. */
+var quieto = false;
+try{ quieto = matchMedia('(prefers-reduced-motion: reduce)').matches }catch(e){}
+
+var nivel=3, paso=0, cadena=[], reloj=null;
+
+function nuevaCadena(n){
+  var c=[];
+  for(var i=0;i<n;i++) c.push(Math.floor(Math.random()*5));
+  return c;
+}
+function apagar(){
+  for(var i=0;i<5;i++){
+    var b=document.getElementById('b'+i);
+    if(b){ b.setAttribute('fill','#24465F'); b.setAttribute('stroke','#3B6D8C') }
+  }
+}
+function encender(i, color){
+  var b=document.getElementById('b'+i);
+  if(!b) return;
+  b.setAttribute('fill', color);
+  b.setAttribute('stroke', color);
+}
+
+/* La cadena se queda puesta mientras se toca, en vez de encenderse de
+   una en una. Así, parado en cualquier momento, se ve una CADENA —
+   que es la idea entera — y no un punto suelto. Lo que va cambiando
+   es cuánta hay. */
+function tic(){
+  if(paso < cadena.length){
+    apagar();
+    for(var i=0;i<paso;i++) encender(cadena[i], '#2F7FA0');   // ya tocadas
+    // La última en naranja: es la ronda nueva, la que no estaba la
+    // vuelta pasada.
+    encender(cadena[paso], paso===cadena.length-1 ? '#FF8A2B' : '#4FD3F0');
+    paso++;
+    reloj=setTimeout(tic, 330);
+    return;
+  }
+  // Un momento con la cadena entera puesta antes de crecer.
+  reloj=setTimeout(function(){
+    apagar();
+    paso=0;
+    nivel++;
+    if(nivel>9) nivel=3;
+    cadena=nuevaCadena(nivel);
+    reloj=setTimeout(tic, 620);
+  }, 560);
+}
+
+function arrancarCadena(){
+  if(quieto){
+    // Sin movimiento: una cadena puesta, quieta, que se entiende igual.
+    encender(0,'#4FD3F0'); encender(3,'#4FD3F0'); encender(2,'#FF8A2B');
+    return;
+  }
+  cadena=nuevaCadena(nivel);
+  tic();
+}
+
+/* Con la pestaña de fondo no hace falta estar animando nada. */
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){ if(reloj){ clearTimeout(reloj); reloj=null } }
+  else if(!quieto && !reloj){ paso=0; tic() }
+});
+
+/* ── La escalera ──────────────────────────────────────────────────
+   Los puntos de una cadena son 1+2+…+nivel. Dibujado, se ve lo que
+   en números no se ve: que una ronda más vale cada vez más. */
+var PELDANOS=[5,8,10,12,15];
+function puntos(n){ return n*(n+1)/2 }
+
+function pintarEscalera(){
+  var tope=puntos(PELDANOS[PELDANOS.length-1]);
+  var out='';
+  for(var i=0;i<PELDANOS.length;i++){
+    var n=PELDANOS[i], p=puntos(n), ancho=(p/tope*100).toFixed(1);
+    var cima=(i===PELDANOS.length-1)?' cima':'';
+    out+='<div class="peldano'+cima+'">'+
+           '<span class="ronda">'+T('ronda')+' '+n+'</span>'+
+           '<span class="barra"><span style="width:'+ancho+'%"></span></span>'+
+           '<span class="pts">'+p+'</span>'+
+         '</div>';
+  }
+  document.getElementById('escalera').innerHTML=out;
+}
+
+/* ── Las dos lenguas ──────────────────────────────────────────── */
+var S={
   es:{
-    lcTag:'El juego', lcGo:'Juégalo ahora →',
-    lcP:'La zona 2-1-2 se enciende, una bola más en cada ronda, y la repites en orden. Tu puntuación es la cadena más larga que aguantaste. Es visión de cancha y memoria — la parte del baloncesto que no necesita gimnasio, ni bola, ni una cancha libre.',
-    navGame:'El juego', mGame:'El juego',
-    mLive:'Sietes', navScrim:'Interescuadra', navLive:'Sietes',
-    navFaq:'Coach Cada Punto',
-    mProg:'Para jugadores y familias', navProg:'Para jugadores y familias',
-    hwSee:'Lo ves todo según pasa — cada promesa, cada pago, cada desembolso, listado para tu programa. Nada cuenta como recaudado hasta que se haya cobrado de verdad.',
-    nsH:'Nada que vender. Nada que entregar.',
-    nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
-    hwH:'Lo que cuesta, y lo que ves',
-    hw1b:'Nada hasta que se juegue.', hw1:'Una promesa es una promesa. No se cobra nada antes del día del juego, y por un participante que no juega no se cobra.',
-    hw2b:'El padrino paga, el programa cobra.', hw2:'Cuando termina el juego reciben el marcador por cuartos y un botón para pagar. Mínimo $5 por promesa.',
-    hw3b:'Ves el dinero según entra.', hw3:'Cada promesa, cada pago y cada desembolso, participante por participante, en tu propio panel.',
-    hw3fee:'Nuestro cargo de plataforma de 20% se a\u00f1ade encima de su pago, nunca se saca de \u00e9l. Una promesa de $25.00 es un pago de $30.00, y el programa recibe los $25.00 completos.',
-    seasonH:'Un día de juego. Esa es toda la campaña.',
-    st1b:'Se inscribe tu programa.',
-    st1:'Comprobamos que de verdad es tu programa, normalmente el mismo día. Después cada participante se apunta solo y recibe su propio enlace — sin listas que escribir y sin papeles que repartir.',
-    st2b:'El día del juego.',
-    st2:'Una ventana de unas dos horas. Dentro de ella cada participante juega cuatro cuartos de cinco minutos, desde donde esté y con el teléfono que tenga. Nada que montar y nada que cargar.',
-    st3b:'El juego pone el marcador.',
-    st3:'Nadie escribe un número — lo pone el juego. Cada cuarto vale la mejor tirada de ese participante, los cuatro se suman, y ese total es sobre lo que prometió cada padrino.',
-    dcKick:'Míralo funcionando', dcH:'Míralo de principio a fin',
-    dcP:'Un juego completo, desde que el entrenador lo monta hasta que al programa le entra el dinero. Y el tablero de un equipo de verdad, para darte una vuelta — los juegos abiertos a promesas, los puntos que anotó el equipo en cada uno, y la hoja que llena un padrino.',
-    dcGoM:'Cómo funciona →', dcGoB:'Demo de Baloncesto →',
-    mCoach:'Coach Cada Punto', ccTag:'Para entrenadores',
-    ccAlt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco', ccGo:'Abrir Coach Cada Punto →',
-    ccP:'Todo lo que pregunta un entrenador, contestado en una página — y un chat que contesta lo demás, con tu código, a cualquier hora. Sin esperar a que abramos.',
-    stepGo:'Inscribir mi equipo →',
-    seasonNote:'Un padrino puede poner un tope, no se cobra nada antes del día del juego, y por un participante que no juega no se cobra nunca.',
-    boardH:'Cuatro cuartos, de un vistazo.',
-    boardP:'Cada cuarto vale la mejor tirada que hubo dentro de él, así que cada ronda importa — la única forma de subir un cuarto es aguantar una cadena más larga que la que ya aguantó. Los cuatro se suman, y ese total es el juego sobre el que prometió un padrino.',
-    mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
-    navPad:'Conseguir padrinos',
-    heroAlt:'Un jugador sentado en las gradas de una cancha de barrio en Puerto Rico al anochecer, después de la lluvia, jugando en su teléfono con la bola a sus pies.',
-    cl1:'Nada que vender.', cl2:'Sin rifas.', cl3:'Nada que entregar.',
-    cl4:'Juegan. El programa cobra.',
-    ctaHow:'Ver cómo funciona',
-    h1:'El <em>Fortress</em> es la recaudación.',
-    lede:'Un día de juego: cada participante juega cuatro cuartos de cinco minutos desde su propio teléfono. Los padrinos prometen unos centavos por punto. El marcador lo pone el juego — nadie escribe un número — y no hay nada que vender, nada que entregar y nada que cobrar en la puerta.',
-    cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
-    costH:'Gratis para tu programa.',
-    costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
-    closeH:'Te lo montamos nosotros.',
-    closeP:'Cuéntanos de tu escuela, club o grupo y lo armamos — tu lista, un enlace para cada participante — y te lo mandamos. Nada sale al aire hasta que tú lo digas.', fSignin:'Acceder', fMine:'Mi equipo', fCal:'Calendario', fSquads:'Escuadras',
-    fsN:'Todavía encendida', fsP:'Un cuento — la noche que no se jugó →', fTerms:'Términos', fPrivacy:'Privacidad'
+    titulo:'Cada Punto — domina el Fortress',
+    h1:'Domina el Fortress',
+    bajo:'Nadie clava el primer día. Se entrena, se falla, y un martes cualquiera llegas donde no llegabas. Esto es igual.',
+
+    h2que:'Qué es',
+    pQue1:'Cinco bolas delante de ti. Una cadena se enciende en orden y la repites tocándolas. Si la das completa, la cadena crece en una y vuelve a empezar.',
+    pQue2:'Eso es todo. Dos minutos para entenderlo, y no se acaba de aprender nunca.',
+
+    h2esc:'Una ronda más no es un poco más',
+    pEsc:'Los puntos de una cadena son 1+2+3 y así hasta donde llegues. Por eso la ronda doce vale más del doble que la ronda ocho, aunque por dentro sólo sean cuatro bolas de diferencia.',
+    ronda:'Ronda',
+    pieEsc:'Ahí está la razón para volver mañana: lo que te falta no es mucho, y vale mucho.',
+
+    h2clav:'Como clavar',
+    beats:[
+      ['No se llega el primer día','La primera vez aguantas cinco o seis rondas. La semana que viene, ocho. Eso no es suerte que se acabó: es que cambiaste.'],
+      ['Se entrena solo','No hace falta cancha, ni equipo, ni que haya alguien. El teléfono y cinco minutos.'],
+      ['Se nota cuando llegas','Un número que subió es un número que subió. No hay opinión, no hay quién jugó mejor. Llegaste a doce o no llegaste.'],
+      ['Lo ve todo el mundo','Tu marcador queda puesto donde tu familia lo abre. Clavar delante de nadie no es clavar.']
+    ],
+
+    h2dia:'Y el día de juego',
+    pDia1:'Cuando tu programa abre un día de juego, juegas cuatro cuartos de cinco minutos. Cada cuarto vale tu mejor cadena de ese cuarto, y los cuatro se suman.',
+    pDia2:'Lo que anotes ese día es lo que recauda tu programa: tus padrinos prometieron unos centavos por cada punto tuyo, antes de que empezara. Por eso entrenar no es prepararse para el juego. Entrenar es el juego.',
+
+    h2prog:'¿Llevas un programa?',
+    pProg:'Un día de juego, tus nenes jugando desde su propio teléfono, y sus familias prometiendo unos centavos por punto. No hay nada que vender, nada que repartir y nadie a quien juntar. Las campañas las abrimos nosotros, una por una.',
+    btnProg:'Cómo se monta',
+
+    h2coach:'Pregúntale al coach',
+    pCoach:'Coach Cada Punto contesta lo del Fortress, lo del día de juego y lo del dinero — y de baloncesto, si te hace falta. Es para entrenadores con código.',
+    chatB:'Pregúntame',
+    chatP:'Pon tu código y pregunta lo que no te salga, a cualquier hora.',
+    chatCode:'Tu código', chatGo:'Entrar',
+    chatBad:'Ese código no sirve.',
+    chatNet:'No entró. Inténtalo otra vez.',
+    chatOff:'El chat todavía no está encendido. Escríbenos a gostardigital@gmail.com.',
+    chatWho:'Hola, {B}. Dime qué no te sale.',
+    chatHi:'Sé del Fortress y de cómo se juega, del día de juego, de la plantilla, del tablero y del dinero. De baloncesto también. Pregúntame como te salga.',
+    chatPh:'Escribe tu pregunta', chatSend:'Mandar', chatWait:'Pensando…',
+    chatFix:'Texto oficial',
+    chatErr:'Algo falló de mi lado. Pregúntalo otra vez, o escríbenos.',
+    pSin:'¿No tienes código? Es porque las campañas las abrimos nosotros, una por una. Cuéntanos de tu escuela, club o programa y te la montamos.',
+    btnPedir:'Pide una campaña',
+
+    h2ya:'Empieza ahora',
+    pYa:'La práctica no tiene reloj y no cuenta para nada. Falla todo lo que quieras.',
+    btn:'Jugar el Fortress',
+    gratis:'Gratis, sin cuenta, en el teléfono o la computadora.',
+
+    fWhat:'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.',
+    rutas:[
+      ['Jugar',[['fortress-vr.html','El Fortress'],['jugador.html','Mi enlace de padrinos']]],
+      ['Tu programa',[['mi-equipo.html','Mi equipo'],['plantilla.html','La plantilla'],
+                      ['ayuda.html','Coach Cada Punto'],['cobro.html','A dónde te pagamos']]],
+      ['Empezar',[['equipo.html','Inscribe tu equipo'],['padrinos.html','Conseguir padrinos'],
+                  ['contact.html','Habla con nosotros']]]
+    ],
+    legal:[['terms.html','Términos'],['privacy.html','Privacidad'],
+           ['custodia.html','Cómo se maneja el dinero']]
+  },
+  en:{
+    titulo:'Cada Punto — dominate the Fortress',
+    h1:'Dominate the Fortress',
+    bajo:'Nobody dunks on the first day. You train, you miss, and on some ordinary Tuesday you get somewhere you could not get before. This is the same.',
+
+    h2que:'What it is',
+    pQue1:'Five balls in front of you. A chain lights up in order and you repeat it by touching them. Get it whole and the chain grows by one and starts again.',
+    pQue2:'That is all of it. Two minutes to understand, and you never finish learning it.',
+
+    h2esc:'One more round is not a little more',
+    pEsc:'A chain is worth 1+2+3 and so on up to where you got. That is why round twelve is worth more than twice round eight, even though it is only four more balls.',
+    ronda:'Round',
+    pieEsc:'That is the reason to come back tomorrow: what you are missing is not much, and it is worth a lot.',
+
+    h2clav:'Like a dunk',
+    beats:[
+      ['You do not get there on day one','The first time you hold five or six rounds. Next week, eight. That is not luck running out — that is you having changed.'],
+      ['You can train it alone','No court, no team, nobody else needed. A phone and five minutes.'],
+      ['It shows when you get there','A number that went up is a number that went up. No opinion, no argument about who played better. You reached twelve or you did not.'],
+      ['Everyone sees it','Your score sits where your family opens it. Dunking in front of nobody is not dunking.']
+    ],
+
+    h2dia:'And the game day',
+    pDia1:'When your program opens a game day you play four five-minute quarters. Each quarter is worth your best chain inside it, and the four add up.',
+    pDia2:'What you score that day is what your program raises: your padrinos pledged a few cents on every point of yours, before it started. Which is why training is not getting ready for the game. Training is the game.',
+
+    h2prog:'Do you run a program?',
+    pProg:'One game day, your players playing from their own phones, and their families pledging a few cents a point. Nothing to sell, nothing to deliver, nobody to gather. We open campaigns ourselves, one at a time.',
+    btnProg:'How it gets set up',
+
+    h2coach:'Ask the coach',
+    pCoach:'Coach Cada Punto answers the Fortress, the game day and the money — and basketball, if that is what you need. It is for coaches with a code.',
+    chatB:'Ask me',
+    chatP:'Enter your code and ask whatever will not work, at any hour.',
+    chatCode:'Your code', chatGo:'Enter',
+    chatBad:'That code does not work.',
+    chatNet:'That did not go through. Try again.',
+    chatOff:'The chat is not switched on yet. Write to us at gostardigital@gmail.com.',
+    chatWho:'Hello, {B}. Tell me what will not work.',
+    chatHi:'I know the Fortress and how it is played, the game day, the roster, the board and the money. Basketball too. Ask me however it comes out.',
+    chatPh:'Type your question', chatSend:'Send', chatWait:'Thinking…',
+    chatFix:'Official wording',
+    chatErr:'Something failed on my side. Ask again, or write to us.',
+    pSin:'No code? That is because we open campaigns ourselves, one at a time. Tell us about your school, club or program and we will set yours up.',
+    btnPedir:'Ask for a campaign',
+
+    h2ya:'Start now',
+    pYa:'Practice has no clock and counts for nothing. Miss as much as you like.',
+    btn:'Play the Fortress',
+    gratis:'Free, no account, on a phone or a computer.',
+
+    fWhat:'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.',
+    rutas:[
+      ['Play',[['fortress-vr.html','The Fortress'],['jugador.html','My padrino link']]],
+      ['Your program',[['mi-equipo.html','My team'],['plantilla.html','The roster'],
+                       ['ayuda.html','Coach Cada Punto'],['cobro.html','Where we pay you']]],
+      ['Getting started',[['equipo.html','Sign your team up'],['padrinos.html','Getting padrinos'],
+                          ['contact.html','Talk to us']]]
+    ],
+    legal:[['terms.html','Terms'],['privacy.html','Privacy'],
+           ['custodia.html','How the money is handled']]
   }
 };
 
-var lang = 'en';
-try { lang = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') || ((navigator.language||'').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch(e){}
+var LANG='es';
+try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
+  localStorage.getItem('fc-lang') ||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
+function T(k,v){
+  var s=(S[LANG]&&S[LANG][k]); if(s===undefined) s=(S.es[k]||'');
+  if(v && typeof s==='string') Object.keys(v).forEach(function(x){ s=s.split('{'+x+'}').join(v[x]) });
+  return s;
+}
+function $(id){ return document.getElementById(id) }
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function pon(id,txt){ var e=document.getElementById(id); if(e) e.textContent=txt }
 
-function toggleMenu(){
-  document.getElementById('burger').classList.toggle('open');
-  document.getElementById('menu').classList.toggle('open');
+function toggleLang(){
+  LANG = LANG==='es' ? 'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG); localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG) }catch(e){}
+  pintar();
 }
 
+function pintar(){
+  document.documentElement.lang=LANG;
+  document.title=T('titulo');
+  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
 
-function paint(){
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-t]').forEach(function(el){
-    var key = el.getAttribute('data-t');
-    var v = (T[lang] && T[lang][key]) || T.en[key];
-    if (!v) return;
-    // the headline carries its own emphasis
-    if (v.indexOf('<') !== -1) el.innerHTML = v; else el.textContent = v;
-  });
-  // Las cifras que terminan en el programa van en verde. La linea del
-  // cargo queda fuera a proposito: ahi el $30.00 es lo que paga el
-  // padrino, no lo que cobra el programa, y pintarlo de verde mentiria.
-  var NOGREEN = {hw3fee:1};
-  document.querySelectorAll('[data-t]').forEach(function(el){
-    if (NOGREEN[el.getAttribute('data-t')]) return;
-    if (el.innerHTML.indexOf('$') === -1) return;
-    el.innerHTML = el.innerHTML.replace(/\$\d[\d,]*(?:\.\d{2})?/g,
-                                       '<span class="money">$&</span>');
-  });
+  pon('h1',T('h1'));        pon('bajo',T('bajo'));
+  pon('h2que',T('h2que'));  pon('pQue1',T('pQue1')); pon('pQue2',T('pQue2'));
+  pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
+  pon('h2clav',T('h2clav'));
+  pon('h2dia',T('h2dia'));  pon('pDia1',T('pDia1')); pon('pDia2',T('pDia2'));
+  pon('h2prog',T('h2prog'));   pon('pProg',T('pProg'));  pon('btnProg',T('btnProg'));
+  pon('h2coach',T('h2coach')); pon('pCoach',T('pCoach'));
+  pon('pSin',T('pSin'));       pon('btnPedir',T('btnPedir'));
+  pon('h2ya',T('h2ya'));    pon('pYa',T('pYa'));
+  pon('btnJugar',T('btn')); pon('gratis',T('gratis'));
+  pon('fWhat',T('fWhat'));
 
-  document.querySelectorAll('[data-t-alt]').forEach(function(el){
-    var key = el.getAttribute('data-t-alt');
-    var v = (T[lang] && T[lang][key]) || T.en[key];
-    if (v) el.setAttribute('alt', v);
-  });
+  pintarEscalera();
+  paintChat();
 
-  document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
+  $('rutas').innerHTML = T('rutas').map(function(g){
+    return '<div><b>'+esc(g[0])+'</b>'+ g[1].map(function(l){
+      return '<a href="'+l[0]+'">'+esc(l[1])+'</a>';
+    }).join('') +'</div>';
+  }).join('');
+
+  $('legal').innerHTML = T('legal').map(function(l){
+    return '<a href="'+l[0]+'">'+esc(l[1])+'</a>';
+  }).join('<span>·</span>');
+
+  document.getElementById('beats').innerHTML = T('beats').map(function(b){
+    return '<div class="beat"><b>'+esc(b[0])+'</b><span>'+esc(b[1])+'</span></div>';
+  }).join('');
 }
 
-function flip(){
-  lang = lang === 'en' ? 'es' : 'en';
-  try { localStorage.setItem('cfh_lang', lang), localStorage.setItem('cp-lang', lang), localStorage.setItem('fc-lang', lang); } catch(e){}
-  paint();
+/* ── Coach Cada Punto ─────────────────────────────────────────────
+   El mismo de ayuda.html, con la misma puerta: hace falta código. Lo
+   que cambia en esta página es lo que hay DEBAJO de la puerta — quien
+   llega aquí casi nunca tiene uno, y mandarlo a mirar una caja cerrada
+   sin decirle por dónde se entra sería mala educación. */
+var SB='https://sdaphocueugzfvjovuxd.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+var API='https://basketball-money-payments.onrender.com';
+
+var CODE=null, BY=null, MSGS=[], BUSY=false, ERR='';
+/* Si ya entró en Mi equipo en este teléfono, no se le pide otra vez. */
+try{ CODE=localStorage.getItem('cp_build')||localStorage.getItem('cp_code')||null }catch(e){}
+
+function rpc(name,args){
+  return fetch(SB+'/rest/v1/rpc/'+name,{
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(args||{})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc '+r.status); return r.json() });
 }
 
-paint();
+function entrar(auto){
+  var k=auto?CODE:(($('cCode')||{}).value||'').trim();
+  if(!k) return;
+  ERR=''; paintChat();
+  rpc('builder_check',{p_code:k})
+    .then(function(r){
+      if(!r||!r.ok){ CODE=null; if(!auto) ERR=T('chatBad'); paintChat(); return }
+      CODE=k; BY=r.by||'';
+      try{ localStorage.setItem('cp_build',k) }catch(e){}
+      paintChat();
+      var box=$('cAsk'); if(box&&!auto) box.focus();
+    })
+    .catch(function(e){ console.error(e); CODE=null; if(!auto) ERR=T('chatNet'); paintChat() });
+}
+
+function mandar(){
+  var box=$('cAsk'); if(!box||BUSY) return;
+  var q=(box.value||'').trim(); if(!q) return;
+  box.value=''; ERR='';
+  MSGS.push({role:'user',content:q});
+  BUSY=true; paintChat();
+
+  fetch(API+'/coach/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    /* El idioma lo decide el botón de arriba, no la frase que escribió:
+       preguntar algo en inglés a mitad no debe cambiarle la página. */
+    body:JSON.stringify({code:CODE,lang:LANG,messages:MSGS.map(function(m){
+      return {role:m.role,content:m.content} })})
+  })
+  .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j} }) })
+  .then(function(o){
+    BUSY=false;
+    if(o.s===503){ MSGS.push({role:'assistant',content:T('chatOff'),bad:true}) }
+    else if(o.s===401){ CODE=null; ERR=T('chatBad') }
+    else if(o.j&&o.j.reply){ MSGS.push({role:'assistant',content:o.j.reply,fixed:!!o.j.fixed}) }
+    else { MSGS.push({role:'assistant',content:T('chatErr'),bad:true}) }
+    paintChat();
+  })
+  .catch(function(e){
+    console.error(e); BUSY=false;
+    MSGS.push({role:'assistant',content:T('chatErr'),bad:true});
+    paintChat();
+  });
+}
+
+function paintChat(){
+  var caja=$('chatbox'); if(!caja) return;
+  var out='<b>'+esc(T('chatB'))+'</b>';
+  if(!CODE){
+    out+='<p class="cp">'+esc(T('chatP'))+'</p>'+
+      '<label for="cCode">'+esc(T('chatCode'))+'</label>'+
+      '<input id="cCode" type="text" autocapitalize="characters" autocorrect="off" '+
+        'spellcheck="false" enterkeyhint="go">'+
+      '<button class="btn" onclick="entrar(false)">'+esc(T('chatGo'))+'</button>'+
+      (ERR?'<p class="msg">'+esc(ERR)+'</p>':'');
+  } else {
+    out+='<p class="who">'+esc(T('chatWho',{B:BY||''}))+'</p><div class="log">';
+    if(!MSGS.length) out+='<div class="m me">'+esc(T('chatHi'))+'</div>';
+    MSGS.forEach(function(m){
+      if(m.role==='user'){ out+='<div class="m you">'+esc(m.content)+'</div>'; return }
+      out+='<div class="m me'+(m.bad?' bad':'')+'">'+
+        (m.fixed?'<span class="tag">'+esc(T('chatFix'))+'</span>':'')+
+        esc(m.content)+'</div>';
+    });
+    if(BUSY) out+='<div class="m me">'+esc(T('chatWait'))+'</div>';
+    out+='</div>'+
+      '<textarea id="cAsk" placeholder="'+esc(T('chatPh'))+'"'+(BUSY?' disabled':'')+'></textarea>'+
+      '<button class="btn" onclick="mandar()"'+(BUSY?' disabled':'')+'>'+esc(T('chatSend'))+'</button>'+
+      (ERR?'<p class="msg">'+esc(ERR)+'</p>':'');
+  }
+  caja.innerHTML='<div class="chat">'+out+'</div>';
+  var log=caja.querySelector('.log'); if(log) log.scrollTop=log.scrollHeight;
+}
+
+pintar();
+arrancarCadena();
+if(CODE) entrar(true);
 </script>
 </body>
 </html>
