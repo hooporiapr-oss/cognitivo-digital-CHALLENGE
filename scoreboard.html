@@ -276,6 +276,8 @@ footer .f-dot{padding:0 7px;opacity:.5}
 footer a{color:#8FA8C0;text-decoration:none}
 .f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
   margin-left:auto;margin-right:auto}
+.f-ayuda{margin:6px 0 0}
+.f-ayuda a{color:#8FA8C0;text-decoration:none;font-weight:800}
 </style>
 </head>
 <body>
@@ -294,6 +296,7 @@ footer a{color:#8FA8C0;text-decoration:none}
 <footer>
   <div class="wrap">
     <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
+    <p class="f-ayuda"><a href="ayuda.html">Coach Cada Punto — ayuda del entrenador</a></p>
 <p class="f-what" id="fWhat"></p>
 <script>
 /* Lo que somos, dicho donde se ve: una herramienta que se cobra, no
@@ -352,6 +355,8 @@ var S = {
     noCampP:'Every program has its own board and they are not in a public list. Your coach sends the link to the team group — ask them for it if you do not have it.',
     noCampGo:'Is your team not raising yet?',
     noCampGoP:'See how Cada Punto works, and sign your team up.',
+    forWho:'You are backing {N}',
+    forWhoP:'Whatever you pledge here is credited to {N}. All of it goes to the program.',
     iPlayKick:'If you play for this team',
     iPlay:'Get your own link',
     iPlayGo:'Get my link →',
@@ -417,6 +422,8 @@ var S = {
     noCampP:'Cada programa tiene su propio tablero y no están en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
     noCampGo:'¿Tu equipo todavía no recauda?',
     noCampGoP:'Mira cómo funciona Cada Punto e inscríbelo.',
+    forWho:'Vienes por {N}',
+    forWhoP:'Lo que prometas aquí queda apuntado a {N}. Todo va al programa.',
     iPlayKick:'Si juegas en este equipo',
     iPlay:'Saca tu propio enlace',
     iPlayGo:'Sacar mi enlace →',
@@ -507,6 +514,16 @@ var WANT_ON = PARAMS.get('on') || null;        // fecha del juego pedido
 var WANT_VS = PARAMS.get('vs') || null;        // y contra quién
 var JUMPED = false;
 var ROSTER = [];
+/* El nombre de quien manda el enlace, si lo hay y si sigue en la
+   lista. Si lo sacaron del equipo no se enseña nada: mejor callar que
+   nombrar a quien ya no está. */
+function deQuienVengo(){
+  if(!FROM_PLAYER) return null;
+  for(var i=0;i<ROSTER.length;i++){
+    if(ROSTER[i].id===FROM_PLAYER) return ROSTER[i].name||null;
+  }
+  return null;
+}
 var BOARD = null, PICKED = null, RATE = 0.10;
 var app = document.getElementById('app');
 
@@ -988,15 +1005,28 @@ function draw(){
       ? '<h2>' + T('results') + '</h2>' + results.map(function(g){ return gameCard(g, false); }).join('')
       : '') +
 
-    // Para un jugador que llega aquí: su propio enlace está a un toque.
-    // Para el jugador: lo que tiene que hacer, con su botón.
-    '<div class="playcard">' +
-      '<div class="pc-kick">' + T('iPlayKick') + '</div>' +
-      '<b class="pc-h">' + T('iPlay') + '</b>' +
-      '<p class="pc-p">' + T('iPlayP') + '</p>' +
-      '<a class="pc-go" href="jugador.html?c=' + CAMPAIGN +
-        (DIV ? '&d=' + encodeURIComponent(DIV) : '') + '">' + T('iPlayGo') + '</a>' +
-    '</div>' +
+    /* QUIEN LLEGA POR EL ENLACE DE UN NENE TIENE QUE VER SU NOMBRE.
+       Salió probándolo: se manda el enlace de Prueba Dos y la página
+       abre enseñando el equipo, sin mencionarlo — y encima le ofrece
+       "saca tu propio enlace", que es para el que NO está en la lista.
+       El mensaje que lo trajo decía "éste es su enlace"; la página no
+       lo confirmaba, y en algo de dinero esa diferencia se nota.
+       Si viene por un nene de la lista: se dice de quién es, y se
+       calla lo de sacar enlace, que no le toca. */
+    (deQuienVengo()
+      ? '<div class="playcard">' +
+          '<div class="pc-kick">' +
+            esc(T('forWho').split('{N}').join(deQuienVengo())) + '</div>' +
+          '<p class="pc-p">' +
+            esc(T('forWhoP').split('{N}').join(deQuienVengo())) + '</p>' +
+        '</div>'
+      : '<div class="playcard">' +
+          '<div class="pc-kick">' + T('iPlayKick') + '</div>' +
+          '<b class="pc-h">' + T('iPlay') + '</b>' +
+          '<p class="pc-p">' + T('iPlayP') + '</p>' +
+          '<a class="pc-go" href="jugador.html?c=' + CAMPAIGN +
+            (DIV ? '&d=' + encodeURIComponent(DIV) : '') + '">' + T('iPlayGo') + '</a>' +
+        '</div>') +
 
     // Y lo otro es para leer, no para hacer.
     '<a class="readlink" href="programa.html?c=' + CAMPAIGN + '">' +
