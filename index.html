@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#050A12">
-<title>Cada Punto — the game is the fundraiser</title>
+<title>Cada Punto — the Fortress is the fundraiser</title>
 <!-- La vista previa cuando alguien comparte el enlace: en vez de
      un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/">
-<meta property="og:title" content="Cada Punto — the game is the fundraiser">
+<meta property="og:title" content="Cada Punto — the Fortress is the fundraiser">
 <meta property="og:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cada Punto — the game is the fundraiser">
+<meta name="twitter:title" content="Cada Punto — the Fortress is the fundraiser">
 <meta name="twitter:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
 
@@ -99,6 +99,9 @@ header{padding:clamp(14px,3vw,24px) 0 clamp(32px,5vw,48px);text-align:center}
     rgba(4,18,26,.94) 0%, rgba(4,18,26,.80) 38%, rgba(4,18,26,.32) 70%, rgba(4,18,26,0) 100%)}
 .hero-cap h1{font-size:clamp(1.25rem,3.5vw,2.15rem);margin:0 auto;max-width:21ch;
   color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.55)}
+/* El nombre del juego va en naranja, igual que en su tarjeta: el que
+   lee el titular y luego baja, reconoce la misma palabra. */
+.hero-cap h1 em{font-style:normal;color:var(--gold)}
 /* En el teléfono la foto mide como 150px de alto: ahí no cabe un
    titular encima de nada. Baja y se lee normal. */
 @media(max-width:700px){
@@ -363,10 +366,10 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 
 <header id="top"><div class="wrap">
   <figure class="hero">
-    <img class="heroart" src="cadapunto-hero.jpg" width="1536" height="575"
+    <img class="heroart" src="fortress-cancha.jpg" width="1536" height="864"
          data-t-alt="heroAlt" alt="Cada Punto — recaudación deportiva, baloncesto">
     <figcaption class="hero-cap">
-      <h1 data-t="h1">The game is the fundraiser.</h1>
+      <h1 data-t="h1">The <em>Fortress</em> is the fundraiser.</h1>
     </figcaption>
   </figure>
 
@@ -568,11 +571,11 @@ var T = {
     boardP:'Each quarter counts the best run inside it, so every round matters — the only way to lift a quarter is to hold a longer chain than the one already held. The four add up, and that total is the game a padrino pledged on.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
     navPad:'Getting padrinos',
-    heroAlt:'Cada Punto — sports fundraising for basketball programs. Every point counts.',
+    heroAlt:'A player sitting on the bleachers of a neighbourhood court in Puerto Rico at dusk after rain, playing on his phone with the ball at his feet.',
     cl1:'Nothing to sell.', cl2:'No raffles.', cl3:'Nothing to deliver.',
     cl4:'They play. The program gets paid.',
     ctaHow:'See how it works',
-    h1:'The game is the fundraiser.',
+    h1:'The <em>Fortress</em> is the fundraiser.',
     lede:'On one game day, each player plays four five-minute quarters from their own phone. Padrinos pledge a few cents a point. The game produces the score — nobody enters a number — and there is nothing to sell, nothing to deliver and nothing to collect at the door.',
     cta1b2:'Sign up my team', cta1b:'Talk to us',
     costH:'Free for your program.',
@@ -615,11 +618,11 @@ var T = {
     boardP:'Cada cuarto vale la mejor tirada que hubo dentro de él, así que cada ronda importa — la única forma de subir un cuarto es aguantar una cadena más larga que la que ya aguantó. Los cuatro se suman, y ese total es el juego sobre el que prometió un padrino.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
     navPad:'Conseguir padrinos',
-    heroAlt:'Cada Punto — recaudación deportiva para programas de baloncesto. Cada punto cuenta.',
+    heroAlt:'Un jugador sentado en las gradas de una cancha de barrio en Puerto Rico al anochecer, después de la lluvia, jugando en su teléfono con la bola a sus pies.',
     cl1:'Nada que vender.', cl2:'Sin rifas.', cl3:'Nada que entregar.',
     cl4:'Juegan. El programa cobra.',
     ctaHow:'Ver cómo funciona',
-    h1:'El juego es la recaudación.',
+    h1:'El <em>Fortress</em> es la recaudación.',
     lede:'Un día de juego: cada participante juega cuatro cuartos de cinco minutos desde su propio teléfono. Los padrinos prometen unos centavos por punto. El marcador lo pone el juego — nadie escribe un número — y no hay nada que vender, nada que entregar y nada que cobrar en la puerta.',
     cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
     costH:'Gratis para tu programa.',
