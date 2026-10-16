@@ -373,7 +373,7 @@ function pintar(){
       '<b>'+T('todoL')+'</b>'+
       '<div class="big">'+(pend===1?T('todo1',{N:pend}):T('todoN',{N:pend}))+'</div>'+
       '<p>'+T('todoP')+'</p>'+
-      '<a class="btn go" href="scoreboard.html?c='+esc(uno.id)+'">'+T('todoGo')+'</a>'+
+      '<a class="btn go" href="tablero.html?camp='+esc(uno.id)+'">'+T('todoGo')+'</a>'+
     '</div>' : '';
 
   $('teams').innerHTML = CAMPS.map(function(c){
@@ -392,10 +392,10 @@ function pintar(){
         '<div class="num"><b>'+pad+'</b><span>'+T('nPad')+'</span></div>'+
       '</div>'+
       '<div class="acts">'+
-        '<a class="fill" href="scoreboard.html?c='+esc(c.id)+'">'+T('aBoard')+'</a>'+
-        '<a href="calendario.html">'+T('aGames')+'</a>'+
+        /* El tablero nuevo va por campaña: esta página tiene campañas,
+           no retos, y tablero.html sabe buscar el reto que le toca. */
+        '<a class="fill" href="tablero.html?camp='+esc(c.id)+'">'+T('aBoard')+'</a>'+
         '<a class="wide" href="plantilla.html">'+T('aRoster')+'</a>'+
-        (sin.length?'<a class="wide" href="scoreboard.html?c='+esc(c.id)+'">'+T('aScore')+'</a>':'')+
       '</div>'+
       pay+
     '</div>';
