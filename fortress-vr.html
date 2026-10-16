@@ -109,13 +109,22 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
 .capa h1 em{font-style:normal;color:#FF7A18}
 .capa p{color:#C8D6E2;font-size:.98rem;max-width:36ch;line-height:1.55}
 .capa small{color:#7F93A6;font-size:.78rem;max-width:34ch;line-height:1.5}
-.capa button{background:#FF7A18;color:#0B1724;border:0;border-radius:6px;
-  font:inherit;font-weight:900;font-size:1.1rem;padding:16px 30px;cursor:pointer}
+/* Los tres tienen que parecer botones. Dos de ellos eran un borde
+   fino sobre el fondo y, puestos debajo de un párrafo, se leían como
+   una línea más de texto: nadie los tocaba porque no parecían tocables.
+   Ahora los tres llevan fondo propio, el mismo ancho y la misma
+   altura — se ven como un juego de tres cosas que se pueden apretar,
+   y el color dice cuál es cuál. */
+.capa button{background:#FF7A18;color:#0B1724;border:2px solid #FF7A18;border-radius:8px;
+  font:inherit;font-weight:900;font-size:1.05rem;padding:15px 24px;cursor:pointer;
+  min-width:min(320px,82vw);line-height:1.25;
+  box-shadow:0 8px 22px rgba(0,0,0,.38);transition:transform .08s ease}
+.capa button:active{transform:translateY(1px)}
 .marca{font-size:1.6rem;font-weight:900;line-height:1;color:#6FD83C}
 .grande{font-size:clamp(3.4rem,18vw,6rem);font-weight:900;line-height:.95;
   color:#FF7A18;letter-spacing:-.03em}
-.capa button.otro{background:none;color:#C8D6E2;border:1px solid #33465A;font-size:.95rem;
-  padding:13px 24px}
+.capa button.otro{background:#16293F;color:#EAF4FB;border-color:#3C566F;font-size:1rem}
+.capa button.casco{border-color:#8A6A2A;color:#F0E2C6}
 /* Cada botón dice debajo para qué aparato es, porque "Empezar" a secas
    en una página que se llama VR se lee como "empezar el casco". El
    aviso va pegado al botón y encima de la explicación: ahí se lee
@@ -191,8 +200,9 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   <div class="caja" id="cajaTapa" hidden></div>
   <small id="tapaVentana" class="req" hidden></small>
   <button id="go"></button>
+  <button id="goAmistoso" class="otro"></button>
   <small id="tapaMod" class="req mod"></small>
-  <button id="goCabeza" class="otro" hidden></button>
+  <button id="goCabeza" class="otro casco" hidden></button>
   <small id="tapaReq" class="req" hidden></small>
   <small id="tapaS"></small>
 </div>
@@ -225,7 +235,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='j2';
+var SELLO='j6';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -235,7 +245,7 @@ var S={
   es:{
     p:'La cadena crece de una en una. Mira bien dónde se encienden y '+
       'repítelas en el mismo orden. Un fallo acaba la tirada.',
-    go:'Empezar',
+    go:'Práctica · sin reloj',
     sDedo:'Toca la bola. Nada que instalar.',
     sRaton:'Haz clic en la bola, o usa las teclas 1 a 5.',
     mira:'MIRA',
@@ -248,7 +258,10 @@ var S={
     mejor:'Tu mejor cadena: ',
     teclas:'1 2 arriba · 3 el medio · 4 5 abajo',
     mod:'Computadora · tablet · celular',
-    cabeza:'Con la cabeza',
+    amistoso:'Scrimmage · 4 cuartos',
+    finAmistoso:'FIN DEL SCRIMMAGE',
+    otroAmistoso:'Otro scrimmage',
+    cabeza:'Con un casco',
     req:'Requiere casco VR',
     sCabeza:'En el casco: mira la bola y aguanta la vista. Sin mando.',
     medidaK:'UNA SOLA VEZ',
@@ -300,7 +313,7 @@ var S={
   en:{
     p:'The chain grows by one each round. Watch where the balls light up '+
       'and repeat them in the same order. One miss ends the run.',
-    go:'Start',
+    go:'Practice · no clock',
     sDedo:'Tap the ball. Nothing to install.',
     sRaton:'Click the ball, or use keys 1 to 5.',
     mira:'WATCH',
@@ -313,7 +326,10 @@ var S={
     mejor:'Your best chain: ',
     teclas:'1 2 top · 3 middle · 4 5 bottom',
     mod:'Computer · tablet · phone',
-    cabeza:'With your head',
+    amistoso:'Scrimmage · 4 quarters',
+    finAmistoso:'SCRIMMAGE OVER',
+    otroAmistoso:'Another scrimmage',
+    cabeza:'With a headset',
     req:'VR headset required',
     sCabeza:'In the headset: look at the ball and hold. No controller.',
     medidaK:'ONE TIME ONLY',
@@ -381,6 +397,7 @@ function pintarTextos(){
   $('go').textContent=T('go');
   $('tapaS').textContent=hayGiro()?T('sCabeza'):(HAY_FINO?T('sRaton'):T('sDedo'));
   $('tapaMod').textContent=T('mod');
+  $('goAmistoso').textContent=T('amistoso');
   $('goCabeza').textContent=T('cabeza');
   $('tapaReq').textContent=T('req');
   $('medidaK').textContent=T('medidaK');
@@ -401,7 +418,7 @@ function cuantoDura(){
   return Math.floor(seg/60)+':'+('0'+(seg%60)).slice(-2);
 }
 function pintarPista(){
-  if(JUEGO && !enPractica && cuartoActual && fase!=='listo'){
+  if(enCuartos() && !enPractica && cuartoActual && fase!=='listo'){
     /* Lo único que el nene necesita saber mientras juega: cuánto hay
        que batir para subir este cuarto. */
     $('pista').textContent=T('aBatir').replace('{P}', tanda.length?Math.max.apply(null,tanda):0);
@@ -799,7 +816,7 @@ function pintarHud(){
   if(fase==='listo'){
     e.textContent = MODO==='cabeza' ? T('listoPill') : T('listoPillD');
     e.className='listo';
-  }else if(JUEGO && !enPractica && cuartoActual){
+  }else if(enCuartos() && !enPractica && cuartoActual){
     /* Jugando un cuarto, lo que manda arriba es QUÉ CUARTO ES. Que no
        quepa duda de si esto cuenta. */
     e.textContent = T('cuartoPill').replace('{Q}',cuartoActual) + ' · ' +
@@ -830,6 +847,10 @@ function armarCuarto(q){
   cuartoActual=q; enPractica=false; armarSesion();
 }
 function armarPractica(){
+  /* Practicar después de un scrimmage es empezar otra cosa: si se
+     quedara marcado como scrimmage, la tarjeta al fallar ofrecería
+     volver a un juego que ya terminó. */
+  if(AMISTOSO && finDelJuego) AMISTOSO=false;
   cuartoActual=0; enPractica=true; armarSesion();
 }
 /* Volver a la portada del juego — es donde vive el marcador y el
@@ -863,7 +884,7 @@ function armarSesion(){
   cadena=[]; nivel=0; voy=0; tanda=[];
   mirando=-1; bloqueada=-1; sinBolaDesde=0;
   relojCorriendo=false; relojHasta=0; relojTexto='';
-  conReloj = (MODO==='cabeza') || (JUEGO && !enPractica);
+  conReloj = (MODO==='cabeza') || (enCuartos() && !enPractica);
   fase='listo';
   $('fin').hidden=true;
   $('hud').hidden=false;
@@ -988,18 +1009,27 @@ function romper(){
     $('finP').textContent=T('fin')+'  ·  '+pointsFor(final)+' '+T('puntos');
     $('finS').textContent=T('mejor')+mejor;
     $('tanda').textContent=tanda.length>1 ? T('tanda')+tanda.join('  ·  ') : '';
-    /* Practicando entre cuartos no hay cuenta atrás: el que está ahí
-       vino a calentar y tiene que poder volverse a su juego cuando
-       quiera, no en los cuatro segundos que dura una cuenta. En todo
-       lo demás la siguiente entra sola y no hay botón que apretar. */
-    if(JUEGO && enPractica){
+    /* ¿Cuenta atrás o botón? Lo decide si hay reloj corriendo.
+    
+       Con reloj — el casco, un cuarto — la siguiente tirada entra
+       sola: son TUS cinco minutos los que están pasando, y un botón
+       ahí es tiempo tuyo gastado en apretarlo.
+    
+       Sin reloj no hay prisa de nadie. Se rompió la cadena, se acabó
+       la tanda, y empieza otra cuando tú quieras. Meterle una cuenta
+       atrás a una práctica es inventarle una urgencia que no tiene. */
+    if(conReloj){
+      $('otra').hidden=true;
+      $('practicar').hidden=true;
+      arrancarCuenta();
+    }else if(JUEGO && enPractica){
       $('otra').hidden=false;  $('otra').textContent=T('volverJuego');
       $('practicar').hidden=false; $('practicar').textContent=T('otraTanda');
       $('cuenta').textContent='';
     }else{
-      $('otra').hidden=true;
+      $('otra').hidden=false;  $('otra').textContent=T('otra');
       $('practicar').hidden=true;
-      arrancarCuenta();
+      $('cuenta').textContent='';
     }
     $('fin').hidden=false;
     $('hud').hidden=true;
@@ -1037,7 +1067,7 @@ function terminarSesion(porVentana){
 
   /* EN UN CUARTO, la chicharra no acaba la tanda: cierra el cuarto,
      lo manda al servidor y enseña el marcador. */
-  if(JUEGO && !enPractica && cuartoActual){
+  if(enCuartos() && !enPractica && cuartoActual){
     cerrarCuarto(cuartoActual, porVentana?0:mejorDeLaTanda, porVentana);
     return;
   }
@@ -1076,6 +1106,12 @@ function terminarSesion(porVentana){
    serviría para repetir un cuarto que salió malo. */
 var cuartoPendiente=null;
 
+function empezarAmistoso(){
+  AMISTOSO=true; finDelJuego=false; enPractica=false;
+  cuartos=[]; cuartoActual=0; cuartoPendiente=null;
+  armarCuarto(1);
+}
+
 function cerrarCuarto(q, nivel, porVentana){
   var puntos=pointsFor(nivel);
   fase='tiempo';
@@ -1092,6 +1128,21 @@ function cerrarCuarto(q, nivel, porVentana){
     finDelJuego=true;
     $('finP').textContent=T('porVentana');
     temporizadores.push(setTimeout(finDeJuego, 1800));
+    return;
+  }
+
+  /* En un scrimmage no hay nada que mandar: el cuarto se apunta aquí
+     y ya. Mismo marcador, mismas reglas, cero consecuencias. */
+  if(AMISTOSO){
+    cuartos.push({q:q, points:puntos, level:nivel});
+    cuartos.sort(function(a,b){ return a.q-b.q });
+    pintarCaja($('caja'), 0);
+    var sigA=proximoCuarto();
+    if(!sigA){ finDeJuego(); return }
+    $('finP').textContent=T('totalJuego')+': '+totalJuego();
+    $('otra').hidden=false;
+    $('otra').textContent=T('siguienteCuarto').replace('{Q}',sigA);
+    $('practicar').hidden=true;
     return;
   }
 
@@ -1120,13 +1171,17 @@ function cerrarCuarto(q, nivel, porVentana){
 function finDeJuego(){
   finDelJuego=true;
   fase='tiempo';
-  $('finK').textContent=T('finJuego');
+  $('finK').textContent=AMISTOSO ? T('finAmistoso') : T('finJuego');
   $('finN').textContent=String(totalJuego());
   if($('finP').textContent!==T('porVentana')) $('finP').textContent=T('totalJuego');
   pintarCaja($('caja'), 0);
-  $('otra').hidden=true;
   $('practicar').hidden=false;
   $('practicar').textContent=T('practicar');
+  if(AMISTOSO){
+    $('otra').hidden=false; $('otra').textContent=T('otroAmistoso');
+  }else{
+    $('otra').hidden=true;
+  }
   $('fin').hidden=false;
 }
 
@@ -1480,6 +1535,24 @@ var RETO=pr('c'), JUGADOR=pr('p'), LLAVE_RUN=pr('k');
 var JUEGO = !!(RETO && JUGADOR && LLAVE_RUN && pr('official')==='1');
 var CUARTOS=4;
 
+/* EL SCRIMMAGE.
+
+   El juego completo — cuatro cuartos, reloj, chicharra, marcador —
+   pero sin reto, sin padrinos y sin servidor. Nada sale de este
+   teléfono.
+
+   Hace falta porque practicar y jugar son cosas distintas, y hasta
+   ahora sólo se podía ensayar la primera. Una tirada suelta no
+   enseña a administrar cuatro cuartos: cuándo apretar, qué se siente
+   ir corto en el tercero, cuánto cansa. Eso sólo se aprende jugándolo
+   entero, y nadie debería estrenarse en eso el día que hay dinero
+   encima.
+
+   Y de paso sirve para enseñarlo: se juega uno delante de quien sea,
+   con cero papeleo. */
+var AMISTOSO=false;
+function enCuartos(){ return JUEGO || AMISTOSO }
+
 var cuartos=[];          // [{q,points,level}] lo que ya está guardado
 var cuartoActual=0;      // el que se está jugando ahora, 0 = ninguno
 var enPractica=false;    // practicando entre cuartos
@@ -1546,6 +1619,7 @@ function textoVentana(){
 function pintarTapaJuego(){
   if(!JUEGO) return;
   $('goCabeza').hidden=true;      // el juego no se juega con la cabeza, nunca
+  $('goAmistoso').hidden=true;    // ni se practica a medias: es su juego
   $('tapaReq').hidden=true;
   $('tapaMod').hidden=true;
   $('tapaQuien').hidden=false;
@@ -1728,7 +1802,8 @@ function bucle(){
 pintarTextos();
 if(JUEGO) traerEstadoJuego();
 
-function arrancar(conCabeza){
+function arrancar(que){
+  var conCabeza = (que==='cabeza');
   if(JUEGO) conCabeza=false;      // el juego nunca se juega con la cabeza
   if(typeof THREE==='undefined'){
     $('tapaP').textContent = LANG==='es'
@@ -1764,12 +1839,19 @@ function arrancar(conCabeza){
   if(MODO==='cabeza' && !calHecha){ empezarMedida(); return }
   if(MODO==='cabeza') recentrar();
   if(JUEGO){ armarCuarto(proximoCuarto()); return }
+  if(que==='amistoso'){ empezarAmistoso(); return }
   armarSesion();
 }
-$('go').onclick=function(){ arrancar(false) };
-$('goCabeza').onclick=function(){ arrancar(true) };
+$('go').onclick=function(){ arrancar('practica') };
+$('goCabeza').onclick=function(){ arrancar('cabeza') };
 $('otra').onclick=function(){
   pararCuenta();
+  if(AMISTOSO && !enPractica){
+    if(finDelJuego){ empezarAmistoso(); return }   // otro scrimmage entero
+    var qa=proximoCuarto();
+    if(qa) armarCuarto(qa); else empezarAmistoso();
+    return;
+  }
   if(!JUEGO){ armarSesion(); return }
   /* Hay un cuarto sin guardar: lo único que se puede hacer es
      volver a mandarlo. */
@@ -1784,6 +1866,7 @@ $('otra').onclick=function(){
   if(q && !finDelJuego && quedaVentana()>0) armarCuarto(q); else volverAPortada();
 };
 $('practicar').onclick=function(){ pararCuenta(); armarPractica() };
+$('goAmistoso').onclick=function(){ arrancar('amistoso') };
 })();
 </script>
 </body>
