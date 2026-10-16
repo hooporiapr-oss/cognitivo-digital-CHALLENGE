@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Fortress en la cancha — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   FORTRESS EN LA CANCHA — TELÉFONO Y COMPUTADORA
+
+   Es la cancha de fortress-vr.html: el piso, las líneas, el aro, las
+   cinco bolas del 2-1-2 puestas de pie delante de uno. Y es el juego
+   de fortress.html nota por nota — la misma rotación, las mismas
+   cornetas, los mismos puntos triangulares — para que una cadena de 7
+   signifique lo mismo aquí, en el casco y en el juego de tocar.
+
+   Lo que NO lleva, y es a propósito:
+
+   · Nada de WebXR. Ya sabemos lo que da el casco y no es eso.
+   · Nada de giroscopio ni de medir la cabeza. Aquí hay un dedo y hay
+     un ratón: son mejores que la cabeza y no hay que calibrar nada.
+   · Nada de aguantar la vista. Se toca la bola y ya. Lo de aguantar
+     existe en el casco porque allí no hay dedo; traerlo aquí sería
+     hacer el juego más lento a cambio de nada.
+   · Nada de punto de mira. En el teléfono apuntas con el dedo y en la
+     computadora ya hay un cursor dibujado por el sistema.
+   · Nada de panel dentro de la escena. Eso era para leerlo con el
+     casco puesto. Aquí el marcador es HTML encima del lienzo: se lee
+     mejor, y de paso desaparece el problema que tumbaba a salida.html
+     — repintar una textura en cada cuadro freía la tarjeta del
+     teléfono.
+
+   LA CÁMARA NO SE MUEVE, y eso es la decisión que hace que esto
+   funcione en cualquier pantalla. Las cinco bolas no van a
+   coordenadas fijas: se colocan calculando por dónde pasa el rayo de
+   cada esquina de la pantalla de ESTE aparato. En un teléfono de pie
+   la zona se cierra, en una computadora ancha se abre, y las cinco
+   quedan siempre a la vista y siempre alcanzables. En el casco hay
+   que girar la cabeza porque allí la cabeza es el mando; aquí girar
+   no aporta nada y, si alguien gira y se pierde, se queda trancado.
+   ══════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0B1724;
+  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%;overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
+  touch-action:manipulation}
+
+/* ── El marcador. Encima del lienzo y sin robar toques. ─────────── */
+#hud{position:fixed;top:0;left:0;right:0;z-index:5;pointer-events:none;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:calc(10px + env(safe-area-inset-top,0px)) 14px 0;color:#fff}
+#hud .col{text-align:center;min-width:72px}
+#hud .n{display:block;font-weight:900;font-size:clamp(1.5rem,6vw,2.2rem);
+  line-height:1;letter-spacing:-.02em}
+#hud .k{display:block;font-size:.62rem;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;color:#7F93A6;margin-top:3px}
+#estado{font-weight:900;font-size:clamp(.85rem,3.4vw,1.1rem);letter-spacing:.1em;
+  padding:9px 14px;border-radius:999px;background:rgba(5,14,24,.72);
+  color:#FFC247;align-self:flex-start;margin-top:4px}
+#estado.tu{color:#6FD83C}
+
+/* Un teléfono acostado deja 390 puntos de alto y el marcador se come
+   el tablero. Se encoge y deja de estorbar. */
+@media (max-height:470px){
+  #hud{padding-top:6px}
+  #hud .n{font-size:1.25rem}
+  #hud .k{font-size:.56rem}
+  #estado{font-size:.78rem;padding:6px 11px}
+}
+#pista{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  z-index:5;pointer-events:none;text-align:center;color:#5E7488;
+  font-size:.72rem;font-weight:800;letter-spacing:.04em}
+
+/* ── La portada y el final. Mismo molde. ────────────────────────── */
+.capa{position:fixed;inset:0;z-index:10;background:rgba(11,23,36,.94);color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px;gap:13px}
+.capa[hidden]{display:none}
+.capa h1{font-size:clamp(1.7rem,7vw,2.9rem);font-weight:900;letter-spacing:-.02em}
+.capa h1 em{font-style:normal;color:#FF7A18}
+.capa p{color:#C8D6E2;font-size:.98rem;max-width:36ch;line-height:1.55}
+.capa small{color:#7F93A6;font-size:.78rem;max-width:34ch;line-height:1.5}
+.capa button{background:#FF7A18;color:#0B1724;border:0;border-radius:6px;
+  font:inherit;font-weight:900;font-size:1.1rem;padding:16px 30px;cursor:pointer}
+.marca{font-size:1.6rem;font-weight:900;line-height:1;color:#6FD83C}
+.grande{font-size:clamp(3.4rem,18vw,6rem);font-weight:900;line-height:.95;
+  color:#FF7A18;letter-spacing:-.03em}
+#lang{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;z-index:12;
+  border:1px solid #33465A;background:rgba(11,23,36,.6);color:#C8D6E2;border-radius:999px;
+  padding:7px 14px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+
+<button id="lang">EN</button>
+
+<div id="hud" hidden>
+  <div class="col"><span class="n" id="hNivel">0</span><span class="k" id="kNivel">cadena</span></div>
+  <div id="estado">MIRA</div>
+  <div class="col"><span class="n" id="hPts">0</span><span class="k" id="kPts">puntos</span></div>
+</div>
+<div id="pista" hidden></div>
+
+<div class="capa" id="tapa">
+  <h1>Fortress <em>en la cancha</em></h1>
+  <p id="tapaP"></p>
+  <button id="go"></button>
+  <small id="tapaS"></small>
+</div>
+
+<div class="capa" id="fin" hidden>
+  <div class="marca" id="finK"></div>
+  <div class="grande" id="finN">0</div>
+  <p id="finP"></p>
+  <button id="otra"></button>
+  <small id="finS"></small>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+// ──────────────────────────────────────────────────────────────────
+//  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
+//  inglés en una página lo deje elegido en todas.
+// ──────────────────────────────────────────────────────────────────
+var S={
+  es:{
+    p:'La cadena crece de una en una. Mira bien dónde se encienden y '+
+      'repítelas en el mismo orden. Un fallo acaba la tirada.',
+    go:'Empezar',
+    sDedo:'Toca la bola. Nada que instalar.',
+    sRaton:'Haz clic en la bola, o usa las teclas 1 a 5.',
+    mira:'MIRA',
+    turno:'AHORA TÚ',
+    nivel:'cadena',
+    puntos:'puntos',
+    finK:'SE ROMPIÓ',
+    fin:'Cadena más larga',
+    otra:'Otra vez',
+    mejor:'Tu mejor cadena: ',
+    teclas:'1 2 arriba · 3 el medio · 4 5 abajo'
+  },
+  en:{
+    p:'The chain grows by one each round. Watch where the balls light up '+
+      'and repeat them in the same order. One miss ends the run.',
+    go:'Start',
+    sDedo:'Tap the ball. Nothing to install.',
+    sRaton:'Click the ball, or use keys 1 to 5.',
+    mira:'WATCH',
+    turno:'YOUR TURN',
+    nivel:'chain',
+    puntos:'points',
+    finK:'BROKEN',
+    fin:'Longest chain',
+    otra:'Play again',
+    mejor:'Your best chain: ',
+    teclas:'1 2 top · 3 middle · 4 5 bottom'
+  }
+};
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en') }catch(e){}
+function T(k){ return (S[LANG]&&S[LANG][k])||S.es[k] }
+function $(id){ return document.getElementById(id) }
+
+/* Hay ratón o hay dedo, y el texto de la portada cambia: decirle
+   "toca la bola" a quien está en una computadora es decirle nada. */
+var HAY_FINO=false;
+try{ HAY_FINO=!!(window.matchMedia&&matchMedia('(pointer:fine)').matches) }catch(e){}
+
+function pintarTextos(){
+  document.documentElement.lang=LANG;
+  $('lang').textContent=LANG==='es'?'EN':'ES';
+  $('tapaP').textContent=T('p');
+  $('go').textContent=T('go');
+  $('tapaS').textContent=HAY_FINO?T('sRaton'):T('sDedo');
+  $('kNivel').textContent=T('nivel');
+  $('kPts').textContent=T('puntos');
+  $('finK').textContent=T('finK');
+  $('otra').textContent=T('otra');
+  pintarPista();
+}
+function pintarPista(){
+  var p=T('mejor')+mejor+(HAY_FINO?'   ·   '+T('teclas'):'');
+  $('pista').textContent=p;
+}
+$('lang').onclick=function(){
+  LANG=LANG==='es'?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG);localStorage.setItem('cp-lang',LANG) }catch(e){}
+  pintarTextos(); pintarHud();
+};
+
+// ══════════════════════════════════════════════════════════════════
+//  LA ZONA SE MUEVE COMO SE MUEVE DE VERDAD
+//
+//  El 2-1-2: dos arriba (0 y 1), uno en el medio (2), dos abajo (3 y
+//  4). El balón pasa al de al lado o al del medio; lo único que no
+//  pasa nunca es el salto en diagonal. Y la primera bola sale de
+//  arriba, por donde sube el balón. Copiado tal cual de
+//  fortress.html: si la rotación fuera distinta, una cadena de 7 no
+//  significaría lo mismo en los dos sitios.
+// ══════════════════════════════════════════════════════════════════
+var ROTATION={ 0:[1,2,3], 1:[0,2,4], 2:[0,1,3,4], 3:[0,2,4], 4:[1,2,3] };
+var BALL_UP=[0,1];
+function nextInRotation(prev){
+  if(prev===undefined||prev===null) return BALL_UP[Math.floor(Math.random()*BALL_UP.length)];
+  var opts=ROTATION[prev]||[0,1,2,3,4];
+  return opts[Math.floor(Math.random()*opts.length)];
+}
+
+// Puntos triangulares: llegar a 7 vale mucho más que siete veces 1.
+function pointsFor(level){ return level>0 ? (level*(level+1))/2 : 0 }
+
+/* Las notas de corneta. La posición manda, no el color: una esquina
+   canta siempre la misma nota, y eso es lo que convierte un patrón en
+   una tonada que se queda. 110 × 2,3,4,5,6 — serie armónica. */
+var TONES=[220,330,440,550,660];
+var audioCtx=null;
+function abrirAudio(){
+  try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)() }catch(e){}
+}
+function playTone(i){
+  if(!audioCtx)return;
+  var f=TONES[i%TONES.length], now=audioCtx.currentTime;
+  try{
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='triangle';
+    o.frequency.setValueAtTime(f,now);
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(.3,now+0.012);
+    g.gain.exponentialRampToValueAtTime(.0001,now+0.30);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+0.32);
+  }catch(e){}
+}
+function playThump(){
+  if(!audioCtx)return;
+  var now=audioCtx.currentTime;
+  try{
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(90,now);
+    o.frequency.exponentialRampToValueAtTime(42,now+0.13);
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(.45,now+0.008);
+    g.gain.exponentialRampToValueAtTime(.0001,now+0.16);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+0.18);
+  }catch(e){}
+}
+
+// ──────────────────────────────────────────────────────────────────
+//  LA ESCENA
+// ──────────────────────────────────────────────────────────────────
+var scene,camera,renderer,raycaster;
+var balls=[];
+var OJO=1.55;              // altura de los ojos, de pie
+var RADIO_GEO=0.36;        // el radio con que se hace la esfera; la
+                           // escala la ajusta luego a la pantalla
+
+/* ══════════════════════════════════════════════════════════════════
+   DÓNDE VAN LAS CINCO BOLAS
+
+   No en coordenadas fijas. En fortress-vr.html lo son porque allí se
+   gira la cabeza para alcanzarlas, y con eso el ancho de la pantalla
+   da igual. Aquí la cámara está clavada, así que coordenadas fijas
+   significan que en un teléfono de pie dos bolas quedan fuera del
+   borde — y una bola fuera del borde no es difícil, es imposible.
+
+   Así que la zona se describe en ÁNGULOS desde el ojo, y el ancho de
+   esos ángulos lo decide la pantalla de este aparato: en un teléfono
+   de pie la zona se cierra, en un monitor ancho se abre, y las cinco
+   quedan siempre dentro del borde.
+
+           0       1
+               2
+         3           4
+
+   Con un tope, que es lo que enseñó la primera prueba: dejando que la
+   zona se abriera hasta llenar el monitor, las bolas de los lados
+   salían estiradas en óvalos contra el borde — una esfera mirada de
+   muy reojo se proyecta así, y parecían otra cosa. 26 grados es hasta
+   donde una bola sigue pareciendo una bola. Pasado eso la zona no se
+   abre más y queda centrada, que es como se lee el diagrama de todas
+   formas.
+   ══════════════════════════════════════════════════════════════════ */
+var ABANICO=[            // fracción de giro, fracción de alto
+  [-0.66,  1.00],        // 0 arriba izq
+  [ 0.66,  1.00],        // 1 arriba der
+  [ 0.00,  0.07],        // 2 el del medio
+  [-1.00, -0.90],        // 3 abajo izq
+  [ 1.00, -0.90]         // 4 abajo der
+];
+var TOPE_GIRO=23, TOPE_ALTO=16;   // grados
+var MARGEN=7;                     // grados de aire contra el borde
+var DISTANCIA=4.2;                // metros desde el ojo
+var FRACCION=0.075;               // radio de la bola, en fracción de media pantalla
+
+var ojoVec=new THREE.Vector3(0,0,0);
+var dirAux=new THREE.Vector3();
+function colocarBolas(){
+  if(!camera||!balls.length) return;
+  ojoVec.set(0,OJO,0);
+  var G=Math.PI/180;
+  var medioAlto=Math.atan(Math.tan(camera.fov*G/2))/G;              // = fov/2
+  var medioAncho=Math.atan(Math.tan(camera.fov*G/2)*camera.aspect)/G;
+  var giroMax =Math.max(6, Math.min(medioAncho-MARGEN, TOPE_GIRO));
+  var altoMax =Math.max(6, Math.min(medioAlto -MARGEN, TOPE_ALTO));
+  /* Todas a la misma distancia, así que todas se ven del mismo tamaño
+     y el diagrama se lee plano, como en el juego de tocar. El radio
+     sale de la pantalla y no al revés: una bola es siempre el 15% del
+     alto, en el teléfono y en el monitor. */
+  var radio=FRACCION*Math.tan(camera.fov*G/2)*DISTANCIA;
+  for(var i=0;i<balls.length;i++){
+    var gir=ABANICO[i][0]*giroMax*G, alt=ABANICO[i][1]*altoMax*G;
+    dirAux.set(Math.sin(gir)*Math.cos(alt), Math.sin(alt), -Math.cos(gir)*Math.cos(alt));
+    balls[i].position.copy(dirAux).multiplyScalar(DISTANCIA).add(ojoVec);
+    balls[i].userData.base=radio/RADIO_GEO;
+    balls[i].scale.setScalar(balls[i].userData.base);
+  }
+}
+
+/* El ángulo de la cámara también depende de la pantalla. Un teléfono
+   de pie necesita abrir mucho para que quepan arriba y abajo; un
+   monitor ancho con ese mismo ángulo se llena de piso vacío y estira
+   todo contra los bordes. */
+function anguloDeVista(){ return (innerWidth/innerHeight) >= 1 ? 56 : 68 }
+
+function construir(){
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0B1724);
+  /* La niebla llega hasta más lejos que el piso, a propósito: así el
+     borde del piso no se ve nunca como una raya recta cruzando la
+     pantalla, sino como el fondo tragándose la cancha. */
+  scene.fog=new THREE.Fog(0x0B1724, 10, 26);
+
+  camera=new THREE.PerspectiveCamera(anguloDeVista(), innerWidth/innerHeight, 0.1, 100);
+  camera.position.set(0,OJO,0);
+
+  renderer=new THREE.WebGLRenderer({antialias:true});
+  /* Tope de 2: en un teléfono con pantalla de 3x, pintar a 3x es
+     triplicar el trabajo para una diferencia que nadie ve a un palmo
+     de la cara, y es justo lo que calienta el aparato. */
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.setSize(innerWidth,innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  /* Luz de cielo bajita y foco un poco más fuerte. Con el cielo a
+     tope, el piso — que mira justo hacia arriba — se ponía azul
+     brillante y se comía media pantalla; las bolas, que miran a todos
+     lados, casi no lo notan. */
+  scene.add(new THREE.HemisphereLight(0xbfe3ff,0x16222f,0.72));
+  var key=new THREE.DirectionalLight(0xffffff,0.68);
+  key.position.set(2,6,1); scene.add(key);
+
+  dibujarCancha();
+
+  /* Las bolas. Naranja Cada Punto; la luz propia (emissive) es la que
+     sube cuando se encienden, así que empieza apagada. */
+  var geo=new THREE.SphereGeometry(RADIO_GEO,28,20);
+  for(var i=0;i<5;i++){
+    var mat=new THREE.MeshStandardMaterial({
+      color:0xFF7A18, roughness:.45, metalness:.05, emissive:0x000000
+    });
+    var m=new THREE.Mesh(geo,mat);
+    m.userData.i=i; m.userData.base=1;
+    scene.add(m); balls.push(m);
+  }
+  colocarBolas();
+
+  raycaster=new THREE.Raycaster();
+
+  addEventListener('resize',alCambiarTamano);
+  addEventListener('orientationchange',alCambiarTamano);
+}
+
+/* Girar el teléfono cambia el ancho y con él la zona: hay que volver
+   a colocar las cinco, o media zona se sale del borde. */
+function alCambiarTamano(){
+  if(!renderer) return;
+  camera.aspect=innerWidth/innerHeight;
+  camera.fov=anguloDeVista();
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  colocarBolas();
+}
+
+/* Algo debajo y detrás, para que las bolas estén EN un sitio. Sin
+   esto son cinco puntos flotando en negro y se pierde la idea de la
+   zona: el piso y las líneas son la mitad de lo que se entrena. */
+function dibujarCancha(){
+  /* El piso, oscuro y muy cerca del color del fondo. La primera
+     versión era azul claro y, como el horizonte cae justo en el medio
+     de la pantalla, media pantalla quedaba de una losa azul lisa: no
+     parecía una cancha, parecía agua. Lo que hace cancha son las
+     líneas, así que el piso se apaga y las líneas se encienden. */
+  var suelo=new THREE.Mesh(
+    new THREE.PlaneGeometry(60,60),
+    new THREE.MeshStandardMaterial({color:0x0B1E2E, roughness:.95})
+  );
+  suelo.rotation.x=-Math.PI/2;
+  scene.add(suelo);
+
+  var tinta=new THREE.LineBasicMaterial({color:0x4C85B0});
+  function linea(pts,alto){
+    var y=(alto===undefined)?0.02:alto;
+    var g=new THREE.BufferGeometry().setFromPoints(
+      pts.map(function(p){ return new THREE.Vector3(p[0],y,p[1]) }));
+    scene.add(new THREE.Line(g,tinta));
+  }
+  // La botella y el fondo, lo justo para leer dónde estás parado.
+  linea([[-2.45,-7.6],[2.45,-7.6],[2.45,-2.2],[-2.45,-2.2],[-2.45,-7.6]]);
+  linea([[-7.5,-7.6],[7.5,-7.6]]);
+  // El semicírculo del tiro libre.
+  var arco=[];
+  for(var a=0;a<=Math.PI;a+=Math.PI/24) arco.push([Math.cos(a)*1.8,-2.2+Math.sin(a)*1.8]);
+  linea(arco);
+  /* El triple. Es la línea que más cerca pasa de donde uno está
+     parado, y por eso es la que de verdad dice "esto es una cancha":
+     las otras quedan lejos y se aplastan contra el horizonte. */
+  var tres=[[-6.6,0.4],[-6.6,-2.0]];
+  for(var b=Math.PI;b>=0;b-=Math.PI/30) tres.push([Math.cos(b)*6.6,-2.0-Math.sin(b)*2.2]);
+  tres.push([6.6,0.4]);
+  linea(tres);
+
+  /* El aro, detrás y arriba: da el "hacia dónde" que convierte cinco
+     posiciones en una zona con frente y fondo. */
+  var aro=new THREE.Mesh(
+    new THREE.TorusGeometry(0.52,0.045,10,36),
+    new THREE.MeshStandardMaterial({color:0xE8622A, roughness:.5,
+      emissive:0x3A1405})
+  );
+  aro.rotation.x=Math.PI/2;
+  aro.position.set(0,4.75,-9.1);
+  scene.add(aro);
+  /* El tablero, dibujado y no rellenado. Relleno era un rectángulo
+     gris translúcido flotando entre las dos bolas de arriba, y no
+     parecía un tablero: parecía un fallo de pintado. */
+  function tableroLinea(pts){
+    var g=new THREE.BufferGeometry().setFromPoints(
+      pts.map(function(p){ return new THREE.Vector3(p[0],p[1],-9.45) }));
+    scene.add(new THREE.Line(g,tinta));
+  }
+  tableroLinea([[-1.1,4.45],[1.1,4.45],[1.1,5.75],[-1.1,5.75],[-1.1,4.45]]);
+  tableroLinea([[-0.42,4.62],[0.42,4.62],[0.42,5.22],[-0.42,5.22],[-0.42,4.62]]);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  EL JUEGO
+//
+//  Igual que fortress.html, nota por nota: la cadena crece de una en
+//  una, se repite, un fallo acaba la tirada, y la puntuación es el
+//  último nivel que se aguantó COMPLETO — el que se estaba intentando
+//  cuando se rompió no cuenta.
+// ══════════════════════════════════════════════════════════════════
+var LIGHT_MS=333, GAP_MS=167, LEVEL_PAUSE_MS=800;
+
+var fase='tapa';          // tapa | mirando | turno | roto | fin
+var cadena=[], nivel=0, voy=0;
+var temporizadores=[];
+
+/* La mejor cadena se guarda aquí y SÓLO aquí. fortress.html manda la
+   suya a la base, porque allí el nene juega con su código y el padrino
+   la ve en la página del pledge. Esta página es práctica suelta: sin
+   código, sin campaña, sin nada que mandar. Llave propia para que
+   practicar no infle el número que ven los padrinos. */
+var LLAVE='f3d-best', mejor=0;
+try{ mejor=parseInt(localStorage.getItem(LLAVE)||'0',10)||0 }catch(e){}
+
+function limpiarT(){ temporizadores.forEach(clearTimeout); temporizadores=[] }
+function apagarTodas(){
+  balls.forEach(function(b){
+    b.material.emissive.setHex(0x000000);
+    b.scale.setScalar(b.userData.base);
+  });
+}
+function encender(i){
+  balls[i].material.emissive.setHex(0xFFF1D6);
+  balls[i].scale.setScalar(balls[i].userData.base*1.18);
+  playThump(); playTone(i);
+}
+function apagar(i){
+  balls[i].material.emissive.setHex(0x000000);
+  balls[i].scale.setScalar(balls[i].userData.base);
+}
+
+function pintarHud(){
+  $('hNivel').textContent=String(nivel);
+  $('hPts').textContent=String(pointsFor(Math.max(0,nivel-1)));
+  var e=$('estado');
+  e.textContent = fase==='turno' ? T('turno') : T('mira');
+  e.className = fase==='turno' ? 'tu' : '';
+}
+
+function empezarTirada(){
+  limpiarT(); apagarTodas();
+  cadena=[]; nivel=0; voy=0;
+  $('fin').hidden=true;
+  $('hud').hidden=false;
+  $('pista').hidden=false;
+  fase='mirando';
+  pintarHud();
+  /* Un respiro antes de la primera: si la primera bola se enciende en
+     el mismo instante en que desaparece la portada, nadie la ve. */
+  temporizadores.push(setTimeout(siguienteNivel, 600));
+}
+
+function siguienteNivel(){
+  if(fase==='roto'||fase==='fin') return;
+  voy=0;
+  cadena.push(nextInRotation(cadena.length?cadena[cadena.length-1]:null));
+  nivel=cadena.length;
+  fase='mirando';
+  pintarHud();
+  mostrar(0);
+}
+
+function mostrar(i){
+  if(fase==='roto'||fase==='fin') return;
+  if(i>=cadena.length){
+    fase='turno'; pintarHud();
+    return;
+  }
+  var idx=cadena[i];
+  encender(idx);
+  temporizadores.push(setTimeout(function(){
+    apagar(idx);
+    temporizadores.push(setTimeout(function(){ mostrar(i+1) }, GAP_MS));
+  }, LIGHT_MS));
+}
+
+/* La única entrada del juego. Da igual si vino de un dedo, de un clic
+   o de una tecla: llega aquí con un número de bola y nada más. */
+function contestar(idx){
+  if(fase!=='turno') return;
+  if(idx===cadena[voy]){
+    encender(idx);
+    temporizadores.push(setTimeout(function(){ apagar(idx) },220));
+    voy++;
+    if(voy>=cadena.length){
+      fase='mirando'; pintarHud();
+      temporizadores.push(setTimeout(siguienteNivel, LEVEL_PAUSE_MS));
+    }
+  }else{
+    balls[idx].material.emissive.setHex(0xC2261B);
+    balls[idx].scale.setScalar(balls[idx].userData.base*1.18);
+    romper();
+  }
+}
+
+function romper(){
+  if(fase==='roto'||fase==='fin') return;
+  fase='roto'; limpiarT();
+  /* El nivel que se estaba intentando no se completó, así que la
+     puntuación es el último que se aguantó entero. */
+  var final=Math.max(0, nivel-1);
+  if(final>mejor){
+    mejor=final;
+    try{ localStorage.setItem(LLAVE,String(mejor)) }catch(e){}
+  }
+  temporizadores.push(setTimeout(function(){
+    apagarTodas();
+    fase='fin';
+    $('finN').textContent=String(final);
+    $('finP').textContent=T('fin')+'  ·  '+pointsFor(final)+' '+T('puntos');
+    $('finS').textContent=T('mejor')+mejor;
+    $('fin').hidden=false;
+    $('hud').hidden=true;
+    $('pista').hidden=true;
+  },750));
+}
+
+// ──────────────────────────────────────────────────────────────────
+//  TOCAR, HACER CLIC, O LAS TECLAS
+//
+//  Nada de "aguantar la vista": eso es del casco, donde no hay dedo.
+//  pointerdown y no click, para que la bola responda en el instante en
+//  que se toca — con click hay un retraso de medio parpadeo en algunos
+//  teléfonos y se siente flojo.
+// ──────────────────────────────────────────────────────────────────
+var pos2=new THREE.Vector2();
+function bolaEn(x,y){
+  if(!raycaster) return -1;
+  pos2.set((x/innerWidth)*2-1, -(y/innerHeight)*2+1);
+  raycaster.setFromCamera(pos2, camera);
+  var hit=raycaster.intersectObjects(balls);
+  return hit.length ? hit[0].object.userData.i : -1;
+}
+addEventListener('pointerdown',function(e){
+  if(fase!=='turno') return;
+  var i=bolaEn(e.clientX,e.clientY);
+  if(i>=0) contestar(i);
+},{passive:true});
+
+/* Con ratón, encender un poco la bola por encima de la que está el
+   cursor. Es la única pista de puntería que hace falta aquí, y le
+   dice al que juega que el juego está vivo antes de que toque nada. */
+var encima=-1;
+addEventListener('pointermove',function(e){
+  if(!HAY_FINO||!renderer) return;
+  var i=(fase==='turno') ? bolaEn(e.clientX,e.clientY) : -1;
+  if(i===encima) return;
+  if(encima>=0 && encima!==i && balls[encima].material.emissive.getHex()===0x2A2016)
+    apagar(encima);
+  encima=i;
+  if(i>=0 && balls[i].material.emissive.getHex()===0x000000)
+    balls[i].material.emissive.setHex(0x2A2016);
+  renderer.domElement.style.cursor = i>=0 ? 'pointer' : 'default';
+},{passive:true});
+
+/* Teclas para la computadora: repetir una cadena de nueve con el
+   ratón cansa, y el que practica en serio practica más rápido con los
+   dedos ya puestos. De izquierda a derecha y de arriba abajo, como se
+   ve en la pantalla. */
+var TECLAS={'1':0,'2':1,'3':2,'4':3,'5':4};
+addEventListener('keydown',function(e){
+  if(fase==='fin' && (e.key==='Enter'||e.key===' ')){ empezarTirada(); return }
+  var i=TECLAS[e.key];
+  if(i!==undefined) contestar(i);
+});
+
+// ──────────────────────────────────────────────────────────────────
+//  EL BUCLE. Aquí no decide nada: pinta. Lo que cambia el juego lo
+//  cambian los toques y los temporizadores.
+// ──────────────────────────────────────────────────────────────────
+function bucle(){
+  requestAnimationFrame(bucle);
+  if(renderer) renderer.render(scene,camera);
+}
+
+// ──────────────────────────────────────────────────────────────────
+//  ARRANQUE
+// ──────────────────────────────────────────────────────────────────
+pintarTextos();
+
+function arrancar(){
+  if(typeof THREE==='undefined'){
+    $('tapaP').textContent = LANG==='es'
+      ? 'No cargó three.js — sin red, o bloqueado.'
+      : 'three.js did not load — no network, or blocked.';
+    return;
+  }
+  abrirAudio();          // el audio sólo abre dentro de un toque de verdad
+  $('tapa').hidden=true;
+  $('lang').style.display='none';
+  if(!renderer){ construir(); bucle() }
+  empezarTirada();
+}
+$('go').onclick=arrancar;
+$('otra').onclick=empezarTirada;
+})();
+</script>
+</body>
+</html>
