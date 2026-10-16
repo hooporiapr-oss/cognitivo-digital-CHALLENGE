@@ -138,11 +138,22 @@ footer .f-dot{padding:0 7px;opacity:.5}
         <select id="camp" onchange="cambiar()"></select>
       </div>
 
-      <div id="tally" class="tally"></div>
-      <div id="wait"></div>
-      <div id="plist"></div>
-      <p class="msg" id="lm"></p>
+      <!-- ══════════════════════════════════════════════════════════
+           ESCRIBIR LOS NOMBRES VA PRIMERO
 
+           Estaba al final, debajo de la lista, como si apuntar a los
+           nenes fuera lo último. Es lo PRIMERO: un entrenador abre
+           esto con la plantilla vacía. Y es el camino corto de todo el
+           sistema — doce nombres los escribe en dos minutos la única
+           persona que de verdad quiere que esto pase y que además se
+           los sabe. Lo otro — mandar el enlace y que cada familia se
+           apunte sola — son doce casas que tienen que hacer algo, y
+           doce sitios donde se para.
+
+           Y lo que escribe el entrenador no hay que aprobarlo: lo
+           puso él. La cola de "esperando que digas que sí" sólo existe
+           para los que se apuntan solos.
+           ══════════════════════════════════════════════════════════ -->
       <h2 id="tAddH"></h2>
       <div class="box">
         <label for="paste" id="tPasteL"></label>
@@ -154,6 +165,11 @@ footer .f-dot{padding:0 7px;opacity:.5}
         <p class="msg" id="am"></p>
       </div>
 
+      <div id="tally" class="tally"></div>
+      <div id="wait"></div>
+      <div id="plist"></div>
+      <p class="msg" id="lm"></p>
+
       <a class="btn line" href="mi-equipo.html" id="tBack"></a>
     </div>
 
@@ -162,7 +178,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
 
 <footer>
   <div class="wrap">
-    <a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
+    <a href="ayuda.html">Ayuda</a><span class="f-dot">·</span><a href="index.html">Cada Punto</a><span class="f-dot">·</span><a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a>
   </div>
 </footer>
 
@@ -199,7 +215,7 @@ var S={
     yes:'Aprobar', no:'Rechazar',
     askNo:'¿Rechazar a {N}? Si se apuntó por error, desaparece.',
     okYes:'{N} está en la plantilla.', okNo:'{N} fuera.',
-    empty:'Todavía no hay nadie. Añade los nombres abajo.',
+    empty:'Todavía no hay nadie. Escribe los nombres arriba — tú te los sabes, y así no hay que esperar por nadie.',
     joined:'se apuntó solo',
     noSquad:'sin escuadra',
     edit:'Arreglar', take:'Sacar', back:'Devolver', save:'Guardar', cancel:'Dejarlo',
@@ -238,7 +254,7 @@ var S={
     yes:'Approve', no:'Decline',
     askNo:'Decline {N}? If they signed up by mistake, they disappear.',
     okYes:'{N} is on the roster.', okNo:'{N} declined.',
-    empty:'Nobody yet. Add the names below.',
+    empty:'Nobody yet. Type the names above — you know them, and that way nobody has to wait.',
     joined:'signed up on their own',
     noSquad:'no squad',
     edit:'Fix', take:'Take out', back:'Put back', save:'Save', cancel:'Leave it',
