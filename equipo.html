@@ -165,16 +165,18 @@ function rpc(name, args){
 var S = {
   es:{
     kick:'Inscribe tu equipo',
-    h1:'Tu equipo anota. Tu programa cobra.',
-    lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo. Juegas tus juegos, pones el marcador, y ellos pagan lo que el equipo ganó. Sin vender nada.',
-    s1b:'Pones tu calendario.',
-    s1:'Te damos un código y pones tu calendario completo de una vez — desde el teléfono, en un par de minutos.',
-    s2b:'Los padrinos escogen sus juegos.',
-    s2:'Familia, vecinos, el negocio de la esquina. Cada uno escoge cuánto y en qué juego.',
-    s3b:'Pones el marcador.',
-    s3:'Eso cierra el juego y saca lo que debe cada padrino. Anotan 68 con diez padrinos a diez centavos, y hay $68 listos para cobrar.',
+    h1:'Tus nenes anotan. Tu programa cobra.',
+    lede:'Un día de juego. Cada nene juega cuatro cuartos desde su propio teléfono, y sus padrinos prometieron unos centavos por cada punto suyo. No hay nada que vender, nada que repartir y nada que juntar.',
+    s1b:'Te abrimos la campaña.',
+    s1:'Nos escribes, te la montamos, y te damos tu código. Nadie se da de alta solo — las abrimos una por una, a mano, y nada sale al aire hasta que tú lo digas.',
+    s2b:'Apuntas a tus nenes.',
+    s2:'Pegas los nombres, o mandas el enlace al grupo del equipo y cada familia se apunta sola. Cada nene recibe su propio enlace para mandarle a los suyos.',
+    s3b:'Ponemos el día de juego.',
+    s3:'Nos dices la fecha y las dos horas. Las promesas cierran cuando abre el juego: prometer sabiendo lo que anotó el nene no es prometer, así que los padrinos se buscan antes.',
+    s4b:'Se juega, y se cobra solo.',
+    s4:'Cada nene juega sus cuatro cuartos desde donde esté. El juego guarda los puntos — tú no escribes ningún marcador. Al cerrar la ventana salen los cobros solos y te llega un correo diciendo cuánto.',
     formH:'Dinos de tu equipo',
-    teamL:'Nombre del equipo', teamPh:'Como aparece en el calendario',
+    teamL:'Nombre del equipo', teamPh:'Como lo conocen las familias',
     progL:'Nombre del programa', progPh:'Lo que verán las familias',
     nameL:'Tu nombre', namePh:'Nombre y apellido',
     emailL:'Tu correo', emailPh:'Ahí te escribimos y por ahí entras',
@@ -192,23 +194,25 @@ var S = {
     errGen:'No se pudo enviar. Intenta otra vez.',
     doneH:'Recibido.',
     doneP:'Te escribimos a {E} para confirmarlo y abrirte la campaña. Normalmente el mismo día.',
-    doneMore:'Mientras tanto, así se ve el tablero de un equipo que ya está corriendo.',
-    seeBoard:'Ver un tablero →',
+    doneMore:'Mientras tanto, así se ve el tablero de un equipo el día que juega.',
+    seeBoard:'Ver un tablero',
     fineH:'Lo que cuesta',
     fineP:'Nada por adelantado y nada mensual. Nuestro cargo de 20% se le añade al pago del padrino, nunca se saca de lo tuyo: una promesa de $200 es un pago de $240, y el programa recibe los $200 completos. Lo que recaudes es tuyo — incluido cualquier acuerdo que tengas con tu liga o con quien te trajo.'
   },
   en:{
     kick:'Sign up your team',
-    h1:'Your team scores. Your program gets paid.',
-    lede:'Padrinos pledge a few cents for every point your team scores. You play your games, enter the score, and they pay what the team earned. Nothing to sell.',
-    s1b:'You post your schedule.',
-    s1:'We give you a code, and you post your whole schedule in one go — from your phone, in a couple of minutes.',
-    s2b:'Padrinos pick their games.',
-    s2:'Family, neighbours, the business down the road. Each one picks how much, and which game.',
-    s3b:'You enter the score.',
-    s3:'That closes the game and works out what every padrino owes. Score 68 with ten padrinos at a dime, and $68 is ready to collect.',
+    h1:'Your players score. Your program gets paid.',
+    lede:'One game day. Each child plays four quarters from their own phone, and their padrinos pledged a few cents on every point of theirs. Nothing to sell, nothing to deliver, nobody to gather.',
+    s1b:'We open your campaign.',
+    s1:'You write to us, we set it up, and we give you your code. Nobody signs themselves up — we open them one at a time, by hand, and nothing goes live until you say so.',
+    s2b:'You add your players.',
+    s2:'Paste the names, or send the link to the team group and each family adds themselves. Every child gets their own link to send to their people.',
+    s3b:'We set the game day.',
+    s3:'You tell us the date and the two hours. Pledging closes when the game opens: pledging while knowing what a child scored is not pledging, so padrinos get found beforehand.',
+    s4b:'They play, and the billing happens on its own.',
+    s4:'Each child plays their four quarters from wherever they are. The game records the points — you never type a score. When the window closes the bills go out by themselves, and you get an email saying how much.',
     formH:'Tell us about your team',
-    teamL:'Team name', teamPh:'As it appears on a schedule',
+    teamL:'Team name', teamPh:'As the families know it',
     progL:'Program name', progPh:'What families will see',
     nameL:'Your name', namePh:'First and last name',
     emailL:'Your email', emailPh:'We write here, and you sign in with it',
@@ -281,6 +285,7 @@ function draw(){
       '<div class="s"><b>' + T('s1b') + '</b><span>' + T('s1') + '</span></div>' +
       '<div class="s"><b>' + T('s2b') + '</b><span>' + T('s2') + '</span></div>' +
       '<div class="s"><b>' + T('s3b') + '</b><span>' + T('s3') + '</span></div>' +
+      '<div class="s"><b>' + T('s4b') + '</b><span>' + T('s4') + '</span></div>' +
     '</div>' +
 
     '<h2>' + T('formH') + '</h2>' +
