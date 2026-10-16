@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prueba ATH Móvil — Cada Punto</title>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   PROBAR EL BOTÓN DE ATH MÓVIL, UNA VEZ, DE VERDAD
+
+   Evertec no tiene ambiente de prueba. Lo dicen ellos: no hay sandbox.
+   La única forma de saber si esto funciona es pagarse a uno mismo —
+   de la cuenta personal a la del negocio, con tarjetas distintas en
+   cada una — y el mínimo que acepta son $1.00.
+
+   Esta página no vende nada. Sirve para contestar cuatro preguntas y
+   después se borra o se deja escondida:
+
+     1. ¿Aparece el botón con nuestro token?
+     2. ¿Llega el cobro al teléfono y se puede aprobar?
+     3. ¿Qué nos devuelve exactamente cuando se aprueba? — eso es lo
+        que habrá que guardar para dar un pago por bueno.
+     4. ¿Qué devuelve si se cancela o si se deja vencer?
+
+   El token público se escribe aquí y se queda en este teléfono. Es
+   público a propósito — va dentro de la página, a la vista de
+   cualquiera que la abra, y así lo diseñó Evertec. EL PRIVADO NO VA
+   AQUÍ NI EN NINGUNA PÁGINA: ése sólo sirve para devolver dinero y
+   vive en un servidor, nunca en un navegador.
+
+   Y nada de console.log: esto se prueba con el teléfono en la mano,
+   donde no hay consola que mirar. Todo lo que conteste ATH sale
+   escrito en la pantalla.
+   ══════════════════════════════════════════════════════════════════ */
+:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;--ball:#FF7A18}
+*{box-sizing:border-box}
+body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:#fff;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(640px,92vw);margin:0 auto}
+header{background:#12202E;padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.mark{font-weight:900;color:#fff;text-decoration:none;font-size:1rem}
+.mark em{font-style:normal;color:#FF8A2B}
+.mark i{font-style:normal;color:#6FD83C}
+main{padding:24px 0 60px}
+h1{font-size:1.5rem;font-weight:900;margin:0 0 6px}
+.lede{color:var(--mute);font-size:.94rem;margin:0 0 22px}
+label{display:block;font-size:.76rem;font-weight:900;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mute);margin:0 0 5px}
+input{width:100%;font:inherit;font-size:1rem;padding:12px;border:1px solid var(--line);
+  border-radius:6px;background:#fff;color:var(--ink)}
+.campo{margin:0 0 15px}
+.ayuda{color:var(--mute);font-size:.8rem;margin:5px 0 0}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:6px;font:inherit;
+  font-weight:900;font-size:1rem;padding:14px 24px;cursor:pointer;width:100%}
+.aviso{border-left:3px solid var(--accent);background:#FFF8F3;padding:12px 14px;
+  margin:0 0 22px;font-size:.88rem}
+.aviso b{color:var(--accent)}
+#zona{margin:24px 0 0;padding:20px 0 0;border-top:1px solid var(--line)}
+#ATHMovil_Checkout_Button_payment{margin:0 0 18px;min-height:48px}
+.estado{font-weight:900;font-size:1.05rem;margin:0 0 10px}
+.estado.ok{color:#1C7A3A}
+.estado.no{color:#C2261B}
+pre{background:var(--tint);border:1px solid var(--line);border-radius:6px;padding:12px;
+  font-size:.74rem;line-height:1.45;overflow:auto;white-space:pre-wrap;word-break:break-word;
+  margin:0 0 14px}
+.paso{font-size:.88rem;color:var(--mute);margin:0 0 8px}
+.paso b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header><div class="wrap bar">
+  <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+</div></header>
+
+<main><div class="wrap">
+  <h1>Prueba del botón ATH Móvil</h1>
+  <p class="lede">Una sola pregunta: ¿funciona esto de verdad, en este teléfono,
+     con nuestra cuenta? Evertec no tiene ambiente de prueba, así que se paga
+     de verdad — de tu cuenta personal a la del negocio.</p>
+
+  <div class="aviso">
+    <p style="margin:0 0 6px"><b>El token público va aquí. El privado no.</b></p>
+    <p style="margin:0">El público está hecho para ir dentro de la página, a la vista.
+       El privado sólo sirve para devolver dinero, vive en un servidor y no se
+       escribe nunca en un navegador ni se manda por chat.</p>
+  </div>
+
+  <div class="campo">
+    <label for="tok">Token público (app ATH Business → configuración)</label>
+    <input id="tok" type="text" autocapitalize="off" autocorrect="off" spellcheck="false"
+           placeholder="pégalo aquí">
+    <p class="ayuda">Se queda guardado en este teléfono para no volver a escribirlo.</p>
+  </div>
+
+  <div class="campo">
+    <label for="mto">Cuánto cobrar</label>
+    <input id="mto" type="text" inputmode="decimal" value="1.00">
+    <p class="ayuda">El mínimo que acepta ATH son $1.00. Para probar, con eso basta.</p>
+  </div>
+
+  <button class="btn" id="armar">Poner el botón de ATH</button>
+
+  <div id="zona" style="display:none">
+    <p class="paso"><b>1.</b> Toca el botón naranja de ATH. <b>2.</b> Escribe el
+       teléfono de tu cuenta <i>personal</i>. <b>3.</b> Aprueba el cobro en la app
+       ATH Móvil. <b>4.</b> Lo que conteste sale aquí abajo.</p>
+    <div id="ATHMovil_Checkout_Button_payment"></div>
+    <p class="estado" id="estado">Esperando…</p>
+    <pre id="salida">—</pre>
+  </div>
+</div></main>
+
+<script>
+/* El token se guarda, el monto también: probar desde el teléfono es
+   incómodo y reescribir un token de treinta caracteres cada vez es la
+   mejor forma de abandonar la prueba. */
+var TOK='', MTO='1.00';
+try{ TOK=localStorage.getItem('ath-tok')||''; MTO=localStorage.getItem('ath-mto')||'1.00' }catch(e){}
+document.getElementById('tok').value=TOK;
+document.getElementById('mto').value=MTO;
+
+function pinta(txt, clase){
+  var e=document.getElementById('estado');
+  e.textContent=txt;
+  e.className='estado'+(clase?' '+clase:'');
+}
+function escribe(obj){
+  var s;
+  try{ s=JSON.stringify(obj,null,2) }catch(e){ s=String(obj) }
+  document.getElementById('salida').textContent=s;
+}
+
+/* Las tres que el script de ATH va a llamar. Tienen que ser globales y
+   llamarse exactamente así; authorization() y findPaymentATHM() las
+   pone su propio script, no nosotros. */
+window.authorizationATHM = async function(){
+  pinta('Procesando…');
+  try{
+    var r = await authorization();
+    /* Esto es lo que de verdad importa de toda la prueba: lo que
+       devuelve aquí es lo que habrá que guardar para dar un pago por
+       bueno — el número de referencia, el estado, el monto. */
+    pinta('Pagado', 'ok');
+    escribe(r);
+  }catch(e){
+    pinta('Contestó, pero falló al leerlo', 'no');
+    escribe(String(e && e.message ? e.message : e));
+  }
+};
+window.cancelATHM = async function(){
+  pinta('Cancelado', 'no');
+  try{ escribe(await findPaymentATHM()) }catch(e){ escribe(String(e)) }
+};
+window.expiredATHM = async function(){
+  pinta('Se venció el tiempo', 'no');
+  try{ escribe(await findPaymentATHM()) }catch(e){ escribe(String(e)) }
+};
+
+document.getElementById('armar').onclick=function(){
+  var tok=document.getElementById('tok').value.trim();
+  var mto=parseFloat(String(document.getElementById('mto').value).replace(',','.'));
+
+  if(!tok){ pinta('Falta el token público','no');
+            document.getElementById('zona').style.display='block'; return }
+  if(!(mto>=1 && mto<=1500)){
+    document.getElementById('zona').style.display='block';
+    pinta('El monto tiene que ir entre 1.00 y 1500.00','no'); return;
+  }
+
+  try{ localStorage.setItem('ath-tok',tok); localStorage.setItem('ath-mto',mto.toFixed(2)) }catch(e){}
+
+  /* El script de ATH lee este objeto global cuando carga, así que se
+     deja puesto ANTES de pedirlo. Por eso el botón no se arma solo al
+     abrir la página: primero hace falta el token. */
+  window.ATHM_Checkout = {
+    env:'production',
+    publicToken: tok,
+    timeout: 600,
+    orderType: '',
+    theme: 'btn',
+    lang: 'es',
+    total: Number(mto.toFixed(2)),
+    subtotal: Number(mto.toFixed(2)),
+    tax: 0,
+    metadata1: 'Prueba Cada Punto',
+    metadata2: new Date().toISOString().slice(0,10),
+    items: [{
+      name: 'Prueba',
+      description: 'Prueba del boton de pago',
+      quantity: '1',
+      price: mto.toFixed(2),
+      tax: '0',
+      metadata: 'prueba'
+    }],
+    phoneNumber: ''
+  };
+
+  document.getElementById('zona').style.display='block';
+  pinta('Cargando el botón de ATH…');
+  escribe(window.ATHM_Checkout);
+
+  if(window.__athCargado){
+    pinta('El botón ya está puesto. Recarga la página para cambiar el monto.','no');
+    return;
+  }
+  var sc=document.createElement('script');
+  sc.src='https://payments.athmovil.com/api/modal/js/athmovil_base.js';
+  sc.onload=function(){
+    window.__athCargado=true;
+    pinta('Listo — toca el botón naranja de ATH');
+  };
+  /* Si no carga, hay que saber que el problema es de red o del
+     dominio, y no andar buscando el fallo en el token. */
+  sc.onerror=function(){
+    pinta('No cargó el script de ATH','no');
+    escribe('No se pudo bajar https://payments.athmovil.com/api/modal/js/athmovil_base.js\n'+
+            'Puede ser la red del teléfono, o que ATH no acepte este dominio.');
+  };
+  document.body.appendChild(sc);
+  this.disabled=true;
+};
+</script>
+</body>
+</html>
