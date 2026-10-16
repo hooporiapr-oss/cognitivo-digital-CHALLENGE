@@ -249,6 +249,7 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
    nombre del contrario y la hoja parecía ser para ellos. */
 .forwho{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
   color:var(--accent);text-align:center;margin-bottom:4px}
+.whoteam-sub{margin:2px 0 0;color:var(--mute);font-size:.95rem;font-weight:700}
 .whoteam{text-align:center;margin:0 0 10px}
 .fixture{text-align:center;color:var(--mute);font-size:.95rem;margin:0 0 20px;
   padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -1089,8 +1090,18 @@ function drawPledge(){
         'onerror="this.style.display=\'none\'">'
       : '') +
 
+    /* Si viene por el enlace de un nene, su nombre va AQUÍ TAMBIÉN —
+       en la pantalla donde se paga. Antes decía "estás apoyando a" y
+       debajo el equipo, justo después de haberle dicho en la pantalla
+       anterior que venía por Test 1. Dos pantallas seguidas diciendo
+       cosas distintas sobre a quién va su dinero, y la segunda es la
+       del pago. El equipo sigue saliendo, porque es verdad: el dinero
+       va al programa. Pero primero el nene. */
     '<div class="forwho">' + T('pledgeFor') + '</div>' +
-    '<h1 class="whoteam">' + team + '</h1>' +
+    (deQuienVengo()
+      ? '<h1 class="whoteam">' + esc(deQuienVengo()) + '</h1>' +
+        '<p class="whoteam-sub">' + esc(team) + '</p>'
+      : '<h1 class="whoteam">' + team + '</h1>') +
 
     '<div class="fixture">' +
       '<span class="fx-vs">' + (g.home ? T('vsWord') : T('atWord')) + '</span> ' +
