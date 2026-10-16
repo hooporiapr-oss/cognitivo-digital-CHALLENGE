@@ -277,9 +277,16 @@ function draw(){
     '<p class="lede">' + T('lede') + '</p>' +
     '<label for="nm">' + T('nameL') + '</label>' +
     '<input id="nm" type="text" maxlength="60" placeholder="' + T('namePh') + '" autocomplete="name">' +
-    '<label for="sq">' + T('squadL') + '</label>' +
+    /* La escuadra sólo se pregunta si el programa tiene escuadras: ahí
+       es un toque en una lista y la familia sabe cuál es. Cuando no
+       las hay, antes salía un cuadro en blanco pidiendo que se la
+       inventaran — una pregunta que un papá no puede contestar y que
+       frena el único paso que hay. Si no hay lista, no se pregunta:
+       el entrenador la pone después si hace falta.
+       join() ya aguanta que el campo no exista. */
     (divs().length
-      ? '<select id="sq" onchange="otra()">' +
+      ? '<label for="sq">' + T('squadL') + '</label>' +
+        '<select id="sq" onchange="otra()">' +
           '<option value="">' + T('squadPick') + '</option>' +
           divs().map(function(d){
             var on = WANT_SQUAD && d.toLowerCase() === WANT_SQUAD.trim().toLowerCase();
@@ -290,7 +297,7 @@ function draw(){
         '</select>' +
         '<input id="sqx" type="text" maxlength="30" style="display:none;margin-top:8px" ' +
           'placeholder="' + T('squadPh') + '">'
-      : '<input id="sq" type="text" maxlength="30" placeholder="' + T('squadPh') + '">') +
+      : '') +
     '<button class="btn" onclick="join()">' + T('go') + '</button>' +
     '<p class="msg" id="msg"></p>';
 }
