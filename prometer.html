@@ -351,7 +351,13 @@ function pintar(){
   $('cerradoP').textContent=T('cerradaP');
   $('listoH').textContent=T('listoH');
   $('listoP').textContent=T('listoP');
-  if(ESTADO.played) pintarCaja(ESTADO.quarters||[], ESTADO.total||0);
+  /* El marcador SÓLO cuando ya cerró. Abierta, un marcador hecho le
+     estaría diciendo a un padrino que el nene ya anotó — y de paso le
+     dejaría prometer sabiendo el resultado, que es justo lo que esta
+     página no hace. Pasa de verdad: basta con mover la ventana de un
+     reto que ya se jugó. */
+  if(!ESTADO.open && ESTADO.played) pintarCaja(ESTADO.quarters||[], ESTADO.total||0);
+  else $('caja').hidden=true;
   pintarTarifas(); pintarCuenta();
 }
 
