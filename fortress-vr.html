@@ -116,10 +116,13 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   color:#FF7A18;letter-spacing:-.03em}
 .capa button.otro{background:none;color:#C8D6E2;border:1px solid #33465A;font-size:.95rem;
   padding:13px 24px}
-/* El aviso va pegado debajo del botón y encima de la explicación, que
-   es donde se lee antes de apretar y no después. */
+/* Cada botón dice debajo para qué aparato es, porque "Empezar" a secas
+   en una página que se llama VR se lee como "empezar el casco". El
+   aviso va pegado al botón y encima de la explicación: ahí se lee
+   antes de apretar, y no después. */
 .capa .req{color:#FFC247;font-size:.72rem;font-weight:900;letter-spacing:.12em;
   text-transform:uppercase;margin-top:-4px}
+.capa .req.mod{color:#8EA3B5}
 #cuenta{color:#6FD83C;font-weight:900;font-size:.95rem;letter-spacing:.06em;min-height:1.2em}
 #tanda{color:#7F93A6;font-weight:800;font-size:.82rem;letter-spacing:.06em}
 
@@ -169,6 +172,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   <h1>Fortress <em>en la cancha</em></h1>
   <p id="tapaP"></p>
   <button id="go"></button>
+  <small id="tapaMod" class="req mod"></small>
   <button id="goCabeza" class="otro" hidden></button>
   <small id="tapaReq" class="req" hidden></small>
   <small id="tapaS"></small>
@@ -200,7 +204,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='c4';
+var SELLO='c5';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -222,6 +226,7 @@ var S={
     otra:'Otra vez',
     mejor:'Tu mejor cadena: ',
     teclas:'1 2 arriba · 3 el medio · 4 5 abajo',
+    mod:'Computadora · tablet · celular',
     cabeza:'Con la cabeza',
     req:'Requiere casco VR',
     sCabeza:'En el casco: mira la bola y aguanta la vista. Sin mando.',
@@ -259,6 +264,7 @@ var S={
     otra:'Play again',
     mejor:'Your best chain: ',
     teclas:'1 2 top · 3 middle · 4 5 bottom',
+    mod:'Computer · tablet · phone',
     cabeza:'With your head',
     req:'VR headset required',
     sCabeza:'In the headset: look at the ball and hold. No controller.',
@@ -299,6 +305,7 @@ function pintarTextos(){
   $('tapaP').textContent=T('p');
   $('go').textContent=T('go');
   $('tapaS').textContent=hayGiro()?T('sCabeza'):(HAY_FINO?T('sRaton'):T('sDedo'));
+  $('tapaMod').textContent=T('mod');
   $('goCabeza').textContent=T('cabeza');
   $('tapaReq').textContent=T('req');
   $('medidaK').textContent=T('medidaK');
