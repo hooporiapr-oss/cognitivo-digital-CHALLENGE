@@ -124,6 +124,22 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   text-transform:uppercase;margin-top:-4px}
 .capa .req.mod{color:#8EA3B5}
 #cuenta{color:#6FD83C;font-weight:900;font-size:.95rem;letter-spacing:.06em;min-height:1.2em}
+
+/* ── La caja de cuartos ─────────────────────────────────────────────
+   Q1 Q2 Q3 Q4 y el total, como un marcador de verdad. Un padrino que
+   mira esto entiende el juego sin que nadie se lo explique, y el nene
+   ve de un vistazo cuál tiene que superar. */
+.caja{display:flex;gap:2px;justify-content:center;margin:4px 0 2px}
+.caja div{min-width:54px;padding:7px 4px;background:rgba(255,255,255,.05);
+  border-radius:4px;text-align:center}
+.caja div.tot{background:rgba(255,122,24,.16)}
+.caja div.vivo{background:rgba(111,216,60,.18)}
+.caja b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.1em;
+  color:#7F93A6;text-transform:uppercase}
+.caja span{display:block;font-size:1.15rem;font-weight:900;line-height:1.25;
+  font-variant-numeric:tabular-nums;color:#fff}
+.caja div.tot span{color:#FF7A18}
+.caja div.cero span{color:#5A6B7C}
 #tanda{color:#7F93A6;font-weight:800;font-size:.82rem;letter-spacing:.06em}
 
 /* ── El punto de mira ───────────────────────────────────────────────
@@ -170,7 +186,10 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
 
 <div class="capa" id="tapa">
   <h1>Fortress <em>en la cancha</em></h1>
+  <div class="marca" id="tapaQuien" hidden></div>
   <p id="tapaP"></p>
+  <div class="caja" id="cajaTapa" hidden></div>
+  <small id="tapaVentana" class="req" hidden></small>
   <button id="go"></button>
   <small id="tapaMod" class="req mod"></small>
   <button id="goCabeza" class="otro" hidden></button>
@@ -188,8 +207,10 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
 <div class="capa" id="fin" hidden>
   <div class="marca" id="finK"></div>
   <div class="grande" id="finN">0</div>
+  <div class="caja" id="caja" hidden></div>
   <p id="finP"></p>
   <button id="otra"></button>
+  <button id="practicar" class="otro" hidden></button>
   <div id="cuenta"></div>
   <div id="tanda"></div>
   <small id="finS"></small>
@@ -204,7 +225,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='c5';
+var SELLO='j1';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -246,6 +267,31 @@ var S={
     minutos:'{N} minutos',
     segundos:'{N} segundos',
     seAcabo:'SE ACABÓ EL TIEMPO',
+    total:'Tot',
+    ventanaQueda:'La ventana cierra en {T}',
+    ventanaCerrada:'La ventana ya cerró',
+    juegoP:'Cuatro cuartos de 5 minutos. Cada cuarto vale tu MEJOR tirada, '+
+           'y los cuatro se suman. Eso es tu juego.',
+    juegoS:'Entre cuarto y cuarto puedes practicar lo que quieras.',
+    juegoHecho:'Tu juego está completo. Gracias — esto es lo que verán tus padrinos.',
+    empezarQ:'Empezar el Q{Q}',
+    seguirQ:'Jugar el Q{Q}',
+    cargando:'Buscando tu juego…',
+    juegoNo:'Este enlace no abre un juego.',
+    juegoNoLlave:'Este enlace no es el tuyo.',
+    juegoNoVentana:'Todavía no es la hora, o la ventana ya cerró.',
+    sinRed:'Sin conexión. Reintentando…',
+    cuartoPill:'Q{Q}',
+    aBatir:'Tu mejor de este cuarto: {P}',
+    finCuarto:'FIN DEL Q{Q}',
+    finJuego:'JUEGO TERMINADO',
+    porVentana:'Cerró la ventana a mitad del cuarto, así que ese cuarto vale 0.',
+    totalJuego:'Total del juego',
+    siguienteCuarto:'Jugar el Q{Q}',
+    practicar:'Practicar',
+    volverJuego:'Volver a mi juego',
+    guardando:'Guardando el cuarto…',
+    noGuardo:'No se pudo guardar. Revisa la conexión y vuelve a abrir tu enlace.',
     mejorTanda:'Tu mejor cadena de la tanda',
     siguienteBtn:'Siguiente jugador'
   },
@@ -284,6 +330,31 @@ var S={
     minutos:'{N} minutes',
     segundos:'{N} seconds',
     seAcabo:"TIME'S UP",
+    total:'Tot',
+    ventanaQueda:'The window closes in {T}',
+    ventanaCerrada:'The window has closed',
+    juegoP:'Four 5-minute quarters. Each quarter counts your BEST run, '+
+           'and the four add up. That is your game.',
+    juegoS:'Between quarters you can practise as much as you like.',
+    juegoHecho:'Your game is complete. This is what your sponsors will see.',
+    empezarQ:'Start Q{Q}',
+    seguirQ:'Play Q{Q}',
+    cargando:'Finding your game…',
+    juegoNo:'This link does not open a game.',
+    juegoNoLlave:'This link is not yours.',
+    juegoNoVentana:'Not time yet, or the window has closed.',
+    sinRed:'No connection. Retrying…',
+    cuartoPill:'Q{Q}',
+    aBatir:'Your best this quarter: {P}',
+    finCuarto:'END OF Q{Q}',
+    finJuego:'GAME OVER',
+    porVentana:'The window closed mid-quarter, so that quarter counts 0.',
+    totalJuego:'Game total',
+    siguienteCuarto:'Play Q{Q}',
+    practicar:'Practise',
+    volverJuego:'Back to my game',
+    guardando:'Saving the quarter…',
+    noGuardo:'Could not save. Check your connection and reopen your link.',
     mejorTanda:'Your best chain this round',
     siguienteBtn:'Next player'
   }
@@ -326,6 +397,12 @@ function cuantoDura(){
   return Math.floor(seg/60)+':'+('0'+(seg%60)).slice(-2);
 }
 function pintarPista(){
+  if(JUEGO && !enPractica && cuartoActual && fase!=='listo'){
+    /* Lo único que el nene necesita saber mientras juega: cuánto hay
+       que batir para subir este cuarto. */
+    $('pista').textContent=T('aBatir').replace('{P}', tanda.length?Math.max.apply(null,tanda):0);
+    return;
+  }
   if(fase==='listo'){
     $('pista').textContent =
       (MODO==='cabeza' ? T('listoLinea') : T('listoLineaD')).replace('{M}',cuantoDura());
@@ -718,6 +795,12 @@ function pintarHud(){
   if(fase==='listo'){
     e.textContent = MODO==='cabeza' ? T('listoPill') : T('listoPillD');
     e.className='listo';
+  }else if(JUEGO && !enPractica && cuartoActual){
+    /* Jugando un cuarto, lo que manda arriba es QUÉ CUARTO ES. Que no
+       quepa duda de si esto cuenta. */
+    e.textContent = T('cuartoPill').replace('{Q}',cuartoActual) + ' · ' +
+                    (fase==='turno' ? T('turno') : T('mira'));
+    e.className = fase==='turno' ? 'tu' : '';
   }else{
     e.textContent = fase==='turno' ? T('turno') : T('mira');
     e.className = fase==='turno' ? 'tu' : '';
@@ -734,6 +817,29 @@ function pintarHud(){
 
    Y es la del medio a propósito: es la única que está siempre al
    frente, se mide ya con ella y no hay que buscarla. */
+/* Un cuarto se arma igual que una práctica: la bola del medio, cinco
+   minutos, chicharra. Lo único que cambia es qué se hace al final y
+   que la pantalla lo dice en todo momento, para que nadie crea que
+   está calentando cuando está jugando su Q3. */
+function armarCuarto(q){
+  if(!q){ finDelJuego=true; volverAPortada(); return }
+  cuartoActual=q; enPractica=false; armarSesion();
+}
+function armarPractica(){
+  cuartoActual=0; enPractica=true; armarSesion();
+}
+/* Volver a la portada del juego — es donde vive el marcador y el
+   botón del cuarto siguiente. */
+function volverAPortada(){
+  limpiarT(); pararCuenta(); apagarTodas();
+  relojCorriendo=false; relojTexto='';
+  fase='tapa';
+  $('fin').hidden=true; $('hud').hidden=true; $('pista').hidden=true;
+  $('mira').hidden=true;
+  $('tapa').hidden=false;
+  pintarTapaJuego();
+}
+
 function armarSesion(){
   limpiarT(); apagarTodas(); pararCuenta();
   cadena=[]; nivel=0; voy=0; tanda=[];
@@ -884,7 +990,7 @@ function romper(){
    Y AQUÍ SÍ hay botón, que es lo único que separa a un jugador del
    siguiente. En el casco se aprieta mirándolo.
    ══════════════════════════════════════════════════════════════════ */
-function terminarSesion(){
+function terminarSesion(porVentana){
   if(fase==='tiempo') return;
   var enElAire=(fase==='mirando'||fase==='turno');
   limpiarT(); pararCuenta();
@@ -899,16 +1005,86 @@ function terminarSesion(){
   sonarChicharra();
   apagarTodas();
   var mejorDeLaTanda=tanda.length ? Math.max.apply(null,tanda) : 0;
+
+  /* EN UN CUARTO, la chicharra no acaba la tanda: cierra el cuarto,
+     lo manda al servidor y enseña el marcador. */
+  if(JUEGO && !enPractica && cuartoActual){
+    cerrarCuarto(cuartoActual, porVentana?0:mejorDeLaTanda, porVentana);
+    return;
+  }
+
   $('finK').textContent=T('seAcabo');
   $('finN').textContent=String(mejorDeLaTanda);
   $('finP').textContent=T('mejorTanda')+'  ·  '+pointsFor(mejorDeLaTanda)+' '+T('puntos');
   $('tanda').textContent=tanda.length ? T('tanda')+tanda.join('  ·  ') : '';
   $('finS').textContent=T('mejor')+mejor;
   $('cuenta').textContent='';
+  $('caja').hidden=true;
   $('otra').hidden=false;
+  $('otra').textContent = JUEGO ? T('volverJuego') : T('siguienteBtn');
+  $('practicar').hidden=true;
   $('fin').hidden=false;
   $('hud').hidden=true;
   $('pista').hidden=true;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CERRAR UN CUARTO
+
+   La mejor tirada del cuarto es el cuarto. Se manda, se espera a que
+   el servidor diga que quedó — y sólo entonces se enseña el marcador
+   y el botón del siguiente. Enseñar el número antes de que esté
+   guardado sería enseñarle a un nene unos puntos que a lo mejor no
+   existen.
+
+   Si cerró la ventana a mitad, el cuarto vale 0 y no se manda nada:
+   el servidor lo rechazaría de todas formas, y un cuarto sin fila
+   ya cuenta como cero al sumar.
+   ══════════════════════════════════════════════════════════════════ */
+function cerrarCuarto(q, nivel, porVentana){
+  var puntos=pointsFor(nivel);
+  fase='tiempo';
+  $('finK').textContent=T('finCuarto').replace('{Q}',q);
+  $('finN').textContent=String(puntos);
+  $('tanda').textContent=tanda.length ? T('tanda')+tanda.join('  ·  ') : '';
+  $('finS').textContent='';
+  $('cuenta').textContent='';
+  $('otra').hidden=true; $('practicar').hidden=true; $('caja').hidden=true;
+  $('fin').hidden=false; $('hud').hidden=true; $('pista').hidden=true;
+  $('mira').hidden=true;
+
+  if(porVentana){
+    finDelJuego=true;
+    $('finP').textContent=T('porVentana');
+    temporizadores.push(setTimeout(finDeJuego, 1800));
+    return;
+  }
+
+  $('finP').textContent=T('guardando');
+  guardarCuarto(q, nivel, puntos, function(ok){
+    if(!ok && !finDelJuego){ $('finP').textContent=T('noGuardo'); return }
+    pintarCaja($('caja'), 0);
+    var sig=proximoCuarto();
+    if(finDelJuego || !sig || quedaVentana()<=0){ finDeJuego(); return }
+    $('finP').textContent=T('totalJuego')+': '+totalJuego();
+    $('otra').hidden=false;
+    $('otra').textContent=T('siguienteCuarto').replace('{Q}',sig);
+    $('practicar').hidden=false;
+    $('practicar').textContent=T('practicar');
+  });
+}
+
+function finDeJuego(){
+  finDelJuego=true;
+  fase='tiempo';
+  $('finK').textContent=T('finJuego');
+  $('finN').textContent=String(totalJuego());
+  if($('finP').textContent!==T('porVentana')) $('finP').textContent=T('totalJuego');
+  pintarCaja($('caja'), 0);
+  $('otra').hidden=true;
+  $('practicar').hidden=false;
+  $('practicar').textContent=T('practicar');
+  $('fin').hidden=false;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1011,6 +1187,7 @@ function pedirElGiro(){
    el botón no puede decidirse al pintar la portada: se mira otra vez
    hasta que lleguen. */
 var ojeando=setInterval(function(){
+  if(JUEGO){ clearInterval(ojeando); return }   // nunca se ofrece el casco
   if($('tapa').hidden){ clearInterval(ojeando); return }
   if(hayGiro()){
     $('goCabeza').hidden=false;
@@ -1215,6 +1392,199 @@ function cabezaEnElBucle(){
   if(avisoHasta && performance.now()>avisoHasta){ avisoHasta=0; pintarHud() }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   EL JUEGO DE CADA PUNTO
+
+   La misma cancha y las mismas reglas, pero jugando por plata.
+
+   Cuatro cuartos de cinco minutos. El cuarto se puntúa por la MEJOR
+   tirada que hiciste dentro de él — no por la suma. Eso es lo que
+   hace que cada tirada importe: la única forma de subir tu cuarto es
+   aguantar una cadena más larga de la que ya aguantaste. Sumar
+   premiaría correr, que es lo contrario del ejercicio.
+
+   Los cuatro cuartos se suman y eso es el juego. Un padrino promete
+   por punto sobre ese total.
+
+   LA VENTANA. El día del juego se abre durante un rato — dos horas
+   por defecto — y dentro de ese rato juegas tus cuartos cuando
+   quieras: uno ahora, practicas un poco, el siguiente más tarde. El
+   reloj del cuarto es el de siempre. Lo que manda es la hora del
+   servidor, no la del teléfono, que se cambia en dos toques.
+
+   SE CIERRA LA VENTANA Y SE ACABÓ. Lo que no jugaste vale cero. Un
+   cuarto a medias cuando cierra también vale cero: por eso el que va
+   quedando corto conviene que lo empiece con tiempo.
+
+   CADA CUARTO SE GUARDA SOLO. En cuanto suena la chicharra, ese
+   cuarto se manda y queda en el servidor. Si se muere el teléfono en
+   el tercero, los dos primeros ya están puestos y se puede seguir
+   desde donde iba mientras la ventana siga abierta. Un juego es uno
+   solo: no se puede repetir un cuarto ya guardado.
+
+   NUNCA EN EL CASCO. En un enlace de juego el botón de la cabeza no
+   existe. El casco es para practicar.
+   ══════════════════════════════════════════════════════════════════ */
+var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+var par=null;
+try{ par=new URLSearchParams(location.search) }catch(e){}
+function pr(k){ try{ return par?par.get(k):null }catch(e){ return null } }
+
+var RETO=pr('c'), JUGADOR=pr('p'), LLAVE_RUN=pr('k');
+var JUEGO = !!(RETO && JUGADOR && LLAVE_RUN && pr('official')==='1');
+var CUARTOS=4;
+
+var cuartos=[];          // [{q,points,level}] lo que ya está guardado
+var cuartoActual=0;      // el que se está jugando ahora, 0 = ninguno
+var enPractica=false;    // practicando entre cuartos
+var quienJuega='', programa='';
+var ventanaBase=0, ventanaMs=0, ventanaViva=false;
+var finDelJuego=false;
+
+function quedaVentana(){
+  if(!ventanaViva) return 0;
+  return ventanaMs - (performance.now()-ventanaBase);
+}
+function cuartosHechos(){ return cuartos.length }
+function totalJuego(){
+  var t=0; for(var i=0;i<cuartos.length;i++) t+=cuartos[i].points||0; return t;
+}
+function cuartoDe(q){
+  for(var i=0;i<cuartos.length;i++) if(cuartos[i].q===q) return cuartos[i];
+  return null;
+}
+function proximoCuarto(){
+  for(var q=1;q<=CUARTOS;q++) if(!cuartoDe(q)) return q;
+  return 0;
+}
+
+function rpc(nombre, cuerpo, listo, falla){
+  fetch(SB_URL+'/rest/v1/rpc/'+nombre,{
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+             'Content-Type':'application/json'},
+    body:JSON.stringify(cuerpo)
+  })
+  .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.json() })
+  .then(function(d){ listo(d) })
+  .catch(function(e){ if(falla) falla(e) });
+}
+
+/* El marcador de cuartos, pintado en cualquier sitio donde quepa. */
+function pintarCaja(el, resalta){
+  if(!el) return;
+  var h='';
+  for(var q=1;q<=CUARTOS;q++){
+    var c=cuartoDe(q);
+    var clase = q===resalta ? ' class="vivo"' : (c ? (c.points?'':' class="cero"') : ' class="cero"');
+    var val = c ? String(c.points) : (q===resalta ? '·' : '—');
+    h += '<div'+clase+'><b>Q'+q+'</b><span>'+val+'</span></div>';
+  }
+  h += '<div class="tot"><b>'+T('total')+'</b><span>'+totalJuego()+'</span></div>';
+  el.innerHTML=h;
+  el.hidden=false;
+}
+
+/* Cuánto queda de ventana, en palabras cortas para la portada. */
+function textoVentana(){
+  var ms=quedaVentana();
+  if(ms<=0) return T('ventanaCerrada');
+  var min=Math.ceil(ms/60000);
+  if(min>=60){
+    var h=Math.floor(min/60), m=min%60;
+    return T('ventanaQueda').replace('{T}', h+'h'+(m?' '+m+'m':''));
+  }
+  return T('ventanaQueda').replace('{T}', min+' min');
+}
+
+function pintarTapaJuego(){
+  if(!JUEGO) return;
+  $('goCabeza').hidden=true;      // el juego no se juega con la cabeza, nunca
+  $('tapaReq').hidden=true;
+  $('tapaMod').hidden=true;
+  $('tapaQuien').hidden=false;
+  $('tapaQuien').textContent=(programa?programa+' · ':'')+(quienJuega||'');
+  pintarCaja($('cajaTapa'), 0);
+  $('tapaVentana').hidden=false;
+  $('tapaVentana').textContent=textoVentana();
+
+  var q=proximoCuarto();
+  if(finDelJuego || !q || quedaVentana()<=0){
+    $('tapaP').textContent=T('juegoHecho');
+    $('go').hidden=true;
+  }else{
+    $('tapaP').textContent=T('juegoP').replace('{Q}', q);
+    $('go').hidden=false;
+    $('go').textContent=(q===1?T('empezarQ'):T('seguirQ')).replace('{Q}', q);
+  }
+  $('tapaS').textContent=T('juegoS');
+}
+
+/* Traer del servidor quién es, cuándo cierra, y qué cuartos ya tiene.
+   Es también lo que hace que volver a abrir el enlace después de un
+   teléfono muerto continúe donde iba. */
+function traerEstadoJuego(){
+  $('tapaP').textContent=T('cargando');
+  $('go').hidden=true;
+  rpc('cp_game_state',{p_challenge:RETO,p_player:JUGADOR,p_key:LLAVE_RUN},
+    function(d){
+      if(!d || !d.ok){
+        $('tapaP').textContent = T('juegoNo'+(d&&d.reason==='key'?'Llave':
+                                 (d&&d.reason==='window'?'Ventana':'')))||T('juegoNo');
+        $('go').hidden=true;
+        return;
+      }
+      quienJuega=d.name||''; programa=d.program||'';
+      cuartos=(d.quarters||[]).slice();
+      var cierra=Date.parse(d.closes_at||''), ahora=Date.parse(d.now||'');
+      if(cierra && ahora){
+        ventanaMs=cierra-ahora; ventanaBase=performance.now(); ventanaViva=true;
+      }
+      pintarTapaJuego();
+    },
+    function(){
+      $('tapaP').textContent=T('sinRed');
+      $('go').hidden=true;
+      temporizadores.push(setTimeout(traerEstadoJuego, 4000));
+    });
+}
+
+/* Guardar un cuarto. Si la red falla se reintenta sola: el nene ya
+   jugó esos cinco minutos y perderlos por una barra de señal sería
+   imperdonable. */
+var mandando=false;
+function guardarCuarto(q, nivel, puntos, cuandoTermine){
+  mandando=true;
+  var intentos=0;
+  function va(){
+    intentos++;
+    rpc('cp_record_quarter',
+      {p_challenge:RETO,p_player:JUGADOR,p_key:LLAVE_RUN,
+       p_quarter:q,p_level:nivel,p_points:puntos},
+      function(d){
+        mandando=false;
+        if(d && d.ok){
+          cuartos=(d.quarters||[]).slice();
+        }else if(d && d.reason==='already'){
+          cuartos=(d.quarters||cuartos).slice();   // ya estaba: no se repite
+        }else{
+          // ventana cerrada, llave mala: el cuarto no entra y se dice
+          finDelJuego = (d && d.reason==='window') || finDelJuego;
+        }
+        cuandoTermine(d&&d.ok);
+      },
+      function(){
+        if(intentos<6){ temporizadores.push(setTimeout(va, 1500*intentos)); return }
+        mandando=false;
+        cuandoTermine(false);
+      });
+  }
+  va();
+}
+
 // ──────────────────────────────────────────────────────────────────
 //  TOCAR, HACER CLIC, O LAS TECLAS
 //
@@ -1279,6 +1649,12 @@ function bucle(){
   /* El reloj se pinta y se vence aquí, en un solo sitio, pase lo que
      pase por debajo. Por eso sigue corriendo mientras se enseña la
      puntuación: es tiempo corrido, no se para entre tiradas. */
+  /* La ventana manda por encima del reloj del cuarto: si cierra a
+     mitad, ese cuarto vale 0 y el juego se acaba ahí. */
+  if(JUEGO && !enPractica && ventanaViva && !finDelJuego && fase!=='tiempo' &&
+     fase!=='tapa' && quedaVentana()<=0){
+    terminarSesion(true); renderer.render(scene,camera); return;
+  }
   if(relojCorriendo){
     pintarReloj();
     if(quedaMs()<=0){ terminarSesion(); renderer.render(scene,camera); return }
@@ -1302,8 +1678,10 @@ function bucle(){
 //  ARRANQUE
 // ──────────────────────────────────────────────────────────────────
 pintarTextos();
+if(JUEGO) traerEstadoJuego();
 
 function arrancar(conCabeza){
+  if(JUEGO) conCabeza=false;      // el juego nunca se juega con la cabeza
   if(typeof THREE==='undefined'){
     $('tapaP').textContent = LANG==='es'
       ? 'No cargó three.js — sin red, o bloqueado.'
@@ -1337,11 +1715,19 @@ function arrancar(conCabeza){
      pudo haber despertado mirando a la pared. */
   if(MODO==='cabeza' && !calHecha){ empezarMedida(); return }
   if(MODO==='cabeza') recentrar();
+  if(JUEGO){ armarCuarto(proximoCuarto()); return }
   armarSesion();
 }
 $('go').onclick=function(){ arrancar(false) };
 $('goCabeza').onclick=function(){ arrancar(true) };
-$('otra').onclick=function(){ pararCuenta(); armarSesion() };
+$('otra').onclick=function(){
+  pararCuenta();
+  if(!JUEGO){ armarSesion(); return }
+  if(enPractica){ volverAPortada(); return }
+  var q=proximoCuarto();
+  if(q && !finDelJuego && quedaVentana()>0) armarCuarto(q); else volverAPortada();
+};
+$('practicar').onclick=function(){ pararCuenta(); armarPractica() };
 })();
 </script>
 </body>
