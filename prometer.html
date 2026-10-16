@@ -103,6 +103,10 @@ button.enviar:disabled{opacity:.5;cursor:default;box-shadow:none}
 .listo{text-align:center;padding:30px 0}
 .listo .grande{font-size:clamp(2.6rem,12vw,4rem);font-weight:900;color:var(--green);
   line-height:1;margin:0 0 10px}
+button.volver{margin:18px auto 0;display:block;background:none;color:var(--mute);
+  border:1px solid var(--line);border-radius:7px;font:inherit;font-weight:800;
+  font-size:.88rem;padding:11px 20px;cursor:pointer}
+button.volver:hover{color:var(--paper);border-color:var(--mute)}
 .pie{margin:34px 0 0;padding:18px 0 0;border-top:1px solid var(--line);
   color:#5E7488;font-size:.78rem}
 .pie a{color:#5E7488}
@@ -168,6 +172,10 @@ button.enviar:disabled{opacity:.5;cursor:default;box-shadow:none}
       <div class="grande">✓</div>
       <h2 id="listoH"></h2>
       <p class="trato" id="listoP"></p>
+      <!-- Sin esto, el que se equivocó de correo o quiere cambiar la
+           tarifa no tiene vuelta: el formulario se escondió y la
+           única salida era recargar el enlace, que nadie adivina. -->
+      <button type="button" class="volver" id="volver"></button>
     </div>
 
     <p class="pie" id="pie"></p>
@@ -208,6 +216,7 @@ var S={
   jugado:'Esto es lo que hizo',
   listoH:'Listo. Eres su padrino.',
   listoP:'Te escribimos después del juego con el marcador y el enlace para pagar. Nada antes.',
+  volver:'Cambiar mi promesa',
   otraVez:'Ya tenías una promesa para {N} — la actualizamos con lo que acabas de poner.',
   noVa:'Este enlace no abre una promesa.',
   total:'Tot',
@@ -239,6 +248,7 @@ var S={
   jugado:'Here is what they did',
   listoH:'Done. You are their padrino.',
   listoP:'We will write to you after the game with the score and a link to pay. Nothing before then.',
+  volver:'Change my pledge',
   otraVez:'You already had a pledge for {N} — we updated it with what you just entered.',
   noVa:'This link does not open a pledge.',
   total:'Tot',
@@ -351,6 +361,7 @@ function pintar(){
   $('cerradoP').textContent=T('cerradaP');
   $('listoH').textContent=T('listoH');
   $('listoP').textContent=T('listoP');
+  $('volver').textContent=T('volver');
   /* El marcador SÓLO cuando ya cerró. Abierta, un marcador hecho le
      estaría diciendo a un padrino que el nene ya anotó — y de paso le
      dejaría prometer sabiendo el resultado, que es justo lo que esta
@@ -411,6 +422,15 @@ $('form').onsubmit=function(ev){
     function(){ $('enviar').disabled=false; decir(T('malRed'),'mal') });
 };
 function decir(t,c){ var e=$('dice'); e.textContent=t; e.className='estado'+(c?' '+c:'') }
+
+/* Volver al formulario con todo como lo dejó. Mandar otra vez con el
+   mismo correo actualiza la promesa, no hace una segunda. */
+$('volver').onclick=function(){
+  $('listo').hidden=true;
+  $('form').hidden=false;
+  decir('','');
+  $('nom').focus();
+};
 
 pintar();
 arrancar();
