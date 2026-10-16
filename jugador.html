@@ -126,6 +126,11 @@ var S = {
     errGen:'No se pudo. Intenta otra vez.',
     doneH:'Listo, {N}',
     doneP:'Este es tu enlace. Mándaselo a tu familia por WhatsApp.',
+    cierra:'Se promete hasta el {D} — después se juega.',
+    noRetoH:'Tu nombre ya está, {N}',
+    noRetoP:'Todavía no hay día de juego abierto. En cuanto tu entrenador abra uno, aquí mismo sale tu enlace para mandárselo a tu familia — guarda esta página.',
+    cerradoH:'Ya cerraron las promesas, {N}',
+    cerradoP:'Tu juego ya empezó, así que no entran promesas nuevas. Las que te hicieron antes siguen en pie.',
     backH:'Ya estabas en la lista, {N}',
     waitH:'Apuntado, {N}',
     waitP:'Falta que tu entrenador lo apruebe. En cuanto lo haga, este mismo enlace es el tuyo para mandárselo a tu familia — guárdalo.',
@@ -134,11 +139,11 @@ var S = {
     copied:'✓ Copiado',
     seeBoard:'Ver el tablero del equipo',
     howH:'Cómo funciona',
-    howP:'Quien abra tu enlace escoge un juego y promete unos centavos por cada punto que anote el equipo. Después del juego se le cobra lo que de verdad anotaron, y todo va al programa.',
+    howP:'Quien abra tu enlace promete unos centavos por cada punto que anotes TÚ en tus cuatro cuartos. Promete antes de que empiece tu juego; cuando termina, se le cobra según lo que anotaste de verdad. Todo va al programa.',
     noCampH:'Te falta el enlace de tu equipo',
     noCampP:'Esta página te da tu propio enlace de padrinos, pero tiene que venir del enlace que manda tu coach al grupo del equipo. Pídeselo.',
     backHome:'← Volver',
-    msg:'¡Apoya a mi equipo! Prometes unos centavos por cada punto que anotemos, y pagas sólo después del juego. Todo va al programa.'
+    msg:'¡Apóyame en Cada Punto! Prometes unos centavos por cada punto que yo anote, y pagas sólo después del juego. Todo va al programa.'
   },
   en:{
     h1:'Your padrino link',
@@ -151,6 +156,11 @@ var S = {
     errGen:'That did not work. Try again.',
     doneH:'Done, {N}',
     doneP:'This is your link. Send it to your family on WhatsApp.',
+    cierra:'Pledging is open until {D} — then you play.',
+    noRetoH:'You\u2019re on the roster, {N}',
+    noRetoP:'No game day is open yet. The moment your coach opens one, your link shows up right here to send your family \u2014 keep this page.',
+    cerradoH:'Pledging has closed, {N}',
+    cerradoP:'Your game has started, so no new pledges can come in. The ones already made still stand.',
     backH:'You were already on the roster, {N}',
     waitH:'Signed up, {N}',
     waitP:'Your coach has to approve it. As soon as he does, this same link is yours to send your family \u2014 keep it.',
@@ -159,11 +169,11 @@ var S = {
     copied:'✓ Copied',
     seeBoard:'See the team board',
     howH:'How it works',
-    howP:'Whoever opens your link picks a game and pledges a few cents for every point the team scores. After the game they are billed for what the team actually scored, and all of it goes to the program.',
+    howP:'Whoever opens your link pledges a few cents for every point YOU score across your four quarters. They pledge before your game starts; when it ends they are billed on what you actually scored. All of it goes to the program.',
     noCampH:'You need your team\u2019s link',
     noCampP:'This page gives you your own padrino link, but it has to come from the link your coach sends to the team group. Ask them for it.',
     backHome:'← Back',
-    msg:'Back my team! You pledge a few cents for every point we score, and you only pay after the game. All of it goes to the program.'
+    msg:'Back me in Cada Punto! You pledge a few cents for every point I score, and you only pay after the game. All of it goes to the program.'
   }
 };
 
@@ -187,6 +197,9 @@ var PARAMS = new URLSearchParams(location.search);
 var CAMPAIGN = PARAMS.get('c');
 var WANT_SQUAD = PARAMS.get('d') || null;   // la categoría del juego que tocó
 var BOARD = null, ME = null;
+/* El reto al que se le puede prometer ahora mismo, que lo dice el
+   servidor. Null hasta que contesta. */
+var RETO = null;
 /* Los nombres de escuadra que ya existen en la campaña. Antes esto
    salía sólo de las notas de los juegos, así que un programa recién
    montado — sin juegos todavía — no ofrecía ninguna y cada familia
@@ -229,11 +242,32 @@ function bothLangs(){
   return S.es.msg + '\n\n' + S.en.msg;
 }
 
+/* El enlace del padrino.
+   Antes era scoreboard.html con la CAMPAÑA dentro: el padrino escogía
+   un juego del calendario y prometía por los puntos del equipo. Ya no
+   hay calendario — hay un reto con su ventana, y se promete por los
+   puntos de ESTE nene. Así que lleva el RETO, no la campaña, y el reto
+   hay que preguntárselo al servidor porque una campaña tiene varios a
+   lo largo del año.
+
+   Devuelve null cuando no hay ninguno al que prometer. Eso importa:
+   armado a ciegas, el enlace saldría con "undefined" dentro y el nene
+   lo repartiría igual. */
 function myLink(){
-  // La categoría va en el enlace: quien lo abra ve los juegos de esa
-  // escuadra y no los de las otras cinco.
-  var d = ME.squad ? '&d=' + encodeURIComponent(ME.squad) : '';
-  return location.origin + '/scoreboard.html?c=' + CAMPAIGN + '&p=' + ME.id + d;
+  if (!RETO || !RETO.hay || !RETO.open) return null;
+  return location.origin + '/prometer.html?c=' + RETO.challenge_id + '&p=' + ME.id;
+}
+
+/* La fecha en palabras. Sin punto al final a propósito: el español
+   acaba la hora en "p. m." y la frase que la usa lleva un guión
+   después, no otro punto. */
+function cuando(iso){
+  try {
+    var d = new Date(iso);
+    var loc = LANG === 'es' ? 'es-PR' : 'en-US';
+    return d.toLocaleDateString(loc, { weekday:'long', day:'numeric', month:'long' }) +
+           ' · ' + d.toLocaleTimeString(loc, { hour:'numeric', minute:'2-digit' });
+  } catch(e){ return '' }
 }
 
 function draw(){
@@ -253,6 +287,24 @@ function draw(){
 
   if (ME){
     var link = myLink();
+
+    /* Sin enlace no se enseña un enlace. Son dos casos distintos y el
+       nene necesita saber cuál: todavía no hay día de juego, o ya
+       empezó y las promesas cerraron. Una página que no los distingue
+       lo manda a pedir promesas que nadie puede hacer. */
+    if (!link){
+      var yaAbrio = !!(RETO && RETO.hay);
+      app.innerHTML =
+        crest + team +
+        '<div class="done">' +
+          '<div class="tick">\u2026</div>' +
+          '<h1>' + T(yaAbrio ? 'cerradoH' : 'noRetoH', { N: esc(ME.name) }) + '</h1>' +
+          '<p class="lede">' + T(yaAbrio ? 'cerradoP' : 'noRetoP') + '</p>' +
+          '<div class="how"><b>' + T('howH') + '</b><p>' + T('howP') + '</p></div>' +
+        '</div>';
+      return;
+    }
+
     app.innerHTML =
       crest + team +
       '<div class="done">' +
@@ -264,7 +316,10 @@ function draw(){
         '<a class="btn" href="https://wa.me/?text=' +
           encodeURIComponent(bothLangs() + '\n\n' + link) + '">' + T('share') + '</a>' +
         '<button class="btn line" onclick="copyLink()">' + T('copy') + '</button>' +
-        '<a class="btn line" href="scoreboard.html?c=' + CAMPAIGN + '">' + T('seeBoard') + '</a>' +
+        /* La hora de cierre, porque es lo que decide si vale la pena
+           mandarlo hoy o no. */
+        '<p class="lede" style="margin:14px 0 0">' +
+          esc(T('cierra', { D: cuando(RETO.opens_at) })) + '</p>' +
         '<p class="msg" id="msg"></p>' +
         '<div class="how"><b>' + T('howH') + '</b><p>' + T('howP') + '</p></div>' +
       '</div>';
@@ -342,6 +397,7 @@ function otra(){
 
 function copyLink(){
   var link = myLink();
+  if (!link) return;
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(link).then(function(){ say(T('copied'), 'ok'); })
       .catch(function(){ say(link); });
@@ -388,7 +444,10 @@ if (CAMPAIGN){
     .then(function(r){ SQUADS = Array.isArray(r) ? r : []; })
     .catch(function(){ SQUADS = []; })
     .then(function(){ return rpc('game_board', { p_campaign: CAMPAIGN }); })
-    .then(function(b){ BOARD = b; draw(); })
+    .then(function(b){ BOARD = b; return rpc('cp_reto_vivo', { p_campaign: CAMPAIGN }); })
+    /* Que falle esto no deja al nene sin página: se queda sin enlace,
+       que es exactamente lo que hay que enseñar cuando no se sabe. */
+    .then(function(r){ RETO = (r && r.ok) ? r : null; draw(); })
     .catch(function(e){ console.error(e); draw(); });
 } else {
   draw();
