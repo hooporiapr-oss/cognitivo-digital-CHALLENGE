@@ -10,11 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════════════════
-   FORTRESS EN LA CANCHA — TELÉFONO Y COMPUTADORA
+   FORTRESS EN LA CANCHA — CASCO, TELÉFONO Y COMPUTADORA
 
-   Es la cancha de fortress-vr.html: el piso, las líneas, el aro, las
-   cinco bolas del 2-1-2 puestas de pie delante de uno. Y es el juego
-   de fortress.html nota por nota — la misma rotación, las mismas
+   Esta página ocupa el sitio de la primera fortress-vr, la que
+   intentaba entrar en VR de verdad. Aquélla se quedó por el camino, y
+   lo que valía de ella está aquí: el piso, las líneas, el aro, las
+   cinco bolas del 2-1-2 puestas de pie delante de uno, y la medida de
+   la cabeza. Donde abajo dice "la vieja", es ésa.
+
+   El juego es el de fortress.html nota por nota — la misma rotación, las mismas
    cornetas, los mismos puntos triangulares — para que una cadena de 7
    signifique lo mismo aquí, en el casco y en el juego de tocar.
 
@@ -169,7 +173,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='c1';
+var SELLO='c2';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -340,9 +344,9 @@ var RADIO_GEO=0.36;        // el radio con que se hace la esfera; la
 /* ══════════════════════════════════════════════════════════════════
    DÓNDE VAN LAS CINCO BOLAS
 
-   No en coordenadas fijas. En fortress-vr.html lo son porque allí se
-   gira la cabeza para alcanzarlas, y con eso el ancho de la pantalla
-   da igual. Aquí la cámara está clavada, así que coordenadas fijas
+   No en coordenadas fijas. En la vieja lo eran porque allí se giraba
+   la cabeza para alcanzarlas, y con eso el ancho de la pantalla daba
+   igual. Aquí la cámara está clavada, así que coordenadas fijas
    significan que en un teléfono de pie dos bolas quedan fuera del
    borde — y una bola fuera del borde no es difícil, es imposible.
 
@@ -729,7 +733,7 @@ function cuentaEnElBucle(){
    de mano en mano quieren cero piezas.
 
    Y aquí está la diferencia con lo que ya probamos y falló. En
-   salida.html y en fortress-vr.html el giroscopio movía EL MUNDO: la
+   salida.html y en la vieja, el giroscopio movía EL MUNDO: la
    cabeza giraba y la cancha entera giraba con ella. Eso exige saber
    exactamente cómo está puesta la pantalla del casco, y este
    navegador de 2020 miente sobre eso — por ahí se nos fueron dos
@@ -805,7 +809,10 @@ var ojeando=setInterval(function(){
 /* ── Lo medido, una vez por casco ─────────────────────────────────
    No se adivina de qué eje sale el cabeceo ni hacia dónde crece: se
    mide, con el casco puesto, en tres pasos. Es la única parte de
-   fortress-vr.html que valía la pena salvar entera. */
+   la vieja que valía la pena salvar entera. */
+/* Las llaves guardadas dicen f3d porque este archivo nació con otro
+   nombre y se mudó aquí. NO se renombran: cambiarlas obligaría a
+   medir otra vez los cascos que ya se midieron, a cambio de nada. */
 var ejeCabeceo='beta', signoCabeceo=1, signoGiro=1, hayCabeceo=true;
 var ceroGiro=0, ceroCabeceo=0, calHecha=false;
 try{
@@ -866,7 +873,7 @@ function pasoDeMedida(){
     /* El cero sale del PASO 1, que fue "mira al frente" — no de aquí,
        que el último paso fue mirar a la izquierda. Cogerlo al final
        dejaba el frente 35 grados torcido; ese error ya lo pagamos una
-       vez en fortress-vr. */
+       vez en la vieja. */
     ceroGiro=medir.a0;
     ceroCabeceo=(ejeCabeceo==='beta') ? medir.b0 : medir.g0;
     calHecha=true; guardarCal();
@@ -890,7 +897,7 @@ var curX=0, curY=0;
    fue "mira al frente" y ese es el cero bueno; medio segundo después
    la cabeza todavía está girada a la izquierda del paso 3, así que
    recentrar ahí deja el frente treinta grados torcido. Es el mismo
-   error que ya nos comió una tarde en fortress-vr, reaparecido por la
+   error que ya nos comió una tarde en la vieja, reaparecido por la
    puerta de atrás al añadir el recentrado por tirada. */
 var saltarCentro=false;
 function tope(v){ return v>1?1:(v<-1?-1:v) }
