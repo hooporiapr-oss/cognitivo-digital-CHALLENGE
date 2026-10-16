@@ -83,6 +83,8 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
   text-transform:uppercase;margin-bottom:6px}
 .res a{color:var(--accent);font-weight:800}
 .hide{display:none}
+.f-ayuda{width:min(680px,93vw);margin:26px auto 40px;text-align:center;font-size:.88rem}
+.f-ayuda a{color:#A84200;font-weight:900;text-decoration:none}
 </style>
 </head>
 <body>
@@ -207,6 +209,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 
     <div id="res"></div>
   </div>
+  <p class="f-ayuda"><a href="ayuda.html">¿Algo no sale? Coach Cada Punto →</a></p>
 </main>
 
 <script>
@@ -390,7 +393,16 @@ function anadirLinea(){
   d.setDate(d.getDate() + 7);
   $('f_on').value = d.getFullYear() + '-' +
     ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
-  say('fm','');
+
+  /* DECIR QUE SÍ SE AÑADIÓ.
+     El campo del rival se vacía a propósito — cambia en cada juego —
+     pero ese vaciarse era la ÚNICA señal, y un campo que se queda en
+     blanco se lee como "no lo cogió", no como "ya está". Pasó tal
+     cual: tres juegos escritos y la sensación de que la página los
+     rechazaba, cuando estaban todos en la lista de abajo esperando.
+     Y faltan dos pasos más, así que hay que nombrarlos. */
+  say('fm','Añadido: ' + foe + '. Va en la lista de abajo — cuando estén '
+          + 'todos, dale a Ver el calendario y luego a Crear estos juegos.','ok');
   $('f_foe').focus();
 }
 
