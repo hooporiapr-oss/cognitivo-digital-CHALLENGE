@@ -184,11 +184,11 @@ var S={
     chatWait:'Pensando…',
     chatFix:'Texto oficial',
     chatErr:'Algo falló de mi lado. Pregúntalo otra vez, o escríbenos.',
-    secs:['Entrar','La plantilla','Los juegos','El marcador','El dinero','Si vas a prometer'],
+    secs:['Entrar','La plantilla','El día de juego','El tablero','El dinero','Si vas a prometer'],
     qs:[
       [0,'¿Dónde entro?',
        '<p>En <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, con el código que te dimos.</p>'+
-       '<p>Lo escribes <b>una sola vez</b>. De ahí en adelante ese teléfono ya te conoce — para el calendario, para la plantilla, para el marcador, para todo.</p>'],
+       '<p>Lo escribes <b>una sola vez</b>. De ahí en adelante ese teléfono ya te conoce — para la plantilla, para el tablero, para todo.</p>'],
       [0,'¿Tengo que escribir el código en cada página?',
        '<p>No. Una vez, en Mi equipo, y listo.</p>'+
        '<p>Si te lo vuelve a pedir es porque estás en otro teléfono, en otro navegador, o en una ventana privada. Escríbelo otra vez y ya.</p>'],
@@ -211,35 +211,46 @@ var S={
       [1,'Escribí mal un nombre.',
        '<p><b>Arreglar</b>, en su fila. También puedes cambiarle la escuadra ahí mismo.</p>'],
 
-      [2,'¿Cómo pongo un juego?',
-       '<p>Desde Mi equipo, <b>Poner juegos</b>. Fecha, hora y contra quién.</p>'+
-       '<p>Puedes poner toda la temporada de una vez si ya la tienes.</p>'],
-      [2,'¿Cómo armo un interescuadra?',
-       '<p>Desde Mi equipo, <b>Escuadras</b>. Partes tu plantilla en dos, pones fecha y hora, y se crean los dos juegos de una vez.</p>'+
-       '<p>Son dos juegos y no uno a propósito: cada escuadra tiene que ser el equipo en su propia fila, porque los padrinos prometen por juego. Si sólo hubiera uno, las familias de la otra mitad no tendrían nada que apadrinar ese día.</p>'],
-      [2,'Nadie puede prometer en un juego.',
-       '<p>Las promesas se cierran a la hora del juego. Después de esa hora ya no entra ninguna.</p>'+
-       '<p>Si la hora está mal puesta, arréglala y vuelve a abrirse.</p>'],
-      [2,'Se canceló el juego.',
-       '<p>Avísanos y lo cancelamos. No se le cobra nada a nadie por un juego que no se jugó.</p>'],
+      [2,'¿Qué es The Fortress?',
+       '<p>Es el juego sobre el que se recauda. Cinco bolas puestas delante en 2-1-2. Se enciende una cadena en orden y hay que repetirla tocándolas. Cada ronda la cadena crece en una.</p>'+
+       '<p>Los puntos de una cadena son 1+2+3 y así hasta el nivel que aguantó, o sea que cada ronda vale más que la anterior. Aguantar doce rondas son 78 puntos.</p>'+
+       '<p>Se juega en <a href="fortress-vr.html">cadapunto.com/fortress-vr.html</a>, en el teléfono, la tableta o la computadora. No hay que instalar nada.</p>'],
+      [2,'¿Cómo es el día de juego?',
+       '<p>Es una ventana de horas — dos por defecto — y dentro de ella cada nene juega su partido desde donde esté. No hay que juntar a nadie ni prestar equipos.</p>'+
+       '<p>El partido de un nene son <b>cuatro cuartos de cinco minutos</b>. Cuando termina el cuarto, ese cuarto queda puesto.</p>'+
+       '<p>Para abrir uno, escríbenos con la fecha y la hora. No hay botón para eso: lo ponemos nosotros.</p>'],
+      [2,'¿Cómo se cuentan los puntos de un cuarto?',
+       '<p>Un cuarto vale la <b>mejor</b> tirada que hubo dentro de él, no la suma de todas. Dentro de los cinco minutos se puede fallar y volver a empezar las veces que dé el tiempo.</p>'+
+       '<p>Los cuatro cuartos se suman, y eso es lo que anotó el nene.</p>'],
+      [2,'A un nene se le apagó el teléfono a mitad.',
+       '<p>Que vuelva a abrir el mismo enlace. Los cuartos que ya puso siguen puestos y sigue donde iba, mientras la ventana esté abierta.</p>'+
+       '<p>Un cuarto que no se termine antes de que cierre la ventana vale cero.</p>'],
+      [2,'Nadie puede prometer.',
+       '<p>Las promesas se cierran cuando <b>abre</b> el día de juego, no cuando cierra.</p>'+
+       '<p>Es a propósito: prometer sabiendo lo que anotó el nene no es prometer. Los padrinos hay que buscarlos antes.</p>'],
+      [2,'¿Se puede jugar con casco de realidad virtual?',
+       '<p>Para practicar sí, y está bueno. Para el día de juego no: ése es sólo en pantalla.</p>'+
+       '<p>Es a propósito, para no tener que repartirle un casco a nadie.</p>'],
 
       [3,'¿Cómo pongo el marcador?',
-       '<p>En el tablero de tu equipo. Entras con tu código, certificas una vez, y de ahí cada juego son dos números y <b>Guardar</b>.</p>'],
-      [3,'No me deja poner el marcador.',
-       '<p>Casi siempre es que el juego todavía no ha pasado. No se puede poner el marcador de un juego que no se ha jugado.</p>'+
-       '<p>Si la fecha quedó mal, arréglala o avísanos.</p>'],
-      [3,'Me equivoqué en el marcador.',
-       '<p>Avísanos el mismo día. Se corrige y se les dice a los padrinos.</p>'+
-       '<p>Esto importa: el padrino paga por un número que no vio. Un marcador que se cambia sin decirlo es de las tres cosas que tumban un partido en las reglas de Sietes.</p>'],
-      [3,'¿Por qué me insiste tanto con el marcador?',
-       '<p>Porque mientras no esté puesto, <b>no se le cobra a ningún padrino y el programa no recibe nada</b>. El juego se jugó, la gente prometió, y el dinero se queda parado esperando dos números.</p>'+
-       '<p>Por eso Mi equipo te lo pone arriba, en anaranjado, hasta que lo pongas.</p>'],
-      [3,'Perdimos. ¿Igual recaudamos?',
-       '<p>Sí. Se recauda por los puntos que anotó tu equipo, no por ganar.</p>'+
-       '<p>En un interescuadra recaudan las dos escuadras, cada una por lo suyo.</p>'],
+       '<p>No lo pones. Eso cambió.</p>'+
+       '<p>El juego guarda cada cuarto según se juega. El día de juego tú no tienes nada que hacer, y no puedes cambiar un número aunque quieras — ni tú ni nosotros desde una pantalla.</p>'],
+      [3,'¿Dónde veo cómo van?',
+       '<p>En el tablero, desde Mi equipo, <b>Ver el tablero</b>.</p>'+
+       '<p>Enseña a cada nene con sus cuatro cuartos llegando, su total, y si ya terminó o va por el segundo. Se refresca solo mientras la ventana está abierta.</p>'+
+       '<p>El enlace se puede mandar: las familias lo abren y lo ven igual que tú.</p>'],
+      [3,'¿Entonces cuándo se cobra?',
+       '<p>Solo, cuando cierra la ventana. A cada padrino le llega su enlace de pago por correo sin que nadie apriete nada.</p>'+
+       '<p>A ti te llega un correo diciendo cuántos enlaces salieron y por cuánto.</p>'],
+      [3,'Creo que un cuarto se guardó mal.',
+       '<p>Avísanos el mismo día. Se mira, se corrige si hace falta, y se les dice a los padrinos.</p>'+
+       '<p>Esto importa: el padrino paga por un número que no vio.</p>'],
+      [3,'¿Y si perdemos?',
+       '<p>No hay contra quién perder. No hay rival: cada nene juega contra la cadena.</p>'+
+       '<p>Se recauda por los puntos que anotó, y ya.</p>'],
 
       [4,'¿Cuándo le llega la cuenta al padrino?',
-       '<p>Cuando pones el marcador, el juego se cierra y se calcula lo de cada padrino. Las cuentas salen desde el admin, así que puede haber unas horas entre que pones el marcador y que les llega.</p>'],
+       '<p>Unos minutos después de que cierre la ventana. Sale solo: nadie tiene que apretar nada, ni tú ni nosotros.</p>'],
       [4,'¿Cuándo me pagan a mí?',
        '<p>El <b>día 1</b> y el <b>día 15</b> de cada mes, por lo cobrado hasta ese día.</p>'+
        '<p>Si por alguna razón no podemos remitir en esa fecha, te lo decimos antes de que pase.</p>'],
@@ -251,7 +262,8 @@ var S={
        '<p>Nuestro 20% se le suma al pago del padrino, encima de la promesa: una promesa de $25 es un pago de $25.00 más $5.00, y al programa le llegan los $25 completos.</p>'+
        '<p>Sin cuota de entrada, sin mensualidad y sin contrato.</p>'],
       [4,'¿Un padrino puede terminar debiendo una fortuna?',
-       '<p>No. El padrino pone su propio tope cuando promete, y el tope manda. También hay un cobro mínimo de $5.</p>'],
+       '<p>No. El padrino pone su propio tope cuando promete, y el tope manda, suba lo que suba el marcador.</p>'+
+       '<p>Por el otro lado: si la tarifa por los puntos da menos de cincuenta centavos, no se cobra nada. La promesa se cierra y no se debe nada.</p>'],
       [4,'Un padrino me preguntó algo que no sé contestar.',
        '<p>Baja a <b>Si vas a prometer</b>, al final de esta página: ahí está contestado lo que preguntan ellos — cuánto van a pagar, cuándo se les cobra, el tope, y a dónde va el dinero.</p>'+
        '<p>Mandarles esta misma página contesta mejor que explicarlo de memoria. Y si es algo que no está ahí, pásanoslo y lo contestamos nosotros.</p>'],
@@ -265,14 +277,14 @@ var S={
          entrenador que no sabe qué decirle a una familia manda este
          enlace y ya. */
       [5,'¿Cuándo me cobran?',
-       '<p>Después del juego, nunca antes. Prometes una cantidad por punto, el equipo juega, y entonces te llega un correo con el marcador y un enlace para pagar.</p>'],
+       '<p>Después del juego, nunca antes. Prometes una cantidad por punto, el nene juega sus cuatro cuartos, y entonces te llega un correo con lo que anotó y un enlace para pagar.</p>'],
       [5,'¿Cuánto voy a pagar exactamente?',
-       '<p>Tu tarifa por los puntos que anotó el equipo. A diez centavos el punto, un juego de 68 son $6.80.</p>'+
-       '<p>El correo te lo desglosa antes de que pagues, y la mínima es $5 por promesa.</p>'],
+       '<p>Tu tarifa por los puntos que anotó <b>ese nene</b>. A diez centavos el punto, un juego de 162 son $16.20.</p>'+
+       '<p>El correo te lo desglosa antes de que pagues. Si da menos de cincuenta centavos, no se cobra nada.</p>'],
       [5,'¿Puedo poner un tope?',
        '<p>Sí. Al prometer pones lo máximo que quieres pagar y nunca se cobra por encima de eso, anoten lo que anoten.</p>'],
-      [5,'¿Y si pierden?',
-       '<p>Pagas igual, por los puntos que anotaron. Tu promesa es para el programa, no para el resultado.</p>'],
+      [5,'¿Y si le va mal?',
+       '<p>Pagas por los puntos que anotó, sean los que sean. No hay rival ni resultado: tu promesa es para el programa.</p>'],
       [5,'¿A dónde va el dinero?',
        '<p>Al programa que escogiste, completo. Nuestro 20% se añade encima de tu pago, no se saca del suyo.</p>'+
        '<p>Lo que ese programa haga con lo recaudado es suyo, igual que cualquier otra contribución: a veces comparten parte con su liga o con el programa que los trajo. Eso es entre ellos.</p>'+
@@ -301,11 +313,11 @@ var S={
     chatWait:'Thinking…',
     chatFix:'Official wording',
     chatErr:'Something failed on my side. Ask again, or write to us.',
-    secs:['Signing in','The roster','The games','The score','The money','If you are pledging'],
+    secs:['Signing in','The roster','The game day','The board','The money','If you are pledging'],
     qs:[
       [0,'Where do I sign in?',
        '<p>At <a href="mi-equipo.html">cadapunto.com/mi-equipo.html</a>, with the code we gave you.</p>'+
-       '<p>You type it <b>once</b>. After that this phone knows you — for the schedule, the roster, the scoreboard, all of it.</p>'],
+       '<p>You type it <b>once</b>. After that this phone knows you — for the roster, the board, all of it.</p>'],
       [0,'Do I have to type my code on every page?',
        '<p>No. Once, at My team, and that is it.</p>'+
        '<p>If it asks again you are on another phone, another browser, or a private window. Type it again and carry on.</p>'],
@@ -328,35 +340,46 @@ var S={
       [1,'I spelled a name wrong.',
        '<p><b>Fix</b>, on their row. You can change their squad there too.</p>'],
 
-      [2,'How do I post a game?',
-       '<p>From My team, <b>Post games</b>. Date, time and who against.</p>'+
-       '<p>You can put the whole season in at once if you have it.</p>'],
-      [2,'How do I set up a scrimmage?',
-       '<p>From My team, <b>Squads</b>. Split your roster in two, set a date and time, and both games are created at once.</p>'+
-       '<p>It is two games rather than one on purpose: each squad has to be the team on its own row, because padrinos pledge per game. With only one row, the families of the other half would have nothing to pledge on that day.</p>'],
-      [2,'Nobody can pledge on a game.',
-       '<p>Pledging closes at the game’s start time. After that, nothing more comes in.</p>'+
-       '<p>If the time is wrong, fix it and pledging opens again.</p>'],
-      [2,'The game was cancelled.',
-       '<p>Tell us and we will cancel it. Nobody is charged for a game that was not played.</p>'],
+      [2,'What is The Fortress?',
+       '<p>It is the game the fundraiser is played on. Five balls in front of you in a 2-1-2. A chain lights up in order and you repeat it by touching them. Each round the chain grows by one.</p>'+
+       '<p>A chain is worth 1+2+3 and so on up to the level you held, so every round is worth more than the last. Holding twelve rounds is 78 points.</p>'+
+       '<p>It plays at <a href="fortress-vr.html">cadapunto.com/fortress-vr.html</a>, on a phone, tablet or computer. Nothing to install.</p>'],
+      [2,'What is a game day?',
+       '<p>It is a window of hours — two by default — and inside it each child plays their game from wherever they are. Nobody has to be gathered and no equipment is lent.</p>'+
+       '<p>A child’s game is <b>four five-minute quarters</b>. When a quarter ends, that quarter is in.</p>'+
+       '<p>To open one, write to us with the date and time. There is no button for it: we set it.</p>'],
+      [2,'How are a quarter’s points counted?',
+       '<p>A quarter is worth the <b>best</b> single run inside it, not the sum of them all. Within the five minutes they can miss and start again as often as the time allows.</p>'+
+       '<p>The four quarters add up, and that is what the child scored.</p>'],
+      [2,'A child’s phone died halfway through.',
+       '<p>They reopen the same link. The quarters already in stay in, and they carry on where they were, as long as the window is still open.</p>'+
+       '<p>A quarter not finished before the window closes is worth zero.</p>'],
+      [2,'Nobody can pledge.',
+       '<p>Pledging closes when the game day <b>opens</b>, not when it ends.</p>'+
+       '<p>That is on purpose: pledging while knowing what the child scored is not pledging. Padrinos have to be found beforehand.</p>'],
+      [2,'Can they play in a VR headset?',
+       '<p>For practice yes, and it is good. For the game day no: that is screens only.</p>'+
+       '<p>It is deliberate, so nobody has to hand out headsets.</p>'],
 
       [3,'How do I post the score?',
-       '<p>On your team’s board. You go in with your code, certify once, and from then on each game is two numbers and <b>Save</b>.</p>'],
-      [3,'It will not let me post the score.',
-       '<p>Nearly always the game has not happened yet. A score cannot be posted on a game that has not been played.</p>'+
-       '<p>If the date is wrong, fix it or tell us.</p>'],
-      [3,'I posted the wrong score.',
-       '<p>Tell us the same day. It gets corrected and the padrinos are told.</p>'+
-       '<p>This matters: a padrino pays on a number they did not see. A total changed without saying so is one of the three things that voids a match under the Sietes rules.</p>'],
-      [3,'Why does it keep nagging me about the score?',
-       '<p>Because until it is in, <b>no padrino is charged and the program receives nothing</b>. The game was played, people pledged, and the money sits still waiting on two numbers.</p>'+
-       '<p>That is why My team puts it at the top in orange until you do it.</p>'],
-      [3,'We lost. Do we still raise?',
-       '<p>Yes. You raise on the points your team scored, not on winning.</p>'+
-       '<p>In a scrimmage both squads raise, each on their own.</p>'],
+       '<p>You do not. That changed.</p>'+
+       '<p>The game records each quarter as it is played. On game day you have nothing to do, and you could not change a number if you wanted to — neither could we, from any screen.</p>'],
+      [3,'Where do I see how they are doing?',
+       '<p>On the board, from My team, <b>See the board</b>.</p>'+
+       '<p>It shows each child with their four quarters arriving, their total, and whether they have finished or are on their second. It refreshes on its own while the window is open.</p>'+
+       '<p>The link can be shared: families open it and see what you see.</p>'],
+      [3,'So when does the billing happen?',
+       '<p>On its own, when the window closes. Every padrino gets their payment link by email without anyone pressing anything.</p>'+
+       '<p>You get an email saying how many links went out and for how much.</p>'],
+      [3,'I think a quarter was recorded wrongly.',
+       '<p>Tell us the same day. We look, correct it if it needs correcting, and the padrinos are told.</p>'+
+       '<p>This matters: a padrino pays on a number they did not see.</p>'],
+      [3,'What if we lose?',
+       '<p>There is nobody to lose to. There is no opponent: each child plays against the chain.</p>'+
+       '<p>You raise on the points they scored, and that is all.</p>'],
 
       [4,'When does the padrino get their bill?',
-       '<p>When you post the score the game closes and every padrino’s amount is worked out. The bills go out from the admin side, so there can be a few hours between your posting the score and their receiving it.</p>'],
+       '<p>A few minutes after the window closes. It goes out on its own: nobody has to press anything, not you and not us.</p>'],
       [4,'When do I get paid?',
        '<p>On the <b>1st</b> and the <b>15th</b> of each month, for whatever has been collected by then.</p>'+
        '<p>If for any reason we cannot send on that date, we tell you before it passes.</p>'],
@@ -368,7 +391,8 @@ var S={
        '<p>Our 20% is added to the padrino’s payment, on top of the pledge: a $25 pledge is a payment of $25.00 plus $5.00, and the program receives the full $25.</p>'+
        '<p>No setup fee, no monthly fee, no contract.</p>'],
       [4,'Could a padrino end up owing a fortune?',
-       '<p>No. The padrino sets their own cap when they pledge, and the cap wins. There is also a $5 minimum charge.</p>'],
+       '<p>No. The padrino sets their own cap when they pledge, and the cap wins, however high the score goes.</p>'+
+       '<p>The other way round: if the rate times the points comes to less than fifty cents, nothing is billed. The pledge is closed out and nothing is owed.</p>'],
       [4,'A padrino asked me something I cannot answer.',
        '<p>Scroll down to <b>If you are pledging</b>, at the end of this page: what they ask is answered there — how much they will pay, when they are charged, the cap, and where the money goes.</p>'+
        '<p>Sending them this same page answers better than explaining from memory. And if it is not in there, pass it to us and we will answer it.</p>'],
@@ -377,14 +401,14 @@ var S={
        '<p>If how their payment is treated matters to a padrino, they should ask their own advisor.</p>'],
 
       [5,'When am I charged?',
-       '<p>After the game, never before. You pledge an amount per point, the team plays, and then you get an email with the score and a link to pay.</p>'],
+       '<p>After the game, never before. You pledge an amount per point, the child plays their four quarters, and then you get an email with what they scored and a link to pay.</p>'],
       [5,'How much exactly will I pay?',
-       '<p>Your rate times the points your team scored. At ten cents a point, a 68-point game is $6.80.</p>'+
-       '<p>The email breaks it down before you pay, and the minimum is $5 a pledge.</p>'],
+       '<p>Your rate times the points <b>that child</b> scored. At ten cents a point, a 162-point game is $16.20.</p>'+
+       '<p>The email breaks it down before you pay. If it comes to less than fifty cents, nothing is billed.</p>'],
       [5,'Can I set a limit?',
        '<p>Yes. When you pledge you set the most you are willing to pay, and you are never charged above it, however much they score.</p>'],
-      [5,'What if they lose?',
-       '<p>You pay the same, on the points they scored. Your pledge is for the program, not for the result.</p>'],
+      [5,'What if they do badly?',
+       '<p>You pay on the points they scored, whatever those are. There is no opponent and no result: your pledge is for the program.</p>'],
       [5,'Where does the money go?',
        '<p>To the program you chose, in full. Our 20% is added on top of your payment, not taken out of theirs.</p>'+
        '<p>What that program does with what it raises is theirs, like any other contribution: sometimes they share part of it with their league or with the program that brought them in. That is between them.</p>'+
