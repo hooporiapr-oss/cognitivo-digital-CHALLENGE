@@ -225,7 +225,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='j1';
+var SELLO='j2';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -290,6 +290,8 @@ var S={
     siguienteCuarto:'Jugar el Q{Q}',
     practicar:'Practicar',
     volverJuego:'Volver a mi juego',
+    otraTanda:'Otra tanda',
+    reintentar:'Reintentar',
     guardando:'Guardando el cuarto…',
     noGuardo:'No se pudo guardar. Revisa la conexión y vuelve a abrir tu enlace.',
     mejorTanda:'Tu mejor cadena de la tanda',
@@ -353,6 +355,8 @@ var S={
     siguienteCuarto:'Play Q{Q}',
     practicar:'Practise',
     volverJuego:'Back to my game',
+    otraTanda:'Another round',
+    reintentar:'Try again',
     guardando:'Saving the quarter…',
     noGuardo:'Could not save. Check your connection and reopen your link.',
     mejorTanda:'Your best chain this round',
@@ -840,15 +844,31 @@ function volverAPortada(){
   pintarTapaJuego();
 }
 
+/* ¿Lleva reloj esta tanda?
+
+   Sólo donde el tiempo significa algo. En el casco sí: hay una fila
+   de nenes esperando y cinco minutos es el turno de cada uno. En un
+   cuarto sí: es el juego. Practicando solo en el teléfono, no — ahí
+   no hay nadie detrás a quien pasarle el casco, y una chicharra que
+   te corta para decirte "siguiente jugador" cuando no hay siguiente
+   jugador es una pantalla hablándole a nadie.
+
+   Sin reloj tampoco hace falta armar nada: la bola del medio existe
+   para que el que juega decida cuándo empiezan SUS minutos, y si no
+   hay minutos que empezar, se juega y ya. */
+var conReloj=false;
+
 function armarSesion(){
   limpiarT(); apagarTodas(); pararCuenta();
   cadena=[]; nivel=0; voy=0; tanda=[];
   mirando=-1; bloqueada=-1; sinBolaDesde=0;
   relojCorriendo=false; relojHasta=0; relojTexto='';
+  conReloj = (MODO==='cabeza') || (JUEGO && !enPractica);
   fase='listo';
   $('fin').hidden=true;
   $('hud').hidden=false;
   $('pista').hidden=false;
+  $('reloj').hidden=!conReloj;
   if(MODO==='cabeza'){
     $('mira').hidden=false;
     /* Cada tanda empieza con el frente donde esté la cara: en la fila
@@ -857,6 +877,7 @@ function armarSesion(){
        trae su cero. */
     if(saltarCentro) saltarCentro=false; else recentrar();
   }
+  if(!conReloj){ empezarTirada(); return }
   pintarReloj(); pintarHud(); pintarPista();
 }
 
@@ -967,14 +988,22 @@ function romper(){
     $('finP').textContent=T('fin')+'  ·  '+pointsFor(final)+' '+T('puntos');
     $('finS').textContent=T('mejor')+mejor;
     $('tanda').textContent=tanda.length>1 ? T('tanda')+tanda.join('  ·  ') : '';
-    /* Sin botón aquí: la tirada siguiente entra sola y el reloj no se
-       ha parado. Un botón en esta pantalla sería un botón que hay que
-       apretar en mitad de tu propio tiempo. */
-    $('otra').hidden=true;
+    /* Practicando entre cuartos no hay cuenta atrás: el que está ahí
+       vino a calentar y tiene que poder volverse a su juego cuando
+       quiera, no en los cuatro segundos que dura una cuenta. En todo
+       lo demás la siguiente entra sola y no hay botón que apretar. */
+    if(JUEGO && enPractica){
+      $('otra').hidden=false;  $('otra').textContent=T('volverJuego');
+      $('practicar').hidden=false; $('practicar').textContent=T('otraTanda');
+      $('cuenta').textContent='';
+    }else{
+      $('otra').hidden=true;
+      $('practicar').hidden=true;
+      arrancarCuenta();
+    }
     $('fin').hidden=false;
     $('hud').hidden=true;
     $('pista').hidden=true;
-    arrancarCuenta();
   },750));
 }
 
@@ -1041,6 +1070,12 @@ function terminarSesion(porVentana){
    el servidor lo rechazaría de todas formas, y un cuarto sin fila
    ya cuenta como cero al sumar.
    ══════════════════════════════════════════════════════════════════ */
+/* El cuarto que se jugó y todavía no está guardado. Mientras haya
+   uno aquí, lo ÚNICO que ofrece la pantalla es volver a mandarlo: si
+   el botón dejara seguir al cuarto siguiente, un teléfono sin señal
+   serviría para repetir un cuarto que salió malo. */
+var cuartoPendiente=null;
+
 function cerrarCuarto(q, nivel, porVentana){
   var puntos=pointsFor(nivel);
   fase='tiempo';
@@ -1060,9 +1095,17 @@ function cerrarCuarto(q, nivel, porVentana){
     return;
   }
 
+  cuartoPendiente={q:q, nivel:nivel, puntos:puntos};
   $('finP').textContent=T('guardando');
   guardarCuarto(q, nivel, puntos, function(ok){
-    if(!ok && !finDelJuego){ $('finP').textContent=T('noGuardo'); return }
+    if(!ok && !finDelJuego){
+      /* Sin esto la pantalla se quedaba sin un solo botón: el cuarto
+         jugado, sin guardar, y nada que tocar. */
+      $('finP').textContent=T('noGuardo');
+      $('otra').hidden=false; $('otra').textContent=T('reintentar');
+      return;
+    }
+    cuartoPendiente=null;
     pintarCaja($('caja'), 0);
     var sig=proximoCuarto();
     if(finDelJuego || !sig || quedaVentana()<=0){ finDeJuego(); return }
@@ -1651,9 +1694,14 @@ function bucle(){
      puntuación: es tiempo corrido, no se para entre tiradas. */
   /* La ventana manda por encima del reloj del cuarto: si cierra a
      mitad, ese cuarto vale 0 y el juego se acaba ahí. */
-  if(JUEGO && !enPractica && ventanaViva && !finDelJuego && fase!=='tiempo' &&
+  if(JUEGO && ventanaViva && !finDelJuego && fase!=='tiempo' &&
      fase!=='tapa' && quedaVentana()<=0){
-    terminarSesion(true); renderer.render(scene,camera); return;
+    /* Si cerró mientras calentaba, el juego se acabó igual: lo que
+       no jugó vale cero, y seguir practicando sobre un juego cerrado
+       sería dejarle creer que todavía cuenta. */
+    if(enPractica){ limpiarT(); pararCuenta(); enPractica=false; finDeJuego() }
+    else terminarSesion(true);
+    renderer.render(scene,camera); return;
   }
   if(relojCorriendo){
     pintarReloj();
@@ -1723,6 +1771,14 @@ $('goCabeza').onclick=function(){ arrancar(true) };
 $('otra').onclick=function(){
   pararCuenta();
   if(!JUEGO){ armarSesion(); return }
+  /* Hay un cuarto sin guardar: lo único que se puede hacer es
+     volver a mandarlo. */
+  if(cuartoPendiente){
+    var c=cuartoPendiente;
+    $('otra').hidden=true; $('finP').textContent=T('guardando');
+    cerrarCuarto(c.q, c.nivel, false);
+    return;
+  }
   if(enPractica){ volverAPortada(); return }
   var q=proximoCuarto();
   if(q && !finDelJuego && quedaVentana()>0) armarCuarto(q); else volverAPortada();
