@@ -48,6 +48,15 @@
    no aporta nada y, si alguien gira y se pierde, se queda trancado.
    ══════════════════════════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0}
+/* Esto no es adorno. 'hidden' esconde una cosa poniéndole
+   display:none desde el navegador, y CUALQUIER regla nuestra que diga
+   display gana por encima de eso. #hud dice display:flex y #mira
+   también, así que esconderlos no escondía nada: el marcador se
+   quedaba asomando por detrás de la pantalla del final y el punto de
+   mira vivía pegado a la esquina aunque se jugara con el dedo. Las
+   pruebas no lo vieron porque preguntaban si la propiedad estaba
+   puesta, y lo estaba — lo que no pasaba es que se viera. */
+[hidden]{display:none !important}
 html,body{height:100%;overflow:hidden;background:#0B1724;
   font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
   -webkit-text-size-adjust:100%;overscroll-behavior:none;
@@ -64,10 +73,19 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   line-height:1;letter-spacing:-.02em}
 #hud .k{display:block;font-size:.62rem;font-weight:900;letter-spacing:.12em;
   text-transform:uppercase;color:#7F93A6;margin-top:3px}
-#estado{font-weight:900;font-size:clamp(.85rem,3.4vw,1.1rem);letter-spacing:.1em;
-  padding:9px 14px;border-radius:999px;background:rgba(5,14,24,.72);
-  color:#FFC247;align-self:flex-start;margin-top:4px}
+#hud .centro{display:flex;flex-direction:column;align-items:center;gap:7px;
+  flex:0 1 auto;min-width:0}
+/* El reloj de la tanda. Cifras de ancho fijo: si no, el marcador
+   tiembla de un segundo a otro y no hay nada que distraiga más. */
+#reloj{font-weight:900;font-size:clamp(1.5rem,6vw,2.2rem);line-height:1;
+  letter-spacing:.01em;font-variant-numeric:tabular-nums;color:#fff}
+#reloj.poco{color:#FFC247}
+#reloj.nada{color:#FF5A4A}
+#estado{font-weight:900;font-size:clamp(.78rem,3.2vw,1.05rem);letter-spacing:.09em;
+  padding:8px 14px;border-radius:999px;background:rgba(5,14,24,.72);
+  color:#FFC247;text-align:center;white-space:nowrap}
 #estado.tu{color:#6FD83C}
+#estado.listo{color:#6FD83C;background:rgba(5,14,24,.9)}
 
 /* Un teléfono acostado deja 390 puntos de alto y el marcador se come
    el tablero. Se encoge y deja de estorbar. */
@@ -75,7 +93,9 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   #hud{padding-top:6px}
   #hud .n{font-size:1.25rem}
   #hud .k{font-size:.56rem}
-  #estado{font-size:.78rem;padding:6px 11px}
+  #estado{font-size:.72rem;padding:5px 10px}
+  #reloj{font-size:1.25rem}
+  #hud .centro{gap:4px}
 }
 #pista{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));
   z-index:5;pointer-events:none;text-align:center;color:#5E7488;
@@ -85,7 +105,6 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
 .capa{position:fixed;inset:0;z-index:10;background:rgba(11,23,36,.94);color:#fff;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:24px;gap:13px}
-.capa[hidden]{display:none}
 .capa h1{font-size:clamp(1.7rem,7vw,2.9rem);font-weight:900;letter-spacing:-.02em}
 .capa h1 em{font-style:normal;color:#FF7A18}
 .capa p{color:#C8D6E2;font-size:.98rem;max-width:36ch;line-height:1.55}
@@ -97,6 +116,10 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   color:#FF7A18;letter-spacing:-.03em}
 .capa button.otro{background:none;color:#C8D6E2;border:1px solid #33465A;font-size:.95rem;
   padding:13px 24px}
+/* El aviso va pegado debajo del botón y encima de la explicación, que
+   es donde se lee antes de apretar y no después. */
+.capa .req{color:#FFC247;font-size:.72rem;font-weight:900;letter-spacing:.12em;
+  text-transform:uppercase;margin-top:-4px}
 #cuenta{color:#6FD83C;font-weight:900;font-size:.95rem;letter-spacing:.06em;min-height:1.2em}
 #tanda{color:#7F93A6;font-weight:800;font-size:.82rem;letter-spacing:.06em}
 
@@ -128,7 +151,10 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
 
 <div id="hud" hidden>
   <div class="col"><span class="n" id="hNivel">0</span><span class="k" id="kNivel">cadena</span></div>
-  <div id="estado">MIRA</div>
+  <div class="centro">
+    <div id="reloj">5:00</div>
+    <div id="estado">MIRA</div>
+  </div>
   <div class="col"><span class="n" id="hPts">0</span><span class="k" id="kPts">puntos</span></div>
 </div>
 <div id="pista" hidden></div>
@@ -144,6 +170,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
   <p id="tapaP"></p>
   <button id="go"></button>
   <button id="goCabeza" class="otro" hidden></button>
+  <small id="tapaReq" class="req" hidden></small>
   <small id="tapaS"></small>
 </div>
 
@@ -173,7 +200,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;
    guarda la página con ganas y ya nos costó una tarde entera creer
    que un arreglo no funcionaba cuando lo que corría era la versión
    vieja. SUBIRLO en cada cambio. */
-var SELLO='c2';
+var SELLO='c4';
 
 // ──────────────────────────────────────────────────────────────────
 //  IDIOMA. Las mismas llaves que el resto del sitio, para que elegir
@@ -196,6 +223,7 @@ var S={
     mejor:'Tu mejor cadena: ',
     teclas:'1 2 arriba · 3 el medio · 4 5 abajo',
     cabeza:'Con la cabeza',
+    req:'Requiere casco VR',
     sCabeza:'En el casco: mira la bola y aguanta la vista. Sin mando.',
     medidaK:'UNA SOLA VEZ',
     m1:'MIRA AL FRENTE',
@@ -203,9 +231,18 @@ var S={
     m3:'MIRA A LA IZQUIERDA',
     medidaS:'Este casco se mide una vez y queda guardado.',
     centrado:'CENTRADO',
-    siguiente:'SIGUIENTE JUGADOR',
+    otraTirada:'OTRA TIRADA',
     empiezaEn:'empieza en ',
-    tanda:'Esta tanda: '
+    tanda:'Esta tanda: ',
+    listoPill:'MIRA EL MEDIO',
+    listoPillD:'TOCA EL MEDIO',
+    listoLinea:'Mira la bola del medio para empezar tus {M}.',
+    listoLineaD:'Toca la bola del medio para empezar tus {M}.',
+    minutos:'{N} minutos',
+    segundos:'{N} segundos',
+    seAcabo:'SE ACABÓ EL TIEMPO',
+    mejorTanda:'Tu mejor cadena de la tanda',
+    siguienteBtn:'Siguiente jugador'
   },
   en:{
     p:'The chain grows by one each round. Watch where the balls light up '+
@@ -223,6 +260,7 @@ var S={
     mejor:'Your best chain: ',
     teclas:'1 2 top · 3 middle · 4 5 bottom',
     cabeza:'With your head',
+    req:'VR headset required',
     sCabeza:'In the headset: look at the ball and hold. No controller.',
     medidaK:'ONE TIME ONLY',
     m1:'LOOK STRAIGHT AHEAD',
@@ -230,9 +268,18 @@ var S={
     m3:'LOOK LEFT',
     medidaS:'Each headset is measured once and remembers it.',
     centrado:'CENTERED',
-    siguiente:'NEXT PLAYER',
+    otraTirada:'ANOTHER GO',
     empiezaEn:'starts in ',
-    tanda:'This round: '
+    tanda:'This round: ',
+    listoPill:'LOOK AT THE MIDDLE',
+    listoPillD:'TAP THE MIDDLE',
+    listoLinea:'Look at the middle ball to start your {M}.',
+    listoLineaD:'Tap the middle ball to start your {M}.',
+    minutos:'{N} minutes',
+    segundos:'{N} seconds',
+    seAcabo:"TIME'S UP",
+    mejorTanda:'Your best chain this round',
+    siguienteBtn:'Next player'
   }
 };
 var LANG='es';
@@ -253,15 +300,30 @@ function pintarTextos(){
   $('go').textContent=T('go');
   $('tapaS').textContent=hayGiro()?T('sCabeza'):(HAY_FINO?T('sRaton'):T('sDedo'));
   $('goCabeza').textContent=T('cabeza');
+  $('tapaReq').textContent=T('req');
   $('medidaK').textContent=T('medidaK');
   $('medidaS').textContent=T('medidaS');
   $('kNivel').textContent=T('nivel');
   $('kPts').textContent=T('puntos');
   $('finK').textContent=T('finK');
-  $('otra').textContent=T('otra');
+  $('otra').textContent=T('siguienteBtn');
   pintarPista();
 }
+/* Cuánto dura la tanda, dicho en palabras. Estaba escrito a mano —
+   "tus 5 minutos" — y con ?min=3 la página mentía. */
+function cuantoDura(){
+  var min=SESION_MS/60000;
+  if(min>=1 && min===Math.round(min)) return T('minutos').replace('{N}',min);
+  var seg=Math.round(SESION_MS/1000);
+  if(seg<60) return T('segundos').replace('{N}',seg);
+  return Math.floor(seg/60)+':'+('0'+(seg%60)).slice(-2);
+}
 function pintarPista(){
+  if(fase==='listo'){
+    $('pista').textContent =
+      (MODO==='cabeza' ? T('listoLinea') : T('listoLineaD')).replace('{M}',cuantoDura());
+    return;
+  }
   /* En el casco no hay teclado, así que la pista de las teclas sobra
      y encima compite con los números crudos que van justo debajo. */
   var teclas=(HAY_FINO && MODO!=='cabeza') ? '   ·   '+T('teclas') : '';
@@ -585,12 +647,110 @@ function apagar(i){
   balls[i].scale.setScalar(balls[i].userData.base);
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   EL RELOJ DE LA TANDA
+
+   Cinco minutos por jugador, y es TIEMPO CORRIDO. No se compite
+   contra el reloj: dentro de esos cinco minutos caben las tiradas
+   que quepan, se rompa la cadena las veces que se rompa. El reloj no
+   para nunca — tampoco mientras se enseña la puntuación y corre la
+   cuenta para la tirada siguiente. Como en el juego: el cronómetro
+   sigue andando, y lo que termina la cosa es la chicharra.
+
+   Eso es lo que hace que el casco se pueda pasar de mano en mano sin
+   que nadie lleve la cuenta: cada uno tiene su turno de cinco
+   minutos y la chicharra se lo dice.
+   ══════════════════════════════════════════════════════════════════ */
+var SESION_MS=5*60*1000;
+/* Cinco minutos por defecto, pero si la fila es larga se acorta desde
+   la dirección: ?min=3. También es la única forma de probar la
+   chicharra sin esperar cinco minutos cada vez. */
+try{
+  var mm=(location.search.match(/[?&]min=([0-9.]+)/)||[])[1];
+  if(mm){ mm=parseFloat(mm); if(mm>=0.1&&mm<=30) SESION_MS=Math.round(mm*60*1000) }
+}catch(e){}
+var relojHasta=0, relojCorriendo=false, relojTexto='';
+
+function quedaMs(){ return relojCorriendo ? Math.max(0, relojHasta-performance.now()) : SESION_MS }
+function arrancarReloj(){ relojHasta=performance.now()+SESION_MS; relojCorriendo=true }
+function pintarReloj(){
+  var ms=quedaMs(), seg=Math.ceil(ms/1000);
+  var txt=Math.floor(seg/60)+':'+('0'+(seg%60)).slice(-2);
+  var e=$('reloj');
+  // Sólo se toca el DOM cuando cambia el segundo, no en cada cuadro.
+  if(txt!==relojTexto){ relojTexto=txt; e.textContent=txt }
+  var clase = ms<=10000 ? 'nada' : (ms<=30000 ? 'poco' : '');
+  if(e.className!==clase) e.className=clase;
+}
+
+/* La chicharra. Dos cuadradas desafinadas a propósito y sostenidas:
+   eso es lo que suena como el final de un período y no como un
+   pitido de microondas. */
+function sonarChicharra(){
+  if(!audioCtx)return;
+  var now=audioCtx.currentTime;
+  try{
+    [152,113].forEach(function(f){
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='square';
+      o.frequency.setValueAtTime(f,now);
+      g.gain.setValueAtTime(.0001,now);
+      g.gain.exponentialRampToValueAtTime(.38,now+0.02);
+      g.gain.setValueAtTime(.38,now+1.25);
+      g.gain.exponentialRampToValueAtTime(.0001,now+1.5);
+      o.connect(g);g.connect(audioCtx.destination);
+      o.start(now);o.stop(now+1.55);
+    });
+  }catch(e){}
+}
+
 function pintarHud(){
   $('hNivel').textContent=String(nivel);
   $('hPts').textContent=String(pointsFor(Math.max(0,nivel-1)));
   var e=$('estado');
-  e.textContent = fase==='turno' ? T('turno') : T('mira');
-  e.className = fase==='turno' ? 'tu' : '';
+  if(fase==='listo'){
+    e.textContent = MODO==='cabeza' ? T('listoPill') : T('listoPillD');
+    e.className='listo';
+  }else{
+    e.textContent = fase==='turno' ? T('turno') : T('mira');
+    e.className = fase==='turno' ? 'tu' : '';
+  }
+}
+
+/* ARMAR, Y QUE ARRANQUE EL QUE JUEGA.
+
+   El casco no empieza a contar en cuanto se lo ponen: eso regalaría
+   medio minuto al forcejeo de la correa. Queda armado, con la bola
+   del medio latiendo, y el reloj parado en 5:00. El que juega la
+   mira — o la toca, si es teléfono — y ahí arrancan sus cinco
+   minutos. Es él quien decide cuándo está listo.
+
+   Y es la del medio a propósito: es la única que está siempre al
+   frente, se mide ya con ella y no hay que buscarla. */
+function armarSesion(){
+  limpiarT(); apagarTodas(); pararCuenta();
+  cadena=[]; nivel=0; voy=0; tanda=[];
+  mirando=-1; bloqueada=-1; sinBolaDesde=0;
+  relojCorriendo=false; relojHasta=0; relojTexto='';
+  fase='listo';
+  $('fin').hidden=true;
+  $('hud').hidden=false;
+  $('pista').hidden=false;
+  if(MODO==='cabeza'){
+    $('mira').hidden=false;
+    /* Cada tanda empieza con el frente donde esté la cara: en la fila
+       del casco, el que entra no tiene el cuello donde lo dejó el que
+       salió. Menos la primera de todas, que viene de la medida y ya
+       trae su cero. */
+    if(saltarCentro) saltarCentro=false; else recentrar();
+  }
+  pintarReloj(); pintarHud(); pintarPista();
+}
+
+function empezarJuego(){
+  if(fase!=='listo') return;
+  arrancarReloj();
+  empezarTirada();
 }
 
 function empezarTirada(){
@@ -600,16 +760,9 @@ function empezarTirada(){
   $('fin').hidden=true;
   $('hud').hidden=false;
   $('pista').hidden=false;
-  if(MODO==='cabeza'){
-    $('mira').hidden=false;
-    pintarPista();          // sin la pista de las teclas, que aquí no hay
-    /* Cada tirada empieza con el frente donde esté la cara: en la
-       fila del casco, el que entra no tiene el cuello donde lo dejó
-       el que salió. Menos la primera de todas, que viene de la medida
-       y ya trae su cero. */
-    if(saltarCentro) saltarCentro=false; else recentrar();
-  }
+  if(MODO==='cabeza') $('mira').hidden=false;
   fase='mirando';
+  pintarPista();            // se va la línea de "mira el medio"
   pintarHud();
   /* Un respiro antes de la primera: si la primera bola se enciende en
      el mismo instante en que desaparece la portada, nadie la ve. */
@@ -651,8 +804,19 @@ function mostrar(i){
   }, LIGHT_MS));
 }
 
-/* La única entrada del juego. Da igual si vino de un dedo, de un clic
-   o de una tecla: llega aquí con un número de bola y nada más. */
+/* La única entrada del juego. Da igual si vino de un dedo, de un clic,
+   de una tecla o de la mirada: llega aquí con un número de bola y nada
+   más. Y antes de que empiece la tanda, la única bola que hace algo es
+   la del medio. */
+function elegir(idx){
+  if(fase==='listo'){
+    if(idx===2){ encender(2); temporizadores.push(setTimeout(function(){ apagar(2) },220));
+                 empezarJuego() }
+    return;
+  }
+  contestar(idx);
+}
+
 function contestar(idx){
   if(fase!=='turno') return;
   if(idx===cadena[voy]){
@@ -681,47 +845,89 @@ function romper(){
     try{ localStorage.setItem(LLAVE,String(mejor)) }catch(e){}
   }
   tanda.push(final);
-  if(tanda.length>8) tanda.shift();
+  if(tanda.length>12) tanda.shift();
   temporizadores.push(setTimeout(function(){
     apagarTodas();
     fase='fin';
+    $('finK').textContent=T('finK');
     $('finN').textContent=String(final);
     $('finP').textContent=T('fin')+'  ·  '+pointsFor(final)+' '+T('puntos');
     $('finS').textContent=T('mejor')+mejor;
     $('tanda').textContent=tanda.length>1 ? T('tanda')+tanda.join('  ·  ') : '';
+    /* Sin botón aquí: la tirada siguiente entra sola y el reloj no se
+       ha parado. Un botón en esta pantalla sería un botón que hay que
+       apretar en mitad de tu propio tiempo. */
+    $('otra').hidden=true;
     $('fin').hidden=false;
     $('hud').hidden=true;
     $('pista').hidden=true;
-    $('mira').hidden=true;
-    if(KIOSCO) arrancarCuenta();
+    arrancarCuenta();
   },750));
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   QUE NO HAGA FALTA NADIE ENTRE JUGADA Y JUGADA
+   LA CHICHARRA
 
-   Veintiún cascos y una fila de nenes esperando. Si al acabar una
-   tirada hay que apuntar a un botón para empezar otra, alguien tiene
-   que estar ahí con el mando cada vez que uno se quita el casco — y
-   ese alguien eres tú, veintiuna veces.
+   Se acabaron los cinco minutos. Lo que esté pasando se para donde
+   esté — a mitad de una cadena, en la pantalla de la puntuación, da
+   igual: la chicharra no espera a que termines, igual que en un
+   juego. La tirada que estaba en el aire se cuenta como se cuenta
+   siempre, por el último nivel que se aguantó entero.
 
-   Así que al acabar se enseña la puntuación, se cuentan unos
-   segundos y empieza sola. El casco pasa de cabeza en cabeza y no
-   hace falta tocar nada. El botón sigue estando, para el que no
-   quiera esperar.
-
-   Y abajo queda la lista de la tanda: las puntuaciones de los que
-   acaban de jugar, una al lado de la otra. Eso es lo que convierte
-   pasarse el casco en una competencia.
+   Y AQUÍ SÍ hay botón, que es lo único que separa a un jugador del
+   siguiente. En el casco se aprieta mirándolo.
    ══════════════════════════════════════════════════════════════════ */
-var AUTO_MS=7000, cuentaHasta=0, tanda=[];
+function terminarSesion(){
+  if(fase==='tiempo') return;
+  var enElAire=(fase==='mirando'||fase==='turno');
+  limpiarT(); pararCuenta();
+  relojCorriendo=false;
+  if(enElAire){
+    var corte=Math.max(0, nivel-1);
+    if(corte>mejor){ mejor=corte; try{ localStorage.setItem(LLAVE,String(mejor)) }catch(e){} }
+    tanda.push(corte);
+    if(tanda.length>12) tanda.shift();
+  }
+  fase='tiempo';
+  sonarChicharra();
+  apagarTodas();
+  var mejorDeLaTanda=tanda.length ? Math.max.apply(null,tanda) : 0;
+  $('finK').textContent=T('seAcabo');
+  $('finN').textContent=String(mejorDeLaTanda);
+  $('finP').textContent=T('mejorTanda')+'  ·  '+pointsFor(mejorDeLaTanda)+' '+T('puntos');
+  $('tanda').textContent=tanda.length ? T('tanda')+tanda.join('  ·  ') : '';
+  $('finS').textContent=T('mejor')+mejor;
+  $('cuenta').textContent='';
+  $('otra').hidden=false;
+  $('fin').hidden=false;
+  $('hud').hidden=true;
+  $('pista').hidden=true;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ENTRE UNA TIRADA Y LA SIGUIENTE
+
+   Se rompió la cadena pero quedan minutos: se enseña lo que hizo, se
+   cuentan cuatro segundos y entra otra sola. Nadie aprieta nada, y
+   sobre todo EL RELOJ NO SE PARA — estos cuatro segundos son de su
+   tiempo, como lo son los de la cancha mientras se cobra una falta.
+
+   Cuatro y no siete: dentro de cinco minutos las roturas se cuentan
+   por decenas, y a siete segundos cada una se iría media tanda
+   mirando un número.
+
+   Abajo queda la lista de la tanda: lo que hizo en cada tirada, una
+   al lado de la otra. Eso es lo que convierte pasarse el casco en una
+   competencia.
+   ══════════════════════════════════════════════════════════════════ */
+var AUTO_MS=4000, cuentaHasta=0, tanda=[];
 function arrancarCuenta(){ cuentaHasta=performance.now()+AUTO_MS }
 function pararCuenta(){ cuentaHasta=0; $('cuenta').textContent='' }
 function cuentaEnElBucle(){
   if(!cuentaHasta) return;
   var q=Math.ceil((cuentaHasta-performance.now())/1000);
   if(q<=0){ pararCuenta(); empezarTirada(); return }
-  $('cuenta').textContent=T('siguiente')+' — '+T('empiezaEn')+q;
+  $('cuenta').textContent=T('otraTirada')+' — '+T('empiezaEn')+q;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -801,6 +1007,7 @@ var ojeando=setInterval(function(){
   if($('tapa').hidden){ clearInterval(ojeando); return }
   if(hayGiro()){
     $('goCabeza').hidden=false;
+    $('tapaReq').hidden=false;
     $('tapaS').textContent=T('sCabeza');
     if(girosN>0) clearInterval(ojeando);
   }
@@ -881,7 +1088,7 @@ function pasoDeMedida(){
     colocarBolas();           // la cancha se adapta a lo que dé el casco
     medir.activo=false;
     $('medida').hidden=true;
-    temporizadores.push(setTimeout(empezarTirada, 500));
+    temporizadores.push(setTimeout(armarSesion, 500));
     return;
   }
   medir.paso++; medir.t0=performance.now();
@@ -911,6 +1118,7 @@ var DWELL_MS=620;        // con el dedo era un toque; con la cabeza, aguantar
 var GRACIA_MS=650;
 var PERDIDO_MS=8000;
 var mirando=-1, mirandoDesde=0, bloqueada=-1, sinBolaDesde=0, avisoHasta=0;
+var DWELL_BOTON=900, mirandoBoton=0;
 var crudoCada=0;
 
 function cabezaEnElBucle(){
@@ -927,10 +1135,39 @@ function cabezaEnElBucle(){
       Math.round(crudoG)+'  '+(hayCabeceo?'':'sin cabeceo ')+(calHecha?'':'sin medir');
   }
 
-  var sobre = (fase==='turno') ? bolaEn(px,py) : -1;
+  /* El botón de siguiente jugador se aprieta mirándolo. Es el único
+     momento en que hace falta apretar algo, y en el casco no hay con
+     qué: sin esto, la única salida sería el mando que queremos
+     dejar en el cajón. Aguanta más que una bola — nueve décimos —
+     porque apretarlo sin querer te manda a la tanda del siguiente. */
+  if(fase==='tiempo'){
+    var bt=$('otra');
+    var dentro=false;
+    if(!bt.hidden && !$('fin').hidden){
+      var r=bt.getBoundingClientRect();
+      dentro = px>=r.left && px<=r.right && py>=r.top && py<=r.bottom;
+    }
+    m.className = dentro ? 'sobre' : '';
+    if(dentro){
+      if(!mirandoBoton) mirandoBoton=performance.now();
+      var tb=(performance.now()-mirandoBoton)/DWELL_BOTON;
+      m.firstChild.style.transform='scale('+Math.max(0.02,Math.min(1,tb))+')';
+      if(tb>=1){ mirandoBoton=0; armarSesion() }
+    }else{
+      mirandoBoton=0;
+      m.firstChild.style.transform='scale(0.02)';
+    }
+    return;
+  }
+  mirandoBoton=0;
+
+  var sobre = (fase==='turno'||fase==='listo') ? bolaEn(px,py) : -1;
+  /* Antes de arrancar, la única que responde es la del medio: que el
+     punto se llene encima de otra sería prometer algo que no pasa. */
+  if(fase==='listo' && sobre!==2) sobre=-1;
   m.className = sobre>=0 ? 'sobre' : '';
 
-  if(fase!=='turno'){
+  if(fase!=='turno' && fase!=='listo'){
     if(mirando>=0){ apagar(mirando); mirando=-1 }
     m.firstChild.style.transform='scale(0)';
     return;
@@ -949,7 +1186,7 @@ function cabezaEnElBucle(){
     if(t>=1){
       var i=mirando;
       apagar(i); mirando=-1; bloqueada=i; t=0;
-      contestar(i);
+      elegir(i);
     }else{
       var v=Math.round(t*150);
       balls[mirando].material.emissive.setRGB(v/255, v/255*.82, v/255*.5);
@@ -961,7 +1198,7 @@ function cabezaEnElBucle(){
   /* Perderse tiene salida y no hace falta mando: unos segundos sin
      tocar ninguna bola y el frente vuelve a ser donde esté la cara.
      Jugando no salta, porque jugando se mira a las bolas. */
-  if(sobre<0){
+  if(sobre<0 && fase==='turno'){
     if(!sinBolaDesde) sinBolaDesde=performance.now();
     else if(performance.now()-sinBolaDesde>PERDIDO_MS){
       sinBolaDesde=0; recentrar();
@@ -988,9 +1225,9 @@ function bolaEn(x,y){
   return hit.length ? hit[0].object.userData.i : -1;
 }
 addEventListener('pointerdown',function(e){
-  if(fase!=='turno') return;
+  if(fase!=='turno' && fase!=='listo') return;
   var i=bolaEn(e.clientX,e.clientY);
-  if(i>=0) contestar(i);
+  if(i>=0) elegir(i);
 },{passive:true});
 
 /* Con ratón, encender un poco la bola por encima de la que está el
@@ -999,7 +1236,7 @@ addEventListener('pointerdown',function(e){
 var encima=-1;
 addEventListener('pointermove',function(e){
   if(!HAY_FINO||!renderer||MODO==='cabeza') return;
-  var i=(fase==='turno') ? bolaEn(e.clientX,e.clientY) : -1;
+  var i=(fase==='turno'||fase==='listo') ? bolaEn(e.clientX,e.clientY) : -1;
   if(i===encima) return;
   if(encima>=0 && encima!==i && balls[encima].material.emissive.getHex()===0x2A2016)
     apagar(encima);
@@ -1015,9 +1252,9 @@ addEventListener('pointermove',function(e){
    ve en la pantalla. */
 var TECLAS={'1':0,'2':1,'3':2,'4':3,'5':4};
 addEventListener('keydown',function(e){
-  if(fase==='fin' && (e.key==='Enter'||e.key===' ')){ empezarTirada(); return }
+  if(fase==='tiempo' && (e.key==='Enter'||e.key===' ')){ armarSesion(); return }
   var i=TECLAS[e.key];
-  if(i!==undefined) contestar(i);
+  if(i!==undefined) elegir(i);
 });
 
 // ──────────────────────────────────────────────────────────────────
@@ -1031,6 +1268,24 @@ function bucle(){
      midiendo es la cabeza, y cualquier cosa moviéndose en la pantalla
      invita a seguirla con la vista y falsea la lectura. */
   if(medir.activo){ pintarMedida(); pasoDeMedida(); renderer.render(scene,camera); return }
+
+  /* El reloj se pinta y se vence aquí, en un solo sitio, pase lo que
+     pase por debajo. Por eso sigue corriendo mientras se enseña la
+     puntuación: es tiempo corrido, no se para entre tiradas. */
+  if(relojCorriendo){
+    pintarReloj();
+    if(quedaMs()<=0){ terminarSesion(); renderer.render(scene,camera); return }
+  }
+
+  /* La del medio late mientras la tanda está armada: es lo que dice
+     "yo soy el botón" sin escribirlo en ningún sitio. */
+  if(fase==='listo' && balls.length){
+    var l=(Math.sin(performance.now()/420)+1)/2;
+    var v=0.10+l*0.52;
+    balls[2].material.emissive.setRGB(v, v*0.82, v*0.5);
+    balls[2].scale.setScalar(balls[2].userData.base*(1+l*0.09));
+  }
+
   if(MODO==='cabeza') cabezaEnElBucle();
   if(fase==='fin') cuentaEnElBucle();
   renderer.render(scene,camera);
@@ -1040,9 +1295,6 @@ function bucle(){
 //  ARRANQUE
 // ──────────────────────────────────────────────────────────────────
 pintarTextos();
-
-var KIOSCO=false;
-try{ KIOSCO=/[?&]kiosco/.test(location.search) }catch(e){}
 
 function arrancar(conCabeza){
   if(typeof THREE==='undefined'){
@@ -1054,8 +1306,7 @@ function arrancar(conCabeza){
   abrirAudio();          // el audio sólo abre dentro de un toque de verdad
   if(conCabeza){
     MODO='cabeza';
-    KIOSCO=true;         // con la cabeza no hay con qué apretar "otra vez"
-    pedirElGiro();       // y el iPhone sólo lo da si se pide aquí
+    pedirElGiro();       // el iPhone sólo lo da si se pide aquí
     $('mira').hidden=false;
     $('crudo').hidden=false;
     /* A pantalla completa: en el casco, la barra del navegador se
@@ -1079,11 +1330,11 @@ function arrancar(conCabeza){
      pudo haber despertado mirando a la pared. */
   if(MODO==='cabeza' && !calHecha){ empezarMedida(); return }
   if(MODO==='cabeza') recentrar();
-  empezarTirada();
+  armarSesion();
 }
 $('go').onclick=function(){ arrancar(false) };
 $('goCabeza').onclick=function(){ arrancar(true) };
-$('otra').onclick=function(){ pararCuenta(); empezarTirada() };
+$('otra').onclick=function(){ pararCuenta(); armarSesion() };
 })();
 </script>
 </body>
