@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>The Recall Challenge</title>
+<title>The Recognition Challenge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
@@ -16,18 +16,18 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
      centred flex column pushes its own top out past the padding —
      which is what put the title under the pinned buttons. */
   justify-content:flex-start;
-  background:radial-gradient(ellipse at center,#061524 0%,#000 70%);z-index:100;
+  background:radial-gradient(ellipse at center,#041A18 0%,#000 70%);z-index:100;
   overflow-y:auto;overflow-x:hidden;
   /* The Back and language buttons are pinned to the top corners, so
      the content starts below them rather than under them. */
   padding:84px 16px 34px;
 }
-.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#38BDF8;margin-bottom:8px;text-align:center}
-.vrr-title{font-size:clamp(1.8rem,7vw,2.4rem);font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 40px rgba(56,189,248,.7);margin-bottom:16px;text-align:center}
-.vrr-title span{color:#38BDF8}
-.rule-t{font-size:.9rem;color:#c9b8a8;line-height:1.55;max-width:420px;margin-bottom:22px;text-align:center}
+.vrr-sub{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#2DD4BF;margin-bottom:8px;text-align:center}
+.vrr-title{font-size:clamp(1.7rem,6.5vw,2.2rem);font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 40px rgba(45,212,191,.7);margin-bottom:16px;text-align:center}
+.vrr-title span{color:#2DD4BF}
+.rule-t{font-size:.9rem;color:#c9c0a8;line-height:1.55;max-width:440px;margin-bottom:22px;text-align:center}
 .rule-t b{color:#fff}
-.big-btn{width:100%;max-width:420px;height:68px;border:none;border-radius:20px;background:linear-gradient(135deg,#38BDF8,#7DD3FC);color:#fff;font-size:1.2rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(56,189,248,.7);margin-bottom:14px}
+.big-btn{width:100%;max-width:420px;height:68px;border:none;border-radius:20px;background:linear-gradient(135deg,#2DD4BF,#5EEAD4);color:#04121A;font-size:1.2rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(45,212,191,.7);margin-bottom:14px}
 .big-btn:hover{transform:scale(1.03)}
 .big-btn.official{background:linear-gradient(135deg,#22D3EE,#0C7FC4);color:#04121A;box-shadow:0 0 40px rgba(34,211,238,.6)}
 /* ---- the demonstration and the instructions, intro screen only ---- */
@@ -36,59 +36,62 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 .demo-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:14px 0 20px}
 .demo-label{
   font-size:.7rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
-  background:#050A12;border:1px solid rgba(56,189,248,.35);color:#7DD3FC;
+  background:#050A12;border:1px solid rgba(34,211,238,.35);color:#22D3EE;
   padding:7px 16px;border-radius:999px;white-space:nowrap;transition:color .2s,border-color .2s;
 }
-.demo-label.recall{color:#38BDF8;border-color:rgba(56,189,248,.5)}
+.demo-label.echo{color:#5EEAD4;border-color:rgba(45,212,191,.5)}
 .demo-label.good{color:#00D9A5;border-color:rgba(0,217,165,.5)}
 .demo-grid{
   display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;
   width:190px;height:190px;margin:0 auto;
-  background:#0D1826;border:1px solid rgba(56,189,248,.25);border-radius:14px;
+  background:#0D1826;border:1px solid rgba(34,211,238,.25);border-radius:14px;
 }
 .demo-cell{
   border-radius:5px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);
   display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:.85rem;color:transparent;transition:all .15s;
+  font-weight:900;font-size:.8rem;color:transparent;transition:all .15s;
 }
-.demo-cell.lit{background:#38BDF8;border-color:#7DD3FC;color:#04121A;box-shadow:0 0 14px rgba(56,189,248,.55);transform:scale(1.06)}
-.demo-cell.ok{background:#00D9A5;border-color:#5EEAD4;color:#04211A}
+/* the two states the whole game turns on */
+.demo-cell.lit{background:#22D3EE;border-color:#67E8F9;box-shadow:0 0 14px rgba(34,211,238,.6);transform:scale(1.06)}
+.demo-cell.echo{background:#2DD4BF;border-color:#5EEAD4;box-shadow:0 0 14px rgba(45,212,191,.6);transform:scale(1.06)}
+.demo-cell.found{background:#00D9A5;border-color:#5EEAD4;color:#04211A;box-shadow:0 0 16px rgba(0,217,165,.7)}
+.demo-cell.was{border:2px dashed #22D3EE;background:rgba(34,211,238,.14)}
 .demo-grid.pulse{animation:demoPulse .5s ease-out}
-@keyframes demoPulse{0%{box-shadow:0 0 0 0 rgba(56,189,248,.55)}60%{box-shadow:0 0 22px 7px rgba(56,189,248,.25)}100%{box-shadow:none}}
+@keyframes demoPulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.55)}60%{box-shadow:0 0 22px 7px rgba(45,212,191,.25)}100%{box-shadow:none}}
 
 .htp{width:100%;max-width:420px;margin:0 0 16px}
 .htp-toggle{
   display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
   padding:12px 16px;border-radius:12px;cursor:pointer;font-family:inherit;
-  background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);
+  background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.25);
 }
-.htp-toggle-text{font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#7DD3FC}
-.htp-arrow{color:#7DD3FC;font-size:.7rem;transition:transform .3s}
+.htp-toggle-text{font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#5EEAD4}
+.htp-arrow{color:#5EEAD4;font-size:.7rem;transition:transform .3s}
 .htp-toggle.open .htp-arrow{transform:rotate(180deg)}
 .htp-body{max-height:0;overflow:hidden;transition:max-height .45s ease-out}
 .htp-body.open{max-height:900px}
 .htp-card{background:#0D1826;border:1px solid #1E3550;border-radius:12px;padding:15px;margin-top:10px;text-align:left}
-.htp-card-title{font-size:.8rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#38BDF8;margin-bottom:11px}
+.htp-card-title{font-size:.8rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#2DD4BF;margin-bottom:11px}
 .htp-step{display:flex;gap:10px;margin-bottom:9px;align-items:flex-start}
 .htp-step:last-child{margin-bottom:0}
 .htp-step .n{
   width:22px;height:22px;border-radius:50%;flex-shrink:0;
-  background:#38BDF8;color:#04121A;font-size:.72rem;font-weight:900;
+  background:#2DD4BF;color:#04121A;font-size:.72rem;font-weight:900;
   display:flex;align-items:center;justify-content:center;
 }
 .htp-step .tx{font-size:.8rem;color:#CFE3F2;line-height:1.5}
-.htp-step .tx b{color:#7DD3FC}
+.htp-step .tx b{color:#5EEAD4}
 .htp-tip{background:rgba(34,211,238,.07);border-left:3px solid #22D3EE;padding:10px 12px;border-radius:0 8px 8px 0;margin-top:12px}
 .htp-tip-title{font-size:.6rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#22D3EE;margin-bottom:4px}
 .htp-tip-text{font-size:.75rem;color:#8AA4BD;line-height:1.45}
 
-.name-input{width:100%;max-width:420px;padding:14px;border-radius:14px;border:2px solid rgba(56,189,248,.4);background:rgba(255,255,255,.05);color:#fff;font-family:Arial,sans-serif;font-size:1rem;text-align:center;margin-bottom:14px}
-.name-input:focus{outline:none;border-color:#38BDF8;box-shadow:0 0 20px rgba(56,189,248,.35)}
-.box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(56,189,248,.5);background:rgba(56,189,248,.1);border-radius:14px;color:#7DD3FC;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.name-input{width:100%;max-width:420px;padding:14px;border-radius:14px;border:2px solid rgba(45,212,191,.4);background:rgba(255,255,255,.05);color:#fff;font-family:Arial,sans-serif;font-size:1rem;text-align:center;margin-bottom:14px}
+.name-input:focus{outline:none;border-color:#2DD4BF;box-shadow:0 0 20px rgba(45,212,191,.35)}
+.box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(45,212,191,.5);background:rgba(45,212,191,.1);border-radius:14px;color:#5EEAD4;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px;text-decoration:none;display:flex;align-items:center;justify-content:center}
 .best-line{margin-top:16px;font-size:.85rem;color:#a7adba}
-.best-line b{color:#38BDF8}
+.best-line b{color:#2DD4BF}
 .intro-back{position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none;z-index:60}
-.lang-btn{position:fixed;top:16px;right:16px;padding:8px 14px;border:2px solid rgba(56,189,248,.45);background:rgba(0,0,0,.5);color:#7DD3FC;font-size:.72rem;font-weight:900;letter-spacing:.08em;border-radius:999px;cursor:pointer;z-index:60}
+.lang-btn{position:fixed;top:16px;right:16px;padding:8px 14px;border:2px solid rgba(45,212,191,.45);background:rgba(0,0,0,.5);color:#5EEAD4;font-size:.72rem;font-weight:900;letter-spacing:.08em;border-radius:999px;cursor:pointer;z-index:60}
 
 .official-banner{
   max-width:420px;width:100%;padding:14px 16px;border-radius:14px;
@@ -97,57 +100,58 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 }
 .official-banner .ob-kick{font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#22D3EE;margin-bottom:5px}
 .official-banner .ob-name{font-size:1.05rem;font-weight:900;color:#fff}
-.official-banner .ob-note{font-size:.78rem;color:#c9b8a8;margin-top:6px;line-height:1.45}
+.official-banner .ob-note{font-size:.78rem;color:#c9c0a8;margin-top:6px;line-height:1.45}
 
 #countdown{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85)}
-#bigCount{font-size:7rem;font-weight:900;color:#38BDF8;text-shadow:0 0 40px #38BDF8,0 0 80px #22D3EE}
+#bigCount{font-size:7rem;font-weight:900;color:#2DD4BF;text-shadow:0 0 40px #2DD4BF,0 0 80px #22D3EE}
 
-#screen-end{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#061524 0%,#000 70%);text-align:center;padding:20px;overflow-y:auto}
-.final-num{font-size:6rem;font-weight:900;color:#38BDF8;line-height:1;text-shadow:0 0 60px rgba(56,189,248,.9)}
+#screen-end{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#041A18 0%,#000 70%);text-align:center;padding:20px;overflow-y:auto}
+.final-num{font-size:6rem;font-weight:900;color:#2DD4BF;line-height:1;text-shadow:0 0 60px rgba(45,212,191,.9)}
 .final-label{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:#a7adba;margin-top:10px}
 .final-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:300px;margin:18px auto}
-.final-stat-cell{border-radius:12px;border:2px solid rgba(56,189,248,.35);background:rgba(56,189,248,.06);padding:12px 4px;text-align:center}
-.final-stat-label{font-size:.58rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#7DD3FC;margin-bottom:4px}
+.final-stat-cell{border-radius:12px;border:2px solid rgba(45,212,191,.35);background:rgba(45,212,191,.06);padding:12px 4px;text-align:center}
+.final-stat-label{font-size:.58rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#5EEAD4;margin-bottom:4px}
 .final-stat-val{font-size:1.3rem;font-weight:900;color:#fff}
 .points-cell{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08)}
 .points-cell .final-stat-label{color:#22D3EE}
 .save-status{font-size:.78rem;font-weight:700;margin-top:14px;min-height:18px}
-.next-player-btn{margin-top:24px;height:64px;padding:0 40px;border:none;border-radius:16px;background:linear-gradient(120deg,#38BDF8,#7DD3FC);color:#fff;font-size:1.15rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 30px rgba(56,189,248,.6)}
+.next-player-btn{margin-top:24px;height:64px;padding:0 40px;border:none;border-radius:16px;background:linear-gradient(120deg,#2DD4BF,#5EEAD4);color:#04121A;font-size:1.15rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 30px rgba(45,212,191,.6)}
 
 #screen-game{position:fixed;inset:0;display:none;flex-direction:column;background:#000;overflow:hidden}
 .topbar{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;padding:10px 10px 4px;flex-shrink:0}
-.top-box{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:10px;padding:5px 14px;text-align:center;min-width:72px}
+.top-box{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);border-radius:10px;padding:5px 14px;text-align:center;min-width:72px}
 .top-box.official{border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.08)}
 .top-label{font-size:.55rem;color:#a7adba;text-transform:uppercase;letter-spacing:.06em}
 .top-val{font-size:1.3rem;font-weight:900}
 #hLevel{color:#fff}#hPoints{color:#22D3EE}#hTime{color:#22D3EE}
 
 #msg{text-align:center;padding:6px;font-size:1.05rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;min-height:32px}
-#msg.watch{color:#22D3EE}#msg.go{color:#00D9A5}#msg.miss{color:#FF1493}
+#msg.watch{color:#22D3EE}#msg.echo{color:#2DD4BF}#msg.go{color:#00D9A5}#msg.miss{color:#FF1493}
 
-/* The court is square, so it fits a phone held upright and a desktop
-   window equally — a 2:1 court forces one or the other to compromise. */
 .court-area{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:8px}
 .court{
   display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
   gap:2.2%;padding:2.2%;
-  border:2px solid rgba(56,189,248,.4);border-radius:16px;
-  background:#0D1826;
-  box-shadow:0 0 60px rgba(56,189,248,.22),inset 0 0 40px rgba(56,189,248,.05),0 20px 60px rgba(0,0,0,.8);
+  border:2px solid rgba(45,212,191,.4);border-radius:16px;background:#0D1826;
+  box-shadow:0 0 60px rgba(45,212,191,.22),inset 0 0 40px rgba(45,212,191,.05),0 20px 60px rgba(0,0,0,.8);
 }
 .cell{
-  border-radius:10px;background:rgba(56,189,248,.05);border:2px solid rgba(56,189,248,.28);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;color:transparent;cursor:pointer;transition:all .08s;touch-action:manipulation;
+  border-radius:10px;background:rgba(45,212,191,.05);border:2px solid rgba(45,212,191,.28);
+  display:flex;align-items:center;justify-content:center;font-weight:900;
+  color:transparent;cursor:pointer;transition:all .08s;touch-action:manipulation;
 }
-.cell.lit{background:#38BDF8!important;border-color:#22D3EE!important;box-shadow:0 0 22px rgba(56,189,248,.9)!important;color:#fff!important;transform:scale(1.04)}
-.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 16px rgba(0,217,165,.7)!important;color:#fff!important}
+/* Gold is the original pattern, orange is the echo — two clearly
+   different colours, because the whole game is telling them apart. */
+.cell.lit{background:#22D3EE!important;border-color:#22D3EE!important;box-shadow:0 0 26px rgba(255,215,0,.9)!important;transform:scale(1.05)}
+.cell.echo{background:#2DD4BF!important;border-color:#5EEAD4!important;box-shadow:0 0 26px rgba(45,212,191,.9)!important;transform:scale(1.05)}
+.cell.correct{background:#00D9A5!important;border-color:#00D9A5!important;box-shadow:0 0 20px rgba(0,217,165,.8)!important}
 .cell.wrong{background:rgba(255,20,147,.35)!important;border-color:#FF1493!important;animation:shake .3s}
-.cell.reveal{background:#38BDF8!important;border-color:#22D3EE!important;color:#fff!important;opacity:.55}
+.cell.answer{border:3px solid #00D9A5!important;background:rgba(0,217,165,.22)!important}
+.cell.was{border:3px dashed #22D3EE!important;background:rgba(255,215,0,.16)!important}
 @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 
 #controls{display:flex;justify-content:center;gap:10px;padding:8px 16px 14px;flex-shrink:0}
-.ctrl-btn{height:46px;flex:0 1 170px;max-width:200px;border:2px solid rgba(56,189,248,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.92rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.ctrl-btn{height:46px;flex:0 1 170px;max-width:200px;border:2px solid rgba(45,212,191,.5);background:rgba(0,0,0,.4);border-radius:12px;color:#fff;font-size:.92rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -155,7 +159,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <div id="screen-intro">
   <a class="intro-back" href="index.html" id="introBack">← Back</a>
   <button class="lang-btn" id="langBtn" onclick="toggleLang()">ES</button>
-  <div class="vrr-title">THE <span>RECALL</span></div>
+  <div class="vrr-title">THE <span>RECOGNITION</span></div>
 
   <div class="official-banner" id="officialBanner" style="display:none;">
     <div class="ob-kick" id="obKick">Official Run</div>
@@ -204,7 +208,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 <div id="screen-game">
   <div class="topbar">
-    <div class="top-box"><div class="top-label" id="lblLevel">Sequence</div><div class="top-val" id="hLevel">0</div></div>
+    <div class="top-box"><div class="top-label" id="lblLevel">Pattern</div><div class="top-val" id="hLevel">0</div></div>
     <div class="top-box official"><div class="top-label" id="lblPoints">Points</div><div class="top-val" id="hPoints">0</div></div>
     <div class="top-box"><div class="top-label" id="lblTime">Time</div><div class="top-val" id="hTime">0.0</div></div>
   </div>
@@ -217,7 +221,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 <div id="screen-end">
   <div class="final-num" id="endNum">0</div>
-  <div class="final-label" id="endLabel">Longest Sequence Recalled</div>
+  <div class="final-label" id="endLabel">Longest Pattern Recognized</div>
 
   <div class="final-stats">
     <div class="final-stat-cell points-cell"><div class="final-stat-label" id="statPointsLbl">Points</div><div class="final-stat-val" id="endPoints">0</div></div>
@@ -237,21 +241,18 @@ var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 
 // ══════════════════════════════════════════════════════
-//  THE RECALL — Challenge edition.
+//  THE RECOGNITION — Challenge edition.
 //
-//  Deliberately simpler than the training version at memorybball:
-//  no modes, no level select, no quarters. A challenge run is one
-//  escalating sequence, so every player's score means the same
-//  thing and can be compared.
+//  A pattern is shown, then shown again with exactly one cell moved.
+//  The player taps the cell that moved. Each round keeps every
+//  earlier position and adds one more, so the pattern grows and the
+//  change gets harder to find.
 //
-//  PRACTICE vs OFFICIAL works exactly as it does in Fortress —
-//  practice is free and unlimited, an official run needs the
-//  player's own run key, and the database refuses a second one.
+//  Escalating by one per round means the points formula is the same
+//  as every other game here: reaching pattern length n is n(n+1)/2.
 //
-//  POINTS — reaching a sequence of n means 1+2+...+n taps were
-//  performed correctly, so n(n+1)/2. Same formula as every other
-//  game here, which is what lets a program run a different
-//  challenge each season without changing how pledges work.
+//  Practice is free and unrecorded. An official run needs the
+//  player's own run key and the database allows only one.
 // ══════════════════════════════════════════════════════
 var params = new URLSearchParams(window.location.search);
 var CHALLENGE_ID = params.get('c') || null;
@@ -262,10 +263,6 @@ var RUN_KEY = params.get('k');
 // is kept per player per game on the campaign rather than on any
 // challenge. Nothing official, no run key.
 var TRYOUT = params.get('tryout');
-// A warm-up taken before signing up: counted on the device only,
-// because there is no player to attach it to yet.
-var WARM = params.get('warm');
-var WARM_GAME = params.get('g') || '';
 // A one-run competition: the first score stands, and the game says so
 // rather than quietly keeping the better of two.
 var TRYOUT_ONCE = params.get('once') === '1';
@@ -349,41 +346,39 @@ function showDemoEnd(){
   }
 }
 
-var GAME = 'recall';
+var GAME = 'recognition';
 
 function pointsFor(level){ return level > 0 ? (level * (level + 1)) / 2 : 0; }
 
-// ---- language ----
 var STR = {
   en:{
-    demoWatch:'👀 Watch…', demoTap:'Tap 1, 2, 3…', demoPerfect:'✅ Perfect!',
+    demoWatch:'👀 Watch the pattern…', demoSpot:'One moved — find it', demoFound:'✅ Found it!',
     htpText:'How to play',
     cObjective:'🎯 What to do',
-    cs1:'<b>Watch</b> the grid — numbered cells light up.',
-    cs2:'<b>Memorize</b> which cell holds which number.',
-    cs3:'<b>Tap them back</b> in order: 1, 2, 3, 4…',
+    cs1:'<b>Watch</b> the pattern light up, and hold it in your head.',
+    cs2:'It comes back in a <b>different colour</b> — with exactly one cell somewhere else.',
+    cs3:'<b>Tap the one that moved.</b> Not where it was — where it went.',
     cScoring:'⭐ Chain scoring',
-    cp1:'The sequence grows by <b>one cell</b> every round you get right.',
-    cp2:'One wrong tap <b>ends the run</b> — your score is the longest sequence you held.',
+    cp1:'The moved cell <b>stays in its new place</b>, and one more cell is added.',
+    cp2:'One wrong tap <b>ends the run</b> — your score is the longest pattern you held.',
     cp3:'Each round is worth its own number — round 9 banks 9 points. So every round is worth more than the last.',
     cTipTitle:'💡 Tip',
-    cTip:'Practise as much as you like — nothing counts until you start an official run. Most people find a way of remembering that works for them by the third or fourth try.',
+    cTip:'Do not try to memorize every cell. Most people do better by noticing the shape the pattern makes, then seeing what breaks it.',
     namePh:'Your name',
     start:'▶ START', startOfficial:'▶ START OFFICIAL RUN', startPractice:'▶ PRACTICE RUN',
     officialKick:'Official Run',
     officialNote:'This run counts. Your sponsors pay on the points you score, and you only get one.',
-    alreadyRun:'Your official run is already in: <b>sequence {L}, {P} points</b>. You can keep practising, but this score is final.',
+    alreadyRun:'Your official run is already in: <b>pattern {L}, {P} points</b>. You can keep practising, but this score is final.',
     confirmOfficial:'This is your official run. Your sponsors pay on the points you score, and you only get one. Ready?',
     back:'← Back', backToChallenge:'← Back to my Challenge page', home:'← Home',
-    lblLevel:'Sequence', lblPoints:'Points', lblTime:'Time',
-    getReady:'GET READY...', memorize:'MEMORIZE!', yourTurn:'TAP IN ORDER',
-    nice:'✅ RECALLED', wrong:'WRONG ORDER',
-    labelPractice:'Practice Run · Longest Sequence',
-    labelOfficial:'Official Run · Longest Sequence',
+    lblLevel:'Pattern', lblPoints:'Points', lblTime:'Time',
+    getReady:'GET READY...', watchGold:'WATCH THE GOLD', nowOrange:'ONE MOVED — TAP IT',
+    nice:'✅ FOUND IT', wrong:'THAT WAS NOT IT',
+    labelPractice:'Practice Run · Longest Pattern',
+    labelOfficial:'Official Run · Longest Pattern',
     playAgain:'▶ PLAY AGAIN', practiceAgain:'▶ PRACTICE AGAIN', statPoints:'Points', statTime:'Time',
     worthFree:'{P} points. One padrino at 25¢ a point would be giving {M} — ten of them, {T} for the program.',
     practiceOnly:'Practice run.',
-    warmCounted:'✓ Warm-up counted. Go back to your page.',
     tryoutSaved:'✓ Saved to your team tryout.',
     demoLeft:'Free demo — {N} of 3 tries left.',
     demoOver:'Demo finished', demoTalk:'Bring this to my program →',
@@ -399,37 +394,36 @@ var STR = {
     wasAlready:'Your official run was already recorded. This one was practice.',
     wrongLink:'This link cannot record an official run — ask your coach for your own link.',
     noServer:'Could not reach the server — contact your coach before playing again.',
-    bestLine:'Your best practice run: <b>sequence {L}</b> · {P} points'
+    bestLine:'Your best practice run: <b>pattern {L}</b> · {P} points'
   },
   es:{
-    demoWatch:'👀 Observa…', demoTap:'Toca 1, 2, 3…', demoPerfect:'✅ ¡Perfecto!',
+    demoWatch:'👀 Observa el patrón…', demoSpot:'Una se movió — encuéntrala', demoFound:'✅ ¡La encontraste!',
     htpText:'Cómo jugar',
     cObjective:'🎯 Qué hacer',
-    cs1:'<b>Observa</b> la cuadrícula — celdas numeradas se encienden.',
-    cs2:'<b>Memoriza</b> qué celda tiene qué número.',
-    cs3:'<b>Tócalas de vuelta</b> en orden: 1, 2, 3, 4…',
+    cs1:'<b>Observa</b> el patrón encenderse y guárdalo en tu cabeza.',
+    cs2:'Vuelve en <b>otro color</b> — con exactamente una celda en otro sitio.',
+    cs3:'<b>Toca la que se movió.</b> No donde estaba — donde llegó.',
     cScoring:'⭐ Puntuación en cadena',
-    cp1:'La secuencia crece <b>una celda</b> cada ronda que aciertas.',
-    cp2:'Un toque equivocado <b>termina la corrida</b> — tu puntuación es la secuencia más larga que aguantaste.',
+    cp1:'La celda movida <b>se queda en su nuevo sitio</b>, y se añade una más.',
+    cp2:'Un toque equivocado <b>termina la corrida</b> — tu puntuación es el patrón más largo que aguantaste.',
     cp3:'Cada ronda vale su propio número — la ronda 9 suma 9 puntos. Así que cada ronda vale más que la anterior.',
     cTipTitle:'💡 Consejo',
-    cTip:'Practica todo lo que quieras — nada cuenta hasta que empieces una corrida oficial. La mayoría encuentra su manera de recordar para el tercer o cuarto intento.',
+    cTip:'No trates de memorizar cada celda. A la mayoría le va mejor fijándose en la forma que hace el patrón, y luego viendo qué la rompe.',
     namePh:'Tu nombre',
     start:'▶ EMPEZAR', startOfficial:'▶ EMPEZAR CORRIDA OFICIAL', startPractice:'▶ CORRIDA DE PRÁCTICA',
     officialKick:'Corrida Oficial',
     officialNote:'Esta corrida cuenta. Tus padrinos pagan por los puntos que anotes, y solo tienes una.',
-    alreadyRun:'Tu corrida oficial ya está hecha: <b>secuencia {L}, {P} puntos</b>. Puedes seguir practicando, pero esa puntuación es final.',
+    alreadyRun:'Tu corrida oficial ya está hecha: <b>patrón {L}, {P} puntos</b>. Puedes seguir practicando, pero esa puntuación es final.',
     confirmOfficial:'Esta es tu corrida oficial. Tus padrinos pagan por los puntos que anotes, y solo tienes una. ¿Listo?',
     back:'← Atrás', backToChallenge:'← Volver a mi página del Reto', home:'← Inicio',
-    lblLevel:'Secuencia', lblPoints:'Puntos', lblTime:'Tiempo',
-    getReady:'PREPÁRATE...', memorize:'¡MEMORIZA!', yourTurn:'TOCA EN ORDEN',
-    nice:'✅ RECORDADO', wrong:'ORDEN INCORRECTO',
-    labelPractice:'Práctica · Secuencia más larga',
-    labelOfficial:'Corrida Oficial · Secuencia más larga',
+    lblLevel:'Patrón', lblPoints:'Puntos', lblTime:'Tiempo',
+    getReady:'PREPÁRATE...', watchGold:'OBSERVA EL DORADO', nowOrange:'UNA SE MOVIÓ — TÓCALA',
+    nice:'✅ LA ENCONTRASTE', wrong:'ESA NO ERA',
+    labelPractice:'Práctica · Patrón más largo',
+    labelOfficial:'Corrida Oficial · Patrón más largo',
     playAgain:'▶ JUGAR OTRA VEZ', practiceAgain:'▶ PRACTICAR OTRA VEZ', statPoints:'Puntos', statTime:'Tiempo',
     worthFree:'{P} puntos. Un padrino a 25¢ por punto estaría dando {M} — diez de ellos, {T} para el programa.',
     practiceOnly:'Corrida de práctica.',
-    warmCounted:'✓ Calentamiento contado. Regresa a tu página.',
     tryoutSaved:'✓ Guardado en la prueba de tu equipo.',
     demoLeft:'Demo gratis — te quedan {N} de 3 intentos.',
     demoOver:'Demo terminado', demoTalk:'Quiero esto en mi programa →',
@@ -445,7 +439,7 @@ var STR = {
     wasAlready:'Tu corrida oficial ya estaba guardada. Esta fue práctica.',
     wrongLink:'Este enlace no puede guardar una corrida oficial — pídele a tu entrenador tu propio enlace.',
     noServer:'No se pudo conectar al servidor — habla con tu entrenador antes de jugar otra vez.',
-    bestLine:'Tu mejor práctica: <b>secuencia {L}</b> · {P} puntos'
+    bestLine:'Tu mejor práctica: <b>patrón {L}</b> · {P} puntos'
   }
 };
 
@@ -459,7 +453,7 @@ function T(key, vals){
 }
 
 function applyLang(){
-  // the instruction cards and the demo label
+  // the instruction cards
   ['cObjective','cScoring','cs1','cs2','cs3','cp1','cp2','cp3','cTipTitle','cTip','htpText']
     .forEach(function(id){ var el=$(id); if(el) el.innerHTML = T(id); });
   document.documentElement.lang = LANG;
@@ -496,7 +490,6 @@ function toggleLang(){
   loadBest();
 }
 
-// Back links keep the player on their own challenge page.
 // A student practising arrived from their own page, so their name is
 // already known. Asking for it again invites somebody to type a
 // different one and think they have changed who they are.
@@ -511,7 +504,6 @@ function toggleLang(){
   .then(function(r){ return r.json(); })
   .then(function(rows){
     if (!rows || !rows.length) return;
-    currentPlayerName = String(rows[0].name).slice(0, 20);
     var shown = $('obPlayer');
     if (shown) shown.textContent = rows[0].name;
   })
@@ -519,13 +511,6 @@ function toggleLang(){
 })();
 
 (function setBackLink(){
-  if (WARM){
-    var w = 'index.html' + encodeURIComponent(WARM);
-    ['introBack','homeBtn','backToPledge'].forEach(function(id){
-      var el = $(id); if (el) el.href = w;
-    });
-    return;
-  }
   if (TRYOUT){
     var t = 'index.html' + encodeURIComponent(TRYOUT);
     ['introBack','homeBtn','backToPledge'].forEach(function(id){
@@ -559,14 +544,13 @@ function toggleLang(){
   .then(function(rows){
     if (rows && rows.length){
       $('obPlayer').textContent = rows[0].name;
-      currentPlayerName = String(rows[0].name).slice(0, 20);
+
     }
   })
   .catch(function(){});
 
   fetch(SB_URL + '/rest/v1/challenge_runs?challenge_id=eq.' + encodeURIComponent(CHALLENGE_ID)
-        + '&player_id=eq.' + encodeURIComponent(PLAYER_ID) + '&game=eq.' + GAME
-        + '&select=level_reached,points', {
+        + '&player_id=eq.' + encodeURIComponent(PLAYER_ID) + '&select=level_reached,points', {
     headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
   })
   .then(function(r){ return r.json(); })
@@ -586,10 +570,10 @@ function toggleLang(){
 // ══════════════════════════════════════════════════════
 //  THE DEMONSTRATION
 //
-//  Runs on the intro screen only and shares nothing with the game —
-//  its own grid, its own timers, its own cells. It stops the moment a
-//  run starts, so it can never compete with the real thing for
-//  attention or for the clock.
+//  Runs on the intro screen only and shares nothing with the game.
+//  It shows the one thing the whole game turns on: a pattern, the
+//  same pattern again with a single cell somewhere else, and the
+//  catch. It stops the moment a run starts.
 // ══════════════════════════════════════════════════════
 var demoCells=[], demoTimers=[], demoOn=false;
 
@@ -607,8 +591,9 @@ function buildDemo(){
   }
 }
 
-function demoPattern(n){
-  var pool=[]; for(var i=0;i<25;i++)pool.push(i);
+function demoPick(n, exclude){
+  var pool=[];
+  for(var i=0;i<25;i++) if((exclude||[]).indexOf(i)===-1) pool.push(i);
   for(var j=pool.length-1;j>0;j--){
     var k=Math.floor(Math.random()*(j+1));
     var t=pool[j]; pool[j]=pool[k]; pool[k]=t;
@@ -618,45 +603,47 @@ function demoPattern(n){
 
 function demoRound(){
   if (!demoOn) return;
-  var pat = demoPattern(4);
+
+  var pat = demoPick(4);
+  var movedFrom = pat[Math.floor(Math.random()*pat.length)];
+  var movedTo = demoPick(1, pat)[0];
   var lbl = $('demoLabel');
 
   demoCells.forEach(function(c){ c.className='demo-cell'; c.textContent=''; });
   lbl.textContent = T('demoWatch'); lbl.className='demo-label';
 
+  // the original
   demoLater(function(){
     if (!demoOn) return;
-    pat.forEach(function(idx,n){
-      demoCells[idx].classList.add('lit');
-      demoCells[idx].textContent = n+1;
-    });
+    pat.forEach(function(i){ demoCells[i].classList.add('lit'); });
   }, 500);
 
   demoLater(function(){
     if (!demoOn) return;
-    pat.forEach(function(idx){
-      demoCells[idx].classList.remove('lit');
-      demoCells[idx].textContent='';
-    });
-    lbl.textContent = T('demoTap'); lbl.className='demo-label recall';
-  }, 2600);
+    demoCells.forEach(function(c){ c.className='demo-cell'; });
+  }, 2300);
 
-  pat.forEach(function(idx,i){
-    demoLater(function(){
-      if (!demoOn) return;
-      demoCells[idx].classList.add('ok');
-      demoCells[idx].textContent = i+1;
-    }, 3100 + i*380);
-  });
-
+  // the echo, with one cell somewhere else
   demoLater(function(){
     if (!demoOn) return;
-    lbl.textContent = T('demoPerfect'); lbl.className='demo-label good';
+    lbl.textContent = T('demoSpot'); lbl.className='demo-label echo';
+    pat.forEach(function(i){
+      demoCells[i === movedFrom ? movedTo : i].classList.add('echo');
+    });
+  }, 2900);
+
+  // the catch, with the old position marked so the change is obvious
+  demoLater(function(){
+    if (!demoOn) return;
+    demoCells[movedTo].className='demo-cell found';
+    demoCells[movedTo].textContent='✓';
+    demoCells[movedFrom].className='demo-cell was';
+    lbl.textContent = T('demoFound'); lbl.className='demo-label good';
     $('demoGrid').classList.add('pulse');
     setTimeout(function(){ var g=$('demoGrid'); if(g) g.classList.remove('pulse'); }, 500);
-  }, 3100 + 4*380 + 200);
+  }, 4900);
 
-  demoLater(demoRound, 6400);
+  demoLater(demoRound, 7200);
 }
 
 function startDemo(){
@@ -678,34 +665,32 @@ function toggleHtp(){
 // ---- the game ----
 var GRID = 25;
 var START_LENGTH = 2;
-var SHOW_MS = 2400;      // how long the numbers stay visible
-var BETWEEN_MS = 800;
+var SHOW_MS = 1900;      // the gold pattern
+var GAP_MS = 550;        // blank between gold and orange
+var BETWEEN_MS = 850;
 
 var phase='idle';
-var sequence=[];
-var playerIdx=0;
+var pattern=[];          // the gold positions
+var movedFrom=-1;        // which position left
+var movedTo=-1;          // where it went — the answer
 var level=0;
 var best=0;
 var timers=[];
 var cells=[];
 var runStartTime=0;
-var currentPlayerName='';
+var canTap=false;
 
 function clrT(){timers.forEach(clearTimeout);timers=[]}
 function msg(t,c){var e=$('msg');e.textContent=t;e.className=c||'watch'}
 
-// The court is square and sized to whatever space is available, so it
-// fills a phone held upright and a desktop window equally well.
 function resizeCourt(){
   var area=document.querySelector('.court-area');
   var court=$('court');
   if(!area||!court)return;
   var size=Math.min(area.clientWidth, area.clientHeight);
-  if(size<80) { requestAnimationFrame(resizeCourt); return; }
+  if(size<80){ requestAnimationFrame(resizeCourt); return; }
   court.style.width=size+'px';
   court.style.height=size+'px';
-  // Numbers scale with the cells rather than being fixed.
-  cells.forEach(function(c){ c.style.fontSize=Math.round(size*0.062)+'px'; });
 }
 window.addEventListener('resize',resizeCourt);
 window.addEventListener('orientationchange',function(){setTimeout(resizeCourt,220)});
@@ -726,9 +711,7 @@ function buildCourt(){
   resizeCourt();
 }
 
-function clearCells(){
-  cells.forEach(function(c){ c.className='cell'; c.textContent=''; });
-}
+function clearCells(){ cells.forEach(function(c){ c.className='cell'; }); }
 
 var audioCtx=null;
 function ensureAudio(){ if(!audioCtx){ try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){} } }
@@ -742,16 +725,6 @@ function blip(freq){
     g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.12);
     o.start(); o.stop(audioCtx.currentTime+.13);
   }catch(e){}
-}
-
-function pickCells(n){
-  var pool=[];
-  for(var i=0;i<GRID;i++)pool.push(i);
-  for(var j=pool.length-1;j>0;j--){
-    var k=Math.floor(Math.random()*(j+1));
-    var tmp=pool[j];pool[j]=pool[k];pool[k]=tmp;
-  }
-  return pool.slice(0,n);
 }
 
 function startRun(){
@@ -786,7 +759,8 @@ function countdownThen(cb){
 
 function beginRun(){
   phase='running';
-  level=START_LENGTH-1;
+  pattern=[];
+  level=0;
   runStartTime=performance.now();
   $('hLevel').textContent='0';$('hPoints').textContent='0';$('hTime').textContent='0.0';
   msg(T('getReady'),'go');
@@ -800,55 +774,77 @@ function tickTimer(){
   requestAnimationFrame(tickTimer);
 }
 
+function freeCell(exclude){
+  var c;
+  var guard=0;
+  do { c=Math.floor(Math.random()*GRID); guard++; }
+  while (exclude.indexOf(c)!==-1 && guard<400);
+  return c;
+}
+
 function nextLevel(){
   if(phase!=='running')return;
-  level++;
-  playerIdx=0;
-  sequence=pickCells(level);
-  $('hLevel').textContent=level;
-  clearCells();
 
-  // All the numbers appear at once — this is a memory test, not a
-  // sequence-watching test, so the player chooses how to encode them.
-  msg(T('memorize'),'watch');
-  sequence.forEach(function(idx,n){
-    cells[idx].classList.add('lit');
-    cells[idx].textContent=n+1;
-  });
-  blip(660);
+  // The pattern keeps everything from earlier rounds and gains one
+  // more cell — that growth is what makes spotting the change harder
+  // as the run goes on. The first round adds two, since a
+  // single-cell pattern would give the answer away.
+  var add = pattern.length===0 ? START_LENGTH : 1;
+  for(var i=0;i<add;i++){
+    if(pattern.length >= GRID-1) break;   // leave room for the move
+    pattern.push(freeCell(pattern));
+  }
+
+  level = pattern.length;
+  $('hLevel').textContent=level;
+
+  // One cell leaves its position for a cell that is not in use.
+  var idx = Math.floor(Math.random()*pattern.length);
+  movedFrom = pattern[idx];
+  movedTo = freeCell(pattern);
+
+  canTap=false;
+  clearCells();
+  msg(T('watchGold'),'watch');
+  pattern.forEach(function(p){ cells[p].classList.add('lit'); });
+  blip(760);
 
   timers.push(setTimeout(function(){
     if(phase!=='running')return;
     clearCells();
-    msg(T('yourTurn'),'go');
   }, SHOW_MS));
+
+  timers.push(setTimeout(function(){
+    if(phase!=='running')return;
+    msg(T('nowOrange'),'echo');
+    pattern.forEach(function(p){
+      cells[p === movedFrom ? movedTo : p].classList.add('echo');
+    });
+    blip(560);
+    canTap=true;
+  }, SHOW_MS + GAP_MS));
 }
 
 function handleTap(idx){
-  if(phase!=='running')return;
-  if($('msg').textContent!==T('yourTurn'))return;   // still memorizing
+  if(phase!=='running' || !canTap)return;
 
-  if(idx===sequence[playerIdx]){
+  if(idx===movedTo){
+    canTap=false;
     cells[idx].classList.add('correct');
-    cells[idx].textContent=playerIdx+1;
-    blip(880);
-    playerIdx++;
+    blip(980);
+    $('hPoints').textContent=pointsFor(level);
+    msg(T('nice'),'go');
 
-    if(playerIdx>=sequence.length){
-      $('hPoints').textContent=pointsFor(level);
-      msg(T('nice'),'go');
-      timers.push(setTimeout(nextLevel,BETWEEN_MS));
-    }
+    // The moved cell keeps its new home, so the pattern the player
+    // has to hold in mind genuinely changes as the run goes on.
+    pattern[pattern.indexOf(movedFrom)] = movedTo;
+
+    timers.push(setTimeout(nextLevel,BETWEEN_MS));
   }else{
+    canTap=false;
     cells[idx].classList.add('wrong');
-    // Show what the answer was — a run that ends without explanation
-    // teaches nothing.
-    sequence.forEach(function(s,n){
-      if(!cells[s].classList.contains('correct')){
-        cells[s].classList.add('reveal');
-        cells[s].textContent=n+1;
-      }
-    });
+    cells[movedTo].classList.add('answer');
+    if(movedFrom>=0) cells[movedFrom].classList.add('was');
     endRun();
   }
 }
@@ -857,13 +853,13 @@ function endRun(){
   if(phase==='done')return;
   phase='done';clrT();
 
-  // The level being attempted was not completed, so the score is the
-  // last sequence fully recalled.
+  // The pattern being shown when the run ended was not solved, so the
+  // score is the last pattern actually recognized.
   var finalLevel=Math.max(0, level-1);
   var finalTime=(performance.now()-runStartTime)/1000;
 
   msg(T('wrong'),'miss');
-  timers.push(setTimeout(function(){ showFinal(finalLevel,finalTime); },1100));
+  timers.push(setTimeout(function(){ showFinal(finalLevel,finalTime); },1400));
 }
 
 function showFinal(finalLevel,finalTime){
@@ -883,17 +879,6 @@ function showFinal(finalLevel,finalTime){
     $('endLabel').textContent=T('labelPractice');
     status.style.color='#a7adba';
     recordTryout(finalLevel, status);
-    return;
-  }
-
-  if (WARM){
-    try {
-      var k = 'cp-warm-' + WARM + '-' + (WARM_GAME || GAME);
-      localStorage.setItem(k, String((parseInt(localStorage.getItem(k) || '0', 10) || 0) + 1));
-    } catch(e){}
-    $('endLabel').textContent = T('labelPractice');
-    status.style.color = '#8AA4BD';
-    status.textContent = T('warmCounted');
     return;
   }
 
@@ -957,8 +942,7 @@ function recordPractice(finalLevel){
   var base=SB_URL+'/rest/v1/challenge_practice';
   var headers={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
   var filter='?challenge_id=eq.'+encodeURIComponent(CHALLENGE_ID)
-           +'&player_id=eq.'+encodeURIComponent(PLAYER_ID)
-           +'&game=eq.'+GAME;
+           +'&player_id=eq.'+encodeURIComponent(PLAYER_ID);
 
   fetch(base+filter+'&select=best_level,runs',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
   .then(function(r){return r.json()})
@@ -1055,7 +1039,7 @@ function recordTryout(finalLevel, status){
   });
 }
 
-var BEST_KEY='fc-recall-best';
+var BEST_KEY='fc-recognition-best';
 function loadBest(){
   best=0;
   try{best=parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0}catch(e){}
