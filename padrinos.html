@@ -186,8 +186,8 @@ footer .f-dot{padding:0 7px;opacity:.5}
 </nav>
 
 <header><div class="wrap">
-  <h1 data-t="h1">Your team scores. <em>Your padrinos decide what every point is worth</em>.</h1>
-  <p class="lede" data-t="lede">How many points your team puts up is up to the team. How much each one is worth is up to you — and that part you can start on today, before a basket is made.</p>
+  <h1 data-t="h1">You score. <em>Your padrinos decide what every point is worth</em>.</h1>
+  <p class="lede" data-t="lede">How many points you put up is down to how much you train. How much each one is worth is down to how many people you asked — and you can start that today, before you touch a ball.</p>
 </div></header>
 
 <div class="wrap">
@@ -229,9 +229,9 @@ footer .f-dot{padding:0 7px;opacity:.5}
     <div class="calc">
       <div class="crow">
         <div>
-          <label data-t="lRounds">Points your team scores</label>
-          <div class="val"><span id="vRounds">58</span> <small data-t="roundsWord">points</small></div>
-          <input type="range" id="rounds" min="20" max="110" value="58">
+          <label data-t="lRounds">Points you score across your four quarters</label>
+          <div class="val"><span id="vRounds">120</span> <small data-t="roundsWord">points</small></div>
+          <input type="range" id="rounds" min="30" max="250" value="120">
         </div>
         <div>
           <label data-t="lPad">Padrinos you find</label>
@@ -275,7 +275,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
       </div>
     </div>
 
-    <p class="winlose" data-t="winLose">Win or lose, your program wins. A padrino pays on the points your team scored, and a loss pays exactly what a win pays.</p>
+    <p class="winlose" data-t="winLose">There is nobody to lose to. You play against the chain, and your padrino pays on the points you scored — however the day goes.</p>
   </section
 
   <section>
@@ -337,34 +337,34 @@ function pointsFor(n){ return n > 0 ? (n * (n + 1)) / 2 : 0; }
 
 var T = {
   en:{
-    winLose:'Win or lose, your program wins. A padrino pays on the points your team scored, and a loss pays exactly what a win pays.',
+    winLose:'There is nobody to lose to. You play against the chain, and your padrino pays on the points you scored — however the day goes.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
-    h1:'Your team scores. <em>Your padrinos decide what every point is worth</em>.',
-    lede:'How many points your team puts up is up to the team. How much each one is worth is up to you — and that part you can start on today, before a basket is made.',
+    h1:'You score. <em>Your padrinos decide what every point is worth</em>.',
+    lede:'How many points you put up is down to how much you train. How much each one is worth is down to how many people you asked — and you can start that today, before you touch a ball.',
 
-    h2value:'Every padrino raises what your team\u2019s point is worth',
+    h2value:'Every padrino raises what a point of yours is worth',
     vhWho:'Who said yes',
     p1:'Abuela · $1.00', p2:'Your tía · 25¢', p3:'A neighbour · 10¢',
     p4:'Your coach · 50¢', p5:'An uncle in Orlando · $2.00',
     p6:'Four more, whatever they chose · $1.15',
     ppvH:'Your Padrino Point Value',
     ppvD:'<b>Every padrino\u2019s pledge, added together.</b> That is what one point is worth. Ten cents from one, two dollars from another — it all goes into the same number, and the number only ever goes up.',
-    ppvD2:'It is the one thing you control completely. The score depends on the game; what a point is worth depends only on how many people you asked.',
-    valP:'Each padrino pledges whatever they like, and their pledges add together. That total is what <b>one point</b> is worth when your team scores it — and it goes up every time somebody says yes.',
+    ppvD2:'It is the one part that is in your hands before you play. You set the score by training; you set what a point is worth by asking.',
+    valP:'Each padrino pledges whatever they like, and their pledges add together. That total is what <b>one point</b> is worth when you score it — and it goes up every time somebody says yes.',
     vhWho:'Who said yes',
     p1:'Abuela · $1.00', p2:'Your tía · 25¢', p3:'A neighbour · 10¢',
     p4:'Your coach · 50¢', p5:'An uncle in Orlando · $2.00',
     p6:'Four more, whatever they chose · $1.15',
-    vhVal:'Your point is now worth', vhRun:'A 58-point game',
-    vNote:'The same 58 points every time. Only the padrinos changed.',
-    valP2:'This is the number to grow. The team scores the same whether you found two padrinos or twenty, so <b>every padrino you find raises the value of every point your team goes on to score</b> — this game, and every game after it.',
+    vhVal:'Your point is now worth', vhRun:'A 120-point game',
+    vNote:'The same 120 points every time. Only the padrinos changed.',
+    valP2:'This is the number to grow. You score the same whether you found two padrinos or twenty, so <b>every padrino you find raises what each point you score is worth</b> — in this game and every one after it.',
     smallP2:'So do not decide for them. Ask everyone, let each one choose their own number, and watch what a point is worth climb.',
     h2small:'There is no amount too small to ask for',
     smallP:'Ten cents a point is a real pledge. So is two dollars. People give what suits them, and none of them need to know what anyone else gave — they only see their own.',
 
     h2calc:'Work out your own',
     calcP:'Move the sliders and see what one game would be worth.',
-    lRounds:'Points your team scores', roundsWord:'points',
+    lRounds:'Points you score across your four quarters', roundsWord:'points',
     lPad:'Padrinos you find', padWord:'padrinos',
     lRate:'Each pledges', perPoint:'per point',
     ppvL:'Your Padrino Point Value',
@@ -396,34 +396,34 @@ var T = {
     copy:'Copy this', copied:'✓ Copied', fSignin:'Sign in', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    winLose:'Ganen o pierdan, tu programa gana. El padrino paga por los puntos que anotó tu equipo, y una derrota paga exactamente lo mismo que una victoria.',
+    winLose:'No hay contra quién perder. Juegas contra la cadena, y tu padrino paga por los puntos que anotaste — salga como salga el día.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
-    h1:'Tu equipo anota. <em>Tus padrinos deciden lo que vale cada punto</em>.',
-    lede:'Cuántos puntos anota tu equipo depende del equipo. Cuánto vale cada uno depende de ti — y eso lo puedes empezar hoy, antes de que caiga una canasta.',
+    h1:'Tú anotas. <em>Tus padrinos deciden lo que vale cada punto</em>.',
+    lede:'Cuántos puntos anotas depende de cuánto entrenes. Cuánto vale cada uno depende de a cuánta gente le preguntaste — y eso lo puedes empezar hoy, antes de tocar una bola.',
 
-    h2value:'Cada padrino sube lo que vale un punto de tu equipo',
+    h2value:'Cada padrino sube lo que vale un punto tuyo',
     vhWho:'Quién dijo que sí',
     p1:'Abuela · $1.00', p2:'Tu tía · 25¢', p3:'Un vecino · 10¢',
     p4:'Tu entrenador · 50¢', p5:'Un tío en Orlando · $2.00',
     p6:'Cuatro más, lo que escogieron · $1.15',
     ppvH:'Tu Valor por Punto',
     ppvD:'<b>La promesa de cada padrino, sumada.</b> Eso es lo que vale un punto. Diez centavos de uno, dos dólares de otro — todo va al mismo número, y ese número sólo sube.',
-    ppvD2:'Es lo único que controlas del todo. El marcador depende del juego; lo que vale un punto depende sólo de a cuánta gente le preguntaste.',
-    valP:'Cada padrino promete lo que quiera, y las promesas se suman. Ese total es lo que vale <b>un punto</b> cuando tu equipo lo anota — y sube cada vez que alguien dice que sí.',
+    ppvD2:'Es lo único que está en tu mano antes de jugar. El marcador lo pones entrenando; lo que vale un punto lo pones preguntando.',
+    valP:'Cada padrino promete lo que quiera, y las promesas se suman. Ese total es lo que vale <b>un punto</b> cuando lo anotas tú — y sube cada vez que alguien dice que sí.',
     vhWho:'Quién dijo que sí',
     p1:'Abuela · $1.00', p2:'Tu tía · 25¢', p3:'Un vecino · 10¢',
     p4:'Tu entrenador · 50¢', p5:'Un tío en Orlando · $2.00',
     p6:'Cuatro más, lo que escogieron · $1.15',
-    vhVal:'Tu punto ahora vale', vhRun:'Un juego de 58 puntos',
-    vNote:'Los mismos 58 puntos siempre. Lo único que cambió fueron los padrinos.',
-    valP2:'Éste es el número que hay que subir. El equipo anota lo mismo tengas dos padrinos o veinte, así que <b>cada padrino que consigues sube el valor de cada punto que tu equipo anote</b> — en este juego y en todos los que vengan.',
+    vhVal:'Tu punto ahora vale', vhRun:'Un juego de 120 puntos',
+    vNote:'Los mismos 120 puntos siempre. Lo único que cambió fueron los padrinos.',
+    valP2:'Éste es el número que hay que subir. Tú anotas lo mismo tengas dos padrinos o veinte, así que <b>cada padrino que consigues sube lo que vale cada punto que anotes</b> — en este juego y en todos los que vengan.',
     smallP2:'Así que no decidas por ellos. Pregúntale a todo el mundo, que cada uno escoja su número, y mira cómo sube lo que vale un punto.',
     h2small:'No hay cantidad muy pequeña para pedir',
     smallP:'Diez centavos por punto es una promesa de verdad. Dos dólares también. Cada quien da lo que le sirve, y ninguno necesita saber lo que dio otro — solo ve la suya.',
 
     h2calc:'Saca la tuya',
     calcP:'Mueve las barras y mira lo que valdría un juego.',
-    lRounds:'Puntos que anota tu equipo', roundsWord:'puntos',
+    lRounds:'Puntos que anotas en tus cuatro cuartos', roundsWord:'puntos',
     lPad:'Padrinos que consigues', padWord:'padrinos',
     lRate:'Cada uno promete', perPoint:'por punto',
     ppvL:'Tu Valor por Punto',
