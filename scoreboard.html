@@ -249,7 +249,11 @@ select{width:100%;padding:13px 14px;border:2px solid var(--ink);border-radius:4p
    nombre del contrario y la hoja parecía ser para ellos. */
 .forwho{font-size:.64rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
   color:var(--accent);text-align:center;margin-bottom:4px}
-.whoteam-sub{margin:2px 0 0;color:var(--mute);font-size:.95rem;font-weight:700}
+/* Centrada como todo lo de alrededor. La puse ayer sin alinearla y
+   heredó la izquierda: el nombre del nene centrado y el del equipo
+   pegado al margen, justo encima del "contra". Se veía torcido. */
+.whoteam-sub{text-align:center;margin:2px 0 10px;color:var(--mute);
+  font-size:.95rem;font-weight:700}
 .whoteam{text-align:center;margin:0 0 10px}
 .fixture{text-align:center;color:var(--mute);font-size:.95rem;margin:0 0 20px;
   padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -1099,7 +1103,7 @@ function drawPledge(){
        va al programa. Pero primero el nene. */
     '<div class="forwho">' + T('pledgeFor') + '</div>' +
     (deQuienVengo()
-      ? '<h1 class="whoteam">' + esc(deQuienVengo()) + '</h1>' +
+      ? '<h1 class="whoteam" style="margin-bottom:0">' + esc(deQuienVengo()) + '</h1>' +
         '<p class="whoteam-sub">' + esc(team) + '</p>'
       : '<h1 class="whoteam">' + team + '</h1>') +
 
