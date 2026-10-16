@@ -779,14 +779,14 @@ var runStartTime=0;
 
 (function setBackLink(){
   if (TRYOUT){
-    var t = 'challenges.html?tryout=' + encodeURIComponent(TRYOUT);
+    var t = 'index.html' + encodeURIComponent(TRYOUT);
     ['introBack','homeBtn','backToPledge'].forEach(function(id){
       var el = $(id); if (el) el.href = t;
     });
     return;
   }
   if (CHALLENGE_ID && PLAYER_ID){
-    var back = 'challenges.html?c=' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
+    var back = 'index.html' + encodeURIComponent(CHALLENGE_ID) + '&p=' + encodeURIComponent(PLAYER_ID)
              + (RUN_KEY ? '&k=' + encodeURIComponent(RUN_KEY) : '');
     $('backToPledge').href = back;
     $('backToPledge').textContent = T('backToChallenge');
