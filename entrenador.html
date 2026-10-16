@@ -204,6 +204,7 @@ var S = {
     codeL:'Su código', codePh:'Déjalo en blanco para escribirlo a mano',
     linkL:'Enlace de su tablero', linkPh:'https://cadapunto.com/scoreboard.html?c=…',
     joinL:'Enlace para apuntarse', joinPh:'https://cadapunto.com/jugador.html?c=…',
+    joinAlt:'O que se apunten solos:',
     add:'Añadir otro',
     rm:'Quitar',
     blank:'Imprimir los códigos en la hoja. Si lo dejas sin marcar, sale una raya y lo escribes a mano al entregarla.',
@@ -214,8 +215,8 @@ var S = {
     sTag:'Tu código',
     s1b:'Entra una vez.',
     s1:'Con tu código. De ahí pones tus juegos, armas un interescuadra y ves lo que te falta — y ese teléfono no te vuelve a pedir el código.',
-    sJb:'Manda esto al grupo del equipo.',
-    sJ:'Cada familia se apunta sola y recibe su propio enlace. Lo que prometan sus padrinos se le acredita a ese nene. Si hoy haces una sola cosa, haz ésta.',
+    sJb:'Escribe tu plantilla.',
+    sJ:'Los nombres de tus nenes, uno por línea. Dos minutos y están todos — tú te los sabes y no hay que esperar por nadie. Cada uno recibe su enlace, y lo que prometan sus padrinos se le acredita a ese nene. Si hoy haces una sola cosa, haz ésta.',
     s2b:'Comparte tu tablero.',
     s2:'Mándalo por WhatsApp a las familias, vecinos, el negocio de la esquina. Cada uno promete unos centavos por punto.',
     s2blank:'Te lo damos cuando abramos tu campaña.',
@@ -262,6 +263,7 @@ var S = {
     codeL:'Their code', codePh:'Leave blank to write it in by hand',
     linkL:'Their board link', linkPh:'https://cadapunto.com/scoreboard.html?c=…',
     joinL:'Their sign-up link', joinPh:'https://cadapunto.com/jugador.html?c=…',
+    joinAlt:'Or let them sign up themselves:',
     add:'Add another',
     rm:'Remove',
     blank:'Print the codes on the sheet. Left unticked, a blank line prints and you write it in as you hand it over.',
@@ -272,8 +274,8 @@ var S = {
     sTag:'Your code',
     s1b:'Sign in once.',
     s1:'With your code. From there you post your games, set up a scrimmage and see what is outstanding \u2014 and that phone never asks for your code again.',
-    sJb:'Send this to the team chat.',
-    sJ:'Each family signs up on their own and gets their own link. Whatever their padrinos pledge is credited to that child. If you do one thing today, do this one.',
+    sJb:'Type your roster.',
+    sJ:'Your children\u2019s names, one per line. Two minutes and they are all in \u2014 you know them, and nobody waits. Each one gets their link, and whatever their padrinos pledge is credited to that child. If you do one thing today, do this one.',
     s2b:'Share your board.',
     s2:'Send it on WhatsApp to families, neighbours, the business down the road. Each one pledges a few cents per point.',
     s2blank:'We give you this when we open your campaign.',
@@ -674,9 +676,6 @@ function drawSheets(){
     // El que de verdad mueve el dinero. Sin esto el entrenador se va
     // con una hoja completa y sin la dirección que hace que alguien
     // prometa algo.
-    var join = (r.join||'').trim()
-      ? '<span class="lnk">' + esc(conHttps(r.join)) + '</span>'
-      : '<span class="lnk">' + T('s2blank') + '</span>';
 
     return '<div class="sheet">' +
       '<div class="top">' +
@@ -692,7 +691,16 @@ function drawSheets(){
         '<li><b>' + T('s1b') + '</b>' +
           '<span class="lnk">https://cadapunto.com/mi-equipo.html</span>' +
           '<span>' + T('s1') + '</span></li>' +
-        '<li><b>' + T('sJb') + '</b>' + join +
+        /* El enlace del paso 2 lleva a la plantilla, que es donde el
+           entrenador escribe los nombres. El de apuntarse queda
+           debajo, en pequeño, para el que prefiera que cada familia
+           lo haga sola. */
+        '<li><b>' + T('sJb') + '</b>' +
+          /* Una sola línea de enlace. Dos empujaban cada hoja a una
+             segunda página, y la hoja tiene que ser UNA por división:
+             diez páginas para cinco entrenadores es el doble de papel
+             y la mitad de claridad. */
+          '<span class="lnk">https://cadapunto.com/plantilla.html</span>' +
           '<span>' + T('sJ') + '</span></li>' +
         '<li><b>' + T('s2b') + '</b>' + board +
           '<span>' + T('s2') + '</span></li>' +
