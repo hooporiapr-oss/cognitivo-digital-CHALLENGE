@@ -4,25 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#050A12">
-<title>Cada Punto — fundraising from the games you already play</title>
+<title>Cada Punto — the game is the fundraiser</title>
 <!-- La vista previa cuando alguien comparte el enlace: en vez de
      un enlace pelado en un grupo de WhatsApp, sale el cartel. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/">
-<meta property="og:title" content="Cada Punto — fundraising from the games you already play">
-<meta property="og:description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
+<meta property="og:title" content="Cada Punto — the game is the fundraiser">
+<meta property="og:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cada Punto — fundraising from the games you already play">
-<meta name="twitter:description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
+<meta name="twitter:title" content="Cada Punto — the game is the fundraiser">
+<meta name="twitter:description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
 
-<meta name="description" content="Fundraising for teams. Padrinos pledge per point your team scores, you enter the score after each game, and every dollar collected goes to the program.">
+<meta name="description" content="Fundraising for basketball programs. On one game day each player plays four five-minute quarters from their own phone, padrinos pledge a few cents a point, and the game itself produces the score. Nothing to sell, nothing to deliver.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
@@ -324,6 +324,17 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 @media(prefers-reduced-motion:reduce){
   .lc-glow,.lc-dot{animation:none}
 }
+/* El marcador de cuartos de la portada. Mismo dibujo que el que sale
+   al final de un juego, para que lo que se promete y lo que se ve
+   después sean la misma cosa. */
+.caja{display:flex;gap:4px;justify-content:center;margin:18px 0 16px;flex-wrap:wrap}
+.caja div{min-width:62px;padding:9px 6px;background:#0A1830;border:1px solid var(--line);
+  border-radius:6px;text-align:center}
+.caja div.tot{background:rgba(255,138,43,.12);border-color:rgba(255,138,43,.4)}
+.caja b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
+  color:var(--mute);text-transform:uppercase}
+.caja span{display:block;font-size:1.3rem;font-weight:900;line-height:1.3;color:var(--paper)}
+.caja div.tot span{color:var(--gold)}
 .f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
   margin-left:auto;margin-right:auto}
 </style>
@@ -333,10 +344,8 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <nav><div class="wrap navin">
   <a class="mark" href="#top"><span class="wm">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></span></a>
   <div class="navr">
-    <a href="scrimmages.html" data-t="navScrim">Scrimmages</a>
-    <a href="sietes.html" data-t="navLive">Sietes</a>
+    <a href="#fortress" data-t="navGame">The game</a>
     <a href="padrinos.html" data-t="navPad">Getting padrinos</a>
-    <a href="programa.html" data-t="navProg">For players and families</a>
     <a href="ayuda.html" data-t="navFaq">Coach Cada Punto</a><button id="lang" onclick="flip()">ES</button>
     <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -345,10 +354,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 </div>
 <div class="menu" id="menu"><div class="wrap">
   <a href="index.html" data-t="mHow">How it works</a>
+  <a href="#fortress" data-t="mGame">The game</a>
   <a href="jugador.html" data-t="mPlayer">I am a player</a>
-  <a href="sietes.html" data-t="mLive">Sietes</a>
   <a href="padrinos.html" data-t="mPad">Getting padrinos</a>
-  <a href="programa.html" data-t="mProg">For players and families</a>
   <a href="ayuda.html" data-t="mCoach">Coach Cada Punto</a><a class="mtalk" href="contact.html" data-t="mTalk">Talk to us →</a>
 </div></div>
 </nav>
@@ -358,7 +366,7 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <img class="heroart" src="cadapunto-hero.jpg" width="1536" height="575"
          data-t-alt="heroAlt" alt="Cada Punto — recaudación deportiva, baloncesto">
     <figcaption class="hero-cap">
-      <h1 data-t="h1">Your team is already competing.</h1>
+      <h1 data-t="h1">The game is the fundraiser.</h1>
     </figcaption>
   </figure>
 
@@ -366,10 +374,10 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M17 17l-5 3 2 5 3-1.5V33h14V23.5l3 1.5 2-5-5-3-3.5-1a3.5 3.5 0 0 1-7 0z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl1">Nothing to sell.</b></div>
     <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M12 20h24v4a3 3 0 0 0 0 6v4H12v-4a3 3 0 0 0 0-6z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl2">No raffles.</b></div>
     <div class="claim"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#A84200" stroke-width="3.5"/><path d="M13 19h22v16H13z" fill="none" stroke="#93AAC2" stroke-width="2.4" stroke-linejoin="round"/><path d="M13 25h22M24 19v16" fill="none" stroke="#93AAC2" stroke-width="2.4"/><line x1="10" y1="38" x2="38" y2="10" stroke="#A84200" stroke-width="3.5" stroke-linecap="round"/></svg><b data-t="cl3">Nothing to deliver.</b></div>
-    <div class="claim paid"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#2A7D08" stroke-width="3.5"/><path d="M14 31l7-7 5 5 9-9" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 20h6v6" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-t="cl4">They score. You get paid.</b></div>
+    <div class="claim paid"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="#2A7D08" stroke-width="3.5"/><path d="M14 31l7-7 5 5 9-9" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 20h6v6" fill="none" stroke="#6FD83C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-t="cl4">They play. The program gets paid.</b></div>
   </div>
 
-  <p class="lede" data-t="lede">Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.</p>
+  <p class="lede" data-t="lede">On one game day, each player plays four five-minute quarters from their own phone. Padrinos pledge a few cents a point. The game produces the score — nobody enters a number — and there is nothing to sell, nothing to deliver and nothing to collect at the door.</p>
 
   <div class="actions">
     <a class="btn btn-solid" href="#seasonH" data-t="ctaHow">See how it works</a>
@@ -382,25 +390,14 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <!-- The fundraiser itself, before anything else: a coach should
        understand the whole thing from this one section. -->
   <section class="season" aria-labelledby="seasonH">
-    <h2 id="seasonH" data-t="seasonH">Pledge by the game, all season.</h2>
+    <h2 id="seasonH" data-t="seasonH">One game day. That is the whole campaign.</h2>
     <div class="steps3">
-      <div class="st"><b data-t="st1b">You sign up, we approve you.</b>
-        <span data-t="st1">We check it is really your program, usually the same day. Then you get a code, and you post your whole schedule in one go.</span></div>
-      <div class="st"><b data-t="st2b">Padrinos pick their games.</b>
-        <span data-t="st2">A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.</span></div>
-      <div class="st"><b data-t="st3b">You enter the score.</b>
-        <span data-t="st3">That closes the game and works out what every padrino owes. Score 68 with ten padrinos at a dime, and $68 is ready to collect.</span></div>
-    </div>
-    <div class="demo-card">
-      <span class="dc-kick" data-t="dcKick">See it working</span>
-      <span class="dc-h" data-t="dcH">Open a team board</span>
-      <span class="dc-p" data-t="dcP">A demo of a team board, the same as a real one. Look around it — the games open for pledges, the points scored in each one, and the sheet a padrino fills out.</span>
-      <span class="dc-two">
-        <!-- El recorrido primero: explica. El tablero después: comprueba. -->
-        <a class="dc-go" href="mira.html" data-t="dcGoM">See how it works →</a>
-        <a class="dc-go" href="scoreboard.html?c=8d0d1f66-29a8-4406-90f2-3c3cf9479d55"
-           data-t="dcGoB">Basketball Demo →</a>
-      </span>
+      <div class="st"><b data-t="st1b">Your program signs up.</b>
+        <span data-t="st1">We check it is really your program, usually the same day. Then each player enrols themselves and gets their own link — no roster to type, no forms to hand out.</span></div>
+      <div class="st"><b data-t="st2b">Game day.</b>
+        <span data-t="st2">A window of about two hours. Inside it each player plays four five-minute quarters, from wherever they are, on whatever phone they have. Nothing to set up and nothing to carry.</span></div>
+      <div class="st"><b data-t="st3b">The game posts the score.</b>
+        <span data-t="st3">Nobody enters a number — the game produces it. Each quarter counts that player&rsquo;s best run, the four add up, and that total is what every padrino pledged on.</span></div>
     </div>
 
     <div class="step-cta">
@@ -409,10 +406,31 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <p class="seasonnote" data-t="seasonNote">Nothing is charged before a game is played. A padrino can cap what they pay, and a game that is never played is never charged.</p>
   </section>
 
-  <!-- The public board is the part that keeps families coming back. -->
+  <!-- EL JUEGO, y jugable desde aquí.
+       Describirlo no sirve de nada: se entiende en treinta segundos
+       jugándolo, y no entendiéndolo no hay campaña. El enlace va sin
+       parámetros a propósito — así abre en práctica, sin reto, sin
+       código y sin contar para nadie. -->
+  <a class="live-card" id="fortress" href="fortress-vr.html">
+    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">The game</span></span>
+    <span class="lc-name">fort<em>ress</em></span>
+    <span class="lc-p" data-t="lcP">The 2-1-2 zone lights up, one more ball each round, and you repeat it in order. Your score is the longest chain you held. It is court vision and recall — the part of basketball that does not need a gym, a ball or a free court.</span>
+    <span class="lc-go" data-t="lcGo">Play it now →</span>
+  </a>
+
+  <!-- El marcador de cuartos. Es lo que un padrino mira al final, y
+       se entiende sin que nadie se lo explique: cuatro cuartos y un
+       total. Por eso va dibujado y no contado. -->
   <section class="board">
-    <h2 data-t="boardH">One page your families will actually check.</h2>
-    <p data-t="boardP">Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.</p>
+    <h2 data-t="boardH">Four quarters, read at a glance.</h2>
+    <div class="caja" aria-hidden="true">
+      <div><b>Q1</b><span>45</span></div>
+      <div><b>Q2</b><span>36</span></div>
+      <div><b>Q3</b><span>45</span></div>
+      <div><b>Q4</b><span>36</span></div>
+      <div class="tot"><b>Tot</b><span>162</span></div>
+    </div>
+    <p data-t="boardP">Each quarter counts the best run inside it, so every round matters — the only way to lift a quarter is to hold a longer chain than the one already held. The four add up, and that total is the game a padrino pledged on.</p>
   </section>
 
   <!-- What the three steps above do not cover: what it costs a
@@ -420,9 +438,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
   <section class="how">
     <h2 data-t="hwH">What it costs, and what you see</h2>
     <ol class="hw">
-      <li><b data-t="hw1b">Nothing until a game is played.</b> <span data-t="hw1">A pledge is a promise. No card is charged until you enter a score.</span></li>
-      <li><b data-t="hw2b">The padrino pays, the program is paid.</b> <span data-t="hw2">After each game they get the score and a pay button. Minimum $5 a pledge.</span></li>
-      <li><b data-t="hw3b">You watch the money as it arrives.</b> <span data-t="hw3">Every pledge, payment and payout, listed per game in your own panel.</span>
+      <li><b data-t="hw1b">Nothing until the game is played.</b> <span data-t="hw1">A pledge is a promise. Nothing is charged before game day, and a player who never plays is never charged for.</span></li>
+      <li><b data-t="hw2b">The padrino pays, the program is paid.</b> <span data-t="hw2">When the game is over they get the box score and a pay button. Minimum $5 a pledge.</span></li>
+      <li><b data-t="hw3b">You watch the money as it arrives.</b> <span data-t="hw3">Every pledge, payment and payout, listed player by player in your own panel.</span>
         <span class="hw-fee" data-t="hw3fee">Our 20% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $30.00 payment, and the program receives the full $25.00 collected.</span></li>
     </ol>
     <p class="hw-see" data-t="hwSee">You see all of it as it happens — every pledge, every payment, every payout, listed for you and for the program.</p>
@@ -445,18 +463,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
     <span class="lc-name">coach <em>cada punto</em></span>
     <span class="lc-p" data-t="ccP">Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.</span>
     <span class="lc-go" data-t="ccGo">Open Coach Cada Punto →</span>
-  </a>
-
-  <!-- Secondary now: a reason the platform is more than a donate
-       button, and something to run between seasons. -->
-  <!-- Sietes: baloncesto por sets. Un programa puede montarlo sin
-       rival, partiendo su propia matrícula en dos equipos, así que
-       no hace falta liga ni temporada para empezar a recaudar. -->
-  <a class="live-card" href="sietes.html">
-    <span class="lc-top"><span class="lc-dot"></span><span data-t="lcTag">Start here</span></span>
-    <span class="lc-name">sie<em>tes</em></span>
-    <span class="lc-p" data-t="lcP">Basketball in sets. Every set is played to seven points, first team to win three sets takes the match — no clock, no referees, and nobody gets blown out. Both teams raise on every basket they score, including the ones in sets they lost.</span>
-    <span class="lc-go" data-t="lcGo">How it works →</span>
   </a>
 
 
@@ -518,10 +524,6 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
          Van aquí abajo a propósito — un padrino no las necesita, pero un
          entrenador en febrero tiene que poder encontrarlas sin llamar. -->
     <a href="mi-equipo.html" data-t="fMine">My team</a>
-    <span class="f-dot">·</span>
-    <a href="calendario.html" data-t="fCal">Schedule</a>
-    <span class="f-dot">·</span>
-    <a href="escuadras.html" data-t="fSquads">Squads</a>
   </p>
   <p class="f-legal">
     <a href="terms.html" data-t="fTerms">Terms</a>
@@ -533,8 +535,9 @@ ol.hw .hw-fee{display:block;margin-top:8px;padding-top:8px;border-top:1px solid 
 <script>
 var T = {
   en:{
-    lcTag:'Start here', lcGo:'How it works →',
-    lcP:'Basketball in sets. Every set is played to seven points, first team to win three sets takes the match — no clock, no referees, and nobody gets blown out. Both teams raise on every basket they score, including the ones in sets they lost.',
+    lcTag:'The game', lcGo:'Play it now →',
+    lcP:'The 2-1-2 zone lights up, one more ball each round, and you repeat it in order. Your score is the longest chain you held. It is court vision and recall — the part of basketball that does not need a gym, a ball or a free court.',
+    navGame:'The game', mGame:'The game',
     mLive:'Sietes', navScrim:'Scrimmages', navLive:'Sietes',
     navFaq:'Coach Cada Punto',
     mProg:'For players and families', navProg:'For players and families',
@@ -542,17 +545,17 @@ var T = {
     nsH:'Nothing to sell. Nothing to deliver.',
     nsP:'No chocolate bars, no wrapping paper, no order forms, no boxes stacked in the office, no leftover stock, nothing to hand back. A participant shares a link and plays. That is the whole campaign.',
     hwH:'What it costs, and what you see',
-    hw1b:'Nothing until a game is played.', hw1:'A pledge is a promise. No card is charged until you enter a score.',
-    hw2b:'The padrino pays, the program is paid.', hw2:'After each game they get the score and a pay button. Minimum $5 a pledge.',
-    hw3b:'You watch the money as it arrives.', hw3:'Every pledge, payment and payout, listed per game in your own panel.',
+    hw1b:'Nothing until the game is played.', hw1:'A pledge is a promise. Nothing is charged before game day, and a player who never plays is never charged for.',
+    hw2b:'The padrino pays, the program is paid.', hw2:'When the game is over they get the box score and a pay button. Minimum $5 a pledge.',
+    hw3b:'You watch the money as it arrives.', hw3:'Every pledge, payment and payout, listed player by player in your own panel.',
     hw3fee:'Our 20% platform fee is added on top of their payment, never taken out of it. A $25.00 pledge is a $30.00 payment, and the program receives the full $25.00 collected.',
-    seasonH:'Pledge by the game, all season.',
-    st1b:'You sign up, we approve you.',
-    st1:'We check it is really your program, usually the same day. Then you get a code, and you post your whole schedule in one go — from your phone, in a couple of minutes.',
-    st2b:'Padrinos pick their games.',
-    st2:'A dime a point on Saturday. A quarter a point for the tournament. Family, neighbours, the business down the road — each one picks what suits them.',
-    st3b:'You enter the score.',
-    st3:'That closes the game and works out what every padrino owes. Score 68 with ten padrinos at a dime, and $68 is ready to collect.',
+    seasonH:'One game day. That is the whole campaign.',
+    st1b:'Your program signs up.',
+    st1:'We check it is really your program, usually the same day. Then each player enrols themselves and gets their own link — no roster to type, no forms to hand out.',
+    st2b:'Game day.',
+    st2:'A window of about two hours. Inside it each player plays four five-minute quarters, from wherever they are, on whatever phone they have. Nothing to set up and nothing to carry.',
+    st3b:'The game posts the score.',
+    st3:'Nobody enters a number — the game produces it. Each quarter counts that player\u2019s best run, the four add up, and that total is what every padrino pledged on.',
     dcKick:'See it working', dcH:'See it start to finish',
     dcP:'One game, the whole way through — from the coach setting it up to the money reaching the program. And a real team board to look around: the games open for pledges, the points scored in each one, and the sheet a padrino fills out.',
     dcGoM:'How it works →', dcGoB:'Basketball Demo →',
@@ -560,17 +563,17 @@ var T = {
     ccAlt:'A neighbourhood basketball court in Puerto Rico at night, empty after rain, with a phone glowing on the bench', ccGo:'Open Coach Cada Punto →',
     ccP:'Every question a coach asks, answered on one page — and a chat that answers the rest, with your code, at any hour. No waiting for us to open.',
     stepGo:'Sign up my team →',
-    seasonNote:'It is the team\u2019s final score, so no player is worth more than another and nobody gains by shooting. Nothing is charged before a game is played, a padrino can cap what they pay, and a game that is never played is never charged.',
-    boardH:'One page your families will actually check.',
-    boardP:'Your schedule, your results and your running points total, on a link you send once. The next game sits at the top with a pledge button under it — so every game is its own small ask, and every result is a reason to look again.',
+    seasonNote:'A padrino can cap what they pay, nothing is charged before game day, and a player who never plays is never charged for.',
+    boardH:'Four quarters, read at a glance.',
+    boardP:'Each quarter counts the best run inside it, so every round matters — the only way to lift a quarter is to hold a longer chain than the one already held. The four add up, and that total is the game a padrino pledged on.',
     mHow:'How it works', mPlayer:'I am a player', mPad:'Getting padrinos', mTalk:'Talk to us →',
     navPad:'Getting padrinos',
     heroAlt:'Cada Punto — sports fundraising for basketball programs. Every point counts.',
     cl1:'Nothing to sell.', cl2:'No raffles.', cl3:'Nothing to deliver.',
-    cl4:'They score. You get paid.',
+    cl4:'They play. The program gets paid.',
     ctaHow:'See how it works',
-    h1:'Your team is already competing.',
-    lede:'Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.',
+    h1:'The game is the fundraiser.',
+    lede:'On one game day, each player plays four five-minute quarters from their own phone. Padrinos pledge a few cents a point. The game produces the score — nobody enters a number — and there is nothing to sell, nothing to deliver and nothing to collect at the door.',
     cta1b2:'Sign up my team', cta1b:'Talk to us',
     costH:'Free for your program.',
     costP:'No setup fee, no monthly fee, no contract, and nothing deducted from what you raise. The same for a school, a club, a team or any non-profit group.',
@@ -579,8 +582,9 @@ var T = {
     fsN:'Still On', fsP:'A story — the night nobody played →', fTerms:'Terms', fPrivacy:'Privacy'
   },
   es:{
-    lcTag:'Empieza aquí', lcGo:'Cómo funciona →',
-    lcP:'Baloncesto por sets. Cada set se juega a siete puntos y gana el partido el primero que gane tres — sin reloj, sin árbitros, y sin que nadie se lleve una pela. Los dos equipos recaudan por cada canasta, también las de los sets que perdieron.',
+    lcTag:'El juego', lcGo:'Juégalo ahora →',
+    lcP:'La zona 2-1-2 se enciende, una bola más en cada ronda, y la repites en orden. Tu puntuación es la cadena más larga que aguantaste. Es visión de cancha y memoria — la parte del baloncesto que no necesita gimnasio, ni bola, ni una cancha libre.',
+    navGame:'El juego', mGame:'El juego',
     mLive:'Sietes', navScrim:'Interescuadra', navLive:'Sietes',
     navFaq:'Coach Cada Punto',
     mProg:'Para jugadores y familias', navProg:'Para jugadores y familias',
@@ -588,17 +592,17 @@ var T = {
     nsH:'Nada que vender. Nada que entregar.',
     nsP:'Sin chocolates, sin papel de regalo, sin hojas de pedido, sin cajas amontonadas en la oficina, sin sobrantes, nada que devolver. Un participante comparte un enlace y juega. Esa es toda la campaña.',
     hwH:'Lo que cuesta, y lo que ves',
-    hw1b:'Nada hasta que se juegue.', hw1:'Una promesa es una promesa. No se cobra nada hasta que pones el marcador.',
-    hw2b:'El padrino paga, el programa cobra.', hw2:'Después de cada juego reciben el marcador y un botón para pagar. Mínimo $5 por promesa.',
-    hw3b:'Ves el dinero según entra.', hw3:'Cada promesa, cada pago y cada desembolso, por juego, en tu propio panel.',
+    hw1b:'Nada hasta que se juegue.', hw1:'Una promesa es una promesa. No se cobra nada antes del día del juego, y por un participante que no juega no se cobra.',
+    hw2b:'El padrino paga, el programa cobra.', hw2:'Cuando termina el juego reciben el marcador por cuartos y un botón para pagar. Mínimo $5 por promesa.',
+    hw3b:'Ves el dinero según entra.', hw3:'Cada promesa, cada pago y cada desembolso, participante por participante, en tu propio panel.',
     hw3fee:'Nuestro cargo de plataforma de 20% se a\u00f1ade encima de su pago, nunca se saca de \u00e9l. Una promesa de $25.00 es un pago de $30.00, y el programa recibe los $25.00 completos.',
-    seasonH:'Promesas juego por juego, toda la temporada.',
-    st1b:'Te inscribes, te aprobamos.',
-    st1:'Comprobamos que de verdad es tu programa, normalmente el mismo día. Ahí te damos un código y pones tu calendario completo de una vez — desde el teléfono, en un par de minutos.',
-    st2b:'Los padrinos escogen sus juegos.',
-    st2:'Diez centavos por punto el sábado. Veinticinco para el torneo. La familia, los vecinos, el negocio de la esquina — cada uno escoge lo que le sirve.',
-    st3b:'Pones el marcador.',
-    st3:'Eso cierra el juego y saca lo que debe cada padrino. Anotan 68 con diez padrinos a diez centavos, y hay $68 listos para cobrar.',
+    seasonH:'Un día de juego. Esa es toda la campaña.',
+    st1b:'Se inscribe tu programa.',
+    st1:'Comprobamos que de verdad es tu programa, normalmente el mismo día. Después cada participante se apunta solo y recibe su propio enlace — sin listas que escribir y sin papeles que repartir.',
+    st2b:'El día del juego.',
+    st2:'Una ventana de unas dos horas. Dentro de ella cada participante juega cuatro cuartos de cinco minutos, desde donde esté y con el teléfono que tenga. Nada que montar y nada que cargar.',
+    st3b:'El juego pone el marcador.',
+    st3:'Nadie escribe un número — lo pone el juego. Cada cuarto vale la mejor tirada de ese participante, los cuatro se suman, y ese total es sobre lo que prometió cada padrino.',
     dcKick:'Míralo funcionando', dcH:'Míralo de principio a fin',
     dcP:'Un juego completo, desde que el entrenador lo monta hasta que al programa le entra el dinero. Y el tablero de un equipo de verdad, para darte una vuelta — los juegos abiertos a promesas, los puntos que anotó el equipo en cada uno, y la hoja que llena un padrino.',
     dcGoM:'Cómo funciona →', dcGoB:'Demo de Baloncesto →',
@@ -606,17 +610,17 @@ var T = {
     ccAlt:'Una cancha de barrio en Puerto Rico de noche, vacía después de la lluvia, con un teléfono encendido en el banco', ccGo:'Abrir Coach Cada Punto →',
     ccP:'Todo lo que pregunta un entrenador, contestado en una página — y un chat que contesta lo demás, con tu código, a cualquier hora. Sin esperar a que abramos.',
     stepGo:'Inscribir mi equipo →',
-    seasonNote:'Es el marcador final del equipo, así que ningún jugador vale más que otro y nadie gana nada por tirar de más. No se cobra nada antes de que se juegue, un padrino puede poner un tope, y un juego que no se juega no se cobra.',
-    boardH:'Una página que tus familias sí van a mirar.',
-    boardP:'Tu calendario, tus resultados y el total de puntos, en un enlace que mandas una vez. El próximo juego está arriba con su botón de prometer — cada juego es su propia pedida, y cada resultado es razón para volver a mirar.',
+    seasonNote:'Un padrino puede poner un tope, no se cobra nada antes del día del juego, y por un participante que no juega no se cobra nunca.',
+    boardH:'Cuatro cuartos, de un vistazo.',
+    boardP:'Cada cuarto vale la mejor tirada que hubo dentro de él, así que cada ronda importa — la única forma de subir un cuarto es aguantar una cadena más larga que la que ya aguantó. Los cuatro se suman, y ese total es el juego sobre el que prometió un padrino.',
     mHow:'Cómo funciona', mPlayer:'Soy jugador', mPad:'Conseguir padrinos', mTalk:'Habla con nosotros →',
     navPad:'Conseguir padrinos',
     heroAlt:'Cada Punto — recaudación deportiva para programas de baloncesto. Cada punto cuenta.',
     cl1:'Nada que vender.', cl2:'Sin rifas.', cl3:'Nada que entregar.',
-    cl4:'Tu equipo anota. Tu programa cobra.',
+    cl4:'Juegan. El programa cobra.',
     ctaHow:'Ver cómo funciona',
-    h1:'Tu equipo ya está compitiendo.',
-    lede:'Cada Punto convierte cada punto que anotan en dinero para el programa — unos centavos a la vez, prometidos por la gente que ya estaba gritando en la cancha. Diez padrinos a diez centavos, una noche de 68 puntos, y el programa tiene $68.',
+    h1:'El juego es la recaudación.',
+    lede:'Un día de juego: cada participante juega cuatro cuartos de cinco minutos desde su propio teléfono. Los padrinos prometen unos centavos por punto. El marcador lo pone el juego — nadie escribe un número — y no hay nada que vender, nada que entregar y nada que cobrar en la puerta.',
     cta1b2:'Inscribir mi equipo', cta1b:'Habla con nosotros',
     costH:'Gratis para tu programa.',
     costP:'Sin cargo de instalación, sin cargo mensual, sin contrato, y nada descontado de lo que recaudas. Igual para una escuela, un club, un equipo o cualquier grupo sin fines de lucro.',
