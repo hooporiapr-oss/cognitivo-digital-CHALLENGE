@@ -165,6 +165,7 @@ footer .f-dot{padding:0 7px;opacity:.5}
         <p class="msg" id="am"></p>
       </div>
 
+      <div id="ventana"></div>
       <div id="tally" class="tally"></div>
       <div id="wait"></div>
       <div id="plist"></div>
@@ -220,6 +221,9 @@ var S={
     noSquad:'sin escuadra',
     edit:'Arreglar', take:'Sacar', back:'Devolver', save:'Guardar', cancel:'Dejarlo',
     send:'Mandar', copied:'Copiado',
+    noReto:'Todavía no hay día de juego abierto, así que no hay enlace que mandar. Abre uno y los enlaces salen solos.',
+    cerrado:'El juego ya empezó: no entran promesas nuevas. Las que ya estaban siguen en pie.',
+    ventana:'Se promete hasta el {D} — después se juega.',
     msgTxt:'{N} está en {E}. Este es su enlace — mándaselo a quien quieras que prometa por sus puntos. No se paga nada ahora: se paga al acabar el juego, según lo que anote.',
     del:'Borrar',
     askDel:'¿Borrar a {N} para siempre? Esto no se deshace.',
@@ -261,6 +265,9 @@ var S={
     noSquad:'no squad',
     edit:'Fix', take:'Take out', back:'Put back', save:'Save', cancel:'Leave it',
     send:'Send', copied:'Copied',
+    noReto:'No game day is open yet, so there is no link to send. Open one and the links appear on their own.',
+    cerrado:'The game has started: no new pledges. The ones already made still stand.',
+    ventana:'Pledging is open until {D} — then they play.',
     msgTxt:'{N} is on {E}. This is their link — send it to anyone you want pledging on their points. Nothing is paid now: it is paid when the game ends, based on what they score.',
     del:'Delete',
     askDel:'Delete {N} for good? This cannot be undone.',
@@ -295,6 +302,10 @@ function T(k,v){
 }
 
 var CODE=null, BY=null, CAMPS=[], CID=null, PL=[], EDIT=null;
+/* El reto de esta división al que se le puede prometer ahora. Se
+   vuelve a preguntar cada vez que se cambia de división: cada una
+   tiene el suyo. */
+var RETO=null;
 
 try{ CODE = localStorage.getItem('cp_build') || localStorage.getItem('cp_code') || null; }catch(e){}
 function recordar(k){ try{ localStorage.setItem('cp_build',k) }catch(e){} }
@@ -364,7 +375,11 @@ function cargar(){
   CID=$('camp').value||CID;
   EDIT=null;
   $('plist').innerHTML='<p class="help">…</p>';
-  return rpc('roster_list',{p_code:CODE,p_campaign:CID})
+  RETO=null;
+  return rpc('cp_reto_vivo',{p_campaign:CID})
+    .then(function(r){ RETO=(r&&r.ok)?r:null })
+    .catch(function(){ RETO=null })
+    .then(function(){ return rpc('roster_list',{p_code:CODE,p_campaign:CID}) })
     .then(function(r){
       if(!r||!r.ok){ PL=[]; say('lm',T('bad'),'bad'); pintar(); return }
       PL=r.players||[]; pintar();
@@ -389,8 +404,21 @@ function cargar(){
    la campaña, el id del nene y su escuadra si la hay.
    ══════════════════════════════════════════════════════════════════ */
 function enlaceDe(p){
-  var d = p.squad ? '&d=' + encodeURIComponent(p.squad) : '';
-  return location.origin + '/scoreboard.html?c=' + CID + '&p=' + p.id + d;
+  /* Lleva el RETO, no la campaña: se promete por los puntos de este
+     nene en su juego de cuatro cuartos, no por los del equipo en un
+     juego del calendario. Null cuando no hay reto abierto — mejor que
+     un enlace con "undefined" dentro repartido a doce familias. */
+  if (!RETO || !RETO.hay || !RETO.open) return null;
+  return location.origin + '/prometer.html?c=' + RETO.challenge_id + '&p=' + p.id;
+}
+
+function cuandoCP(iso){
+  try {
+    var d = new Date(iso);
+    var loc = LANG === 'es' ? 'es-PR' : 'en-US';
+    return d.toLocaleDateString(loc, { weekday:'long', day:'numeric', month:'long' }) +
+           ' · ' + d.toLocaleTimeString(loc, { hour:'numeric', minute:'2-digit' });
+  } catch(e){ return '' }
 }
 
 /* Mandar por donde el entrenador ya habla. Si el teléfono trae el
@@ -399,6 +427,7 @@ function enlaceDe(p){
 function mandar(i){
   var p=PL[i]; if(!p) return;
   var enlace=enlaceDe(p);
+  if(!enlace) return say('lm', T(RETO&&RETO.hay ? 'cerrado' : 'noReto'), 'bad');
   var equipo=(CAMPS.filter(function(c){ return c.id===CID })[0]||{}).name||'';
   var txt=T('msgTxt').split('{N}').join(p.name).split('{E}').join(equipo)+'\n\n'+enlace;
   try{
@@ -412,6 +441,16 @@ function mandar(i){
 }
 
 function pintar(){
+  /* En qué va el día de juego, antes que nada: de eso depende si los
+     botones de Mandar sirven para algo. */
+  var v=$('ventana');
+  if(v){
+    if(!RETO || !RETO.hay)      v.innerHTML='<p class="help">'+esc(T('noReto'))+'</p>';
+    else if(!RETO.open)         v.innerHTML='<p class="help">'+esc(T('cerrado'))+'</p>';
+    else                        v.innerHTML='<p class="help">'+
+      esc(T('ventana').split('{D}').join(cuandoCP(RETO.opens_at)))+'</p>';
+  }
+
   var wait=PL.filter(function(p){ return p.state==='pending' });
   var on  =PL.filter(function(p){ return p.state==='active' });
   var off =PL.filter(function(p){ return p.state!=='pending' && p.state!=='active' });
