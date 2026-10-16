@@ -219,6 +219,8 @@ var S={
     joined:'se apuntó solo',
     noSquad:'sin escuadra',
     edit:'Arreglar', take:'Sacar', back:'Devolver', save:'Guardar', cancel:'Dejarlo',
+    send:'Mandar', copied:'Copiado',
+    msgTxt:'{N} está en {E}. Este es su enlace — mándaselo a quien quieras que prometa por sus puntos. No se paga nada ahora: se paga al acabar el juego, según lo que anote.',
     del:'Borrar',
     askDel:'¿Borrar a {N} para siempre? Esto no se deshace.',
     gone:'{N} borrado.',
@@ -258,6 +260,8 @@ var S={
     joined:'signed up on their own',
     noSquad:'no squad',
     edit:'Fix', take:'Take out', back:'Put back', save:'Save', cancel:'Leave it',
+    send:'Send', copied:'Copied',
+    msgTxt:'{N} is on {E}. This is their link — send it to anyone you want pledging on their points. Nothing is paid now: it is paid when the game ends, based on what they score.',
     del:'Delete',
     askDel:'Delete {N} for good? This cannot be undone.',
     gone:'{N} deleted.',
@@ -371,6 +375,42 @@ function cargar(){
 /* Tres estados, no dos: esperando, en la lista, y fuera. Los que
    esperan van arriba y aparte — son lo único de esta página que pide
    una decisión, y mezclados con los demás no se ven. */
+/* ══════════════════════════════════════════════════════════════════
+   EL ENLACE DE CADA NENE
+
+   Faltaba, y faltaba justo donde más duele. Cuando las familias se
+   apuntaban solas, cada una veía su enlace en pantalla al terminar.
+   Ahora que los nombres los escribe el entrenador — que es el camino
+   corto — nadie los ve: quedan doce nenes en una lista y ni un enlace
+   que mandar. O sea que se apuntaban y ahí se acababa todo, que es
+   peor que no apuntarlos.
+
+   Es el mismo enlace de siempre, armado con lo que la fila ya tiene:
+   la campaña, el id del nene y su escuadra si la hay.
+   ══════════════════════════════════════════════════════════════════ */
+function enlaceDe(p){
+  var d = p.squad ? '&d=' + encodeURIComponent(p.squad) : '';
+  return location.origin + '/scoreboard.html?c=' + CID + '&p=' + p.id + d;
+}
+
+/* Mandar por donde el entrenador ya habla. Si el teléfono trae el
+   menú de compartir, ése — sale WhatsApp y todo lo demás. Si no,
+   WhatsApp directo. Y si tampoco, se copia, que siempre queda. */
+function mandar(i){
+  var p=PL[i]; if(!p) return;
+  var enlace=enlaceDe(p);
+  var equipo=(CAMPS.filter(function(c){ return c.id===CID })[0]||{}).name||'';
+  var txt=T('msgTxt').split('{N}').join(p.name).split('{E}').join(equipo)+'\n\n'+enlace;
+  try{
+    if(navigator.share){ navigator.share({text:txt}).catch(function(){}); return }
+  }catch(e){}
+  try{
+    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener');
+    return;
+  }catch(e){}
+  try{ navigator.clipboard.writeText(enlace); say('lm',T('copied'),'ok') }catch(e){ say('lm',enlace) }
+}
+
 function pintar(){
   var wait=PL.filter(function(p){ return p.state==='pending' });
   var on  =PL.filter(function(p){ return p.state==='active' });
@@ -410,7 +450,8 @@ function pintar(){
         '<small>'+esc(p.squad||T('noSquad'))+'</small></span>'+
       '<span class="act">'+
         (act
-          ? '<button onclick="abrir('+i+')">'+esc(T('edit'))+'</button>'+
+          ? '<button class="on" onclick="mandar('+i+')">'+esc(T('send'))+'</button>'+
+            '<button onclick="abrir('+i+')">'+esc(T('edit'))+'</button>'+
             '<button onclick="sacar('+i+')">'+esc(T('take'))+'</button>'
           : '<button class="on" onclick="devolver('+i+')">'+esc(T('back'))+'</button>'+
             '<button class="del" onclick="borrar('+i+')">'+esc(T('del'))+'</button>')+
