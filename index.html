@@ -109,6 +109,12 @@ p{margin:0 0 14px;max-width:62ch}
   width:8px;height:8px;background:var(--brasa)}
 .claves b{color:var(--hueso);font-weight:800}
 
+/* Cuanto dura. Una linea seca debajo de los pasos: es la suma de los
+   cinco, y es el numero por el que un programa pregunta primero. */
+.dura{margin:20px 0 0;font-size:.97rem;line-height:1.55;color:var(--humo)}
+.dura b{color:var(--hueso);font-weight:800}
+.dura span b{color:var(--brasa)}
+
 /* Lo que nadie tiene que hacer. Va en caja y no en lista porque no es
    un paso mas: es el resumen de por que lo anterior importa. */
 .nadie{margin:26px 0 0;padding:16px 18px;background:rgba(255,138,43,.08);
@@ -254,6 +260,7 @@ footer a:hover{text-decoration:underline}
       <h2 id="h2cob"></h2>
       <p id="pCob"></p>
       <ol class="pasos" id="cobpasos"></ol>
+      <p class="dura"><b id="duraL"></b> <span id="duraP"></span></p>
       <div class="nadie" id="nadie">
         <b id="nadieH"></b>
         <p id="nadieP"></p>
@@ -479,6 +486,12 @@ var S={
       ['A los treinta días, el cobro cierra','La promesa se cierra y no se debe nada. No se pide más y no se llama a nadie. Ahí se sabe el marcador de verdad de la recaudación.'],
       ['Al programa se le remite el día 1 y el día 15','Lo cobrado, completo. Nuestro cargo se le sumó al pago del padrino; nunca sale de lo tuyo.']
     ],
+    /* Cuánto dura, dicho de frente y sumando los cinco pasos de
+       arriba. Decir "treinta días" sería más limpio y sería mentira:
+       los treinta son SÓLO el cobro. Un programa al que le prometes
+       treinta y le pagas el día 52 no vuelve. */
+    duraL:'Cuánto dura',
+    duraP:'De principio a fin, entre <b>30 y 45 días</b>: las semanas que te tomes juntando promesas, el día de juego, los treinta días de cobro, y la remesa del 1 o del 15. Un Fortress empieza y se acaba — no es un programa que se queda abierto.',
     nadieH:'Lo que nadie tiene que hacer',
     nadieP:'Pedirle dinero a nadie. Ni el entrenador a las abuelas de sus jugadores, ni el nene a su tío, ni tú a ninguno de los dos. Nadie cuenta efectivo, nadie manda un sobre a la escuela y nadie lleva una lista de quién debe qué. Es un pago con tarjeta y un recibo, como cualquier cosa que se paga por internet.',
 
@@ -574,6 +587,8 @@ var S={
       ['At thirty days, collections close','The pledge closes and nothing is owed. Nothing more is asked and nobody is called. That is when the real fundraising score is known.'],
       ['The program is paid on the 1st and the 15th','What was collected, in full. Our fee was added to the padrino’s payment; it never comes out of yours.']
     ],
+    duraL:'How long it runs',
+    duraP:'Start to finish, <b>30 to 45 days</b>: however long you take gathering pledges, the game day, the thirty days of collecting, and the remittance on the 1st or the 15th. A Fortress starts and ends — it is not a program that stays open.',
     nadieH:'What nobody has to do',
     nadieP:'Ask anybody for money. Not the coach asking his players’ grandmothers, not the child asking his uncle, not you asking either of them. Nobody counts cash, nobody sends an envelope to school, and nobody keeps a list of who owes what. It is a card payment and a receipt, like anything else paid for online.',
 
@@ -677,6 +692,8 @@ function pintar(){
   $('cobpasos').innerHTML=T('cobpasos').map(function(p){
     return '<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>';
   }).join('');
+  pon('duraL',T('duraL'));
+  $('duraP').innerHTML=T('duraP');
   pon('nadieH',T('nadieH'));  pon('nadieP',T('nadieP'));
 
   pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
