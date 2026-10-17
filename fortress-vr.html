@@ -395,7 +395,8 @@ function pintarTextos(){
   $('lang').textContent=LANG==='es'?'EN':'ES';
   $('tapaP').textContent=T('p');
   $('go').textContent=T('go');
-  $('tapaS').textContent=hayGiro()?T('sCabeza'):(HAY_FINO?T('sRaton'):T('sDedo'));
+  $('tapaS').textContent=(pidenCasco()&&hayGiro())?T('sCabeza')
+                        :(HAY_FINO?T('sRaton'):T('sDedo'));
   $('tapaMod').textContent=T('mod');
   $('goAmistoso').textContent=T('amistoso');
   $('goCabeza').textContent=T('cabeza');
@@ -1284,8 +1285,30 @@ function pedirElGiro(){
 /* Los datos llegan medio segundo después de abrir la página, así que
    el botón no puede decidirse al pintar la portada: se mira otra vez
    hasta que lleguen. */
+/* El botón del casco sólo sale si lo pide la dirección:
+   fortress-vr.html?casco=1
+
+   Hasta ahora salía en cuanto llegaba un giroscopio, y un giroscopio
+   lo tienen TODOS los teléfonos. O sea que a cualquier nene con un
+   teléfono le aparecía "Con un casco", lo tocaba por curiosidad, y se
+   encontraba con la medición de tres pasos — que sin casco puesto no
+   lleva a ningún sitio y es un primer minuto malísimo con el juego.
+   En una computadora no salía nunca, porque no hay giroscopio.
+
+   Los cascos llevan esta dirección puesta de inicio, así que para
+   ellos no cambia nada. Para todos los demás, el modo no existe.
+
+   SI SE PIERDE EL PARÁMETRO al reconfigurar un casco, ese casco se
+   queda sin el modo y parece roto. La dirección entera es:
+       https://cadapunto.com/fortress-vr.html?casco=1  */
+function pidenCasco(){
+  try{ var v=new URLSearchParams(location.search).get('casco');
+       return v==='1' || v==='si' || v==='yes' }catch(e){ return false }
+}
+
 var ojeando=setInterval(function(){
   if(JUEGO){ clearInterval(ojeando); return }   // nunca se ofrece el casco
+  if(!pidenCasco()){ clearInterval(ojeando); return }
   if($('tapa').hidden){ clearInterval(ojeando); return }
   if(hayGiro()){
     $('goCabeza').hidden=false;
