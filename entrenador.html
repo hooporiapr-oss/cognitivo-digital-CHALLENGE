@@ -329,7 +329,7 @@ var S = {
     onceB:'Una vez, al principio',
     once:'Dinos a dónde pagarle a tu programa — con el mismo código. Es la cuenta ATH Móvil Business de la organización.',
     mUno:'Te remitimos el <b>día 1</b> y el <b>día 15</b> de cada mes, por lo cobrado hasta ese día.',
-    mDos:'El programa recibe el <b>100%</b> de lo prometido. Nuestro 20% se le añade al pago del padrino, nunca se saca de lo tuyo.',
+    mDos:'El programa recibe el <b>100% de lo que se cobra</b>. Nuestro 20% se le añade al pago del padrino, nunca se saca de lo tuyo. Lo prometido no es lo recaudado: el cobro cierra, y el cierre da el número.',
     mTres:'Nada por adelantado y nada mensual.',
     mHelp:'Si algo no sale: <b>https://cadapunto.com/ayuda.html</b>',
     mMail:'Dudas: gostardigital@gmail.com',
@@ -475,8 +475,8 @@ function esc(s){
 function paintWhat(){
   var el = document.getElementById('fWhat');
   if (el) el.textContent = (LANG === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.';
+    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.';
 }
 
 /* Lo que está escrito en pantalla, de vuelta al modelo. */
