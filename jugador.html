@@ -147,11 +147,23 @@ h1,h2,h3,h4{color:#EAF2F7}
 
 
 /* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian). La misma en
-   todas las páginas: es la marca, no un enlace del menú. */
-.mark, .mark .wm{color:#EAF2F7 !important;text-decoration:none !important}
+   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
+   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
+   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
+   segundo: apretada, pequeña y sin aire entre las letras.
+
+   El espaciado va en em y no en px para que siga cerrado si alguna
+   página la pinta a otro tamaño. */
+.mark, .mark .wm{
+  color:#EAF2F7 !important;text-decoration:none !important;
+  font-size:23px !important;font-weight:800 !important;
+  letter-spacing:-.035em !important;line-height:1.1}
 .mark em, .wm em{font-style:normal;color:#FF8A2B !important}
 .mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
+/* En un teléfono estrecho, que no empuje al botón de idioma. */
+@media(max-width:380px){
+  .mark, .mark .wm{font-size:20px !important}
+}
 
 </style>
 </head>
