@@ -214,6 +214,26 @@ footer a:hover{text-decoration:underline}
   border-radius:999px;padding:8px 15px}
 @media(max-width:380px){ .golpes li{font-size:.78rem;padding:7px 12px} }
 
+/* La tarjeta del Fortress. Entera es el enlace: en un telefono, un
+   "ver mas" de dos palabras es un blanco diminuto, y aqui el area de
+   toque es toda la caja. */
+.tarjeta{display:block;text-decoration:none;padding:20px 22px;
+  background:var(--cancha);border:1px solid var(--linea);
+  border-left:4px solid var(--viva);border-radius:12px;
+  transition:border-color .16s,background .16s,transform .16s}
+.tarjeta:hover{background:#12293B;border-color:var(--humo);
+  border-left-color:var(--viva);transform:translateY(-2px)}
+.tarjeta:focus-visible{outline:3px solid var(--viva);outline-offset:3px}
+.t-kick{display:block;font-size:.6rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--viva);margin-bottom:8px}
+.t-tit{display:block;font-size:1.3rem;font-weight:900;letter-spacing:-.02em;
+  color:var(--hueso);line-height:1.15}
+.t-txt{display:block;margin:9px 0 0;color:var(--humo);font-size:.97rem;line-height:1.55}
+.t-ir{display:block;margin:13px 0 0;color:var(--viva);font-size:.9rem;font-weight:800}
+.tarjeta:hover .t-ir{color:var(--hueso)}
+@media(prefers-reduced-motion:reduce){ .tarjeta{transition:none}
+  .tarjeta:hover{transform:none} }
+
 /* La pelota del ruedo. Bota, se achata cuando toca el piso, y gira
    despacio. Tres animaciones en tres grupos anidados a proposito: una
    sola transform no puede llevar el salto, el achatamiento y el giro a
@@ -331,6 +351,19 @@ footer a:hover{text-decoration:underline}
       </div>
     </section>
 
+    <!-- El Fortress, como lo que es ahora: el otro camino, para un
+         programa sin temporada o para un segundo evento. Tarjeta y no
+         seccion a proposito — una seccion lo pondria al nivel del
+         modelo principal, y no lo esta. -->
+    <section class="sec">
+      <a class="tarjeta" href="the-fortress.html">
+        <b class="t-kick" id="fKick"></b>
+        <span class="t-tit" id="fTit"></span>
+        <span class="t-txt" id="fTxt"></span>
+        <span class="t-ir" id="fIr"></span>
+      </a>
+    </section>
+
     <section class="sec">
       <h2 id="h2prog"></h2>
       <p id="pProg"></p>
@@ -411,6 +444,11 @@ var S = {
     nadieH:'Lo que nadie tiene que hacer',
     nadieP:'Pedirle dinero a nadie. Ni el entrenador a las abuelas de sus jugadores, ni un nene a su tío, ni tú a ninguno de los dos. Nadie cuenta efectivo, nadie manda un sobre a la escuela y nadie lleva una lista de quién debe qué. Es un pago con tarjeta y un recibo, como cualquier cosa que se paga por internet.',
 
+    fKick:'También',
+    fTit:'El Fortress',
+    fTxt:'No todos los programas tienen temporada. El Fortress es el otro camino: un juego que se juega en el teléfono, cuatro cuartos en un día, y los padrinos prometen por punto igual que en un juego de verdad. Sirve para un equipo fuera de temporada, para un grupo que no juega baloncesto, o para un segundo evento en el año.',
+    fIr:'Ver el Fortress →',
+
     h2prog:'¿Llevas un programa?',
     pProg:'Trabajamos directo contigo: nos pasas tu plantilla, coordinamos los juegos y los interescuadras, y montamos la campaña nosotros. No hay nada que vender, nada que repartir y nadie a quien juntar en un sitio.',
     btnProg:'Habla con nosotros',
@@ -468,6 +506,11 @@ var S = {
     duraP:'One game is collected in <b>30 to 45 days</b>: however long they take gathering pledges, the game, the thirty days of collecting, and the remittance on the 1st or the 15th. A season is several games, each with its own padrinos and its own close, so the money arrives in waves rather than all at once.',
     nadieH:'What nobody has to do',
     nadieP:'Ask anybody for money. Not the coach asking his players’ grandmothers, not a child asking his uncle, not you asking either of them. Nobody counts cash, nobody sends an envelope to school, and nobody keeps a list of who owes what. It is a card payment and a receipt, like anything else paid for online.',
+
+    fKick:'Also',
+    fTit:'The Fortress',
+    fTxt:'Not every program has a season. The Fortress is the other way: a game played on a phone, four quarters in one day, with padrinos pledging by the point exactly as they do on a real game. It suits a team out of season, a group that does not play basketball, or a second event in the year.',
+    fIr:'See the Fortress →',
 
     h2prog:'Do you run a program?',
     pProg:'We work with you directly: you send us your roster, we coordinate the games and scrimmages, and we build the campaign ourselves. Nothing to sell, nothing to deliver, nobody to gather in one place.',
@@ -542,6 +585,9 @@ function pintar(){
   pon('duraL',T('duraL'));
   $('duraP').innerHTML=T('duraP');
   pon('nadieH',T('nadieH'));  pon('nadieP',T('nadieP'));
+
+  pon('fKick',T('fKick'));  pon('fTit',T('fTit'));
+  pon('fTxt',T('fTxt'));    pon('fIr',T('fIr'));
 
   pon('h2prog',T('h2prog'));   pon('pProg',T('pProg'));   pon('btnProg',T('btnProg'));
   pon('h2coach',T('h2coach')); pon('pCoach',T('pCoach')); pon('btnCoach',T('btnCoach'));
