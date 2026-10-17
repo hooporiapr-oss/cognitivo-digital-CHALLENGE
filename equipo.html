@@ -209,6 +209,19 @@ h1,h2,h3,h4{color:#EAF2F7}
   .mark, .mark .wm{font-size:20px !important}
 }
 
+
+/* El otro camino. Tarjeta y no seccion: es la alternativa, no el
+   modelo. Entera es el enlace, que en un telefono es lo que importa. */
+.otro{display:block;text-decoration:none;margin:26px 0 0;padding:18px 20px;
+  background:var(--tint);border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:11px}
+.otro b{display:block;font-size:1.06rem;font-weight:900;letter-spacing:-.015em;
+  color:var(--ink)}
+.otro span{display:block;margin:7px 0 0;color:var(--mute);font-size:.95rem;line-height:1.55}
+.otro i{display:block;margin:11px 0 0;font-style:normal;color:var(--accent);
+  font-size:.89rem;font-weight:800}
+.otro:hover{border-color:var(--mute)}
+.otro:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -266,16 +279,19 @@ function rpc(name, args){
 var S = {
   es:{
     kick:'Inscribe tu equipo',
-    h1:'Tus nenes anotan. Tu programa cobra.',
-    lede:'Un día de juego. Cada nene juega cuatro cuartos desde su propio teléfono, y sus padrinos prometieron unos centavos por cada punto suyo. No hay nada que vender, nada que repartir y nada que juntar.',
+    h1:'Tu equipo anota. Tu programa cobra.',
+    lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo en un juego. Juegan el juego que ya iban a jugar, se pone el marcador, y cada padrino paga por lo que de verdad se anotó. No hay nada que vender, nada que repartir y nadie a quien juntar.',
     s1b:'Te abrimos la campaña.',
     s1:'Nos escribes, te la montamos, y te damos tu código. Nadie se da de alta solo — las abrimos una por una, a mano, y nada sale al aire hasta que tú lo digas.',
-    s2b:'Apuntas a tus nenes.',
-    s2:'Pegas los nombres, o mandas el enlace al grupo del equipo y cada familia se apunta sola. Cada nene recibe su propio enlace para mandarle a los suyos.',
-    s3b:'Ponemos el día de juego.',
-    s3:'Nos dices la fecha y las dos horas. Las promesas cierran cuando abre el juego: prometer sabiendo lo que anotó el nene no es prometer, así que los padrinos se buscan antes.',
-    s4b:'Se juega, y se cobra solo.',
-    s4:'Cada nene juega sus cuatro cuartos desde donde esté. El juego guarda los puntos — tú no escribes ningún marcador. Al cerrar la ventana salen los cobros solos y te llega un correo diciendo cuánto.',
+    s2b:'Nos pasas tu plantilla y tu calendario.',
+    s2:'Los nombres y los juegos que ya tienes agendados. Coordinamos contigo cuáles entran y cuándo — y los interescuadras también, si quieres jugarlos.',
+    s3b:'Los padrinos escogen su juego.',
+    s3:'Mandas el enlace del tablero al grupo del equipo. Cada uno escoge cuánto por punto y en cuál juego, y pone su tope si quiere. Las promesas de un juego cierran cuando el juego empieza: prometer sabiendo el marcador no es prometer.',
+    s4b:'Se juega, se pone el marcador, y se cobra solo.',
+    s4:'El marcador final cierra las promesas de ese juego y saca lo que debe cada padrino. Los enlaces de pago salen solos, con sus recordatorios a los siete y a los veintiún días, y te llega un correo diciendo cuánto. A los treinta días el cobro cierra.',
+    otroH:'¿No tienes temporada?',
+    otroP:'El Fortress es el otro camino: un juego que se juega en el teléfono, cuatro cuartos en un día, y los padrinos prometen por punto igual que en un juego de verdad. Sirve fuera de temporada, para un grupo que no juega baloncesto, o para un segundo evento en el año. Dínoslo al escribirnos y te montamos ése.',
+    otroGo:'Ver el Fortress',
     formH:'Dinos de tu equipo',
     teamL:'Nombre del equipo', teamPh:'Como lo conocen las familias',
     progL:'Nombre del programa', progPh:'Lo que verán las familias',
@@ -302,16 +318,19 @@ var S = {
   },
   en:{
     kick:'Sign up your team',
-    h1:'Your players score. Your program gets paid.',
-    lede:'One game day. Each child plays four quarters from their own phone, and their padrinos pledged a few cents on every point of theirs. Nothing to sell, nothing to deliver, nobody to gather.',
+    h1:'Your team scores. Your program gets paid.',
+    lede:'Padrinos pledge a few cents on every point your team scores in a game. They play the game they were playing anyway, the score goes in, and each padrino pays on what was actually scored. Nothing to sell, nothing to deliver, nobody to gather.',
     s1b:'We open your campaign.',
     s1:'You write to us, we set it up, and we give you your code. Nobody signs themselves up — we open them one at a time, by hand, and nothing goes live until you say so.',
-    s2b:'You add your players.',
-    s2:'Paste the names, or send the link to the team group and each family adds themselves. Every child gets their own link to send to their people.',
-    s3b:'We set the game day.',
-    s3:'You tell us the date and the two hours. Pledging closes when the game opens: pledging while knowing what a child scored is not pledging, so padrinos get found beforehand.',
-    s4b:'They play, and the billing happens on its own.',
-    s4:'Each child plays their four quarters from wherever they are. The game records the points — you never type a score. When the window closes the bills go out by themselves, and you get an email saying how much.',
+    s2b:'You send us your roster and your schedule.',
+    s2:'The names and the games you already have booked. We coordinate with you which ones count and when — and the scrimmages too, if you want to play them.',
+    s3b:'Padrinos pick their game.',
+    s3:'You send the board link to the team group. Each one picks how much a point and which game, and sets a cap if they want one. A game’s pledges close when the game starts: pledging while knowing the score is not pledging.',
+    s4b:'You play, the score goes in, and the billing happens on its own.',
+    s4:'The final score closes that game’s pledges and works out what every padrino owes. Payment links go out by themselves, with reminders at seven and twenty-one days, and you get an email saying how much. At thirty days collections close.',
+    otroH:'No season?',
+    otroP:'The Fortress is the other way: a game played on a phone, four quarters in one day, with padrinos pledging by the point exactly as they do on a real game. It suits the off-season, a group that does not play basketball, or a second event in the year. Say so when you write and we will set that one up.',
+    otroGo:'See the Fortress',
     formH:'Tell us about your team',
     teamL:'Team name', teamPh:'As the families know it',
     progL:'Program name', progPh:'What families will see',
@@ -371,7 +390,11 @@ function draw(){
         '<h1>' + T('doneH') + '</h1>' +
         '<p class="lede">' + T('doneP', { E: esc(SENT) }) + '</p>' +
         '<p class="lede">' + T('doneMore') + '</p>' +
-        '<a class="btn line" href="tablero.html?camp=6d0c4618-6d02-4fa6-a461-48eca14b4f7f" ' +
+        /* El tablero de un juego de verdad, no el del Fortress: es el
+           modelo que acaba de pedir. El id es la campana de
+           demostracion que scoreboard.html ya reconoce como tal y
+           anuncia en la pagina. */
+        '<a class="btn line" href="scoreboard.html?c=8d0d1f66-29a8-4406-90f2-3c3cf9479d55" ' +
           'target="_blank" rel="noopener">' + T('seeBoard') + '</a>' +
       '</div>';
     return;
@@ -388,6 +411,15 @@ function draw(){
       '<div class="s"><b>' + T('s3b') + '</b><span>' + T('s3') + '</span></div>' +
       '<div class="s"><b>' + T('s4b') + '</b><span>' + T('s4') + '</span></div>' +
     '</div>' +
+
+    /* El otro camino, para quien no tiene temporada. Debajo de los
+       pasos y encima del formulario: quien ya se convencio no lo lee,
+       y quien no tiene temporada lo encuentra antes de irse. */
+    '<a class="otro" href="the-fortress.html">' +
+      '<b>' + T('otroH') + '</b>' +
+      '<span>' + T('otroP') + '</span>' +
+      '<i>' + T('otroGo') + ' \u2192</i>' +
+    '</a>' +
 
     '<h2>' + T('formH') + '</h2>' +
     '<label for="tm">' + T('teamL') + '</label>' +
