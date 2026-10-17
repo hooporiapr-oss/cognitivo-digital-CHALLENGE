@@ -109,6 +109,12 @@ p{margin:0 0 14px;max-width:62ch}
   width:8px;height:8px;background:var(--brasa)}
 .claves b{color:var(--hueso);font-weight:800}
 
+/* La línea del jugador, separada de los pasos pero sin ser otra
+   sección: es una salida, no un tema. Centrada, para que el botón
+   no se confunda con el principio de otro párrafo. */
+.soyjug{margin:26px auto 14px;color:var(--humo);max-width:52ch;text-align:center}
+#btnJug{display:block;width:max-content;margin:0 auto}
+
 /* ── Como clavar ──────────────────────────────────────────────── */
 .beats{margin:20px 0 0;display:grid;gap:0}
 .beat{padding:15px 0;border-top:1px solid var(--linea)}
@@ -207,6 +213,11 @@ footer a:hover{text-decoration:underline}
       <p id="pComo"></p>
       <ol class="pasos" id="pasos"></ol>
       <ul class="claves" id="claves"></ul>
+      <!-- El paso 2 dice que el jugador se registra, y hasta ahora no
+           habia por donde. Esto lo dice tal cual es: el enlace lo
+           manda el equipo, y jugador.html explica como pedirlo. -->
+      <p class="soyjug" id="pJug"></p>
+      <a class="pedir" href="jugador.html" id="btnJug"></a>
     </section>
 
     <section class="sec">
@@ -403,6 +414,9 @@ var S={
       '<b>Al programa le llega el 100%.</b> Nuestro cargo se le suma al pago del padrino; nunca sale de lo recaudado.'
     ],
 
+    pJug:'¿Eres jugador y quieres el tuyo? El enlace para apuntarte lo manda tu equipo al grupo. Si no lo tienes, aquí te decimos a quién pedírselo.',
+    btnJug:'Quiero mi enlace',
+
     h2esc:'Una ronda más no es un poco más',
     pEsc:'Los puntos de una cadena son 1+2+3 y así hasta donde llegues. Por eso la ronda doce vale más del doble que la ronda ocho, aunque por dentro sólo sean cuatro bolas de diferencia.',
     ronda:'Ronda',
@@ -480,6 +494,9 @@ var S={
       '<b>Nothing is paid up front.</b> A padrino pays afterwards, on the points actually scored.',
       '<b>The program gets 100%.</b> Our fee is added to the padrino\u2019s payment; it never comes out of what was raised.'
     ],
+
+    pJug:'Are you a player and want yours? The sign-up link comes from your team, in the team group. If you do not have it, this is who to ask.',
+    btnJug:'I want my link',
 
     h2esc:'One more round is not a little more',
     pEsc:'A chain is worth 1+2+3 and so on up to where you got. That is why round twelve is worth more than twice round eight, even though it is only four more balls.',
@@ -574,6 +591,7 @@ function pintar(){
   $('claves').innerHTML=T('claves').map(function(c){
     return '<li>'+c+'</li>';
   }).join('');
+  pon('pJug',T('pJug'));  pon('btnJug',T('btnJug'));
 
   pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
   pon('h2clav',T('h2clav'));
