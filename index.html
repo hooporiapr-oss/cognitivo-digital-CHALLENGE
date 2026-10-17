@@ -109,6 +109,14 @@ p{margin:0 0 14px;max-width:62ch}
   width:8px;height:8px;background:var(--brasa)}
 .claves b{color:var(--hueso);font-weight:800}
 
+/* Lo que nadie tiene que hacer. Va en caja y no en lista porque no es
+   un paso mas: es el resumen de por que lo anterior importa. */
+.nadie{margin:26px 0 0;padding:16px 18px;background:rgba(255,138,43,.08);
+  border:1px solid rgba(255,138,43,.3);border-radius:10px}
+.nadie b{display:block;font-size:.6rem;font-weight:900;letter-spacing:.13em;
+  color:var(--brasa);text-transform:uppercase;margin-bottom:7px}
+.nadie p{margin:0;color:var(--hueso);font-size:1rem;line-height:1.5}
+
 /* El remate del Fortress Fundraiser. Mas grande que el texto de
    alrededor porque no explica nada: es la frase que se queda. La
    marca va en sus propios colores, los mismos de la cabecera. */
@@ -235,6 +243,21 @@ footer a:hover{text-decoration:underline}
            manda el equipo, y jugador.html explica como pedirlo. -->
       <p class="soyjug" id="pJug"></p>
       <a class="pedir" href="jugador.html" id="btnJug"></a>
+    </section>
+
+    <!-- El cobro. Va aqui, justo despues del paso 5, porque es lo que
+         el paso 5 deja a medias: "se cobra solo" es una frase hasta
+         que se cuenta COMO. Y es la parte que un programa no puede
+         hacer por su cuenta — juntar promesas es facil, cobrarlas es
+         el trabajo. -->
+    <section class="sec">
+      <h2 id="h2cob"></h2>
+      <p id="pCob"></p>
+      <ol class="pasos" id="cobpasos"></ol>
+      <div class="nadie" id="nadie">
+        <b id="nadieH"></b>
+        <p id="nadieP"></p>
+      </div>
     </section>
 
     <section class="sec">
@@ -424,16 +447,34 @@ var S={
       ['Cada jugador se registra y recibe su enlace de promesas','Se apunta con el enlace que manda su equipo, y le toca el suyo propio para ese día de juego.'],
       ['Cada jugador manda su enlace a su familia','A su familia, a sus vecinos, al tío de Orlando. Cada uno promete unos centavos por cada punto que anote ESE jugador, y pone su tope si quiere. Cada uno que promete es un Fortress Padrino.'],
       ['Se juega','Cuatro cuartos de cinco minutos, cada quien desde su propio teléfono. Cada cuarto vale la mejor cadena que hubo dentro, y los cuatro se suman.'],
-      ['Se cobra solo','Al cerrar la ventana le sale a cada padrino su enlace de pago, sin que nadie apriete nada. El programa recibe completo lo que se prometió.']
+      ['Se cobra solo','Al cerrar la ventana le sale a cada padrino su enlace de pago, sin que nadie apriete nada. Nadie persigue a nadie y nadie junta dinero a mano.']
     ],
     claves:[
       '<b>Las promesas cierran cuando abre el juego.</b> Prometer sabiendo lo que anotó el nene no es prometer.',
       '<b>No se paga nada por adelantado.</b> El padrino paga después, por los puntos que de verdad se anotaron.',
-      '<b>Al programa le llega el 100%.</b> Nuestro cargo se le suma al pago del padrino; nunca sale de lo recaudado.'
+      '<b>Al programa le llega el 100% de lo que se cobra.</b> Nuestro cargo se le suma al pago del padrino; nunca sale de lo recaudado.',
+      /* Lo que no se puede dejar insinuado en ningun sitio: que el
+         total prometido sea el total recibido. Se espera cobrar casi
+         todo, pero el cobro cierra, y el numero del cierre es el
+         numero. Decirlo aqui, al lado de la promesa, en vez de que un
+         programa lo descubra el dia de la remesa. */
+      '<b>Lo prometido no es lo recaudado.</b> Una promesa es una promesa. El cobro tiene su cierre, y lo que entró para ese cierre es el marcador de verdad de la recaudación.'
     ],
 
     pJug:'¿Eres jugador y quieres el tuyo? El enlace para apuntarte lo manda tu equipo al grupo. Si no lo tienes, aquí te decimos a quién pedírselo.',
     btnJug:'Quiero mi enlace',
+
+    h2cob:'Prometer es fácil. Cobrar es el trabajo.',
+    pCob:'Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que deben doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Nadie quiere ese trabajo, y el que lo intenta a mano lo deja a medias. Por eso el cobro no se lo dejamos a nadie.',
+    cobpasos:[
+      ['Al cerrar la ventana sale el cobro, solo','A cada padrino le llega su enlace de pago por correo: el nombre del nene, lo que anotó, la cuenta hecha y el tope aplicado si mordió. Nadie escribe un número y nadie manda un correo a mano.'],
+      ['A los siete días, un recordatorio','Automático, y sólo al que todavía no ha pagado. Con el enlace otra vez, por si se perdió entre los correos.'],
+      ['A los veintiún días, el último','Y dice que es el último, porque lo es. Después de ése no se vuelve a escribir.'],
+      ['A los treinta días, el cobro cierra','La promesa se cierra y no se debe nada. No se pide más y no se llama a nadie. Ahí se sabe el marcador de verdad de la recaudación.'],
+      ['Al programa se le remite el día 1 y el día 15','Lo cobrado, completo. Nuestro cargo se le sumó al pago del padrino; nunca sale de lo tuyo.']
+    ],
+    nadieH:'Lo que nadie tiene que hacer',
+    nadieP:'Pedirle dinero a nadie. Ni el entrenador a las abuelas de sus jugadores, ni el nene a su tío, ni tú a ninguno de los dos. Nadie cuenta efectivo, nadie manda un sobre a la escuela y nadie lleva una lista de quién debe qué. Es un pago con tarjeta y un recibo, como cualquier cosa que se paga por internet.',
 
     h2esc:'Una ronda más no es un poco más',
     pEsc:'Los puntos de una cadena son 1+2+3 y así hasta donde llegues. Por eso la ronda doce vale más del doble que la ronda ocho, aunque por dentro sólo sean cuatro bolas de diferencia.',
@@ -478,7 +519,7 @@ var S={
     btn:'Jugar el Fortress',
     gratis:'Gratis, sin cuenta, en el teléfono o la computadora.',
 
-    fWhat:'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe lo suyo completo; nosotros cobramos por el uso de la herramienta.',
+    fWhat:'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.',
     rutas:[
       ['Jugar',[['fortress-vr.html','El Fortress'],['jugador.html','Mi enlace de padrinos']]],
       ['Tu programa',[['mi-equipo.html','Mi equipo'],['plantilla.html','La plantilla'],
@@ -506,16 +547,29 @@ var S={
       ['Each player registers and receives their game day pledge link','They sign up with the link their team sends, and get their own link for that game day.'],
       ['Each player sends their link to family','To family, to neighbours, to the uncle in Orlando. Each one pledges a few cents on every point THAT player scores, and sets a cap if they want one. Each pledger is a Fortress Padrino.'],
       ['They play','Four five-minute quarters, each from their own phone. A quarter is worth the best chain inside it, and the four add up.'],
-      ['The billing happens on its own','When the window closes each padrino gets their payment link, without anyone pressing anything. The program receives everything that was pledged.']
+      ['The billing happens on its own','When the window closes each padrino gets their payment link, without anyone pressing anything. Nobody has to chase anybody and nobody handles cash.']
     ],
     claves:[
       '<b>Pledging closes when the game opens.</b> Pledging while knowing what a child scored is not pledging.',
       '<b>Nothing is paid up front.</b> A padrino pays afterwards, on the points actually scored.',
-      '<b>The program gets 100%.</b> Our fee is added to the padrino\u2019s payment; it never comes out of what was raised.'
+      '<b>The program gets 100% of what is collected.</b> Our fee is added to the padrino\u2019s payment; it never comes out of what was raised.',
+      '<b>Pledged is not collected.</b> A pledge is a promise. Collections have a close, and what came in by that close is the real fundraising score.'
     ],
 
     pJug:'Are you a player and want yours? The sign-up link comes from your team, in the team group. If you do not have it, this is who to ask.',
     btnJug:'I want my link',
+
+    h2cob:'Pledging is easy. Collecting is the work.',
+    pCob:'Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people owing two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody wants that job, and whoever tries it by hand leaves it half done. That is why we do not leave the collecting to anyone.',
+    cobpasos:[
+      ['When the window closes, the billing goes out on its own','Each padrino gets their payment link by email: the child’s name, what they scored, the arithmetic done, and the cap applied if it bit. Nobody types a number and nobody sends an email by hand.'],
+      ['At seven days, one reminder','Automatic, and only to whoever has not paid. With the link again, in case it got buried.'],
+      ['At twenty-one days, the last one','And it says it is the last one, because it is. After that nobody writes again.'],
+      ['At thirty days, collections close','The pledge closes and nothing is owed. Nothing more is asked and nobody is called. That is when the real fundraising score is known.'],
+      ['The program is paid on the 1st and the 15th','What was collected, in full. Our fee was added to the padrino’s payment; it never comes out of yours.']
+    ],
+    nadieH:'What nobody has to do',
+    nadieP:'Ask anybody for money. Not the coach asking his players’ grandmothers, not the child asking his uncle, not you asking either of them. Nobody counts cash, nobody sends an envelope to school, and nobody keeps a list of who owes what. It is a card payment and a receipt, like anything else paid for online.',
 
     h2esc:'One more round is not a little more',
     pEsc:'A chain is worth 1+2+3 and so on up to where you got. That is why round twelve is worth more than twice round eight, even though it is only four more balls.',
@@ -560,7 +614,7 @@ var S={
     btn:'Play the Fortress',
     gratis:'Free, no account, on a phone or a computer.',
 
-    fWhat:'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of it; we charge for use of the tool.',
+    fWhat:'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.',
     rutas:[
       ['Play',[['fortress-vr.html','The Fortress'],['jugador.html','My padrino link']]],
       ['Your program',[['mi-equipo.html','My team'],['plantilla.html','The roster'],
@@ -612,6 +666,12 @@ function pintar(){
   }).join('');
   $('remate').innerHTML='<span>'+T('remate')+'</span>';
   pon('pJug',T('pJug'));  pon('btnJug',T('btnJug'));
+
+  pon('h2cob',T('h2cob'));  pon('pCob',T('pCob'));
+  $('cobpasos').innerHTML=T('cobpasos').map(function(p){
+    return '<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>';
+  }).join('');
+  pon('nadieH',T('nadieH'));  pon('nadieP',T('nadieP'));
 
   pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
   pon('h2clav',T('h2clav'));
