@@ -29,8 +29,8 @@
    · No esconde el cargo. El 20% se suma encima y se dice con el
      número puesto, no en letra chica.
    ══════════════════════════════════════════════════════════════════ */
-:root{--ink:#050A12;--paper:#EAF4FB;--mute:#93AAC2;--line:#20395C;--panel:#0A1830;
-      --gold:#FF8A2B;--green:#6FD83C;--warn:#FFC247}
+:root{--ink:#07141E;--paper:#EAF2F7;--mute:#7A96A9;--line:#1B3A4F;--panel:#0E2232;
+      --gold:#FF8A2B;--green:#4FD3F0;--warn:#FFC247}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--ink);color:var(--paper);
   font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.6;
@@ -40,8 +40,8 @@ header{border-bottom:1px solid var(--line);margin:0 0 26px}
 .bar{display:flex;align-items:center;justify-content:space-between;
   padding:calc(13px + env(safe-area-inset-top,0px)) 0 13px}
 .mark{font-weight:900;color:#fff;text-decoration:none;font-size:1rem}
-.mark em{font-style:normal;color:var(--gold)}
-.mark i{font-style:normal;color:var(--green)}
+.mark em{font-style:normal;color:#4FD3F0}
+.mark i{font-style:normal;color:#7A96A9}
 #lang{border:1px solid var(--line);background:none;color:var(--mute);border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 
@@ -111,6 +111,26 @@ button.volver:hover{color:var(--paper);border-color:var(--mute)}
   color:#5E7488;font-size:.78rem}
 .pie a{color:#5E7488}
 [hidden]{display:none !important}
+
+/* ══ LA MARCA ══════════════════════════════════════════════════
+   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
+   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
+   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
+   segundo: apretada, pequeña y sin aire entre las letras.
+
+   El espaciado va en em y no en px para que siga cerrado si alguna
+   página la pinta a otro tamaño. */
+.mark, .mark .wm{
+  color:#EAF2F7 !important;text-decoration:none !important;
+  font-size:23px !important;font-weight:800 !important;
+  letter-spacing:-.035em !important;line-height:1.1}
+.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
+.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
+/* En un teléfono estrecho, que no empuje al botón de idioma. */
+@media(max-width:380px){
+  .mark, .mark .wm{font-size:20px !important}
+}
+
 </style>
 </head>
 <body>
