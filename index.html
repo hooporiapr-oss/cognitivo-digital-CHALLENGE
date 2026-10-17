@@ -88,6 +88,27 @@ p{margin:0 0 14px;max-width:62ch}
 .peldano.cima .pts{color:var(--brasa)}
 .pie-esc{color:var(--humo);font-size:.95rem;margin:16px 0 0;max-width:46ch}
 
+/* ── Cómo funciona ────────────────────────────────────────────────
+   Numerados porque de verdad son una secuencia: cada paso depende
+   del anterior y van en ese orden. */
+.pasos{list-style:none;counter-reset:paso;margin:22px 0 0;padding:0;display:grid;gap:0}
+.pasos li{counter-increment:paso;position:relative;padding:16px 0 16px 46px;
+  border-top:1px solid var(--linea)}
+.pasos li:last-child{border-bottom:1px solid var(--linea)}
+.pasos li::before{content:counter(paso);position:absolute;left:0;top:17px;
+  width:26px;height:26px;border:1.5px solid var(--viva);border-radius:50%;
+  color:var(--viva);font-size:.78rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center}
+.pasos b{display:block;font-size:1.06rem;font-weight:800;margin-bottom:3px}
+.pasos span{color:var(--humo);font-size:.97rem}
+
+/* Las tres cosas que la gente pregunta antes de prometer. */
+.claves{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:9px}
+.claves li{padding-left:20px;position:relative;color:var(--humo);font-size:.96rem}
+.claves li::before{content:"";position:absolute;left:0;top:.62em;
+  width:8px;height:8px;background:var(--brasa)}
+.claves b{color:var(--hueso);font-weight:800}
+
 /* ── Como clavar ──────────────────────────────────────────────── */
 .beats{margin:20px 0 0;display:grid;gap:0}
 .beat{padding:15px 0;border-top:1px solid var(--linea)}
@@ -179,6 +200,13 @@ footer a:hover{text-decoration:underline}
       <h2 id="h2que"></h2>
       <p id="pQue1"></p>
       <p id="pQue2"></p>
+    </section>
+
+    <section class="sec">
+      <h2 id="h2como"></h2>
+      <p id="pComo"></p>
+      <ol class="pasos" id="pasos"></ol>
+      <ul class="claves" id="claves"></ul>
     </section>
 
     <section class="sec">
@@ -360,6 +388,21 @@ var S={
     pQue1:'Cinco bolas delante de ti. Una cadena se enciende en orden y la repites tocándolas. Si la das completa, la cadena crece en una y vuelve a empezar.',
     pQue2:'Eso es todo. Dos minutos para entenderlo, y no se acaba de aprender nunca.',
 
+    h2como:'El Fortress Fundraiser',
+    pComo:'El Fortress no es un juego que acompaña a una recaudación. El Fortress <b>es</b> la recaudación: lo que anota un nene es lo que entra.',
+    pasos:[
+      ['Se agenda el Fortress Game Day','Una ventana de dos horas, un día. No hay nada que vender, nada que repartir y nadie a quien juntar en un sitio.'],
+      ['Cada jugador se registra y recibe su enlace de promesas','Se apunta con el enlace que manda su equipo, y le toca el suyo propio para ese día de juego.'],
+      ['Cada jugador manda su enlace a su familia','A su familia, a sus vecinos, al tío de Orlando. Cada uno promete unos centavos por cada punto que anote ESE jugador, y pone su tope si quiere. Cada uno que promete es un Fortress Padrino.'],
+      ['Se juega','Cuatro cuartos de cinco minutos, cada quien desde su propio teléfono. Cada cuarto vale la mejor cadena que hubo dentro, y los cuatro se suman.'],
+      ['Se cobra solo','Al cerrar la ventana le sale a cada padrino su enlace de pago, sin que nadie apriete nada. El programa recibe completo lo que se prometió.']
+    ],
+    claves:[
+      '<b>Las promesas cierran cuando abre el juego.</b> Prometer sabiendo lo que anotó el nene no es prometer.',
+      '<b>No se paga nada por adelantado.</b> El padrino paga después, por los puntos que de verdad se anotaron.',
+      '<b>Al programa le llega el 100%.</b> Nuestro cargo se le suma al pago del padrino; nunca sale de lo recaudado.'
+    ],
+
     h2esc:'Una ronda más no es un poco más',
     pEsc:'Los puntos de una cadena son 1+2+3 y así hasta donde llegues. Por eso la ronda doce vale más del doble que la ronda ocho, aunque por dentro sólo sean cuatro bolas de diferencia.',
     ronda:'Ronda',
@@ -373,9 +416,9 @@ var S={
       ['Lo ve todo el mundo','Tu marcador queda puesto donde tu familia lo abre. Clavar delante de nadie no es clavar.']
     ],
 
-    h2dia:'Y el día de juego',
-    pDia1:'Cuando tu programa abre un día de juego, juegas cuatro cuartos de cinco minutos. Cada cuarto vale tu mejor cadena de ese cuarto, y los cuatro se suman.',
-    pDia2:'Lo que anotes ese día es lo que recauda tu programa: tus padrinos prometieron unos centavos por cada punto tuyo, antes de que empezara. Por eso entrenar no es prepararse para el juego. Entrenar es el juego.',
+    h2dia:'Y por eso entrenas',
+    pDia1:'Tus padrinos prometieron antes de que empezaras, sin saber cuánto ibas a anotar. Así que cada ronda que aguantes de más no es sólo un número más alto: es dinero que entra que no habría entrado.',
+    pDia2:'Entrenar no es prepararse para el juego. Entrenar es el juego.',
 
     h2prog:'¿Llevas un programa?',
     pProg:'Un día de juego, tus nenes jugando desde su propio teléfono, y sus familias prometiendo unos centavos por punto. No hay nada que vender, nada que repartir y nadie a quien juntar. Las campañas las abrimos nosotros, una por una.',
@@ -423,6 +466,21 @@ var S={
     pQue1:'Five balls in front of you. A chain lights up in order and you repeat it by touching them. Get it whole and the chain grows by one and starts again.',
     pQue2:'That is all of it. Two minutes to understand, and you never finish learning it.',
 
+    h2como:'The Fortress Fundraiser',
+    pComo:'The Fortress is not a game attached to a fundraiser. The Fortress <b>is</b> the fundraiser: what a child scores is what comes in.',
+    pasos:[
+      ['The Fortress Game Day is scheduled','A two-hour window, one day. Nothing to sell, nothing to deliver, nobody to gather in one place.'],
+      ['Each player registers and receives their game day pledge link','They sign up with the link their team sends, and get their own link for that game day.'],
+      ['Each player sends their link to family','To family, to neighbours, to the uncle in Orlando. Each one pledges a few cents on every point THAT player scores, and sets a cap if they want one. Each pledger is a Fortress Padrino.'],
+      ['They play','Four five-minute quarters, each from their own phone. A quarter is worth the best chain inside it, and the four add up.'],
+      ['The billing happens on its own','When the window closes each padrino gets their payment link, without anyone pressing anything. The program receives everything that was pledged.']
+    ],
+    claves:[
+      '<b>Pledging closes when the game opens.</b> Pledging while knowing what a child scored is not pledging.',
+      '<b>Nothing is paid up front.</b> A padrino pays afterwards, on the points actually scored.',
+      '<b>The program gets 100%.</b> Our fee is added to the padrino\u2019s payment; it never comes out of what was raised.'
+    ],
+
     h2esc:'One more round is not a little more',
     pEsc:'A chain is worth 1+2+3 and so on up to where you got. That is why round twelve is worth more than twice round eight, even though it is only four more balls.',
     ronda:'Round',
@@ -436,9 +494,9 @@ var S={
       ['Everyone sees it','Your score sits where your family opens it. Dunking in front of nobody is not dunking.']
     ],
 
-    h2dia:'And the game day',
-    pDia1:'When your program opens a game day you play four five-minute quarters. Each quarter is worth your best chain inside it, and the four add up.',
-    pDia2:'What you score that day is what your program raises: your padrinos pledged a few cents on every point of yours, before it started. Which is why training is not getting ready for the game. Training is the game.',
+    h2dia:'And that is why you train',
+    pDia1:'Your padrinos pledged before you started, with no idea what you were going to score. So every extra round you hold is not just a higher number: it is money coming in that would not have come in.',
+    pDia2:'Training is not getting ready for the game. Training is the game.',
 
     h2prog:'Do you run a program?',
     pProg:'One game day, your players playing from their own phones, and their families pledging a few cents a point. Nothing to sell, nothing to deliver, nobody to gather. We open campaigns ourselves, one at a time.',
@@ -508,6 +566,15 @@ function pintar(){
 
   pon('h1',T('h1'));        pon('bajo',T('bajo'));
   pon('h2que',T('h2que'));  pon('pQue1',T('pQue1')); pon('pQue2',T('pQue2'));
+  $('h2como').textContent=T('h2como');
+  $('pComo').innerHTML=T('pComo');
+  $('pasos').innerHTML=T('pasos').map(function(p){
+    return '<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>';
+  }).join('');
+  $('claves').innerHTML=T('claves').map(function(c){
+    return '<li>'+c+'</li>';
+  }).join('');
+
   pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
   pon('h2clav',T('h2clav'));
   pon('h2dia',T('h2dia'));  pon('pDia1',T('pDia1')); pon('pDia2',T('pDia2'));
