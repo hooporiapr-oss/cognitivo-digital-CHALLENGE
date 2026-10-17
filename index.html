@@ -177,8 +177,12 @@ footer a:hover{text-decoration:underline}
 .legal a{color:var(--humo)}
 .legal span{padding:0 7px;opacity:.5}
 
+/* Si el sistema pide menos movimiento, la pelota se queda en el piso.
+   Quieta, no escondida: sigue siendo una pelota de baloncesto. */
 @media (prefers-reduced-motion:reduce){
-  .bola{transition:none !important}
+  .salta,.achata,.rueda,.onda{animation:none !important}
+  .salta{transform:translateY(0)}
+  .onda{opacity:0}
 }
 
 /* ══ LA MARCA ══════════════════════════════════════════════════
@@ -210,9 +214,47 @@ footer a:hover{text-decoration:underline}
   border-radius:999px;padding:8px 15px}
 @media(max-width:380px){ .golpes li{font-size:.78rem;padding:7px 12px} }
 
-/* La bola del ruedo, quieta. El juego es baloncesto de verdad: no hay
-   cadena que encender ni nada que animar. */
-.bola{fill:var(--brasa);opacity:.92}
+/* La pelota del ruedo. Bota, se achata cuando toca el piso, y gira
+   despacio. Tres animaciones en tres grupos anidados a proposito: una
+   sola transform no puede llevar el salto, el achatamiento y el giro a
+   la vez sin que se peleen. */
+.bola{fill:var(--brasa)}
+.costura{fill:none;stroke:#7A2E00;stroke-width:3.2;stroke-linecap:round;opacity:.55}
+
+.salta{animation:salta 1.25s infinite}
+@keyframes salta{
+  /* Cayendo acelera y subiendo frena, que es lo que hace una pelota.
+     Con un easing simetrico parece colgada de un hilo. */
+  0%   {transform:translateY(-172px); animation-timing-function:cubic-bezier(.38,0,.9,.46)}
+  44%  {transform:translateY(0)}
+  54%  {transform:translateY(0);      animation-timing-function:cubic-bezier(.1,.62,.55,1)}
+  100% {transform:translateY(-172px)}
+}
+
+/* El achatamiento, desde abajo: una pelota se deforma contra el piso,
+   no alrededor de su centro. */
+.achata{transform-box:fill-box;transform-origin:center bottom;
+  animation:achata 1.25s infinite}
+@keyframes achata{
+  0%,40%   {transform:scale(1,1)}
+  47%      {transform:scale(1.15,.85)}
+  56%,100% {transform:scale(1,1)}
+}
+
+/* El giro, lento. Rapido, las costuras se vuelven un borron. */
+.rueda{transform-box:fill-box;transform-origin:center;
+  animation:rueda 7s linear infinite}
+@keyframes rueda{ to{transform:rotate(360deg)} }
+
+/* La onda, sincronizada con el golpe. */
+.onda{fill:none;stroke:var(--viva);stroke-width:2;opacity:0;
+  transform-box:fill-box;transform-origin:center;
+  animation:onda 1.25s infinite}
+@keyframes onda{
+  0%,40%   {opacity:0;   transform:scale(.35)}
+  50%      {opacity:.45; transform:scale(1)}
+  72%,100% {opacity:0;   transform:scale(1.6)}
+}
 </style>
 </head>
 <body>
@@ -233,7 +275,30 @@ footer a:hover{text-decoration:underline}
       <title id="pistaT">Una cancha de baloncesto vista de lado, con el círculo central</title>
       <ellipse class="piso" cx="400" cy="430" rx="330" ry="54"></ellipse>
       <ellipse class="piso" cx="400" cy="430" rx="190" ry="31" opacity=".6"></ellipse>
-      <circle class="bola" cx="400" cy="300" r="52"></circle>
+
+      <!-- La onda del bote, debajo de la pelota. Va antes para que la
+           pelota le caiga encima y no al revés. -->
+      <ellipse class="onda" cx="400" cy="430" rx="62" ry="11"></ellipse>
+
+      <!-- Una pelota de baloncesto, no un punto naranja: las cuatro
+           costuras de siempre. Todo cuelga de un translate al centro,
+           asi que los giros y el achatamiento pasan alrededor de ella
+           y no de la esquina del lienzo. -->
+      <g transform="translate(400,378)">
+        <g class="salta">
+          <g class="achata">
+            <g class="rueda">
+              <circle class="bola" r="52"></circle>
+              <g class="costura">
+                <path d="M-52 0 H 52"></path>
+                <path d="M0 -52 V 52"></path>
+                <path d="M0 -52 Q -62 0 0 52"></path>
+                <path d="M0 -52 Q  62 0 0 52"></path>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
     </svg>
     <h1 class="titular" id="h1"></h1>
     <p class="bajo" id="bajo"></p>
