@@ -240,7 +240,7 @@ var S={
   otraVez:'Ya tenías una promesa para {N} — la actualizamos con lo que acabas de poner.',
   noVa:'Este enlace no abre una promesa.',
   total:'Tot',
-  pie:'Cada Punto es una plataforma de Gostar Digital LLC. El programa recibe lo suyo completo; el cargo de plataforma se suma encima de tu pago.'
+  pie:'Cada Punto es una plataforma de Gostar Digital LLC. De tu pago, el programa recibe tu promesa completa; nuestro cargo se suma encima.'
  },
  en:{
   kick:'Invited you to be their padrino',
@@ -272,7 +272,7 @@ var S={
   otraVez:'You already had a pledge for {N} — we updated it with what you just entered.',
   noVa:'This link does not open a pledge.',
   total:'Tot',
-  pie:'Cada Punto is a platform from Gostar Digital LLC. The program receives all of its share; the platform fee is added on top of your payment.'
+  pie:'Cada Punto is a platform from Gostar Digital LLC. Of your payment, the program receives your full pledge; our fee is added on top.'
  }
 };
 var LANG='es';
@@ -286,8 +286,9 @@ function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){
 var par=new URLSearchParams(location.search);
 var RETO=par.get('c'), JUGADOR=par.get('p');
 
-/* El cargo de plataforma se suma ENCIMA, no se descuenta. El programa
-   recibe completo lo que se prometió. */
+/* El cargo de plataforma se suma ENCIMA, no se descuenta: el programa
+   recibe completo lo que se COBRA. Ojo, que no es lo mismo que lo
+   prometido — el cobro tiene su cierre y no toda promesa entra. */
 var CARGO=0.20;
 /* Para la cuenta de ejemplo. No es una promesa de cuánto va a anotar:
    es el único número honesto que tenemos para que el padrino sepa en
