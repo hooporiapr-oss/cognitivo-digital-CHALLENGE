@@ -109,6 +109,20 @@ p{margin:0 0 14px;max-width:62ch}
   width:8px;height:8px;background:var(--brasa)}
 .claves b{color:var(--hueso);font-weight:800}
 
+/* El remate del Fortress Fundraiser. Mas grande que el texto de
+   alrededor porque no explica nada: es la frase que se queda. La
+   marca va en sus propios colores, los mismos de la cabecera. */
+.remate{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--linea);
+  font-size:1.18rem;font-weight:800;letter-spacing:-.015em;line-height:1.35;
+  color:var(--hueso);text-align:center}
+/* La raya cruza entera — cierra la seccion — pero la frase va corta y
+   al medio. Centrada de borde a borde se leeria como un parrafo mal
+   puesto; asi parte por donde tiene sentido. */
+.remate span{display:block;max-width:24ch;margin:0 auto}
+.remate em{font-style:normal;color:var(--brasa)}
+.remate i{font-style:normal;color:var(--viva)}
+@media(max-width:380px){ .remate{font-size:1.06rem} }
+
 /* La línea del jugador, separada de los pasos pero sin ser otra
    sección: es una salida, no un tema. Centrada, para que el botón
    no se confunda con el principio de otro párrafo. */
@@ -213,6 +227,9 @@ footer a:hover{text-decoration:underline}
       <p id="pComo"></p>
       <ol class="pasos" id="pasos"></ol>
       <ul class="claves" id="claves"></ul>
+      <!-- El remate. Toda la seccion explica el mecanismo; esta linea
+           dice para que sirve, y el nombre de la marca la cierra. -->
+      <p class="remate" id="remate"></p>
       <!-- El paso 2 dice que el jugador se registra, y hasta ahora no
            habia por donde. Esto lo dice tal cual es: el enlace lo
            manda el equipo, y jugador.html explica como pedirlo. -->
@@ -400,7 +417,8 @@ var S={
     pQue2:'Eso es todo. Dos minutos para entenderlo, y no se acaba de aprender nunca.',
 
     h2como:'El Fortress Fundraiser',
-    pComo:'El Fortress no es un juego que acompaña a una recaudación. El Fortress <b>es</b> la recaudación: lo que anota un nene es lo que entra.',
+    pComo:'El Fortress no es un juego que acompaña a una recaudación. El Fortress <b>es</b> la recaudación.',
+    remate:'Lo que anota un nene es lo que entra. Cada <em>Punto</em> <i>Cuenta</i>.',
     pasos:[
       ['Se agenda el Fortress Game Day','Una ventana de dos horas, un día. No hay nada que vender, nada que repartir y nadie a quien juntar en un sitio.'],
       ['Cada jugador se registra y recibe su enlace de promesas','Se apunta con el enlace que manda su equipo, y le toca el suyo propio para ese día de juego.'],
@@ -481,7 +499,8 @@ var S={
     pQue2:'That is all of it. Two minutes to understand, and you never finish learning it.',
 
     h2como:'The Fortress Fundraiser',
-    pComo:'The Fortress is not a game attached to a fundraiser. The Fortress <b>is</b> the fundraiser: what a child scores is what comes in.',
+    pComo:'The Fortress is not a game attached to a fundraiser. The Fortress <b>is</b> the fundraiser.',
+    remate:'What a child scores is what comes in. Cada <em>Punto</em> <i>Cuenta</i>.',
     pasos:[
       ['The Fortress Game Day is scheduled','A two-hour window, one day. Nothing to sell, nothing to deliver, nobody to gather in one place.'],
       ['Each player registers and receives their game day pledge link','They sign up with the link their team sends, and get their own link for that game day.'],
@@ -591,6 +610,7 @@ function pintar(){
   $('claves').innerHTML=T('claves').map(function(c){
     return '<li>'+c+'</li>';
   }).join('');
+  $('remate').innerHTML='<span>'+T('remate')+'</span>';
   pon('pJug',T('pJug'));  pon('btnJug',T('btnJug'));
 
   pon('h2esc',T('h2esc'));  pon('pEsc',T('pEsc'));   pon('pieEsc',T('pieEsc'));
