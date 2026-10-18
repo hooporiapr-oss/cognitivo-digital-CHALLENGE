@@ -9,200 +9,105 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* La casa del entrenador. Una sola dirección que se le da una vez y no
-   cambia nunca. Entra con su código, y de ahí en adelante este teléfono
-   ya lo conoce.
-
-   Lo que manda en esta página es una sola cosa: los juegos que ya se
-   jugaron y no tienen marcador. Mientras no se ponga el marcador no se
-   le cobra a nadie y el programa no ve un peso — es el único descuido
-   que de verdad cuesta dinero, así que va primero, en grande, y con el
-   botón al lado. */
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
-      --ball:#FF7A18;--good:#0B7A5A;--bad:#B4231C}
-*{box-sizing:border-box}
-html{background:#07141E}
-body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  color:var(--ink);background:#07141E;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{width:min(720px,93vw);margin:0 auto}
-
-header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#FF8A2B}
-.mark i{font-style:normal;color:#6FD83C}
-.hright{display:flex;align-items:center;gap:10px}
-.who{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#C8D6E2}
-.out,.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-
-main{padding:22px 0 60px}
-h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 4px}
-.lede{color:var(--mute);font-size:.9rem;margin:0 0 20px}
-h2{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mute);margin:24px 0 8px}
-label{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--mute);margin-bottom:4px}
-input[type=text]{width:100%;font:inherit;font-weight:700;padding:9px 10px;
-  border:2px solid var(--line);border-radius:4px;background:#07141E;color:var(--ink)}
-.btn{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--ink);
-  color:#fff;font:inherit;font-weight:900;padding:12px 16px;cursor:pointer;margin-top:10px;
-  text-align:center;text-decoration:none}
-.btn.go{background:var(--accent)}
-.msg{font-size:.85rem;font-weight:700;margin-top:8px;min-height:1px}
-.msg.bad{color:var(--bad)}
-.gate{border:2px solid var(--ink);border-radius:4px;padding:14px;max-width:420px}
-.gate.hide,.hide{display:none}
-.help{color:var(--mute);font-size:.85rem;margin:6px 0 0}
-/* La misma certificación que pedía el marcador. El entrenador la firma
-   una vez aquí y no se la vuelven a pedir — pero se le pide. */
-.cert{display:flex;align-items:flex-start;gap:8px;margin-top:12px;
-  font-size:.82rem;font-weight:700;letter-spacing:0;text-transform:none;color:var(--ink)}
-.cert input{width:19px;height:19px;flex:0 0 auto;margin:2px 0 0;accent-color:var(--accent)}
-
-/* lo que hay que hacer ya */
-.todo{border:3px solid var(--ball);border-radius:6px;padding:15px 16px;margin:0 0 20px;
-  background:#0E2232}
-.todo b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.todo .big{font-size:1.18rem;font-weight:900;letter-spacing:-.02em;line-height:1.25}
-.todo p{margin:6px 0 0;font-size:.88rem;color:var(--mute)}
-.todo .btn{margin-top:12px}
-
-.team{border:2px solid var(--line);border-radius:6px;padding:16px;margin:0 0 14px}
-.team .nm{font-size:1.2rem;font-weight:900;letter-spacing:-.02em;margin:0 0 10px}
-.nums.uno{grid-template-columns:1fr;max-width:11rem}
-.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 0 13px}
-.num{background:var(--tint);border:1px solid var(--line);border-radius:5px;padding:9px 6px;
-  text-align:center}
-.num b{display:block;font-size:1.45rem;font-weight:900;line-height:1.1;
-  font-variant-numeric:tabular-nums}
-.num span{font-size:.54rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--mute)}
-.num.hot b{color:var(--ball)}
-.acts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.acts a{display:block;text-align:center;text-decoration:none;border:2px solid var(--ink);
-  border-radius:4px;padding:11px 8px;font-weight:900;font-size:.84rem;color:var(--ink)}
-.acts a.fill{background:var(--ink);color:#fff}
-.acts a.wide{grid-column:1/-1}
-
-.pay{margin-top:11px;font-size:.84rem;padding:9px 11px;border-radius:5px;
-  border:1px solid var(--line);background:var(--tint)}
-.pay.no{border-color:var(--ball);background:#0E2232}
-.pay b{font-weight:900}
-.pay a{color:var(--accent);font-weight:900}
-
-/* La salida para el que está atascado. Va dentro de la página y no sólo
-   en el pie, porque el que no puede entrar es justo el que más la
-   necesita y no va a bajar a buscarla. */
-.stuck{margin:26px 0 0;text-align:center;font-size:.88rem;color:var(--mute)}
-.stuck a{color:var(--accent);font-weight:900;text-decoration:none}
-
-footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
-footer a{color:#8FA8C0;text-decoration:none}
-footer .f-dot{padding:0 7px;opacity:.5}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo de la portada. Antes esta pagina era la cancha de noche;
+   lo que cambia es la piel, no lo que hace: el marcado y el guion se
+   quedaron como estaban. */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2; --bad:#b4231c; --good:#0b7a5a;
 }
-html, body{background:#07141E;color:#EAF2F7}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,calc(100% - 40px));margin:0 auto}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+/* ── Cabecera ─────────────────────────────────────────────────── */
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.hright{display:flex;align-items:center;gap:9px}
+.who{color:#c8d2dd;font-size:.8rem;font-weight:600;max-width:11ch;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.out,.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.out:hover,.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+/* ── Cuerpo ───────────────────────────────────────────────────── */
+main .wrap{padding:38px 0 44px}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.1;letter-spacing:-.04em;margin:0 0 12px}
+h2{font-size:1.3rem;letter-spacing:-.025em;margin:34px 0 14px}
+.lede{color:var(--muted);margin:0 0 24px;max-width:52ch}
+.help{color:var(--muted);font-size:.86rem;margin:7px 0 0}
+.hide{display:none !important}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── La puerta: tarjeta blanca, como todo lo demas ─────────────── */
+.gate{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:clamp(22px,5vw,32px);box-shadow:0 8px 25px #17243808}
+label{display:block;font-weight:700;font-size:.9rem;margin:18px 0 6px}
+input[type=text]{width:100%;padding:14px 15px;border:1px solid #d6d9d6;border-radius:10px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.05rem;letter-spacing:.04em}
+input[type=text]:focus{outline:none;border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,122,24,.18)}
+.cert{display:flex;gap:11px;align-items:flex-start;margin:20px 0 0;
+  font-weight:400;font-size:.9rem;color:var(--muted);line-height:1.45}
+.cert input{width:20px;height:20px;flex:0 0 20px;margin-top:2px;accent-color:var(--orange)}
+.btn{display:inline-block;border:0;border-radius:9px;padding:14px 22px;
+  background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:1rem;
+  cursor:pointer;text-decoration:none;text-align:center}
+.btn.go{background:var(--orange);color:#111a24;width:100%;margin-top:20px}
+.btn:hover{opacity:.92}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{margin:13px 0 0;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+/* ── Lo que falta por hacer. Es lo unico de la pagina que cuesta
+   dinero si se olvida, asi que es la unica caja naranja. ───────── */
+.todo{background:#fff;border:1px solid rgba(255,122,24,.45);border-left:5px solid var(--orange);
+  border-radius:16px;padding:22px 24px;margin:0 0 10px;box-shadow:0 8px 25px #17243808}
+.todo b{display:block;color:var(--orange);font-size:.72rem;font-weight:800;
+  letter-spacing:.13em;text-transform:uppercase}
+.todo .big{font-size:1.45rem;font-weight:900;letter-spacing:-.03em;margin:7px 0 4px}
+.todo p{color:var(--muted);margin:0;font-size:.95rem}
+.todo .btn{width:auto;margin-top:16px}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
+/* ── Las tarjetas de equipo ───────────────────────────────────── */
+.team{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:22px 24px;margin:0 0 14px;box-shadow:0 8px 25px #17243808}
+.team .nm{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin:0 0 14px}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px;margin:0 0 18px}
+.nums.uno{grid-template-columns:max-content}
+.num{background:var(--cream);border:1px solid var(--linea);border-radius:11px;
+  padding:12px 16px;text-align:center}
+.num b{display:block;font-size:1.5rem;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.num span{display:block;color:var(--muted);font-size:.74rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+.num.hot b{color:var(--orange)}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.acts a{flex:1 1 150px;text-decoration:none;text-align:center;font-weight:800;font-size:.95rem;
+  padding:13px 16px;border-radius:9px;border:1px solid var(--navy);color:var(--navy)}
+.acts a:hover{background:var(--navy);color:#fff}
+.acts a.fill{background:var(--navy);color:#fff}
+.acts a.fill:hover{background:var(--navy2);border-color:var(--navy2)}
+.acts a.wide{background:transparent}
 
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
+.stuck{color:var(--muted);font-size:.88rem;margin:30px 0 0;text-align:center}
+.stuck a{color:var(--navy);font-weight:700}
 
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
-
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
+/* ── Pie ──────────────────────────────────────────────────────── */
+footer{background:#0a1420;color:#aeb9c6;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+.f-dot{padding:0 8px;opacity:.45}
 </style>
 </head>
 <body>
@@ -272,7 +177,7 @@ var S={
     h1:'Mi equipo',
     lede:'Entra con tu código. En este teléfono queda guardado — no lo vas a escribir otra vez.',
     codeL:'Tu código', codeH:'El mismo que te dimos para tu equipo.',
-    cert:'Entiendo que en el Fortress los puntos los registra el juego, y que en un juego de verdad el marcador que yo reporte es el que se cobra.',
+    cert:'Entiendo que en el Fortress los puntos los registra el juego, y que en un juego de verdad el marcador que yo reporte es el que se usa para la cuenta de cada padrino.',
     needCert:'Marca la casilla para certificar los puntos.',
     go:'Entrar',
     bad:'Ese código no sirve.', net:'No entró. Inténtalo otra vez.',
@@ -286,8 +191,7 @@ var S={
     nPad:'padrinos',
     aBoard:'Ver el tablero',
     aRoster:'La plantilla',
-    payNo:'Todavía no nos has dicho a dónde pagarte. <a href="cobro.html">Dínoslo aquí</a>.',
-    payOk:'Te pagamos a <b>{A}</b> el día 1 y el día 15.',
+
     stuck:'¿Algo no sale? <a href="ayuda.html">Ayuda del entrenador →</a>',
     fAyuda:'Ayuda'
   },
@@ -295,7 +199,7 @@ var S={
     h1:'My team',
     lede:'Sign in with your code. It stays on this phone — you will not type it again.',
     codeL:'Your code', codeH:'The same one we gave you for your team.',
-    cert:'I understand that in the Fortress the game records the points, and that in a real game the score I report is the one that gets billed.',
+    cert:'I understand that in the Fortress the game records the points, and that in a real game the score I report is the one each padrino\u2019s amount is worked out from.',
     needCert:'Check the box to certify the points.',
     go:'Enter',
     bad:'That code does not work.', net:'That did not go through. Try again.',
@@ -309,8 +213,7 @@ var S={
     nPad:'padrinos',
     aBoard:'See the board',
     aRoster:'The roster',
-    payNo:'You have not told us where to pay you yet. <a href="cobro.html">Tell us here</a>.',
-    payOk:'We pay you at <b>{A}</b> on the 1st and the 15th.',
+
     stuck:'Something will not work? <a href="ayuda.html">Coach help →</a>',
     fAyuda:'Help'
   }
@@ -346,7 +249,7 @@ function paintStatic(){
   document.documentElement.lang=LANG;
 }
 
-var CODE=null, BY=null, CAMPS=[], BOARDS={}, PAY=null;
+var CODE=null, BY=null, CAMPS=[], BOARDS={};
 
 /* Acepta la sesión que ya tenga de cualquiera de las dos páginas
    viejas: el calendario guardaba cp_build y el marcador cp_code. Un
@@ -397,9 +300,9 @@ function entrar(auto){
     .catch(function(e){ console.error(e); say(T('net'),'bad') });
 }
 
-/* Trae el tablero de cada equipo y, de paso, si ya nos dijeron a dónde
-   pagarles. Todo en paralelo: un entrenador con siete equipos no debe
-   esperar siete veces. */
+/* Trae el tablero de cada equipo. Todo en paralelo: un entrenador con
+   siete equipos no debe esperar siete veces. Lo de a dónde pagarle ya
+   no se pregunta: no le pagamos nosotros. */
 function cargar(){
   if(!CAMPS.length){ $('teams').innerHTML='<p class="help">'+T('none')+'</p>'; return }
   var jobs = CAMPS.map(function(c){
@@ -407,9 +310,6 @@ function cargar(){
       .then(function(g){ BOARDS[c.id]=Array.isArray(g)?g:[] })
       .catch(function(){ BOARDS[c.id]=null });
   });
-  jobs.push(rpc('payout_check',{p_code:CODE})
-    .then(function(r){ PAY = (r&&r.ok)?r:null })
-    .catch(function(){ PAY=null }));
   Promise.all(jobs).then(pintar);
 }
 
@@ -480,12 +380,6 @@ function pintar(){
 
   $('teams').innerHTML = CAMPS.map(function(c){
     var g=BOARDS[c.id], sin=sinMarcador(g), up=porJugar(g), pad=padrinos(g);
-    var pay='';
-    if(PAY&&PAY.campaign===c.id){
-      pay = PAY.already
-        ? '<div class="pay">'+T('payOk',{A:esc(PAY.ath||'')})+'</div>'
-        : '<div class="pay no">'+T('payNo')+'</div>';
-    }
     return '<div class="team">'+
       '<p class="nm">'+esc(c.name)+'</p>'+
       '<div class="nums uno">'+
@@ -497,7 +391,6 @@ function pintar(){
         '<a class="fill" href="tablero.html?camp='+esc(c.id)+'">'+T('aBoard')+'</a>'+
         '<a class="wide" href="plantilla.html">'+T('aRoster')+'</a>'+
       '</div>'+
-      pay+
     '</div>';
   }).join('');
 }
