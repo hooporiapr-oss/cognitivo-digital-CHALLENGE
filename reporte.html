@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Reporte del evento — Cada Punto Cuenta</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="El reporte final de un evento: el juego, el marcador y cada promesa con su total.">
+<link rel="icon" href="cadapunto.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   Esta página se imprime: un entrenador la baja en PDF y se la pasa
+   a su junta. Así que la pantalla es lo de siempre y al final hay
+   reglas de @media print que quitan todo lo que no es el reporte. */
+:root{
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2; --bad:#b4231c;
+}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(760px,calc(100% - 40px));margin:0 auto}
+.hide{display:none !important}
+
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
+
+main .wrap{padding:38px 0 48px}
+h1{font-size:clamp(1.8rem,5vw,2.5rem);line-height:1.1;letter-spacing:-.04em;margin:0 0 12px}
+.lede{color:var(--muted);margin:0 0 24px;max-width:56ch}
+.help{color:var(--muted);font-size:.86rem;margin:7px 0 0}
+label{display:block;font-weight:700;font-size:.9rem;margin:16px 0 6px}
+input,select{width:100%;padding:13px 14px;border:1px solid #d6d9d6;border-radius:10px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+input:focus,select:focus{outline:none;border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,122,24,.18)}
+.gate{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:clamp(22px,5vw,32px);box-shadow:0 8px 25px #17243808}
+.btn{display:inline-block;border:0;border-radius:9px;padding:14px 22px;
+  background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:1rem;
+  cursor:pointer;text-decoration:none;text-align:center}
+.btn.go{background:var(--orange);color:#111a24;width:100%;margin-top:20px}
+.btn.line{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.btn.line:hover{background:var(--navy);color:#fff}
+.btn:hover{opacity:.92}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{margin:12px 0 0;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
+
+/* ── El reporte ───────────────────────────────────────────────── */
+.rep{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:clamp(24px,5vw,34px);box-shadow:0 8px 25px #17243808}
+.kick{color:var(--orange);font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  font-size:.72rem;margin:0 0 8px}
+.rep h2{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:-.035em;margin:0 0 4px;line-height:1.12}
+.rep .when{color:var(--muted);font-size:.92rem;margin:0 0 22px}
+.marcador{display:flex;align-items:baseline;gap:12px;padding:18px 0;
+  border-top:2px solid var(--navy);border-bottom:1px solid var(--linea);margin:0 0 22px}
+.marcador .n{font-size:2.6rem;font-weight:900;letter-spacing:-.04em;line-height:1}
+.marcador .vs{color:var(--muted);font-size:.95rem}
+.marcador .n.rival{color:var(--muted);font-size:1.8rem}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 24px}
+.sum div{background:var(--cream);border:1px solid var(--linea);border-radius:12px;
+  padding:14px 16px;text-align:center}
+.sum b{display:block;font-size:1.7rem;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.sum span{display:block;color:var(--muted);font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th{text-align:left;font-size:.68rem;font-weight:800;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);padding:0 0 9px;border-bottom:2px solid var(--navy)}
+td{padding:11px 0;border-bottom:1px solid var(--linea);vertical-align:top}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.nm{font-weight:700}
+tfoot td{border-bottom:none;border-top:2px solid var(--navy);font-weight:900;padding-top:13px}
+.vacio{color:var(--muted);padding:22px 0;text-align:center}
+.nota{color:var(--muted);font-size:.88rem;margin:20px 0 0;padding-top:16px;
+  border-top:1px solid var(--linea)}
+.acts{display:flex;gap:11px;flex-wrap:wrap;margin:24px 0 0}
+.acts .btn{flex:1 1 180px}
+.sello{display:none}
+
+footer{background:#0a1420;color:#aeb9c6;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+.f-dot{padding:0 8px;opacity:.45}
+
+@media print{
+  header,footer,.acts,.langb,.gate,.lede{display:none !important}
+  html,body{background:#fff;color:#000}
+  main .wrap{width:100%;padding:0}
+  .rep{border:none;box-shadow:none;padding:0;border-radius:0}
+  .sum div{background:#fff;border-color:#000}
+  .marcador{border-color:#000}
+  th{border-bottom-color:#000;color:#000}
+  tfoot td{border-top-color:#000}
+  td,.when,.nota,.sum span{color:#000}
+  tr{break-inside:avoid}
+  .sello{display:block;margin-top:26px;padding-top:12px;border-top:2px solid #000;
+    font-size:.8rem;text-align:center}
+  .sello span{display:block;font-weight:400;margin-top:3px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html">cada&nbsp;<em>punto</em>&nbsp;<i>cuenta</i></a>
+    <button class="langb" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div id="gate">
+      <h1 id="tH1"></h1>
+      <p class="lede" id="tLede"></p>
+      <div class="gate">
+        <label for="code" id="tCodeL"></label>
+        <input id="code" type="text" autocapitalize="characters" autocorrect="off"
+               spellcheck="false" enterkeyhint="go">
+        <p class="help" id="tCodeH"></p>
+        <div id="pick" class="hide">
+          <label for="game" id="tGameL"></label>
+          <select id="game"></select>
+        </div>
+        <button class="btn go" id="tGo" onclick="seguir()"></button>
+        <p class="msg" id="gm"></p>
+      </div>
+    </div>
+
+    <div id="out" class="hide"></div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="mi-equipo.html" id="fMine">Mi equipo</a><span class="f-dot">·</span>
+    <a href="ayuda.html" id="fHelp">Ayuda</a><span class="f-dot">·</span>
+    <a href="index.html">Cada Punto Cuenta</a>
+  </div>
+</footer>
+
+<script>
+var SB='https://sdaphocueugzfvjovuxd.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
+
+function rpc(fn, args){
+  return fetch(SB+'/rest/v1/rpc/'+fn, {
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(args||{})
+  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json() });
+}
+
+var S = {
+  es:{
+    titulo:'Reporte del evento — Cada Punto Cuenta',
+    h1:'El reporte del evento',
+    lede:'Lo que se prometió, juego por juego. Entra con tu código, escoge el juego, y bájalo o imprímelo.',
+    codeL:'Tu código de entrenador', codeH:'El mismo que usas en Mi equipo. Distingue mayúsculas.',
+    gameL:'El juego',
+    go:'Ver el reporte', goNext:'Buscar mis juegos',
+    errCode:'Ese código no sirve. Revísalo y prueba otra vez.',
+    errNone:'Ese código no tiene juegos con promesas todavía.',
+    errGen:'No se pudo. Intenta otra vez.',
+    kick:'Reporte final',
+    vs:'vs', at:'en casa de',
+    fin:'Final',
+    nPro:'Promesas', nTot:'Prometido',
+    thName:'Padrino', thRate:'Por punto', thCap:'Tope', thTotal:'Total',
+    sinTope:'—',
+    vacio:'Este juego no tiene promesas.',
+    nota:'Lo prometido no es lo recaudado. Cada Punto Cuenta anota las promesas y calcula los totales; el dinero lo cobra y lo maneja el programa, y este reporte no dice quién pagó.',
+    print:'Imprimir o guardar en PDF', csv:'Bajar CSV', otro:'Otro juego',
+    selloP:'cadapunto.com', selloS:'Reporte generado por Cada Punto Cuenta · Gostar Digital LLC, Puerto Rico',
+    gen:'Generado el {F}'
+  },
+  en:{
+    titulo:'Event report — Cada Punto Cuenta',
+    h1:'The event report',
+    lede:'What was pledged, game by game. Sign in with your code, pick the game, and download or print it.',
+    codeL:'Your coach code', codeH:'The same one you use on My team. Capital letters matter.',
+    gameL:'The game',
+    go:'See the report', goNext:'Find my games',
+    errCode:'That code does not work. Check it and try again.',
+    errNone:'That code has no games with pledges yet.',
+    errGen:'That did not work. Try again.',
+    kick:'Final report',
+    vs:'vs', at:'away at',
+    fin:'Final',
+    nPro:'Pledges', nTot:'Pledged',
+    thName:'Padrino', thRate:'Per point', thCap:'Cap', thTotal:'Total',
+    sinTope:'—',
+    vacio:'This game has no pledges.',
+    nota:'Pledged is not collected. Cada Punto Cuenta records the pledges and calculates the totals; the money is collected and managed by the program, and this report does not say who paid.',
+    print:'Print or save as PDF', csv:'Download CSV', otro:'Another game',
+    selloP:'cadapunto.com', selloS:'Report generated by Cada Punto Cuenta · Gostar Digital LLC, Puerto Rico',
+    gen:'Generated {F}'
+  }
+};
+
+var LANG='es';
+try{ LANG=localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
+  localStorage.getItem('fc-lang')||
+  ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
+
+function T(k,v){
+  var t=(S[LANG]&&S[LANG][k]!==undefined)?S[LANG][k]:S.es[k];
+  if(v&&typeof t==='string') Object.keys(v).forEach(function(x){ t=t.split('{'+x+'}').join(v[x]) });
+  return t;
+}
+function $(id){ return document.getElementById(id) }
+function esc(t){ return String(t==null?'':t)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function money(n){ return '$'+Number(n||0).toFixed(2) }
+function fecha(iso){
+  if(!iso) return '';
+  try{ return new Date(iso).toLocaleDateString(LANG==='es'?'es-PR':'en-US',
+       {day:'numeric',month:'long',year:'numeric'}) }catch(e){ return String(iso) }
+}
+
+var CODE=null, JUEGOS=[], REP=null;
+
+function toggleLang(){
+  LANG=(LANG==='es')?'en':'es';
+  try{ localStorage.setItem('cfh_lang',LANG); localStorage.setItem('cp-lang',LANG);
+       localStorage.setItem('fc-lang',LANG); }catch(e){}
+  estatico();
+  if(REP) pintar(); else if(JUEGOS.length) llenarJuegos();
+}
+
+function estatico(){
+  document.documentElement.lang=LANG;
+  document.title=T('titulo');
+  $('langBtn').textContent=(LANG==='es')?'EN':'ES';
+  $('tH1').textContent=T('h1');
+  $('tLede').textContent=T('lede');
+  $('tCodeL').textContent=T('codeL');
+  $('tCodeH').textContent=T('codeH');
+  $('tGameL').textContent=T('gameL');
+  $('tGo').textContent = JUEGOS.length ? T('go') : T('goNext');
+  $('fMine').textContent = (LANG==='es')?'Mi equipo':'My team';
+  $('fHelp').textContent = (LANG==='es')?'Ayuda':'Help';
+}
+
+/* El codigo abre la lista de juegos del entrenador. Se piden los
+   tableros de todas sus campanas y se queda con los que ya se
+   jugaron: un reporte de un juego sin marcador no dice nada. */
+function seguir(){
+  var m=$('gm'); m.className='msg'; m.textContent='';
+  if(JUEGOS.length) return verReporte();
+
+  var k=($('code').value||'').trim();
+  if(!k) return;
+  $('tGo').disabled=true;
+
+  rpc('builder_check',{p_code:k}).then(function(r){
+    if(!r||!r.ok) throw new Error('bad');
+    CODE=k;
+    var camps=r.campaigns||[];
+    return Promise.all(camps.map(function(c){
+      return rpc('game_board',{p_campaign:c.id})
+        .then(function(g){
+          var games=(g&&g.games)||(Array.isArray(g)?g:[]);
+          return games.filter(function(x){ return x.status==='played' })
+                      .map(function(x){ x._camp=c.name; return x });
+        })
+        .catch(function(){ return [] });
+    }));
+  }).then(function(listas){
+    JUEGOS=[].concat.apply([],listas);
+    if(!JUEGOS.length){ throw new Error('none') }
+    llenarJuegos();
+    $('pick').classList.remove('hide');
+    $('tGo').textContent=T('go');
+    $('tGo').disabled=false;
+  }).catch(function(e){
+    $('tGo').disabled=false;
+    m.className='msg bad';
+    m.textContent = (e&&e.message==='none') ? T('errNone')
+                  : (e&&e.message==='bad')  ? T('errCode') : T('errGen');
+  });
+}
+
+function llenarJuegos(){
+  $('game').innerHTML = JUEGOS.map(function(g){
+    var c = g.home ? T('vs') : '@';
+    return '<option value="'+esc(g.id)+'">'+esc(g._camp)+' · '+c+' '+esc(g.opponent)+
+           ' · '+esc(fecha(g.plays_on))+'</option>';
+  }).join('');
+}
+
+function verReporte(){
+  var id=$('game').value;
+  if(!id) return;
+  $('tGo').disabled=true;
+  rpc('game_report',{p_code:CODE,p_game:id}).then(function(r){
+    $('tGo').disabled=false;
+    if(!r||!r.ok) throw new Error('rep');
+    REP=r;
+    $('gate').classList.add('hide');
+    $('out').classList.remove('hide');
+    pintar();
+  }).catch(function(){
+    $('tGo').disabled=false;
+    var m=$('gm'); m.className='msg bad'; m.textContent=T('errGen');
+  });
+}
+
+function pintar(){
+  var r=REP, g=r.game||{}, ps=r.pledges||[];
+  var contra = (g.home ? T('vs') : '@') + ' ' + esc(g.opponent||'');
+
+  var filas = ps.length ? ps.map(function(p){
+    return '<tr>'+
+      '<td class="nm">'+esc(p.nombre||'')+'</td>'+
+      '<td class="num">'+money(p.tarifa)+'</td>'+
+      '<td class="num">'+(p.tope!=null?money(p.tope):T('sinTope'))+'</td>'+
+      '<td class="num">'+money(p.total)+'</td>'+
+    '</tr>';
+  }).join('') : '';
+
+  $('out').innerHTML =
+    '<div class="rep">'+
+      '<p class="kick">'+esc(T('kick'))+'</p>'+
+      '<h2>'+esc(r.campaign||'')+' '+contra+'</h2>'+
+      '<p class="when">'+esc(fecha(g.plays_on))+' · '+
+        esc(T('gen',{F:fecha(r.generated)}))+'</p>'+
+
+      '<div class="marcador">'+
+        '<span class="n">'+esc(g.team_points!=null?g.team_points:'—')+'</span>'+
+        (g.opp_points!=null
+          ? '<span class="vs">'+esc(T('fin'))+'</span><span class="n rival">'+esc(g.opp_points)+'</span>'
+          : '<span class="vs">'+esc(T('fin'))+'</span>')+
+      '</div>'+
+
+      '<div class="sum">'+
+        '<div><b>'+esc(r.count||0)+'</b><span>'+esc(T('nPro'))+'</span></div>'+
+        '<div><b>'+money(r.pledged)+'</b><span>'+esc(T('nTot'))+'</span></div>'+
+      '</div>'+
+
+      (ps.length
+        ? '<table><thead><tr>'+
+            '<th>'+esc(T('thName'))+'</th>'+
+            '<th class="num">'+esc(T('thRate'))+'</th>'+
+            '<th class="num">'+esc(T('thCap'))+'</th>'+
+            '<th class="num">'+esc(T('thTotal'))+'</th>'+
+          '</tr></thead><tbody>'+filas+'</tbody>'+
+          '<tfoot><tr><td colspan="3">'+esc(T('nTot'))+'</td>'+
+            '<td class="num">'+money(r.pledged)+'</td></tr></tfoot></table>'
+        : '<p class="vacio">'+esc(T('vacio'))+'</p>')+
+
+      '<p class="nota">'+esc(T('nota'))+'</p>'+
+
+      '<p class="sello">'+esc(T('selloP'))+'<span>'+esc(T('selloS'))+'</span></p>'+
+
+      '<div class="acts">'+
+        '<button class="btn" onclick="window.print()">'+esc(T('print'))+'</button>'+
+        '<button class="btn line" onclick="bajarCSV()">'+esc(T('csv'))+'</button>'+
+        '<button class="btn line" onclick="volver()">'+esc(T('otro'))+'</button>'+
+      '</div>'+
+    '</div>';
+}
+
+function volver(){
+  REP=null;
+  $('out').classList.add('hide');
+  $('gate').classList.remove('hide');
+}
+
+/* El CSV se arma aqui y se baja con un blob: sin servidor de por
+   medio, y sin que el nombre del padrino salga de su maquina. Las
+   comillas se doblan, que un apellido con coma parte la fila. */
+function bajarCSV(){
+  var r=REP, g=r.game||{};
+  function q(v){ return '"'+String(v==null?'':v).split('"').join('""')+'"' }
+  var lin=[];
+  lin.push([q(T('thName')),q(T('thRate')),q(T('thCap')),q(T('thTotal'))].join(','));
+  (r.pledges||[]).forEach(function(p){
+    lin.push([q(p.nombre), q(Number(p.tarifa||0).toFixed(2)),
+              q(p.tope!=null?Number(p.tope).toFixed(2):''),
+              q(Number(p.total||0).toFixed(2))].join(','));
+  });
+  lin.push([q(T('nTot')),'','',q(Number(r.pledged||0).toFixed(2))].join(','));
+
+  /* Los acentos se quitan, no se borran: "Canóvanas" tiene que salir
+     "canovanas" y no "canvanas". */
+  var nom = (r.campaign||'reporte')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+          .replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-')
+          + '-' + (g.plays_on||'').slice(0,10) + '.csv';
+  var blob = new Blob(['﻿'+lin.join('\r\n')], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nom.toLowerCase();
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove() }, 400);
+}
+
+$('code').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){ e.preventDefault(); seguir() }
+});
+
+estatico();
+</script>
+</body>
+</html>
