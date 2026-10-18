@@ -194,6 +194,8 @@ var S = {
     errTerms:'Tienes que aceptar los términos para seguir.',
     custody:'He leído <a href="custodia.html" target="_blank">que el dinero no pasa por ustedes</a>: Cada Punto no procesa ni guarda pagos, y el dinero lo cobra y lo maneja mi programa.',
     errCustody:'Tienes que aceptar cómo funciona el dinero para seguir.',
+    lic:'Acepto la licencia por evento: <b>$49 por equipo y por juego</b>, o $29 si la plantilla tiene menos de ocho. No se paga nada por adelantado; se factura cuando el evento cierra y se paga dentro de siete días. Si no se paga, la licencia de ese evento caduca y los datos de promesas se retiran de la plataforma.',
+    errLic:'Tienes que aceptar la licencia y su cargo para seguir.',
     go:'Inscribir mi equipo',
     errTeam:'Escribe el nombre del equipo.',
     errProg:'Escribe el nombre del programa.',
@@ -230,6 +232,8 @@ var S = {
     errTerms:'You have to accept the terms to continue.',
     custody:'I have read <a href="custodia.html" target="_blank">that the money does not pass through you</a>: Cada Punto processes and holds no payments, and my program collects and manages the money itself.',
     errCustody:'You have to accept how the money works to continue.',
+    lic:'I accept the per-event license: <b>$49 per team, per game</b>, or $29 where the roster is under eight. Nothing is paid up front; it is invoiced when the event closes and is due within seven days. If it is not paid, that event\u2019s license lapses and its pledge data is removed from the platform.',
+    errLic:'You have to accept the license and its fee to continue.',
     go:'Sign up my team',
     errTeam:'Write the team name.',
     errProg:'Write the program name.',
@@ -317,6 +321,10 @@ function draw(){
       'autocomplete="tel" enterkeyhint="done">' +
 
     '<div class="ok">' +
+      '<input id="lc" type="checkbox">' +
+      '<span onclick="document.getElementById(\'lc\').click()">' + T('lic') + '</span>' +
+    '</div>' +
+    '<div class="ok">' +
       '<input id="cu" type="checkbox">' +
       '<span onclick="document.getElementById(\'cu\').click()">' + T('custody') + '</span>' +
     '</div>' +
@@ -346,6 +354,12 @@ function send(){
   if (!prog) return say(T('errProg'), 'bad');
   if (!name || email.indexOf('@') === -1) return say(T('errWho'), 'bad');
 
+  /* La licencia primero: es la unica casilla que lleva un numero
+     dentro, y facturarle a alguien que nunca lo vio seria nuestro
+     problema, no suyo. */
+  var lc = document.getElementById('lc');
+  if (!lc || !lc.checked) return say(T('errLic'), 'bad');
+
   var cu = document.getElementById('cu');
   if (!cu || !cu.checked) return say(T('errCustody'), 'bad');
 
@@ -370,7 +384,14 @@ function send(){
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
       body: JSON.stringify({ team: team, program: prog, coach: name,
-                             email: email, phone: phone })
+                             email: email, phone: phone,
+                             /* Quien acepto la licencia, cuando, y
+                                que decia exactamente la version que
+                                vio. Si algun dia se discute una
+                                factura, esto es lo que hay. */
+                             license: { accepted: true, by: name,
+                                        at: new Date().toISOString(),
+                                        terms: T('lic') } })
     }).catch(function(e){ console.error('notice', e); });
     try{ var _m = document.querySelector('main'); if (_m) _m.scrollTop = 0; window.scrollTo(0, 0); }catch(e){}
   })
