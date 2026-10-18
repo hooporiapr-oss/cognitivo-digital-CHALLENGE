@@ -22,277 +22,123 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
-      --good:#0B7A5A;--bad:#A8323F}
-*{box-sizing:border-box}
-html{background:#07141E}
-/* El teclado del teléfono no achica la página, achica lo que se ve de
-   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
-   campo enfocado se iba debajo del teclado y el navegador no podía
-   subirlo. Rodando la página entera, sí puede. */
-body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
-  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#07141E;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{width:min(600px,93vw);margin:0 auto}
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo del resto del sitio. Antes esta pagina llevaba tres hojas
+   de estilo apiladas una encima de otra; ahora es una sola. El
+   marcado y el guion no se tocaron.
 
-header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+   Se imprime: un entrenador la cuelga en la pared del gimnasio, asi
+   que al final hay reglas de @media print. */
+:root{
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2; --bad:#b4231c; --good:#0b7a5a;
+}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
+  background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,calc(100% - 40px));margin:0 auto}
+
+header{flex:0 0 auto;background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
   padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#FF8A2B}
-.mark i{font-style:normal;color:#6FD83C}
-.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
 main{flex:1 1 auto;overflow-x:hidden}
-main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+main .wrap{padding:40px 0 50px}
 
-footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
-footer p{margin:0 0 7px}
-footer .f-co{color:#fff;font-weight:700}
-footer a{color:#8FA8C0;text-decoration:none}
-footer .f-legal{margin:7px 0 0;font-size:.78rem}
-footer .f-dot{padding:0 7px;opacity:.5}
+/* ── La portada del documento ─────────────────────────────────── */
+.rtop{border-bottom:3px solid var(--navy);padding-bottom:20px;margin:0 0 28px}
+.kick{color:var(--orange);font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  font-size:.74rem;margin:0 0 10px}
+.rtop h1{font-size:clamp(1.9rem,5.4vw,2.9rem);line-height:1.08;letter-spacing:-.045em;margin:0 0 8px}
+.rtop .sub{color:var(--muted);margin:0;font-size:.92rem}
+.lede{color:var(--muted);margin:0 0 30px;max-width:58ch;font-size:1.06rem}
 
-.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:8px}
-h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
-.lede{color:var(--mute);margin:0 0 22px}
-
-/* El por que de todo esto. Va en caja y sin numero: no es una de las
-   siete clausulas, es la razon por la que existen las siete. */
-.porque{margin:0 0 30px;padding:20px 22px;border:1px solid var(--line);
-  border-left:4px solid var(--accent);border-radius:8px;background:var(--tint)}
-.porque h2{margin:0 0 12px;font-size:1.05rem;font-weight:900;letter-spacing:-.01em}
-.porque p{margin:0 0 11px;line-height:1.55}
+/* ── El por qué: la caja que explica el modelo entero ─────────── */
+.porque{background:#fff;border:1px solid var(--linea);border-left:5px solid var(--orange);
+  border-radius:16px;padding:26px 28px;margin:0 0 34px;box-shadow:0 8px 25px #17243808}
+.porque h2{margin:0 0 14px;font-size:1.22rem;font-weight:900;letter-spacing:-.025em}
+.porque p{margin:0 0 13px;color:var(--muted);font-size:1rem}
 .porque p:last-child{margin-bottom:0}
-.porque .golpe{font-size:1.12rem;font-weight:800;letter-spacing:-.015em;
-  color:var(--ink)}
-/* El cierre, separado por una raya: la caja abre con lo que sabemos
-   nosotros y cierra con lo que pide el programa. */
-.porque .cierre{margin-top:15px;padding-top:14px;border-top:1px solid var(--line)}
-@media print{ .porque{break-inside:avoid} }
-h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
+.porque .golpe{color:var(--ink);font-size:1.16rem;font-weight:800;letter-spacing:-.02em}
+.porque .cierre{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea)}
 
-.how{display:grid;gap:10px;margin:0 0 24px}
-.how .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px}
-.how .s b{display:block;font-size:.98rem}
-.how .s span{color:var(--mute);font-size:.92rem}
-
-label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
-input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
-  background:#07141E;color:var(--ink);font:inherit;font-size:1.02rem}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
-/* Cuando el navegador sube el campo enfocado, que no quede pegado al
-   borde: se ve su etiqueta y el campo de antes. */
-label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
-.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
-.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
-  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
-  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
-.btn.line{background:#07141E;color:var(--ink);margin-top:10px}
-.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
-  font-size:.88rem;font-weight:400;color:var(--mute)}
-.ok span{cursor:pointer}
-.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
-.ok a{color:var(--accent)}
-.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
-.msg.bad{color:var(--bad)}
-.msg.ok{color:var(--good)}
-
-/* En el teléfono el pie es lo último que hace falta mientras se llena
-   un formulario: que ocupe lo justo. */
-@media(max-width:560px){
-  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
-  footer p{margin:0 0 4px}
-  footer .f-legal{margin:4px 0 0}
-  main .wrap{padding-bottom:20px}
-}
-
-.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
-.fine b{display:block;margin-bottom:3px}
-.fine p{margin:0;color:var(--mute);font-size:.93rem}
-
-.done{text-align:center}
-.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
-</style>
-<style>
-/* La portada de las reglas: el nombre una vez, en grande. */
-.rtop{border-bottom:3px solid var(--ink);padding-bottom:16px;margin:0 0 24px}
-.rtop h1{font-size:clamp(1.6rem,6vw,2.4rem);margin:0 0 6px}
-.rtop .sub{color:var(--mute);margin:0;font-size:.95rem}
-
-/* Cada regla numerada, para que un entrenador pueda decir
-   "regla 3.2" en la cancha y todo el mundo busque lo mismo. */
-.sec{margin:0 0 26px}
-.sec h2{display:flex;gap:10px;align-items:baseline;margin:0 0 6px;font-size:1.06rem}
-.sec h2 .n{flex:0 0 auto;color:var(--accent);font-weight:900}
-.sec .cab{color:var(--mute);margin:0 0 10px;font-size:.95rem}
-.sec ol,.sec ul{margin:0;padding-left:0;list-style:none;counter-reset:r}
-.sec li{position:relative;padding:9px 0 9px 44px;border-top:1px solid var(--line);font-size:.95rem}
+/* ── Las cláusulas, numeradas para poder citarlas ─────────────── */
+.sec{margin:0 0 30px}
+.sec h2{display:flex;gap:10px;align-items:baseline;margin:0 0 6px;
+  font-size:1.16rem;letter-spacing:-.025em}
+.sec h2 .n{flex:0 0 auto;color:var(--orange);font-weight:900}
+.sec .cab{color:var(--muted);margin:0 0 12px;font-size:.95rem}
+.sec ol,.sec ul{margin:0;padding:0;list-style:none;background:#fff;
+  border:1px solid var(--linea);border-radius:14px;box-shadow:0 8px 25px #17243806}
+.sec li{position:relative;padding:14px 20px 14px 58px;border-top:1px solid var(--linea);
+  font-size:.97rem;color:var(--muted)}
 .sec li:first-child{border-top:none}
-.sec li::before{counter-increment:r;content:attr(data-n);position:absolute;left:0;top:9px;
-  font-weight:900;font-size:.82rem;color:var(--mute);font-variant-numeric:tabular-nums}
-.sec .cierre{margin:10px 0 0;font-size:.95rem;font-weight:700}
+.sec li::before{content:attr(data-n);position:absolute;left:20px;top:14px;
+  font-weight:800;font-size:.8rem;color:var(--navy);font-variant-numeric:tabular-nums}
+.sec .cierre{margin:12px 0 0;font-size:.96rem;font-weight:750}
 
-table.money{width:100%;border-collapse:collapse;margin:12px 0 0;font-size:.95rem}
-table.money th,table.money td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
-table.money th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);
-  border-bottom:2px solid var(--ink)}
-table.money td:nth-child(2),table.money th:nth-child(2),
-table.money td:nth-child(3),table.money th:nth-child(3){text-align:right;font-variant-numeric:tabular-nums}
+/* ── Lo que acepta el programa ────────────────────────────────── */
+.ackbox{background:#fff;border:1px solid var(--linea);border-left:5px solid var(--navy);
+  border-radius:16px;padding:22px 24px;margin:36px 0 0;box-shadow:0 8px 25px #17243808}
+.ackbox h2{margin:0 0 8px;font-size:1.1rem;letter-spacing:-.02em}
+.ackbox p{margin:0;color:var(--muted);font-size:.96rem}
+.ackbox a{color:var(--navy);font-weight:800;text-decoration:none;
+  display:inline-block;margin:14px 20px 0 0;font-size:.92rem;
+  border-bottom:2px solid var(--orange);padding-bottom:2px}
+.ackbox a:hover{color:var(--orange)}
 
-.pie{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
-.pie a,.pie button{flex:1 1 180px;padding:14px;border:2px solid var(--ink);border-radius:4px;
-  background:#07141E;color:var(--ink);font:inherit;font-weight:800;font-size:.95rem;
-  text-align:center;text-decoration:none;cursor:pointer}
-.pie a.solid{background:var(--ink);color:#fff}
+/* ── El pie del documento ─────────────────────────────────────── */
+.pie{display:flex;gap:11px;flex-wrap:wrap;margin-top:32px}
+.pie a,.pie button{flex:1 1 180px;padding:14px 18px;border-radius:9px;
+  border:1px solid var(--navy);background:transparent;color:var(--navy);
+  font:inherit;font-weight:800;font-size:.95rem;text-align:center;
+  text-decoration:none;cursor:pointer}
+.pie a:hover,.pie button:hover{background:var(--navy);color:#fff}
+.pie a.solid{background:var(--navy);color:#fff}
 
-/* Un entrenador la va a imprimir y pegarla en la pared del gimnasio. */
-/* La hoja impresa tiene que decir de dónde salió. Alguien la pega en
-   la pared del gimnasio, otro entrenador le saca una foto, y si no
-   lleva la dirección esa foto no lleva a ningún sitio. */
+footer{flex:0 0 auto;background:#0a1420;color:#aeb9c6;
+  padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+.f-co{color:#fff;font-weight:700;margin:0 0 7px}
+.f-what{margin:7px auto 0;font-size:.78rem;line-height:1.5;opacity:.75;max-width:54ch}
+.f-legal{margin:9px 0 0;font-size:.82rem}
+.f-dot{padding:0 8px;opacity:.45}
+
+/* ── Impresa ──────────────────────────────────────────────────────
+   La hoja pegada en la pared tiene que decir de donde salio: alguien
+   le saca una foto, y sin la direccion esa foto no lleva a ningun
+   sitio. */
 .pie-print{display:none}
 @media print{
-  .heroart,.why,.num{display:none !important}
   header,footer,.pie,.langb{display:none !important}
-  html,body{background:#07141E}
+  html,body{background:#fff;color:#000}
   main .wrap{width:100%;padding:0}
+  .porque,.sec ol,.sec ul,.ackbox{box-shadow:none;background:#fff}
+  .porque,.ackbox{border-color:#000}
   .sec{break-inside:avoid;page-break-inside:avoid}
+  .porque{break-inside:avoid}
   .rtop{border-bottom:2px solid #000}
+  .porque p,.sec li,.ackbox p,.lede{color:#000}
   a{text-decoration:none;color:#000}
-  .pie-print{display:block;margin-top:22px;padding-top:12px;
+  .pie-print{display:block;margin-top:24px;padding-top:12px;
     border-top:2px solid #000;font-size:.86rem;font-weight:700;
     text-align:center;break-inside:avoid}
   .pie-print span{display:block;font-weight:400;font-size:.8rem;margin-top:3px}
 }
-
-.heroart{display:block;width:100%;height:auto;margin:0 0 clamp(18px,4vw,26px);
-  border-radius:6px;border:1px solid rgba(255,138,43,.30);
-  box-shadow:0 14px 40px rgba(0,0,0,.28)}
-.why{display:grid;gap:10px;margin:0 0 26px}
-.why .w{border-left:4px solid var(--accent);background:var(--tint);padding:13px 15px}
-.why .w b{display:block;font-size:.98rem}
-.why .w span{color:var(--mute);font-size:.92rem}
-.num{display:grid;gap:10px;margin:0 0 26px;counter-reset:paso}
-.num .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px 13px 46px;position:relative}
-.num .s::before{counter-increment:paso;content:counter(paso);position:absolute;left:14px;top:13px;
-  width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
-  font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center}
-.num .s b{display:block;font-size:.98rem}
-.num .s span{color:var(--mute);font-size:.92rem}
-.rulesH{margin-top:34px;padding-top:22px;border-top:3px solid var(--ink)}
-.rulesH h2{font-size:1.25rem;margin:0}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
-</style>
-<style>
-.ackbox{border:3px solid var(--ink);border-radius:6px;padding:17px 19px;margin:30px 0 0}
-.ackbox h2{margin:0 0 7px;font-size:1.08rem}
-.ackbox p{margin:0;color:var(--mute);font-size:.96rem}
-.ackbox a{color:var(--accent);font-weight:800;text-decoration:none;display:inline-block;margin-top:12px;margin-right:18px;font-size:.92rem}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
-:root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
-}
-html, body{background:#07141E;color:#EAF2F7}
-
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
-
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
-
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
-
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
-
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
-
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
-
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
-
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
 </style>
 </head>
 <body>
@@ -334,7 +180,7 @@ var LANG='es';
 try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
-var S = {"es": {"kick": "Divulgación", "h1": "El dinero no pasa por nosotros", "sub": "Gostar Digital LLC · Cada Punto · octubre 2026", "lede": "Cada Punto es un sistema de manejo de promesas. Anotamos lo que se promete y hacemos la cuenta. El dinero lo recibe el programa, directo, sin pasar por aquí.", "porqueH": "Por qué el dinero no pasa por nosotros", "porque1": "Prometer es fácil. Llevar la cuenta es el trabajo.", "porque2": "Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que prometieron doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Esa cuenta a mano no la lleva nadie sin equivocarse.", "porque3": "Eso es lo que hacemos: la cuenta. Cada promesa queda anotada con su nombre, sus centavos por punto y su tope. Cuando entra el marcador, el sistema saca lo que le corresponde a cada quien y el total del equipo. El programa imprime esa lista y cobra como siempre ha cobrado.", "porque4": "El dinero no lo tocamos. No lo procesamos, no lo verificamos, no lo guardamos y no lo reclamamos. Lo que un padrino le pague a un programa es entre ellos dos — por ATH Móvil, en efectivo, o como acuerden. No somos parte de ese pago.", "porque5": "Y eso también le conviene al programa. Si el dinero pasara por nosotros habría una fecha, un corte y una cuenta ajena de por medio, y el programa estaría esperando por los tres. Así no espera por nada: lo que le pagan le llega el mismo día, a su propia cuenta.", "porqueCierre": "Nosotros manejamos las promesas. Usted maneja el dinero.", "s1h": "Quién recibe el dinero", "s1c": "El padrino le paga al programa. No hay un paso intermedio.", "s1": ["No recibimos dinero de nadie.", "El programa cobra como ya cobra: ATH Móvil, efectivo, o el método que use. Ese acuerdo es entre el padrino y el programa.", "No guardamos dinero de nadie, ni por un día. No somos banco, ni fideicomiso, ni custodio."], "s2h": "Qué hace Cada Punto", "s2c": "Anotar lo prometido y hacer la cuenta. Eso es el producto.", "s2": ["Guarda cada promesa con el nombre del padrino, los centavos por punto, y el tope si lo puso.", "Cuando entra el marcador del juego, saca lo que corresponde a cada promesa y el total prometido del equipo.", "Enseña ese total y lo deja imprimir o bajar, para que el programa lo trabaje como quiera."], "s3h": "Lo que no hacemos", "s3c": "Dicho de frente, para que nadie se confunda.", "s3": ["No procesamos pagos y no le cobramos a nadie.", "No verificamos pagos. No sabemos quién pagó, y el sistema no tiene dónde anotarlo.", "No llevamos cuentas por cobrar y no perseguimos a ningún padrino. Al cerrar el juego le mandamos a cada padrino un aviso con el resultado y lo que dio su promesa — un aviso, y nada más: sin enlace de pago y sin recordatorios.", "No atendemos disputas de pago, ni contracargos, ni devoluciones."], "s4h": "Si hay un desacuerdo", "s4c": "Una promesa es entre el padrino y el programa.", "s4": ["Si un padrino dice que no prometió, o que prometió otra cosa, eso se resuelve entre él y el programa. Nosotros enseñamos lo que quedó anotado, y hasta ahí.", "Si el programa no recibe un pago, no hay nada que podamos retener, descontar ni reclamar: nunca tuvimos ese dinero.", "No somos parte de ningún acuerdo de pago y no garantizamos que una promesa se pague."], "s5h": "Lo que el programa puede ver", "s5c": "Lo prometido, al día. Nada que no sepamos.", "s5": ["El panel enseña cada promesa, su cantidad, y el total prometido del equipo.", "De dónde sale el marcador depende del juego: en un juego de verdad lo reporta el entrenador con su código, o lo ponemos nosotros desde el calendario que nos dio. Queda en el tablero, a la vista del que tenga el enlace.", "La lista se imprime y se baja en cualquier momento. Es del programa.", "No hay columna de pagado, ni de pendiente, ni de cobrado. El sistema no lo sabe."], "s6h": "Impuestos", "s6c": "Cada programa responde por su propia situación contributiva.", "s6": ["No hacemos ninguna afirmación sobre cómo se trata una promesa o un pago para efectos contributivos.", "No emitimos recibos para impuestos y no decimos que una promesa sea deducible.", "Lo que el programa le diga a sus padrinos sobre impuestos es del programa, y el programa responde por eso."], "s7h": "La licencia y los datos", "s7c": "La plataforma se licencia. La lista de promesas es del programa.", "s7": ["La plataforma se licencia por evento: $49 por equipo, por juego, o $29 si la plantilla tiene menos de ocho.", "No se paga nada por adelantado. El cargo se factura cuando cierra el evento y se paga dentro de siete días.", "El programa puede imprimir o bajar su reporte en cualquier momento.", "Si el cargo no se paga, la licencia de ese evento caduca y sus datos de promesas se retiran de la plataforma. No lo reclamamos más allá de ahí."], "ackH": "Lo que acepta el programa", "ackP": "Al inscribir un equipo, el programa marca que leyó y acepta esta divulgación, además de los Términos de Uso y la Política de Privacidad. Si algo de esto no le sirve a su programa, no lo inscriba — escríbanos y lo hablamos antes.", "verT": "Términos de Uso →", "verP": "Política de Privacidad →", "print": "Imprimir", "back": "← Cada Punto", "pieP": "cadapunto.com/custodia.html", "pieS": "El dinero no pasa por nosotros · Cada Punto · Gostar Digital LLC, Puerto Rico"}, "en": {"kick": "Disclosure", "h1": "The money does not pass through us", "sub": "Gostar Digital LLC · Cada Punto · October 2026", "lede": "Cada Punto is a pledge management system. We record what is pledged and do the arithmetic. The money goes to the program directly; it never passes through here.", "porqueH": "Why the money does not pass through us", "porque1": "Pledging is easy. Keeping the count is the work.", "porque2": "Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people who pledged two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody keeps that count by hand without getting it wrong.", "porque3": "That is what we do: the count. Every pledge is recorded with its name, its cents per point and its cap. When the score goes in, the system works out what each one comes to and the team’s total. The program prints that list and collects the way it always has.", "porque4": "We do not touch the money. We do not process it, verify it, hold it or claim it. What a padrino pays a program is between the two of them — by ATH Móvil, in cash, or however they agree. We are not a party to that payment.", "porque5": "And that suits the program too. If the money came through us there would be a date, a cut-off and somebody else’s account in between, and the program would be waiting on all three. This way it waits for nothing: what it is paid arrives the same day, in its own account.", "porqueCierre": "We manage the pledges. You manage the proceeds.", "s1h": "Who receives the money", "s1c": "The padrino pays the program. There is no step in between.", "s1": ["We do not receive any money.", "The program collects the way it already collects: ATH Móvil, cash, or whatever method it uses. That arrangement is between the padrino and the program.", "We hold nobody’s money, not for a day. We are not a bank, not a trustee, not a custodian."], "s2h": "What Cada Punto does", "s2c": "Records what was pledged and does the arithmetic. That is the product.", "s2": ["Stores each pledge with the padrino’s name, the cents per point, and the cap if one was set.", "When the game’s score goes in, works out what each pledge comes to and the team’s total pledged.", "Shows that total and lets it be printed or downloaded, for the program to work with as it likes."], "s3h": "What we do not do", "s3c": "Said plainly, so nobody is confused.", "s3": ["We do not process payments and we do not bill anyone.", "We do not verify payments. We do not know who paid, and the system has nowhere to record it.", "We keep no receivables and we chase no padrino. When the game closes we send each padrino a notice with the result and what their pledge came to \u2014 a notice, and nothing more: no payment link and no reminders.", "We handle no payment disputes, no chargebacks, and no refunds."], "s4h": "If there is a disagreement", "s4c": "A pledge is between the padrino and the program.", "s4": ["If a padrino says he did not pledge, or pledged something else, that is settled between him and the program. We show what was recorded, and that is as far as it goes.", "If the program does not receive a payment, there is nothing for us to withhold, deduct or claim: we never had that money.", "We are not a party to any payment arrangement and we do not guarantee that a pledge will be paid."], "s5h": "What the program can see", "s5c": "What was pledged, up to date. Nothing we do not know.", "s5": ["The panel shows every pledge, its amount, and the team’s total pledged.", "Where the score comes from depends on the game: in a real game the coach reports it with his code, or we put it in from the schedule he gave us. It sits on the board, visible to anyone with the link.", "The list prints and downloads at any time. It belongs to the program.", "There is no paid column, no outstanding column, no collected column. The system does not know."], "s6h": "Taxes", "s6c": "Each program is responsible for its own tax position.", "s6": ["We make no representation about how a pledge or a payment is treated for tax purposes.", "We do not issue tax receipts and we do not say a pledge is deductible.", "What a program tells its padrinos about taxes is the program’s own, and the program answers for it."], "s7h": "The license and the data", "s7c": "The platform is licensed. The pledge list belongs to the program.", "s7": ["The platform is licensed per event: $49 per team, per game, or $29 if the roster is under eight.", "Nothing is paid up front. The fee is invoiced when the event closes and is due within seven days.", "The program can print or download its report at any time.", "If the fee is not paid, that event\u2019s license lapses and its pledge data is removed from the platform. We pursue it no further."], "ackH": "What the program accepts", "ackP": "When signing a team up, the program ticks that it has read and accepts this disclosure, along with the Terms of Use and the Privacy Policy. If any of this does not work for your program, do not sign up — write to us and we will talk it through first.", "verT": "Terms of Use →", "verP": "Privacy Policy →", "print": "Print", "back": "← Cada Punto", "pieP": "cadapunto.com/custodia.html", "pieS": "The money does not pass through us · Cada Punto · Gostar Digital LLC, Puerto Rico"}};
+var S = {"es": {"kick": "Divulgación", "h1": "El dinero no pasa por nosotros", "sub": "Gostar Digital LLC · Cada Punto · octubre 2026", "lede": "Cada Punto es un sistema de manejo de promesas. Anotamos lo que se promete y hacemos la cuenta. El dinero lo recibe el programa, directo, sin pasar por aquí.", "porqueH": "Por qué el dinero no pasa por nosotros", "porque1": "Prometer es fácil. Calcular cada promesa es el trabajo.", "porque2": "Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que prometieron doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Esa cuenta a mano no la lleva nadie sin equivocarse.", "porque3": "Eso es lo que hacemos: la cuenta. Cada promesa queda anotada con su nombre, sus centavos por punto y su tope. Cuando entra el marcador, el sistema saca lo que le corresponde a cada quien y el total del equipo. El programa imprime esa lista y cobra como siempre ha cobrado.", "porque4": "El dinero no lo tocamos. No lo procesamos, no lo verificamos, no lo guardamos y no lo reclamamos. Lo que un padrino le pague a un programa es entre ellos dos — por ATH Móvil, en efectivo, o como acuerden. No somos parte de ese pago.", "porque5": "Y eso también le conviene al programa. Si el dinero pasara por nosotros habría una fecha, un corte y una cuenta ajena de por medio, y el programa estaría esperando por los tres. Así no espera por nada: lo que le pagan le llega el mismo día, a su propia cuenta.", "porqueCierre": "Nosotros manejamos las promesas. Usted maneja el dinero.", "s1h": "Quién recibe el dinero", "s1c": "El padrino le paga al programa. No hay un paso intermedio.", "s1": ["No recibimos dinero de nadie.", "El programa cobra como ya cobra: ATH Móvil, efectivo, o el método que use. Ese acuerdo es entre el padrino y el programa.", "No guardamos dinero de nadie, ni por un día. No somos banco, ni fideicomiso, ni custodio."], "s2h": "Qué hace Cada Punto", "s2c": "Anotar lo prometido y hacer la cuenta. Eso es el producto.", "s2": ["Guarda cada promesa con el nombre del padrino, los centavos por punto, y el tope si lo puso.", "Cuando entra el marcador del juego, saca lo que corresponde a cada promesa y el total prometido del equipo.", "Enseña ese total y lo deja imprimir o bajar, para que el programa lo trabaje como quiera."], "s3h": "Lo que no hacemos", "s3c": "Dicho de frente, para que nadie se confunda.", "s3": ["No procesamos pagos y no le cobramos a nadie.", "No verificamos pagos. No sabemos quién pagó, y el sistema no tiene dónde anotarlo.", "No llevamos cuentas por cobrar y no perseguimos a ningún padrino. Al cerrar el juego le mandamos a cada padrino un aviso con el resultado y lo que dio su promesa — un aviso, y nada más: sin enlace de pago y sin recordatorios.", "No atendemos disputas de pago, ni contracargos, ni devoluciones."], "s4h": "Si hay un desacuerdo", "s4c": "Una promesa es entre el padrino y el programa.", "s4": ["Si un padrino dice que no prometió, o que prometió otra cosa, eso se resuelve entre él y el programa. Nosotros enseñamos lo que quedó anotado, y hasta ahí.", "Si el programa no recibe un pago, no hay nada que podamos retener, descontar ni reclamar: nunca tuvimos ese dinero.", "No somos parte de ningún acuerdo de pago y no garantizamos que una promesa se pague."], "s5h": "Lo que el programa puede ver", "s5c": "Lo prometido, al día. Nada que no sepamos.", "s5": ["El panel enseña cada promesa, su cantidad, y el total prometido del equipo.", "De dónde sale el marcador depende del juego: en un juego de verdad lo reporta el entrenador con su código, o lo ponemos nosotros desde el calendario que nos dio. Queda en el tablero, a la vista del que tenga el enlace.", "La lista se imprime y se baja en cualquier momento. Es del programa.", "No hay columna de pagado, ni de pendiente, ni de cobrado. El sistema no lo sabe."], "s6h": "Impuestos", "s6c": "Cada programa responde por su propia situación contributiva.", "s6": ["No hacemos ninguna afirmación sobre cómo se trata una promesa o un pago para efectos contributivos.", "No emitimos recibos para impuestos y no decimos que una promesa sea deducible.", "Lo que el programa le diga a sus padrinos sobre impuestos es del programa, y el programa responde por eso."], "s7h": "La licencia y los datos", "s7c": "La plataforma se licencia. La lista de promesas es del programa.", "s7": ["La plataforma se licencia por evento: $49 por equipo, por juego, o $29 si la plantilla tiene menos de ocho.", "No se paga nada por adelantado. El cargo se factura cuando cierra el evento y se paga dentro de siete días.", "El programa puede imprimir o bajar su reporte en cualquier momento.", "Si el cargo no se paga, la licencia de ese evento caduca y sus datos de promesas se retiran de la plataforma. No lo reclamamos más allá de ahí."], "ackH": "Lo que acepta el programa", "ackP": "Al inscribir un equipo, el programa marca que leyó y acepta esta divulgación, además de los Términos de Uso y la Política de Privacidad. Si algo de esto no le sirve a su programa, no lo inscriba — escríbanos y lo hablamos antes.", "verT": "Términos de Uso →", "verP": "Política de Privacidad →", "print": "Imprimir", "back": "← Cada Punto", "pieP": "cadapunto.com/custodia.html", "pieS": "El dinero no pasa por nosotros · Cada Punto · Gostar Digital LLC, Puerto Rico"}, "en": {"kick": "Disclosure", "h1": "The money does not pass through us", "sub": "Gostar Digital LLC · Cada Punto · October 2026", "lede": "Cada Punto is a pledge management system. We record what is pledged and calculate every total. The money goes to the program directly; it never passes through here.", "porqueH": "Why the money does not pass through us", "porque1": "Pledging is easy. Calculating every pledge is the work.", "porque2": "Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people who pledged two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody keeps that count by hand without getting it wrong.", "porque3": "That is what we do: the count. Every pledge is recorded with its name, its cents per point and its cap. When the score goes in, the system works out what each one comes to and the team’s total. The program prints that list and collects the way it always has.", "porque4": "We do not touch the money. We do not process it, verify it, hold it or claim it. What a padrino pays a program is between the two of them — by ATH Móvil, in cash, or however they agree. We are not a party to that payment.", "porque5": "And that suits the program too. If the money came through us there would be a date, a cut-off and somebody else’s account in between, and the program would be waiting on all three. This way it waits for nothing: what it is paid arrives the same day, in its own account.", "porqueCierre": "We manage the pledges. You manage the proceeds.", "s1h": "Who receives the money", "s1c": "The padrino pays the program. There is no step in between.", "s1": ["We do not receive any money.", "The program collects the way it already collects: ATH Móvil, cash, or whatever method it uses. That arrangement is between the padrino and the program.", "We hold nobody’s money, not for a day. We are not a bank, not a trustee, not a custodian."], "s2h": "What Cada Punto does", "s2c": "Records what was pledged and calculates every total. That is the product.", "s2": ["Stores each pledge with the padrino’s name, the cents per point, and the cap if one was set.", "When the game’s score goes in, works out what each pledge comes to and the team’s total pledged.", "Shows that total and lets it be printed or downloaded, for the program to work with as it likes."], "s3h": "What we do not do", "s3c": "Said plainly, so nobody is confused.", "s3": ["We do not process payments and we do not bill anyone.", "We do not verify payments. We do not know who paid, and the system has nowhere to record it.", "We keep no receivables and we chase no padrino. When the game closes we send each padrino a notice with the result and what their pledge came to \u2014 a notice, and nothing more: no payment link and no reminders.", "We handle no payment disputes, no chargebacks, and no refunds."], "s4h": "If there is a disagreement", "s4c": "A pledge is between the padrino and the program.", "s4": ["If a padrino says he did not pledge, or pledged something else, that is settled between him and the program. We show what was recorded, and that is as far as it goes.", "If the program does not receive a payment, there is nothing for us to withhold, deduct or claim: we never had that money.", "We are not a party to any payment arrangement and we do not guarantee that a pledge will be paid."], "s5h": "What the program can see", "s5c": "What was pledged, up to date. Nothing we do not know.", "s5": ["The panel shows every pledge, its amount, and the team’s total pledged.", "Where the score comes from depends on the game: in a real game the coach reports it with his code, or we put it in from the schedule he gave us. It sits on the board, visible to anyone with the link.", "The list prints and downloads at any time. It belongs to the program.", "There is no paid column, no outstanding column, no collected column. The system does not know."], "s6h": "Taxes", "s6c": "Each program is responsible for its own tax position.", "s6": ["We make no representation about how a pledge or a payment is treated for tax purposes.", "We do not issue tax receipts and we do not say a pledge is deductible.", "What a program tells its padrinos about taxes is the program’s own, and the program answers for it."], "s7h": "The license and the data", "s7c": "The platform is licensed. The pledge list belongs to the program.", "s7": ["The platform is licensed per event: $49 per team, per game, or $29 if the roster is under eight.", "Nothing is paid up front. The fee is invoiced when the event closes and is due within seven days.", "The program can print or download its report at any time.", "If the fee is not paid, that event\u2019s license lapses and its pledge data is removed from the platform. We pursue it no further."], "ackH": "What the program accepts", "ackP": "When signing a team up, the program ticks that it has read and accepts this disclosure, along with the Terms of Use and the Privacy Policy. If any of this does not work for your program, do not sign up — write to us and we will talk it through first.", "verT": "Terms of Use →", "verP": "Privacy Policy →", "print": "Print", "back": "← Cada Punto", "pieP": "cadapunto.com/custodia.html", "pieS": "The money does not pass through us · Cada Punto · Gostar Digital LLC, Puerto Rico"}};
 function T(k){ return (S[LANG] && S[LANG][k]) !== undefined ? S[LANG][k] : (S.en[k]||''); }
 function esc(s){ return String(s==null?'':s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
