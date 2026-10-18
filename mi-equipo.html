@@ -177,7 +177,7 @@ var S={
     h1:'Mi equipo',
     lede:'Entra con tu código. En este teléfono queda guardado — no lo vas a escribir otra vez.',
     codeL:'Tu código', codeH:'El mismo que te dimos para tu equipo.',
-    cert:'Entiendo que en el Fortress los puntos los registra el juego, y que en un juego de verdad el marcador que yo reporte es el que se usa para la cuenta de cada padrino.',
+    cert:'Entiendo que el marcador que yo reporte es el que se usa para calcular el total de cada promesa.',
     needCert:'Marca la casilla para certificar los puntos.',
     go:'Entrar',
     bad:'Ese código no sirve.', net:'No entró. Inténtalo otra vez.',
@@ -186,11 +186,11 @@ var S={
     todoL:'El día de juego',
     todo1:'{N} día de juego abierto.',
     todoN:'{N} días de juego abiertos.',
-    todoP:'En el Fortress los cuartos entran solos según se juegan. En un juego de verdad, el marcador lo reportas tú en el tablero del equipo.',
+    todoP:'El marcador lo reportas tú en el tablero del equipo. Hasta que entre, no sale el total de ningún padrino.',
     todoGo:'Ver el tablero',
     nPad:'padrinos',
     aBoard:'Ver el tablero',
-    aRoster:'La plantilla',
+    aRoster:'La plantilla', aReport:'El reporte',
 
     stuck:'¿Algo no sale? <a href="ayuda.html">Ayuda del entrenador →</a>',
     fAyuda:'Ayuda'
@@ -199,7 +199,7 @@ var S={
     h1:'My team',
     lede:'Sign in with your code. It stays on this phone — you will not type it again.',
     codeL:'Your code', codeH:'The same one we gave you for your team.',
-    cert:'I understand that in the Fortress the game records the points, and that in a real game the score I report is the one each padrino\u2019s amount is worked out from.',
+    cert:'I understand that the score I report is the one each padrino\u2019s pledge total is calculated from.',
     needCert:'Check the box to certify the points.',
     go:'Enter',
     bad:'That code does not work.', net:'That did not go through. Try again.',
@@ -208,11 +208,11 @@ var S={
     todoL:'The game day',
     todo1:'{N} game day open.',
     todoN:'{N} game days open.',
-    todoP:'In the Fortress quarters land on their own as they are played. For a real game, you report the score on the team board.',
+    todoP:'You report the score on the team board. Until it goes in, no padrino\u2019s total comes out.',
     todoGo:'See the board',
     nPad:'padrinos',
     aBoard:'See the board',
-    aRoster:'The roster',
+    aRoster:'The roster', aReport:'The report',
 
     stuck:'Something will not work? <a href="ayuda.html">Coach help →</a>',
     fAyuda:'Help'
@@ -387,9 +387,10 @@ function pintar(){
       '</div>'+
       '<div class="acts">'+
         /* El tablero nuevo va por campaña: esta página tiene campañas,
-           no retos, y tablero.html sabe buscar el reto que le toca. */
+           no eventos sueltos, y tablero.html busca el que le toca. */
         '<a class="fill" href="tablero.html?camp='+esc(c.id)+'">'+T('aBoard')+'</a>'+
         '<a class="wide" href="plantilla.html">'+T('aRoster')+'</a>'+
+        '<a class="wide" href="reporte.html">'+T('aReport')+'</a>'+
       '</div>'+
     '</div>';
   }).join('');
