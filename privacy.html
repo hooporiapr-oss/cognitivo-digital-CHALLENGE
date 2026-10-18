@@ -9,145 +9,76 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C}
-*{box-sizing:border-box}
-html{background:#07141E}
-body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
-  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#07141E;line-height:1.6;-webkit-text-size-adjust:100%}
-.wrap{width:min(720px,93vw);margin:0 auto}
-
-header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
-  padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#4FD3F0}
-.mark i{font-style:normal;color:#9FB3C4}
-.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-
-main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
-main .wrap{padding:clamp(20px,4vw,32px) 0 34px}
-
-h1{font-size:clamp(1.5rem,4.4vw,2rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
-.updated{color:var(--mute);font-size:.86rem;margin:0 0 22px}
-h2{font-size:1.08rem;margin:26px 0 6px;font-weight:900;letter-spacing:-.02em}
-p{margin:0 0 12px}
-ul{margin:0 0 14px;padding-left:20px}
-li{margin-bottom:6px}
-.lead{color:var(--mute);margin:0 0 20px}
-strong{font-weight:800}
-
-footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
-footer p{margin:0 0 7px}
-footer .f-co{color:#fff;font-weight:700}
-footer a{color:#4FD3F0;text-decoration:none}
-footer .f-legal{margin:7px 0 0;font-size:.78rem}
-footer .f-dot{padding:0 7px;opacity:.5}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo de terms.html, porque son el mismo tipo de documento:
+   largo, leído de arriba abajo, y consultado por una cláusula
+   suelta. La tipografía manda. */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2;
 }
-html, body{background:#07141E;color:#EAF2F7}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.68;-webkit-text-size-adjust:100%}
+.wrap{width:min(680px,calc(100% - 40px));margin:0 auto}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+main .wrap{padding:44px 0 56px}
+h1{font-size:clamp(2rem,5.6vw,3rem);line-height:1.06;letter-spacing:-.045em;margin:0 0 10px}
+.updated{color:var(--muted);font-size:.86rem;margin:0 0 26px;
+  padding-bottom:20px;border-bottom:3px solid var(--navy)}
+.lead{font-size:1.1rem;color:var(--ink);margin:0 0 34px;max-width:58ch}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── Cada cláusula: el titular en naranja y pequeño, para que la
+   vista encuentre la sección sin que el titular grite. */
+h2{font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin:38px 0 10px;padding-top:22px;border-top:1px solid var(--linea)}
+main h2:first-of-type{border-top:none;padding-top:0}
+p{margin:0 0 15px;color:var(--muted);max-width:62ch}
+strong,b{color:var(--ink);font-weight:750}
+ul{margin:0 0 15px;padding:0;list-style:none;max-width:62ch}
+li{position:relative;padding:9px 0 9px 22px;color:var(--muted);
+  border-top:1px solid var(--linea)}
+li:first-child{border-top:none}
+li::before{content:"";position:absolute;left:0;top:1.05em;
+  width:7px;height:7px;background:var(--orange);border-radius:2px}
+main a{color:var(--navy);font-weight:700;text-decoration:none;
+  border-bottom:2px solid rgba(255,122,24,.5)}
+main a:hover{border-bottom-color:var(--orange);color:var(--orange)}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+footer{background:#0a1420;color:#aeb9c6;padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+footer p{margin:0 0 7px;color:#aeb9c6;max-width:none}
+footer .f-co{color:#fff;font-weight:700}
+footer .f-what{margin:7px auto 0;font-size:.78rem;line-height:1.5;opacity:.75;max-width:54ch}
+footer .f-legal{margin:9px 0 0;font-size:.82rem}
+footer .f-dot{padding:0 8px;opacity:.45}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
-
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
-
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
-
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
+@media print{
+  header,footer,.langb{display:none !important}
+  html,body{background:#fff;color:#000}
+  main .wrap{width:100%;padding:0}
+  h2{color:#000;border-top-color:#000}
+  p,li{color:#000}
+  main a{border-bottom:none;color:#000}
+  h2,li{break-inside:avoid}
 }
-
 </style>
 </head>
 <body>
@@ -178,8 +109,8 @@ h1,h2,h3,h4{color:#EAF2F7}
            ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
   var el = document.getElementById('fWhat');
   if (el) el.textContent = (l === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.';
+    ? 'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.';
 })();
 </script>
     <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
@@ -196,34 +127,39 @@ var BODY = {
 <p class="updated">Last updated 3 October 2026</p>
 
 <p class="lead">This explains what Cada Punto collects, why, and what we do with it. Cada Punto is
-operated by Gostar Digital LLC in Puerto Rico.</p>
+operated by Gostar Digital LLC in Puerto Rico. Cada Punto is a pledge management system: we record
+what is pledged and calculate every total. We process no payments, so we collect no payment data at
+all.</p>
 
 <h2>What we collect</h2>
 <p><strong>From a padrino.</strong> Your name, your email address, the rate you pledge, any
-maximum you set, and the participant you pledged on. If you pay, Stripe handles the payment and tells us only that it succeeded
-and for how much.</p>
-<p><strong>From a program.</strong> The program's name, the coach's email, the game day window
-it sets, the quarters its participants play, and the roster of player names the program chooses to
+maximum you set, and the participant you pledged on. That is the whole record. You pay the program
+directly, by whatever method the two of you agree, and we are not a party to that payment.</p>
+<p><strong>From a program.</strong> The program's name, the coach's email, the date of the game
+it schedules, the final score of that game, and the roster of player names the program chooses to
 add.</p>
 <p><strong>From anyone visiting.</strong> Nothing beyond what your browser sends in the ordinary
 course. We do not use advertising trackers and we do not sell anything about you.</p>
 
 <h2>What we never see</h2>
-<p>Card numbers. Payments are processed by <strong>Stripe, Inc.</strong>, and card details go
-straight to them. We never receive them and they are never stored on our systems.</p>
+<p>Anything to do with a payment. We process no payments and we use no payment processor, so there
+is no card number, no bank detail and no payment record anywhere on our systems. There is nothing
+of that kind to hold, lose or hand over. We also do not know who has paid: the system has nowhere
+to record it.</p>
 
 <h2>Why we hold it</h2>
 <ul>
-  <li>To bill a pledge after a game day closes, and to email you the amount and a payment link.</li>
-  <li>To show a program what it has raised, and to pay it out.</li>
+  <li>To work out what each pledge comes to when a game's score goes in.</li>
+  <li>To show a program its pledge list, and to let it print or download it.</li>
+  <li>To email a padrino their own pledge, and what it came to once the score was in.</li>
   <li>To show the live board while a game day is open, and afterwards.</li>
   <li>To answer you when you write to us.</li>
 </ul>
 
 <h2>What is public</h2>
-<p>The live board shows the program's name, its game day, and — for each participant on the
-roster — the name the program entered, the points in each of their four quarters, and their total.
-Anyone holding the link can see it, during the game day and after it.</p>
+<p>The team board shows the program's name, the date of the game, the roster names the program
+entered, and the final score once it is in. Anyone holding the link can see it, before the game and
+after it.</p>
 
 <p><strong>It does not show a padrino's name, email, rate or amount, and it never shows money at
 all.</strong> A program's coach can see the pledges on their own campaign; nobody else can.</p>
@@ -240,21 +176,23 @@ may ask us to remove a name, and we will do it — write to the address below.</
 <h2>Who else handles it</h2>
 <ul>
   <li><strong>Supabase</strong> — stores the database.</li>
-  <li><strong>Stripe</strong> — processes payments.</li>
   <li><strong>Resend</strong> — sends the emails.</li>
-  <li><strong>Render</strong> — hosts the site and the payment server.</li>
+  <li><strong>Render</strong> — hosts the site and the server.</li>
 </ul>
 <p>Each holds data only to do that job. We do not sell, rent or trade personal information to
 anyone, for any purpose.</p>
 
 <h2>Email</h2>
-<p>We email a padrino about their own pledge: the score, the amount, a payment link, and a
-thank-you once paid. We do not send marketing email and we do not add anyone to a list.</p>
+<p>We email a padrino about their own pledge: that it was recorded, the score, and what the pledge
+came to. We send no bills, no invoices and no payment reminders — collecting is the program's, and
+the program does it its own way. We do not send marketing email and we do not add anyone to a
+list.</p>
 
 <h2>How long we keep it</h2>
-<p>Pledge and payment records are kept while a campaign runs and afterwards for as long as
-accounting and tax rules require. A roster is kept while the program's campaign exists. You may
-ask for your own records to be deleted, subject to records we must keep for tax.</p>
+<p>Pledge records are kept while a campaign runs and while the organization's license is active.
+A roster is kept while the program's campaign exists. If the license is not renewed, the pledge
+data is removed from the platform; before it is removed, the program can download what is theirs.
+You may ask for your own records to be deleted.</p>
 
 <h2>Your choices</h2>
 <p>Write to us and you may ask what we hold about you, ask for it to be corrected, or ask for it
@@ -266,8 +204,8 @@ program's pages — who is signed in on that device. These are not advertising c
 not shared with anyone. Clearing your browser data removes them.</p>
 
 <h2>Security</h2>
-<p>Connections are encrypted. Payment data never reaches us. Access to pledge records requires a
-sign-in. No system is perfect, and we will tell affected people promptly if something goes wrong.</p>
+<p>Connections are encrypted. No payment data ever reaches us, because we never ask for any.
+Access to pledge records requires a sign-in. No system is perfect, and we will tell affected people promptly if something goes wrong.</p>
 
 <h2>Changes</h2>
 <p>We may update this policy. The date at the top says when it last changed.</p>
@@ -282,34 +220,40 @@ PO Box 1980-345, Loíza, Puerto Rico 00772<br>
 <p class="updated">Última actualización: 3 de octubre de 2026</p>
 
 <p class="lead">Esto explica qué recoge Cada Punto, por qué, y qué hacemos con ello. Cada Punto es
-operado por Gostar Digital LLC en Puerto Rico.</p>
+operado por Gostar Digital LLC en Puerto Rico. Cada Punto es un sistema de manejo de promesas:
+anotamos lo que se promete y hacemos la cuenta. No procesamos pagos, así que no recogemos ningún
+dato de pago.</p>
 
 <h2>Qué recogemos</h2>
 <p><strong>De un padrino.</strong> Tu nombre, tu correo, la tarifa que prometes, el máximo que
-pongas si pones uno, y el participante por el que prometiste. Si pagas, Stripe maneja el pago y sólo nos dice que salió bien y por cuánto.</p>
-<p><strong>De un programa.</strong> El nombre del programa, el correo del coach, la ventana del
-día de juego que ponga, los cuartos que jueguen sus participantes, y la lista de nombres de
+pongas si pones uno, y el participante por el que prometiste. Ese es el registro completo. Tú le
+pagas al programa directo, por el método que ustedes dos acuerden, y nosotros no somos parte de
+ese pago.</p>
+<p><strong>De un programa.</strong> El nombre del programa, el correo del coach, la fecha del
+juego que agende, el marcador final de ese juego, y la lista de nombres de
 jugadores que el programa decida añadir.</p>
 <p><strong>De quien visita.</strong> Nada más allá de lo que manda tu navegador normalmente. No
 usamos rastreadores de publicidad y no vendemos nada sobre ti.</p>
 
 <h2>Lo que nunca vemos</h2>
-<p>Números de tarjeta. Los pagos los procesa <strong>Stripe, Inc.</strong>, y los datos de la
-tarjeta van directo a ellos. Nunca nos llegan y nunca se guardan en nuestros sistemas.</p>
+<p>Nada que tenga que ver con un pago. No procesamos pagos y no usamos ningún procesador, así que
+no hay número de tarjeta, ni dato de banco, ni registro de pago en ninguno de nuestros sistemas.
+No hay nada de eso que guardar, que perder ni que entregar. Tampoco sabemos quién pagó: el sistema
+no tiene dónde anotarlo.</p>
 
 <h2>Por qué lo guardamos</h2>
 <ul>
-  <li>Para cobrar una promesa después de que cierre el día de juego, y mandarte la cantidad y un
-      enlace de pago.</li>
-  <li>Para enseñarle a un programa lo que ha recaudado, y pagárselo.</li>
+  <li>Para sacar lo que le corresponde a cada promesa cuando entra el marcador del juego.</li>
+  <li>Para enseñarle al programa su lista de promesas, y dejarlo imprimirla o bajarla.</li>
+  <li>Para mandarle a un padrino su propia promesa, y lo que dio cuando entró el marcador.</li>
   <li>Para mostrar el tablero en vivo mientras el día de juego está abierto, y después.</li>
   <li>Para contestarte cuando nos escribes.</li>
 </ul>
 
 <h2>Qué es público</h2>
-<p>El tablero en vivo muestra el nombre del programa, su día de juego y — por cada participante
-de la lista — el nombre que puso el programa, los puntos de cada uno de sus cuatro cuartos, y su
-total. Cualquiera que tenga el enlace puede verlo, durante el día de juego y después.</p>
+<p>El tablero del equipo muestra el nombre del programa, la fecha del juego, los nombres de la
+lista que puso el programa, y el marcador final cuando entre. Cualquiera que tenga el enlace puede
+verlo, antes del juego y después.</p>
 
 <p><strong>No muestra el nombre, el correo, la tarifa ni la cantidad de ningún padrino, y no
 muestra dinero en absoluto.</strong> El coach del programa ve las promesas de su propia campaña;
@@ -328,23 +272,23 @@ a la dirección de abajo.</p>
 <h2>Quién más lo maneja</h2>
 <ul>
   <li><strong>Supabase</strong> — guarda la base de datos.</li>
-  <li><strong>Stripe</strong> — procesa los pagos.</li>
   <li><strong>Resend</strong> — manda los correos.</li>
-  <li><strong>Render</strong> — aloja el sitio y el servidor de pagos.</li>
+  <li><strong>Render</strong> — aloja el sitio y el servidor.</li>
 </ul>
 <p>Cada uno guarda datos sólo para hacer ese trabajo. No vendemos, alquilamos ni intercambiamos
 información personal con nadie, para ningún fin.</p>
 
 <h2>Correo</h2>
-<p>Le escribimos a un padrino sobre su propia promesa: el marcador, la cantidad, un enlace de
-pago, y un gracias cuando paga. No mandamos correo de publicidad y no metemos a nadie en una
+<p>Le escribimos a un padrino sobre su propia promesa: que quedó anotada, el marcador, y lo que
+dio la promesa. No mandamos facturas, ni cuentas, ni avisos de cobro — cobrar es del programa, y
+el programa lo hace a su manera. No mandamos correo de publicidad y no metemos a nadie en una
 lista.</p>
 
 <h2>Cuánto tiempo lo guardamos</h2>
-<p>Los registros de promesas y pagos se guardan mientras corre la campaña y después por el tiempo
-que exijan las reglas de contabilidad e impuestos. Una lista se guarda mientras exista la campaña
-del programa. Puedes pedir que borremos tus registros, salvo lo que tengamos que guardar por
-impuestos.</p>
+<p>Los registros de promesas se guardan mientras corre la campaña y mientras la licencia de la
+organización esté activa. Una lista se guarda mientras exista la campaña del programa. Si la
+licencia no se renueva, los datos de promesas se retiran de la plataforma; antes de retirarlos, el
+programa puede bajarse lo suyo. Puedes pedir que borremos tus registros.</p>
 
 <h2>Tus opciones</h2>
 <p>Escríbenos y puedes preguntar qué tenemos sobre ti, pedir que lo corrijamos, o pedir que lo
@@ -356,8 +300,8 @@ programa — quién entró en ese aparato. No son cookies de publicidad y no se 
 Borrar los datos del navegador los elimina.</p>
 
 <h2>Seguridad</h2>
-<p>Las conexiones van cifradas. Los datos de pago nunca nos llegan. Ver los registros de promesas
-requiere entrar con credenciales. Ningún sistema es perfecto, y si algo sale mal avisamos pronto a
+<p>Las conexiones van cifradas. Ningún dato de pago nos llega, porque nunca pedimos ninguno. Ver
+los registros de promesas requiere entrar con credenciales. Ningún sistema es perfecto, y si algo sale mal avisamos pronto a
 quien le afecte.</p>
 
 <h2>Cambios</h2>
