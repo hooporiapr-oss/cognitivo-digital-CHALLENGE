@@ -10,7 +10,7 @@
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/scoreboard.html">
 <meta property="og:title" content="Cada Punto">
-<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego se sabe el marcador final y lo que dio cada promesa.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,7 +18,7 @@
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cada Punto">
-<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego les llega el marcador final y el enlace para pagar.">
+<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo. Al terminar el juego se sabe el marcador final y lo que dio cada promesa.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -285,107 +285,105 @@ footer a{color:#8FA8C0;text-decoration:none}
 .f-ayuda a{color:#8FA8C0;text-decoration:none;font-weight:800}
 
 /* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
+   EL LOOK NUEVO — crema, navy y naranja
+
+   Va al final a proposito: la geometria de arriba (las filas de
+   juego, el cuadro, los chips de tarifa) se queda como esta y esto
+   manda encima, solo el color. Antes aqui vivia la cancha de noche.
    ══════════════════════════════════════════════════════════════ */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --hueso:#fff;
+  /* Las que ya usaba esta pagina, apuntando al look nuevo */
+  --ink:#1b2937; --mute:#617083; --line:#e7e6e2; --tint:#ffffff;
+  --accent:#ff7a18; --good:#0b7a5a; --bad:#b4231c; --ball:#ff7a18;
+  --paper:#1b2937; --panel:#ffffff; --gold:#ff7a18; --edge:#e7e6e2;
 }
-html, body{background:#07141E;color:#EAF2F7}
+html, body{background:var(--cream);color:var(--ink)}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.wrap{width:min(760px,calc(100% - 40px))}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+header, .top{background:var(--navy);border-bottom:1px solid #ffffff22}
+header .bar{padding:18px 0}
+.mark, .mark .wm{color:#fff !important;text-decoration:none !important;
+  font-size:1.05rem !important;font-weight:900 !important;
+  letter-spacing:.07em !important;text-transform:uppercase}
+.mark em, .wm em{font-style:normal;color:#fff !important}
+.mark i,  .wm i {font-style:normal;color:var(--orange) !important}
+@media(max-width:380px){ .mark, .mark .wm{font-size:.92rem !important} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  border-radius:7px;padding:8px 11px;font-weight:700}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+footer{background:#0a1420;color:#aeb9c6;border-top:none}
+footer a, .f-ayuda a{color:#aeb9c6}
+footer a:hover, .f-ayuda a:hover{color:var(--orange)}
+footer .f-co{color:#fff}
+footer b{color:#fff}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── Las fichas de juego, blancas sobre crema ─────────────────── */
+.game, .fixture, .playcard, .demo, .est, .total, .readlink, .unl, .sline{
+  background:#fff;border-color:var(--line);border-radius:14px;
+  box-shadow:0 8px 25px #17243806}
+.game.played{background:#f4f2ee}
+.game.locked{background:#fff;opacity:.62}
+.game.next{border-color:var(--orange)}
+.dtag, .tagl, .tagn{background:var(--cream);color:var(--mute);border-radius:999px}
+.game.played .dtag{background:var(--cream);color:var(--good)}
+.game .score .w{color:var(--orange)}
+.crest{background:#fff;border:1px solid var(--line)}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-/* El del chat es naranja y de los suyos: sobre naranja, la noche. */
-.chat .btn{background:#FF8A2B;color:#07141E}
-.chat .btn:hover{background:#07141E;color:#FF8A2B}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+/* ── Lo que se escribe ────────────────────────────────────────── */
+input, select, textarea{background:#fff;border:1px solid #d6d9d6;color:var(--ink);
+  border-radius:10px}
+input::placeholder, textarea::placeholder{color:#9aa6b2}
+input:focus, select:focus, textarea:focus{border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,122,24,.18);outline:none}
+label{color:var(--ink);font-weight:700}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
+/* ── Botones ──────────────────────────────────────────────────── */
+.btn, button.btn, a.btn{background:var(--navy);border:1px solid var(--navy);color:#fff;
+  border-radius:9px;font-weight:800}
+.btn:hover{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.btn.go, .btn.hot, .btn.naranja, .cta{background:var(--orange);border-color:var(--orange);
+  color:#111a24}
+.btn.go:hover, .cta:hover{opacity:.92;background:var(--orange);color:#111a24}
+.btn.line, .btn.ghost, .btn.sec{background:transparent;border:1px solid var(--navy);
+  color:var(--navy)}
+.btn.line:hover{background:var(--navy);color:#fff}
+.btn.small{border-radius:8px}
+.btn.small.dead{opacity:.45}
+.btn:disabled{opacity:.5}
+.more{background:#fff;border:1px solid var(--line);color:var(--navy);border-radius:999px}
+.more:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
+/* ── Los chips de tarifa ──────────────────────────────────────── */
+.rate{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:11px}
+.rate small{color:var(--mute)}
+.rate.on{background:var(--orange);border-color:var(--orange);color:#111a24}
+.rate.on small{color:#111a24;opacity:.75}
+.dv{background:#fff;border:1px solid var(--line);color:var(--mute);border-radius:999px}
+.dv:hover{border-color:var(--navy);color:var(--navy)}
+.dv.on{background:var(--navy);border-color:var(--navy);color:#fff}
 
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
+/* ── El desglose y el total ───────────────────────────────────── */
+.es-l span{color:var(--mute)}
+.es-l b, .es-tot b{color:var(--ink)}
+.es-note{color:var(--mute)}
+.total .big{color:var(--ink)}
+.total .sub, .total .cap{color:var(--mute)}
+.est{border-left:4px solid var(--orange)}
+.demo{border:2px dashed var(--orange);background:#fff}
+.demo b{color:var(--orange)}
+.demo span{color:var(--mute)}
 
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
+.msg.bad, .smsg.bad{color:var(--bad)}
+.msg.ok, .smsg.ok{color:var(--good)}
+.lede, .cp, .who, .sub, .nota, .forwho, .whoteam-sub, .fine, .f-what{color:var(--mute)}
+h1,h2,h3,h4{color:var(--ink)}
+main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go),
+.wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:var(--navy);font-weight:700}
+hr, .sep, .div{border-color:var(--line);background:var(--line)}
 </style>
 </head>
 <body>
@@ -417,8 +415,8 @@ h1,h2,h3,h4{color:#EAF2F7}
            ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
   var el = document.getElementById('fWhat');
   if (el) el.textContent = (l === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.';
+    ? 'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.';
 })();
 </script>
     <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
@@ -429,7 +427,7 @@ h1,h2,h3,h4{color:#EAF2F7}
 </footer>
 
 <script>
-// El servidor que manda los correos. Mismo que usan pay.html y equipo.html.
+// El servidor. Mismo que usa equipo.html.
 var PAY_API='https://basketball-money-payments.onrender.com';
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
@@ -489,13 +487,12 @@ var S = {
     capLabel:'Most you want to pay (optional)',
     estTitle:'If they score {N}, which is about their average',
     esPoints:'{N} points to the program',
-    esFee:'Platform fee (20%)',
-    esPay:'You would pay',
-    esNote:'The fee is added on top — the program receives every dollar you pledged. Nothing is charged until the game is played, and you are billed on the points they actually score.',
+    esPay:'You would pledge',
+    esNote:'Nothing is charged, ever, by anyone, until the game is played. Afterwards you pay the program directly, on the points they actually scored.',
     minNote:'Minimum $5 per pledge.',
     send:'Pledge',
     back:'← Back to the schedule',
-    thanks:'Pledge recorded. We will email you after the game with the score and a link to pay.',
+    thanks:'Pledge recorded. When the game closes you will get a notice with the final score and what your pledge came to. You pay the program directly.',
     errMin:'That comes to less than $5. Choose a higher rate.',
     errWho:'Your name and email, please.',
     showPath:'See the path to the final · {N} more',
@@ -508,7 +505,7 @@ var S = {
     errGen:'Could not record the pledge. Try again.',
     whoAsked:'Who asked you? (optional)', nobody:'Nobody in particular',
     notDonation:'Your pledge is a voluntary contribution to the program. Nothing is won or paid out.',
-    feeNote:'Payment processing and the 20% platform fee are added on top — the program receives your full pledge.'
+    feeNote:'Cada Punto takes no payment and charges you nothing. You pay the program directly.'
   },
   es:{
     pointsCap:'Puntos esta temporada',
@@ -525,7 +522,7 @@ var S = {
     allDivs:'Todas', noneHere:'Todavía no hay juegos de esa escuadra.',
     howPaid:'Cómo se paga el programa', howPaidP:'Para jugadores y familias \u2014 dos minutos.',
     demoH:'Esto es una demostración',
-    demoP:'Un equipo inventado, para que veas cómo funciona un tablero. Los juegos, los marcadores y el dinero son de ejemplo — aquí no se cobra nada.',
+    demoP:'Un equipo inventado, para que veas cómo funciona un tablero. Los juegos, los marcadores y el dinero son de ejemplo — aquí no se promete nada de verdad.',
     noCampH:'Te falta el enlace de tu equipo',
     noCampP:'Cada programa tiene su propio tablero y no están en una lista pública. El enlace lo manda tu coach al grupo del equipo — pídeselo si no lo tienes.',
     noCampGo:'¿Tu equipo todavía no recauda?',
@@ -556,13 +553,12 @@ var S = {
     capLabel:'Lo máximo que quieres pagar (opcional)',
     estTitle:'Si anotan {N}, que es más o menos su promedio',
     esPoints:'{N} puntos para el programa',
-    esFee:'Cargo de plataforma (20%)',
-    esPay:'Tú pagarías',
-    esNote:'El cargo se suma encima — el programa recibe completo lo que prometiste. No se cobra nada hasta que se juegue, y se te cobra por los puntos que de verdad anoten.',
+    esPay:'Prometerías',
+    esNote:'Nadie te cobra nada hasta que se juegue. Después le pagas directo al programa, por los puntos que de verdad anotaron.',
     minNote:'Mínimo $5 por promesa.',
     send:'Prometer',
     back:'← Volver al calendario',
-    thanks:'Promesa registrada. Te escribimos después del juego con el marcador y un enlace para pagar.',
+    thanks:'Promesa registrada. Al cerrar el juego te llega un aviso con el marcador final y lo que dio tu promesa. Le pagas directo al programa.',
     errMin:'Eso da menos de $5. Escoge una tarifa más alta.',
     errWho:'Tu nombre y tu correo, por favor.',
     showPath:'Ver el camino a la final · {N} más',
@@ -575,7 +571,7 @@ var S = {
     errGen:'No se pudo registrar la promesa. Intenta otra vez.',
     whoAsked:'¿Quién te invitó? (opcional)', nobody:'Nadie en particular',
     notDonation:'Tu promesa es una contribución voluntaria al programa. No se gana ni se paga nada a cambio.',
-    feeNote:'El procesamiento del pago y el 20% de plataforma se añaden encima — el programa recibe tu promesa completa.'
+    feeNote:'Cada Punto no recibe pagos y a ti no te cobra nada. Le pagas directo al programa.'
   }
 };
 
@@ -1044,6 +1040,17 @@ function draw(){
   // juego y no se entiende nada.
   upcoming = chainOrder(upcoming);
   var open = upcoming.filter(function(g){ return g.status === 'scheduled' && !g.started; });
+
+  /* Un evento es UN juego. Si solo hay uno abierto para promesas no
+     hay calendario que enseñar: se abre su formulario directo, que es
+     a lo que vino el padrino. Con mas de uno se enseña la lista —
+     pasa cuando un programa corre varios eventos a la vez, y ahi si
+     hace falta escoger. */
+  if (!JUMPED && !PICKED && open.length === 1){
+    JUMPED = true;
+    PICKED = open[0];
+    return drawPledge();
+  }
   var results  = shown.filter(function(g){ return g.status === 'played'; }).reverse();
 
   // Qué tan adentro del cuadro está cada juego, para indentarlo.
@@ -1171,19 +1178,17 @@ function typicalPoints(){
   return Math.round(sum / played.length);
 }
 
-// El desglose: lo que recibe el programa, el cargo, y lo que paga
-// el padrino. Tres líneas, antes de prometer nada.
+// El desglose. Antes eran tres lineas porque habia un cargo encima
+// del pago; ya no hay cargo ni pago nuestro, asi que es una sola:
+// lo que promete, que es lo que el programa le va a pedir.
 function estimate(rate){
   var pts  = typicalPoints();
   var team = rate * pts;
-  var fee  = team * 0.20;
 
   return '<span class="es-l"><span>' + T('esPoints', { N: pts }) + '</span>' +
            '<b>' + money(team) + '</b></span>' +
-         '<span class="es-l"><span>' + T('esFee') + '</span>' +
-           '<span>+' + money(fee) + '</span></span>' +
          '<span class="es-l es-tot"><b>' + T('esPay') + '</b>' +
-           '<b>' + money(team + fee) + '</b></span>' +
+           '<b>' + money(team) + '</b></span>' +
          '<span class="es-note">' + T('esNote') + '</span>';
 }
 
