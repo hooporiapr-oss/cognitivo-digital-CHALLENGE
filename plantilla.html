@@ -9,199 +9,118 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* La plantilla de un equipo, del lado del entrenador.
-
-   Dos cosas que esta página hace a propósito:
-
-   1. Quitar a un nene no lo borra — lo saca de la lista. Se queda
-      abajo, en gris, y vuelve con un toque. Un borrado de verdad
-      falla cuando el nene tiene promesas, y no hay nada peor que
-      un entrenador mirando un error sin salida. El borrado de
-      verdad es cosa del admin.
-
-   2. No se enseña el correo ni el teléfono de nadie. La tabla los
-      guarda, pero son datos de un menor y para armar una plantilla
-      no hacen falta. Las funciones tampoco los devuelven. */
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
-      --ball:#FF7A18;--good:#0B7A5A;--bad:#B4231C}
-*{box-sizing:border-box}
-html{background:#07141E}
-body{margin:0;font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  color:var(--ink);background:#07141E;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{width:min(720px,93vw);margin:0 auto}
-
-header{background:#12202E;border-bottom:1px solid #0B1724;padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#FF8A2B}
-.mark i{font-style:normal;color:#6FD83C}
-.hright{display:flex;align-items:center;gap:10px}
-.who{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#C8D6E2}
-.out,.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-
-main{padding:22px 0 60px}
-h1{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;letter-spacing:-.03em;margin:0 0 4px}
-.lede{color:var(--mute);font-size:.9rem;margin:0 0 20px}
-h2{font-size:.56rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mute);margin:26px 0 8px}
-label{display:block;font-size:.56rem;font-weight:900;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--mute);margin-bottom:4px}
-input[type=text],select,textarea{width:100%;font:inherit;font-weight:700;padding:9px 10px;
-  border:2px solid var(--line);border-radius:4px;background:#07141E;color:var(--ink)}
-textarea{font-weight:500;min-height:104px;resize:vertical;line-height:1.5}
-.btn{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--ink);
-  color:#fff;font:inherit;font-weight:900;padding:12px 16px;cursor:pointer;margin-top:10px;
-  text-align:center;text-decoration:none}
-.btn.go{background:var(--accent)}
-.btn.line{background:none;color:var(--ink);border:2px solid var(--ink)}
-.msg{font-size:.85rem;font-weight:700;margin-top:8px;min-height:1px}
-.msg.bad{color:var(--bad)} .msg.ok{color:var(--good)}
-.gate{border:2px solid var(--ink);border-radius:4px;padding:14px;max-width:420px}
-.hide{display:none}
-.help{color:var(--mute);font-size:.85rem;margin:6px 0 0}
-.box{border:2px solid var(--line);border-radius:6px;padding:15px 16px;margin:0 0 14px}
-
-.tally{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:0 0 12px}
-.tal{border:1px solid var(--line);border-radius:5px;padding:8px 6px;text-align:center;
-  background:var(--tint)}
-.tal b{display:block;font-size:1.3rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
-.tal span{font-size:.54rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--mute)}
-
-.tally.three{grid-template-columns:repeat(3,1fr)}
-.tal.wait b{color:var(--ball)}
-/* Los que esperan: aparte, y con borde naranja, porque es lo único
-   aquí que no avanza solo si el entrenador no lo mira. */
-.waits{border:3px solid var(--ball);background:#0E2232;border-radius:6px;
-  padding:14px 15px;margin:0 0 16px}
-.waits b{display:block;font-size:.58rem;font-weight:900;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:5px}
-.waits p{margin:0 0 11px;font-size:.87rem;color:var(--mute)}
-.waits .plist{background:#07141E}
-.plist{border:2px solid var(--line);border-radius:6px;overflow:hidden}
-.pl{display:flex;align-items:center;gap:10px;padding:9px 11px;border-bottom:1px solid var(--line)}
-.pl:last-child{border-bottom:0}
-.pl.off{background:var(--tint);opacity:.6}
-.pl .nm{flex:1 1 auto;min-width:0;font-weight:700;font-size:.95rem;overflow-wrap:anywhere}
-.pl .nm small{display:block;font-size:.6rem;font-weight:900;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--mute);margin-top:1px}
-.pl .act{flex:0 0 auto;display:flex;gap:5px}
-.pl .act button{border:2px solid var(--line);background:#07141E;color:var(--mute);border-radius:4px;
-  padding:6px 9px;font:inherit;font-weight:800;font-size:.72rem;cursor:pointer}
-.pl .act button.on{border-color:var(--ink);color:var(--ink)}
-.pl .act button.del{border-color:#E8C4C2;color:var(--bad)}
-
-/* editar una fila, en su sitio */
-.ed{padding:11px;background:var(--tint);border-bottom:1px solid var(--line)}
-.ed .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.ed .btns{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
-.ed .btns .btn{margin-top:0;padding:9px 12px;font-size:.85rem}
-
-footer{background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem}
-footer a{color:#8FA8C0;text-decoration:none}
-footer .f-dot{padding:0 7px;opacity:.5}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo del resto del sitio. Cambia la piel; el marcado y el
+   guion se quedaron como estaban. */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2; --bad:#b4231c; --good:#0b7a5a;
 }
-html, body{background:#07141E;color:#EAF2F7}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(760px,calc(100% - 40px));margin:0 auto}
+.hide{display:none !important}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.hright{display:flex;align-items:center;gap:9px}
+.who{color:#c8d2dd;font-size:.8rem;font-weight:600;max-width:11ch;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.out,.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.out:hover,.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+main .wrap{padding:38px 0 46px}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.1;letter-spacing:-.04em;margin:0 0 12px}
+h2{font-size:1.25rem;letter-spacing:-.025em;margin:34px 0 12px}
+.lede{color:var(--muted);margin:0 0 24px;max-width:56ch}
+.help,.cp,.sub,.nota{color:var(--muted);font-size:.88rem}
+label{display:block;font-weight:700;font-size:.9rem;margin:16px 0 6px}
+input[type=text],select,textarea{width:100%;padding:13px 14px;border:1px solid #d6d9d6;
+  border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,122,24,.18)}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── La puerta del código ─────────────────────────────────────── */
+.gate{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:clamp(22px,5vw,32px);box-shadow:0 8px 25px #17243808}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+/* ── Botones ──────────────────────────────────────────────────── */
+.btn,.cta{display:inline-block;border:0;border-radius:9px;padding:14px 22px;
+  background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:1rem;
+  cursor:pointer;text-decoration:none;text-align:center}
+.btn.go,.cta{background:var(--orange);color:#111a24;width:100%;margin-top:18px}
+.btn.line{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.btn.line:hover{background:var(--navy);color:#fff}
+.btn:hover,.cta:hover{opacity:.92}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{margin:12px 0 0;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:var(--bad)}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
+/* ── La ventana de promesas ───────────────────────────────────── */
+.box{background:#fff;border:1px solid var(--linea);border-left:5px solid var(--orange);
+  border-radius:14px;padding:16px 18px;margin:0 0 20px;box-shadow:0 8px 25px #17243806}
+.box p{margin:0;color:var(--muted);font-size:.95rem}
 
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
+/* ── Los que esperan aprobación ───────────────────────────────── */
+.waits{background:#fff;border:1px solid rgba(255,122,24,.45);border-left:5px solid var(--orange);
+  border-radius:16px;padding:20px 22px;margin:0 0 22px;box-shadow:0 8px 25px #17243808}
+.waits b{display:block;color:var(--orange);font-size:.72rem;font-weight:800;
+  letter-spacing:.13em;text-transform:uppercase;margin-bottom:4px}
+.waits p{margin:0 0 12px;color:var(--muted);font-size:.93rem}
+.waits .plist{background:transparent;border:0;box-shadow:none;padding:0}
 
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
+/* ── La lista ─────────────────────────────────────────────────── */
+.plist{background:#fff;border:1px solid var(--linea);border-radius:16px;
+  overflow:hidden;box-shadow:0 8px 25px #17243808}
+.pl{display:flex;align-items:center;gap:12px;padding:14px 18px;
+  border-top:1px solid var(--linea)}
+.pl:first-child{border-top:none}
+.pl:last-child{border-bottom:none}
+.pl .nm{flex:1 1 auto;font-weight:700;font-size:1rem}
+.pl .nm small{display:block;color:var(--muted);font-weight:500;font-size:.82rem;margin-top:2px}
+.pl.off{opacity:.5}
+.pl.off .nm{text-decoration:line-through}
+.pl .act{display:flex;gap:7px;flex:0 0 auto}
+.pl .act button{border:1px solid var(--linea);background:var(--cream);color:var(--muted);
+  border-radius:8px;padding:8px 11px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.pl .act button:hover{border-color:var(--navy);color:var(--navy)}
+.pl .act button.on{background:var(--orange);border-color:var(--orange);color:#111a24}
+.pl .act button.del{color:var(--bad);border-color:#f0c9c5}
 
+/* ── Editar un nombre ─────────────────────────────────────────── */
+.ed{padding:14px 18px;background:var(--cream);border-top:1px solid var(--linea)}
+.ed .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ed .btns{display:flex;gap:9px;margin-top:11px}
+.ed .btns .btn{flex:1 1 auto;margin-top:0;padding:11px 14px;font-size:.92rem}
+@media(max-width:420px){ .ed .two{grid-template-columns:1fr} }
 
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
+/* ── El contador ──────────────────────────────────────────────── */
+.tally{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:0 0 22px}
+.tally.three{grid-template-columns:repeat(3,1fr)}
+.tal{background:#fff;border:1px solid var(--linea);border-radius:13px;
+  padding:14px 12px;text-align:center;box-shadow:0 8px 25px #17243806}
+.tal b{display:block;font-size:1.6rem;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.tal span{display:block;color:var(--muted);font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+.tal.wait b{color:var(--orange)}
 
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
+footer{background:#0a1420;color:#aeb9c6;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+footer .f-dot{padding:0 8px;opacity:.45}
 </style>
 </head>
 <body>
@@ -325,7 +244,7 @@ var S={
     noReto:'Todavía no hay día de juego abierto, así que no hay enlace que mandar. Abre uno y los enlaces salen solos.',
     cerrado:'El juego ya empezó: no entran promesas nuevas. Las que ya estaban siguen en pie.',
     ventana:'Se promete hasta el {D} — después se juega.',
-    msgTxt:'{N} está en {E}. Este es su enlace — mándaselo a quien quieras que prometa por sus puntos. No se paga nada ahora: se paga al acabar el juego, según lo que anote.',
+    msgTxt:'{N} está en {E}. Este es su enlace — mándaselo a quien quieras que prometa por sus puntos. No se paga nada ahora: al acabar el juego sacamos la cuenta, y el padrino le paga al programa directo.',
     del:'Borrar',
     askDel:'¿Borrar a {N} para siempre? Esto no se deshace.',
     gone:'{N} borrado.',
@@ -369,7 +288,7 @@ var S={
     noReto:'No game day is open yet, so there is no link to send. Open one and the links appear on their own.',
     cerrado:'The game has started: no new pledges. The ones already made still stand.',
     ventana:'Pledging is open until {D} — then they play.',
-    msgTxt:'{N} is on {E}. This is their link — send it to anyone you want pledging on their points. Nothing is paid now: it is paid when the game ends, based on what they score.',
+    msgTxt:'{N} is on {E}. This is their link — send it to anyone you want pledging on their points. Nothing is paid now: when the game ends we calculate every total, and the padrino pays the program directly.',
     del:'Delete',
     askDel:'Delete {N} for good? This cannot be undone.',
     gone:'{N} deleted.',
@@ -505,12 +424,15 @@ function cargar(){
    la campaña, el id del nene y su escuadra si la hay.
    ══════════════════════════════════════════════════════════════════ */
 function enlaceDe(p){
-  /* Lleva el RETO, no la campaña: se promete por los puntos de este
-     nene en su juego de cuatro cuartos, no por los del equipo en un
-     juego del calendario. Null cuando no hay reto abierto — mejor que
-     un enlace con "undefined" dentro repartido a doce familias. */
-  if (!RETO || !RETO.hay || !RETO.open) return null;
-  return location.origin + '/prometer.html?c=' + RETO.challenge_id + '&p=' + p.id;
+  /* Lleva la CAMPAÑA y el nene: se promete por los puntos del equipo
+     en el juego, y el nene va en el enlace para que la promesa quede
+     anotada a su nombre — es él quien consiguió al padrino. El
+     tablero ya sabe leer ?p= y lo deja escogido.
+
+     Null cuando todavía no hay campaña, que es mejor que repartirle a
+     doce familias un enlace con "undefined" dentro. */
+  if (!CID) return null;
+  return location.origin + '/scoreboard.html?c=' + CID + '&p=' + p.id;
 }
 
 function cuandoCP(iso){
