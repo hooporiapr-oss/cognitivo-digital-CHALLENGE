@@ -4,23 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101c2a">
-<title>Cada Punto Cuenta | We Manage the Pledges</title>
-<link rel="icon" href="cadapunto.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Cada Punto Cuenta">
-<meta property="og:url" content="https://cadapunto.com/">
-<meta property="og:title" content="Cada punto cuenta.">
-<meta property="og:description" content="Un equipo. Un juego. Los jugadores consiguen padrinos, el equipo juega, y cada padrino recibe el resultado y el total de su promesa.">
-<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="es_PR">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cada punto cuenta.">
-<meta name="twitter:description" content="Un equipo. Un juego. Los jugadores consiguen padrinos, el equipo juega, y cada padrino recibe el resultado y el total de su promesa.">
-<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
-<meta name="description" content="One team. One game. Automated pledge management for basketball programs.">
+<title>Anotado | Digital Basketball. Every point is recorded.</title>
+<meta name="description" content="Pledge management for scored challenges. Each player takes his run, the game records his points, and every padrino is told what their pledge came to.">
+<!-- Sin og:image ni favicon todavía: apuntar a un archivo que no existe
+     deja la vista previa de WhatsApp en blanco igual que no ponerla, y
+     además un 404 en cada carga. Cuando haya anotado.png y
+     anotado-share.jpg, se añaden aquí y en el resto de las páginas. -->
 <style>
+/* La misma hoja que cadapunto.com. Son dos productos de la misma casa
+   y tienen que parecerlo: crema, navy, naranja, Inter. */
 :root{--navy:#101c2a;--navy2:#192b3d;--orange:#ff7a18;--cream:#faf8f4;--ink:#1b2937;--muted:#617083}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -48,6 +40,23 @@ header{background:var(--navy);color:white;border-bottom:1px solid #ffffff22}
 .ball:before{inset:-35% 34%}
 .ball:after{inset:34% -35%}
 .ball .line{position:absolute;background:#3d251d;width:120%;height:7px;top:50%;left:-10%}
+/* ── Las dos tarjetas de jugar ────────────────────────────────────
+   Van pegadas al hero a propósito: el titular promete una chicharra
+   y un número, y lo siguiente que se puede hacer es ir a buscarlo.
+   Explicar la recogida de fondos viene después. */
+.play{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+.pcard{background:white;border:1px solid #e7e6e2;border-radius:16px;padding:28px;
+  box-shadow:0 8px 25px #17243808;display:flex;flex-direction:column}
+.pcard.hot{border-color:rgba(255,122,24,.55)}
+.pcard .tag{color:var(--orange);font-weight:900;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase}
+.pcard h3{font-size:1.45rem;letter-spacing:-.03em;margin:12px 0 8px}
+.pcard p{color:var(--muted);margin:0;flex:1 1 auto}
+.pcard .button{align-self:flex-start;margin-top:20px}
+.pcard .button.quiet{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.pcard .button.quiet:hover{background:var(--navy);color:white}
+.playnote{color:var(--muted);margin:22px 0 0;max-width:62ch}
+@media(max-width:750px){.play{grid-template-columns:1fr}}
 .section{padding:84px 0}
 .section h2{font-size:clamp(2rem,4vw,3rem);line-height:1.14;letter-spacing:-.035em;margin:8px 0 18px}
 .intro{color:var(--muted);max-width:700px;font-size:1.1rem}
@@ -100,54 +109,81 @@ button.lang{border:1px solid #ffffff55;background:transparent;color:white;paddin
 </style>
 </head>
 <body>
+
 <header>
 <div class="wrap nav">
-<a class="brand" href="#top">CADA PUNTO <span>CUENTA</span></a>
+<a class="brand" href="#top">ANOTADO<span>.</span></a>
 <nav class="navlinks">
-<a href="#how" data-i="navHow">How It Works</a>
-<a href="#faq" data-i="navFaq">FAQ</a>
+<a href="#play" data-i="navPlay">Play it</a>
+<a href="#how" data-i="navHow">How it works</a>
+<a href="#faq" data-i="navFaq">Questions</a>
+<a class="button" href="equipo.html" data-i="navCta">Sign up a team</a>
 <button class="lang" id="lang" aria-label="Switch language">ES</button>
 </nav>
 </div>
 </header>
 
-<main id="top">
-<section class="hero">
+<section class="hero" id="top">
 <div class="wrap hero-grid">
 <div>
-<div class="eyebrow" data-i="eyebrow">Basketball pledge management software</div>
-<h1 data-i="headline">Every point <em>counts.</em></h1>
-<p data-i="heroDesc">One team. One game. Players recruit supporters, your team plays, and every pledger automatically receives the game result and their pledge total.</p>
-<p><strong data-i="tagline">We manage the pledges. You manage the proceeds.</strong></p>
+<div class="eyebrow" data-i="eyebrow">Digital Basketball · Pledge management</div>
+<h1 data-i="headline">Final buzzer. <em>What did I score?</em></h1>
+<p data-i="heroDesc">Every round is worth more than the last, so the number at the buzzer is bigger than the run felt. His padrinos pledged an amount for each of those points, and the game records them as he plays. Nothing to sell, no order forms, nothing to hand out afterwards.</p>
 <div class="hero-actions">
 <a class="button" href="equipo.html" data-i="register">Request Team Registration</a>
-<a class="button secondary" href="#how" data-i="learn">See How It Works</a>
+<a class="button secondary" href="#play" data-i="learn">Play it now</a>
 </div>
 </div>
 <div class="ball" role="img" aria-label="Stylized orange basketball"><div class="line"></div></div>
 </div>
 </section>
 
+<section class="section" id="play">
+<div class="wrap">
+<div class="eyebrow" data-i="playLabel">Try it now</div>
+<h2 data-i="playTitle">Play it before you read another word.</h2>
+<p class="intro" data-i="playDesc">Both of these are the real game, open to anybody, and neither one records a thing. Nothing to sign up for.</p>
+<div class="play">
+
+<article class="pcard hot">
+<div class="tag" data-i="pScrimTag">Scrimmage · 4 quarters</div>
+<h3 data-i="pScrimH">The full four quarters</h3>
+<p data-i="pScrimP">Four five-minute quarters. Each quarter counts your BEST run inside it, and the four add up to one number at the buzzer. Between quarters you can practise as much as you like.</p>
+<a class="button" href="fortress-vr.html" data-i="pScrimGo">Play the scrimmage</a>
+</article>
+
+<article class="pcard">
+<div class="tag" data-i="pPracTag">Practice</div>
+<h3 data-i="pPracH">Free practice</h3>
+<p data-i="pPracP">One run, as many times as you want. This is where a player gets warm — arriving cold at the run that counts is how a good player ends up with a small number.</p>
+<a class="button quiet" href="fortress.html" data-i="pPracGo">Open practice</a>
+</article>
+
+</div>
+<p class="playnote" data-i="playNote">The only thing practice is missing is the score being recorded. A run only counts when a player opens it from his own padrino link, and the database refuses a second one — so nobody gets two tries at the number their padrinos are backing.</p>
+</div>
+</section>
+
 <section class="section" id="how">
 <div class="wrap">
-<div class="eyebrow" data-i="processLabel">A simple 15-day campaign</div>
-<h2 data-i="processTitle">Three steps. One game.</h2>
-<p class="intro" data-i="processDesc">A focused, single-game campaign that runs on your team's schedule.</p>
+<div class="eyebrow" data-i="processLabel">A challenge you open when you want</div>
+<h2 data-i="processTitle">Three steps. One run each.</h2>
+<p class="intro" data-i="processDesc">No date on anybody else's calendar. You set the window, the players play inside it, and it closes on its own.</p>
 <div class="steps">
 <article class="step">
-<div class="num" data-i="day14">DAYS 1–14</div>
-<h3 data-i="recruitTitle">Recruit pledgers</h3>
-<p data-i="recruitDesc">Players invite supporters to pledge an amount per team point. Each supporter can set a maximum pledge cap.</p>
+<div class="num" data-i="sBefore">BEFORE IT OPENS</div>
+<h3 data-i="s1t">Players find padrinos</h3>
+<p data-i="s1d">Every player gets his own link. A padrino pledges an amount for each point that player scores, and can set a ceiling on the total.</p>
 </article>
 <article class="step">
-<div class="num" data-i="day15">DAY 15</div>
-<h3 data-i="gameTitle">Play the game</h3>
-<p data-i="gameDesc">An authorized team representative confirms the final team score. The platform calculates every pledge automatically.</p>
+<div class="num" data-i="sWindow">THE WINDOW</div>
+<h3 data-i="s2t">Each one takes his run</h3>
+<p data-i="s2d">At the court or at home, on a phone. Round nine banks nine points, so the longer he lasts the faster it climbs — and the board fills up where everyone can see it.</p>
 </article>
 <article class="step">
-<div class="num" data-i="afterGame">AFTER THE GAME</div>
-<h3 data-i="reportTitle">Automatic results</h3>
-<p data-i="reportDesc">Pledgers receive their individual totals and the game result. Your team gets a downloadable final pledge report.</p>
+<div class="num" data-i="sClose">WHEN IT CLOSES</div>
+<h3 data-i="s3t">Everyone gets the number</h3>
+<p data-i="s3d">One email to each padrino with the points scored and what their pledge came to. The program is paid directly, and that is the end of it.</p>
 </article>
 </div>
 </div>
@@ -155,14 +191,16 @@ button.lang{border:1px solid #ffffff55;background:transparent;color:white;paddin
 
 <section class="section dark">
 <div class="wrap">
-<div class="eyebrow" data-i="softwareLabel">Built for teams, not paperwork</div>
-<h2 data-i="softwareTitle">All the pledge management. None of the busywork.</h2>
-<p class="intro" data-i="softwareDesc">Cada Punto Cuenta handles pledge commitments, calculations, notifications, and final reporting.</p>
+<div class="eyebrow" data-i="softwareLabel">Built for programs, not paperwork</div>
+<h2 data-i="softwareTitle">The fundraiser is the product. You do not need an event to run one.</h2>
+<p class="intro" data-i="softwareDesc">Every other pledge fundraiser needs something to happen first — a game on a league calendar, a track on a Saturday, a gym that is free. This one carries its own event inside it.</p>
 <div class="feature-grid">
-<div class="feature"><strong data-i="f1">Player-based pledge organization</strong><p data-i="f1d">Keep every player's supporters and commitments organized in one event.</p></div>
-<div class="feature"><strong data-i="f2">Individual pledge caps</strong><p data-i="f2d">Supporters choose a per-point pledge and can limit their total commitment.</p></div>
-<div class="feature"><strong data-i="f3">Automatic notifications</strong><p data-i="f3d">Once the final score is confirmed, individual pledge totals are sent automatically.</p></div>
-<div class="feature"><strong data-i="f4">Clear final reports</strong><p data-i="f4d">Download the event's pledge summary for your team's own records.</p></div>
+<div class="feature"><strong data-i="f1">Scores recorded by the game</strong><p data-i="f1d">Each player's points are written as he plays. Nobody enters a score, so there is nothing to chase and nothing to argue about afterwards.</p></div>
+<div class="feature"><strong data-i="f2">It brings its own event</strong><p data-i="f2d">No fixture to wait for, no venue to book, nothing to cancel for weather, and no season. February or July, the window is yours to set — and a program two hours away can run one without you in the room.</p></div>
+<div class="feature"><strong data-i="f3">Not only the roster</strong><p data-i="f3d">Anybody the program approves can take a run and bring their own padrinos — a brother, a mother, a coach, somebody who played there fifteen years ago. The licence is one price for the event, not a charge per person, so a bigger turnout costs the program nothing.</p></div>
+<div class="feature"><strong data-i="f4">Per-player pledges</strong><p data-i="f4d">Every player has his own padrinos and his own points. One roster, and a small campaign inside it for each child.</p></div>
+<div class="feature"><strong data-i="f5">Individual pledge ceilings</strong><p data-i="f5d">A padrino chooses an amount per point and can cap what they will pay in total. The ceiling is applied before anyone is told a number.</p></div>
+<div class="feature"><strong data-i="f6">One notice, then nothing</strong><p data-i="f6d">When the window closes each padrino gets a single email. No payment link, and no reminders after it.</p></div>
 </div>
 </div>
 </section>
@@ -170,42 +208,51 @@ button.lang{border:1px solid #ffffff55;background:transparent;color:white;paddin
 <section class="promise wrap">
 <div class="eyebrow" data-i="promiseLabel">Our promise</div>
 <blockquote data-i="promise">We manage the pledges.<br><span class="orange">You manage the proceeds.</span></blockquote>
-<p class="fine" data-i="promiseDesc">Cada Punto Cuenta is strictly a pledge management software provider. Organizations independently manage all proceeds.</p>
+<p class="fine" data-i="promiseDesc">Anotado is strictly a pledge management software provider. Organizations independently manage all proceeds.</p>
 </section>
 
 <section class="section" id="faq" style="background:white">
 <div class="wrap faq">
 <div class="eyebrow">FAQ</div>
 <h2 data-i="faqTitle">Frequently asked questions</h2>
-<details><summary data-i="q1">How long is a campaign?</summary><p data-i="a1">Players recruit pledgers for 14 days. The game is played on day 15, followed by automatic notifications and final reporting.</p></details>
-<details><summary data-i="q2">How is each pledge calculated?</summary><p data-i="a2">The final team score is multiplied by each supporter's per-point commitment, subject to their selected maximum pledge cap.</p></details>
-<details><summary data-i="q3">Does Cada Punto Cuenta handle proceeds?</summary><p data-i="a3">No. Cada Punto Cuenta manages pledge commitments and reports only. The participating organization independently manages all proceeds.</p></details>
-<details><summary data-i="q4">How is the software licensed?</summary><p data-i="a4">One fixed-fee license covers one team and one game: $49, or $29 where the roster is under eight. Nothing is paid up front — the fee is invoiced once the event closes and is due within seven days. It does not depend on how much was pledged or collected.</p></details>
-<details><summary data-i="q5">Who reports the final score?</summary><p data-i="a5">The program does. The coach enters it on the team board with his code, or sends it to us and we enter it from the schedule he gave us. It sits on that board for anyone holding the link.</p></details>
-<details><summary data-i="q6">Do you contact my pledgers?</summary><p data-i="a6">Once. When the game closes, each pledger receives the result and their own pledge total. That notice carries no payment link, and nobody writes to them again — no reminders and no collection notices.</p></details>
+
+<details><summary data-i="q1">Who records the score?</summary>
+<p data-i="a1">The game does. Each player's points are written as he plays, and the run is checked inside the database, so holding the public link is not enough to end somebody else's run. No coach has to enter anything and no padrino has to take anyone's word for it.</p></details>
+
+<details><summary data-i="q2">Can a player take his run from home?</summary>
+<p data-i="a2">Yes. It runs in a browser on a phone, a tablet or a laptop. A program can run the whole thing in the gym on one afternoon, or leave the window open for a week and let families do it at home.</p></details>
+
+<details><summary data-i="q3">What does it cost?</summary>
+<p data-i="a3">${A} per team for the event, or ${B} if the roster is under {N}. It is free to set up and free to run; the licence is invoiced when the event closes and due within seven days.</p></details>
+
+<details><summary data-i="q4">Do you collect the money?</summary>
+<p data-i="a4">No. Anotado never receives money from anybody. Each padrino pays the program directly, by whatever the program already uses. We record what was pledged and calculate what each pledge came to — that is the whole of it.</p></details>
+
+<details><summary data-i="q5">Do you contact our padrinos?</summary>
+<p data-i="a5">Once. When the window closes, each padrino gets one email with the points and their own total. There is no payment link in it and there are no reminders after it. Chasing a pledge is the program's business, not ours.</p></details>
+
 <p class="more"><a href="ayuda.html" data-i="moreLink">More questions, answered in full &rarr;</a></p>
 </div>
 </section>
 
 <section class="cta">
 <div class="wrap">
-<h2 data-i="ctaTitle">Ready to make every point count?</h2>
-<p data-i="ctaDesc">Give your team a simple way to organize pledges for its next game.</p>
+<h2 data-i="ctaTitle">Ready to open your first challenge?</h2>
+<p data-i="ctaDesc">Set it up for free, pick your window, and see what the roster brings in.</p>
 <a class="button" href="equipo.html" data-i="ctaButton">Request Team Registration</a>
 </div>
 </section>
-</main>
 
 <footer>
 <div class="wrap">
 <div>
-<strong>CADA PUNTO CUENTA</strong><br>
+<strong>ANOTADO</strong><br>
 <span data-i="footer">We manage the pledges. You manage the proceeds.</span>
 </div>
 <nav class="flinks">
 <a href="equipo.html" data-i="lTeam">Sign up a team</a>
 <a href="mi-equipo.html" data-i="lMine">My team</a>
-<a href="ayuda.html" data-i="lHelp">Coach Cada Punto</a>
+<a href="ayuda.html" data-i="lHelp">Questions</a>
 <a href="cobro.html" data-i="lCollect">How you collect</a>
 </nav>
 <nav class="flinks">
@@ -219,73 +266,112 @@ button.lang{border:1px solid #ffffff55;background:transparent;color:white;paddin
 </footer>
 
 <script>
+/* ── El precio, en un sitio ───────────────────────────────────────
+   Un número, no una frase repetida en seis páginas. Si cambia, cambia
+   aquí y las dos traducciones lo recogen. */
+const FEE = { team: 49, small: 29, under: 8 };
+
 const translations={
 es:{
+navPlay:'Jugar',
 navHow:'Cómo funciona',
 navFaq:'Preguntas',
-eyebrow:'Software de manejo de promesas para baloncesto',
-headline:'Cada punto <em>cuenta.</em>',
-heroDesc:'Un equipo. Un juego. Los jugadores consiguen padrinos, el equipo juega y cada padrino recibe automáticamente el resultado y el total de su promesa.',
-tagline:'Nosotros manejamos las promesas. Ustedes manejan los fondos.',
+navCta:'Inscribir un equipo',
+eyebrow:'Baloncesto digital · Manejo de promesas',
+headline:'Suena la chicharra. <em>¿Cuánto anoté?</em>',
+heroDesc:'Cada ronda vale más que la anterior, así que el número en la chicharra siempre es más grande de lo que se sintió la corrida. Sus padrinos prometieron una cantidad por cada uno de esos puntos, y el juego los anota mientras juega. Nada que vender, sin hojas de pedido, y sin nada que entregar después.',
 register:'Solicitar registro de equipo',
-learn:'Conoce cómo funciona',
-processLabel:'Una campaña sencilla de 15 días',
-processTitle:'Tres pasos. Un juego.',
-processDesc:'Una campaña enfocada en un solo juego, organizada alrededor del calendario de tu equipo.',
-day14:'DÍAS 1–14',
-recruitTitle:'Consigue padrinos',
-recruitDesc:'Los jugadores invitan a personas a prometer una cantidad por cada punto del equipo. Cada padrino puede establecer un límite máximo.',
-day15:'DÍA 15',
-gameTitle:'Juega el partido',
-gameDesc:'Un representante autorizado confirma la puntuación final del equipo. La plataforma calcula cada promesa automáticamente.',
-afterGame:'DESPUÉS DEL JUEGO',
-reportTitle:'Resultados automáticos',
-reportDesc:'Los padrinos reciben su total individual y el resultado del juego. El equipo obtiene un informe final descargable.',
-softwareLabel:'Creado para equipos, no para papeleo',
-softwareTitle:'Todas las promesas organizadas. Sin trabajo innecesario.',
-softwareDesc:'Cada Punto Cuenta organiza compromisos, cálculos, notificaciones e informes finales.',
-f1:'Promesas organizadas por jugador',
-f1d:'Todos los padrinos y compromisos de cada jugador en un mismo evento.',
-f2:'Límites individuales',
-f2d:'Cada padrino elige su promesa por punto y puede fijar un máximo.',
-f3:'Notificaciones automáticas',
-f3d:'Al confirmar el resultado final, se envían automáticamente los totales individuales.',
-f4:'Informes finales claros',
-f4d:'Descarga el resumen de promesas para los archivos del equipo.',
-promiseLabel:'Nuestra promesa',
+learn:'Juégalo ahora',
+
+playLabel:'Pruébalo ahora',
+playTitle:'Juégalo antes de seguir leyendo.',
+playDesc:'Los dos son el juego de verdad, abiertos para cualquiera, y ninguno de los dos anota nada. Sin registrarse.',
+pScrimTag:'Scrimmage · 4 cuartos',
+pScrimH:'Los cuatro cuartos completos',
+pScrimP:'Cuatro cuartos de cinco minutos. Cada cuarto cuenta tu MEJOR corrida de ese cuarto, y los cuatro se suman en un solo número al sonar la chicharra. Entre cuartos practicas lo que quieras.',
+pScrimGo:'Jugar el scrimmage',
+pPracTag:'Práctica',
+pPracH:'Práctica libre',
+pPracP:'Una corrida, las veces que quieras. Aquí es donde un jugador se calienta — llegar frío a la corrida que cuenta es como un buen jugador termina con un número chiquito.',
+pPracGo:'Abrir la práctica',
+playNote:'Lo único que le falta a la práctica es que el marcador quede anotado. Una corrida cuenta sólo cuando el jugador la abre desde su propio enlace de padrinos, y la base de datos rechaza la segunda — así nadie tiene dos intentos al número que sus padrinos están respaldando.',
+processLabel:'Un reto que abres cuando quieras',
+processTitle:'Tres pasos. Una corrida cada uno.',
+processDesc:'Sin fecha en el calendario de nadie más. Tú pones la ventana, los jugadores juegan dentro de ella, y se cierra sola.',
+sBefore:'ANTES DE ABRIR',
+s1t:'Los jugadores consiguen padrinos',
+s1d:'Cada jugador tiene su propio enlace. El padrino promete una cantidad por cada punto que anote ese jugador, y puede ponerle un tope al total.',
+sWindow:'LA VENTANA',
+s2t:'Cada uno hace su corrida',
+s2d:'En la cancha o en su casa, desde el teléfono. La ronda nueve vale nueve puntos, así que mientras más aguanta más rápido sube — y el tablero se va llenando donde todos lo ven.',
+sClose:'AL CERRAR',
+s3t:'Todos reciben el número',
+s3d:'Un correo a cada padrino con los puntos que se anotaron y lo que salió su promesa. Al programa se le paga directo, y ahí se acaba.',
+
+softwareLabel:'Hecho para programas, no para papeleo',
+softwareTitle:'La recogida de fondos es el producto. No hace falta un evento para correr una.',
+softwareDesc:'Cualquier otra recogida de fondos por promesas necesita que pase algo primero — un juego en el calendario de una liga, una pista un sábado, un gimnasio que esté libre. Ésta trae su evento por dentro.',
+f1:'El marcador lo anota el juego',
+f1d:'Los puntos de cada jugador se anotan mientras juega. Nadie mete un marcador, así que no hay nada que perseguir ni nada que discutir después.',
+f2:'Trae su propio evento',
+f2d:'No hay partido que esperar, ni cancha que reservar, ni nada que se cancele por lluvia, ni temporada. En febrero o en julio, la ventana la pones tú — y un programa a dos horas puede correr una sin que tú estés ahí.',
+f3:'No sólo la plantilla',
+f3d:'Cualquiera que el programa apruebe puede hacer su corrida y traer sus propios padrinos — un hermano, una mamá, un entrenador, alguien que jugó ahí hace quince años. La licencia es un precio por evento, no un cargo por persona, así que que venga más gente no le cuesta nada al programa.',
+f4:'Promesas por jugador',
+f4d:'Cada jugador tiene sus propios padrinos y sus propios puntos. Una plantilla, y dentro de ella una campaña pequeña por cada nene.',
+f5:'Tope por padrino',
+f5d:'El padrino escoge cuánto por punto y puede ponerle un máximo a lo que va a pagar. El tope se aplica antes de que se le diga un número a nadie.',
+f6:'Un aviso, y nada más',
+f6d:'Al cerrar la ventana, cada padrino recibe un solo correo. Sin enlace de pago, y sin recordatorios después.',
+
+promiseLabel:'Nuestra posición',
 promise:'Nosotros manejamos las promesas.<br><span class="orange">Ustedes manejan los fondos.</span>',
-promiseDesc:'Cada Punto Cuenta es exclusivamente un proveedor de software para manejar promesas. Cada organización administra sus fondos independientemente.',
+promiseDesc:'Anotado es estrictamente un proveedor de software de manejo de promesas. Las organizaciones manejan sus fondos de forma independiente.',
+
 faqTitle:'Preguntas frecuentes',
-q1:'¿Cuánto dura la campaña?',
-a1:'Los jugadores consiguen padrinos durante 14 días. El juego se celebra el día 15, seguido por las notificaciones automáticas y el informe final.',
-q2:'¿Cómo se calcula cada promesa?',
-a2:'Se multiplica la puntuación final del equipo por la cantidad prometida por punto, respetando el límite máximo seleccionado por cada padrino.',
-q3:'¿Cada Punto Cuenta maneja los fondos?',
-a3:'No. Cada Punto Cuenta solo administra los compromisos y los informes de promesas. La organización participante maneja todos sus fondos de manera independiente.',
-q4:'¿Cómo funciona la licencia?',
-a4:'Una licencia de precio fijo cubre un equipo y un juego: $49, o $29 si la plantilla tiene menos de ocho. No se paga nada por adelantado — el cargo se factura cuando cierra el evento y se paga dentro de siete días. No depende de cuánto se prometió ni de cuánto se recaudó.',
-q5:'¿Quién reporta el marcador final?',
-a5:'El programa. El entrenador lo entra en el tablero del equipo con su código, o nos lo manda y lo entramos nosotros desde el calendario que nos dio. Queda en ese tablero, a la vista de quien tenga el enlace.',
-q6:'¿Ustedes le escriben a mis padrinos?',
-a6:'Una sola vez. Al cerrar el juego, cada padrino recibe el resultado y el total de su promesa. Ese aviso no lleva enlace de pago, y después no se le vuelve a escribir: ni recordatorios, ni cobros.',
-moreLink:'Más preguntas, contestadas completas →',
-ctaTitle:'¿Listos para que cada punto cuente?',
-ctaDesc:'Dale a tu equipo una forma sencilla de organizar las promesas para su próximo juego.',
+q1:'¿Quién anota el marcador?',
+a1:'El juego. Los puntos de cada jugador se anotan mientras juega, y la corrida se comprueba dentro de la base de datos, así que tener el enlace público no basta para cerrarle la corrida a otro. Ningún entrenador tiene que meter nada, y ningún padrino tiene que creerle a nadie.',
+q2:'¿Puede un jugador hacer su corrida desde su casa?',
+a2:'Sí. Corre en el navegador de un teléfono, una tableta o una computadora. Un programa puede hacerlo todo en el gimnasio una tarde, o dejar la ventana abierta una semana y que cada familia lo haga en su casa.',
+q3:'¿Cuánto cuesta?',
+a3:'${A} por equipo por evento, o ${B} si la plantilla tiene menos de {N}. Montarlo es gratis y correrlo es gratis; la licencia se factura al cerrar el evento y se paga dentro de siete días.',
+q4:'¿Ustedes cobran el dinero?',
+a4:'No. Anotado no recibe dinero de nadie. Cada padrino le paga al programa directo, por donde el programa ya cobra. Nosotros apuntamos lo prometido y calculamos lo que salió cada promesa — y eso es todo.',
+q5:'¿Ustedes le escriben a nuestros padrinos?',
+a5:'Una vez. Al cerrar la ventana, cada padrino recibe un correo con los puntos y su propio total. No lleva enlace de pago y no hay recordatorios después. Perseguir una promesa es asunto del programa, no nuestro.',
+moreLink:'Más preguntas, contestadas completas &rarr;',
+
+ctaTitle:'¿Listo para abrir tu primer reto?',
+ctaDesc:'Móntalo gratis, escoge tu ventana, y mira lo que trae la plantilla.',
 ctaButton:'Solicitar registro de equipo',
+
 footer:'Nosotros manejamos las promesas. Ustedes manejan los fondos.',
-lTeam:'Inscribe tu equipo',
+lTeam:'Inscribir un equipo',
 lMine:'Mi equipo',
-lHelp:'Coach Cada Punto',
+lHelp:'Preguntas',
 lCollect:'Cómo cobras',
 lTerms:'Términos',
 lPriv:'Privacidad',
 lMoney:'El dinero no pasa por nosotros'
 }
 };
+
+/* El inglés vive en el marcado, así que se recoge de ahí antes de
+   pintar nada. */
 const english={};
 document.querySelectorAll('[data-i]').forEach(el=>english[el.dataset.i]=el.innerHTML);
 
-/* El idioma se guarda con las mismas llaves que el resto del sitio:
+/* El precio, metido en las dos tablas antes de que se pinte una sola
+   vez — así ninguna de las dos lleva el número escrito a mano. */
+function conPrecio(s){
+  return String(s).split('{A}').join(FEE.team)
+                  .split('{B}').join(FEE.small)
+                  .split('{N}').join(FEE.under);
+}
+Object.keys(english).forEach(k=>{ english[k]=conPrecio(english[k]) });
+Object.keys(translations.es).forEach(k=>{ translations.es[k]=conPrecio(translations.es[k]) });
+
+/* El idioma se guarda con las mismas llaves que el resto de la casa:
    quien escoge español aquí lo sigue teniendo en equipo.html. */
 let locale='es';
 try{ locale = localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
@@ -298,6 +384,8 @@ document.querySelectorAll('[data-i]').forEach(el=>{
 el.innerHTML=locale==='es'?(translations.es[el.dataset.i]||english[el.dataset.i]):english[el.dataset.i];
 });
 document.getElementById('lang').textContent=locale==='es'?'EN':'ES';
+document.title=locale==='es'?'Anotado | Baloncesto digital. Cada punto queda anotado.'
+                            :'Anotado | Digital Basketball. Every point is recorded.';
 }
 document.getElementById('lang').addEventListener('click',()=>{
 locale=locale==='en'?'es':'en';
