@@ -26,202 +26,97 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
-      --good:#0B7A5A;--bad:#A8323F}
-*{box-sizing:border-box}
-html{background:#07141E}
-/* El teclado del teléfono no achica la página, achica lo que se ve de
-   ella. Con el alto clavado en 100dvh y el scroll metido en <main>, el
-   campo enfocado se iba debajo del teclado y el navegador no podía
-   subirlo. Rodando la página entera, sí puede. */
-body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
-  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#07141E;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{width:min(600px,93vw);margin:0 auto}
-
-header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
-  padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#FF8A2B}
-.mark i{font-style:normal;color:#6FD83C}
-.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-
-main{flex:1 1 auto;overflow-x:hidden}
-main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
-
-footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
-footer p{margin:0 0 7px}
-footer .f-co{color:#fff;font-weight:700}
-footer a{color:#8FA8C0;text-decoration:none}
-footer .f-legal{margin:7px 0 0;font-size:.78rem}
-footer .f-dot{padding:0 7px;opacity:.5}
-
-.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:8px}
-h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
-.lede{color:var(--mute);margin:0 0 22px}
-h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
-
-.how{display:grid;gap:10px;margin:0 0 24px}
-.how .s{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px}
-.how .s b{display:block;font-size:.98rem}
-.how .s span{color:var(--mute);font-size:.92rem}
-
-label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
-input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
-  background:#07141E;color:var(--ink);font:inherit;font-size:1.02rem}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
-/* Cuando el navegador sube el campo enfocado, que no quede pegado al
-   borde: se ve su etiqueta y el campo de antes. */
-label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
-.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
-.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
-  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
-  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
-.btn.line{background:#07141E;color:var(--ink);margin-top:10px}
-.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
-  font-size:.88rem;font-weight:400;color:var(--mute)}
-.ok span{cursor:pointer}
-.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
-.ok a{color:var(--accent)}
-.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
-.msg.bad{color:var(--bad)}
-.msg.ok{color:var(--good)}
-
-/* En el teléfono el pie es lo último que hace falta mientras se llena
-   un formulario: que ocupe lo justo. */
-@media(max-width:560px){
-  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
-  footer p{margin:0 0 4px}
-  footer .f-legal{margin:4px 0 0}
-  main .wrap{padding-bottom:20px}
-}
-
-.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
-.fine b{display:block;margin-bottom:3px}
-.fine p{margin:0;color:var(--mute);font-size:.93rem}
-
-.done{text-align:center}
-.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo de la portada y de mi-equipo. Cambia la piel; el marcado
+   y el guion se quedaron como estaban. */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2; --bad:#b4231c; --good:#0b7a5a;
 }
-html, body{background:#07141E;color:#EAF2F7}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{width:min(720px,calc(100% - 40px));margin:0 auto}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+main .wrap{padding:38px 0 48px}
+.kick{color:var(--orange);font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  font-size:.74rem;margin-bottom:10px}
+h1{font-size:clamp(1.9rem,5.4vw,2.9rem);line-height:1.08;letter-spacing:-.045em;margin:0 0 14px}
+h2{font-size:1.35rem;letter-spacing:-.028em;margin:38px 0 6px}
+.lede{color:var(--muted);margin:0 0 26px;max-width:56ch;font-size:1.05rem}
+.sub,.nota,.cp,.who{color:var(--muted)}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── Los pasos, en tarjetas blancas ───────────────────────────── */
+.how{display:grid;gap:14px;margin:0 0 30px;counter-reset:paso}
+.how .s{counter-increment:paso;position:relative;background:#fff;border:1px solid var(--linea);
+  border-radius:16px;padding:22px 24px 22px 60px;box-shadow:0 8px 25px #17243808}
+.how .s::before{content:counter(paso);position:absolute;left:22px;top:22px;
+  width:26px;height:26px;border-radius:50%;background:var(--orange);color:#111a24;
+  font-size:.8rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.how .s b{display:block;font-size:1.08rem;font-weight:800;letter-spacing:-.018em;margin-bottom:5px}
+.how .s span{color:var(--muted);font-size:.97rem}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+/* ── El formulario ────────────────────────────────────────────── */
+label{display:block;font-weight:700;font-size:.9rem;margin:18px 0 6px}
+input[type=text],input[type=email],input[type=tel]{
+  width:100%;padding:14px 15px;border:1px solid #d6d9d6;border-radius:10px;
+  background:#fff;color:var(--ink);font:inherit;font-size:1.02rem}
+input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,24,.18)}
+.hint{color:var(--muted);font-size:.84rem;margin:6px 0 0}
+.ok{display:flex;gap:11px;align-items:flex-start;margin:20px 0 0;
+  font-size:.9rem;color:var(--muted);line-height:1.45}
+.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:2px;accent-color:var(--orange)}
+.ok a{color:var(--navy);font-weight:700}
+.ok span{cursor:pointer}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
+.btn,.cta{display:inline-block;border:0;border-radius:9px;padding:15px 24px;
+  background:var(--orange);color:#111a24;font:inherit;font-weight:800;font-size:1.02rem;
+  cursor:pointer;text-decoration:none;text-align:center}
+.btn.go,.cta{width:100%;margin-top:22px}
+.btn.line{background:transparent;color:var(--navy);border:1px solid var(--navy);margin-top:14px}
+.btn.line:hover{background:var(--navy);color:#fff}
+.btn:hover,.cta:hover{opacity:.92}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{margin:13px 0 0;font-weight:700;font-size:.9rem;min-height:1.2em}
+.msg.bad{color:var(--bad)} .msg.ok{color:var(--good)}
 
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
+/* ── La letra chiquita del dinero ─────────────────────────────── */
+.fine{background:#fff;border:1px solid var(--linea);border-left:5px solid var(--navy);
+  border-radius:16px;padding:20px 22px;margin:30px 0 0;box-shadow:0 8px 25px #17243808}
+.fine b{display:block;font-size:.74rem;font-weight:800;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--navy);margin-bottom:8px}
+.fine p{margin:0;color:var(--muted);font-size:.95rem}
 
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
+/* ── Lo que se ve al enviar ───────────────────────────────────── */
+.done{text-align:center;background:#fff;border:1px solid var(--linea);border-radius:16px;
+  padding:clamp(26px,6vw,40px);box-shadow:0 8px 25px #17243808}
+.done .tick{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;
+  background:var(--orange);color:#111a24;font-size:1.7rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center}
+.done .lede{margin-left:auto;margin-right:auto}
 
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
-
-/* El otro camino. Tarjeta y no seccion: es la alternativa, no el
-   modelo. Entera es el enlace, que en un telefono es lo que importa. */
-.otro{display:block;text-decoration:none;margin:26px 0 0;padding:18px 20px;
-  background:var(--tint);border:1px solid var(--line);
-  border-left:4px solid var(--accent);border-radius:11px}
-.otro b{display:block;font-size:1.06rem;font-weight:900;letter-spacing:-.015em;
-  color:var(--ink)}
-.otro span{display:block;margin:7px 0 0;color:var(--mute);font-size:.95rem;line-height:1.55}
-.otro i{display:block;margin:11px 0 0;font-style:normal;color:var(--accent);
-  font-size:.89rem;font-weight:800}
-.otro:hover{border-color:var(--mute)}
-.otro:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+footer{background:#0a1420;color:#aeb9c6;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+.f-co{color:#fff;font-weight:700;margin:0 0 7px}
+.f-what{margin:7px auto 0;font-size:.78rem;line-height:1.5;opacity:.75;max-width:54ch}
+.f-dot{padding:0 8px;opacity:.45}
 </style>
 </head>
 <body>
@@ -252,8 +147,8 @@ h1,h2,h3,h4{color:#EAF2F7}
            ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
   var el = document.getElementById('fWhat');
   if (el) el.textContent = (l === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.';
+    ? 'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.';
 })();
 </script>
     <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
@@ -281,17 +176,14 @@ var S = {
     kick:'Inscribe tu equipo',
     h1:'Tu equipo anota. Tu programa cobra.',
     lede:'Los padrinos prometen unos centavos por cada punto que anota tu equipo en un juego. Juegan el juego que ya iban a jugar, se pone el marcador, y cada padrino paga por lo que de verdad se anotó. No hay nada que vender, nada que repartir y nadie a quien juntar.',
-    s1b:'Te abrimos la campaña.',
+    s1b:'Antes del día 1 · Te abrimos la campaña.',
     s1:'Nos escribes, te la montamos, y te damos tu código. Nadie se da de alta solo — las abrimos una por una, a mano, y nada sale al aire hasta que tú lo digas.',
-    s2b:'Nos pasas tu plantilla y tu calendario.',
-    s2:'Los nombres y los juegos que ya tienes agendados. Coordinamos contigo cuáles entran y cuándo — y los interescuadras también, si quieres jugarlos.',
-    s3b:'Los padrinos escogen su juego.',
-    s3:'Mandas el enlace del tablero al grupo del equipo. Cada uno escoge cuánto por punto y en cuál juego, y pone su tope si quiere. Las promesas de un juego cierran cuando el juego empieza: prometer sabiendo el marcador no es prometer.',
-    s4b:'Se juega, se pone el marcador, y se cobra solo.',
-    s4:'El marcador final cierra las promesas de ese juego y saca lo que debe cada padrino. Los enlaces de pago salen solos, con sus recordatorios a los siete y a los veintiún días, y te llega un correo diciendo cuánto. A los treinta días el cobro cierra.',
-    otroH:'¿No tienes temporada?',
-    otroP:'El Fortress es el otro camino: un juego que se juega en el teléfono, cuatro cuartos en un día, y los padrinos prometen por punto igual que en un juego de verdad. Sirve fuera de temporada, para un grupo que no juega baloncesto, o para un segundo evento en el año. Dínoslo al escribirnos y te montamos ése.',
-    otroGo:'Ver el Fortress',
+    s2b:'Antes del día 1 · Nos pasas tu plantilla y la fecha.',
+    s2:'Los nombres de tu plantilla y la fecha del juego. Un evento es un juego: si quieres correr otro después, es su propia campaña. Los interescuadras valen igual.',
+    s3b:'Días 1 al 14 · Los padrinos prometen.',
+    s3:'Mandas el enlace al grupo del equipo. Hay catorce días para conseguir padrinos, y el juego es el día quince. Cada uno escoge cuánto por punto y pone su tope si quiere. Las promesas cierran cuando el juego empieza: prometer sabiendo el marcador no es prometer.',
+    s4b:'Día 15 · Se juega y entra el marcador.',
+    s4:'El marcador cierra las promesas y la plataforma calcula el total de cada padrino, con su tope aplicado si mordió. A cada uno le llega su aviso con el resultado y su total — sin enlace de pago — y a ti te queda la lista completa, para imprimir o bajar. Cobrar lo haces tú, por donde ya hablas con esa gente.',
     formH:'Dinos de tu equipo',
     teamL:'Nombre del equipo', teamPh:'Como lo conocen las familias',
     progL:'Nombre del programa', progPh:'Lo que verán las familias',
@@ -300,8 +192,8 @@ var S = {
     phoneL:'Tu teléfono (opcional)', phonePh:'787…',
     terms:'He leído y acepto los <a href="terms.html" target="_blank">Términos de Uso</a> y la <a href="privacy.html" target="_blank">Política de Privacidad</a>.',
     errTerms:'Tienes que aceptar los términos para seguir.',
-    custody:'He leído <a href="custodia.html" target="_blank">cómo se maneja el dinero</a>: lo que pagan los padrinos lo cobra Gostar Digital LLC y se le remite al programa el día 1 y el día 15 de cada mes.',
-    errCustody:'Tienes que aceptar cómo se maneja el dinero para seguir.',
+    custody:'He leído <a href="custodia.html" target="_blank">que el dinero no pasa por ustedes</a>: Cada Punto no procesa ni guarda pagos, y el dinero lo cobra y lo maneja mi programa.',
+    errCustody:'Tienes que aceptar cómo funciona el dinero para seguir.',
     go:'Inscribir mi equipo',
     errTeam:'Escribe el nombre del equipo.',
     errProg:'Escribe el nombre del programa.',
@@ -314,23 +206,20 @@ var S = {
     doneMore:'Mientras tanto, así se ve el tablero de un equipo el día que juega.',
     seeBoard:'Ver un tablero',
     fineH:'Lo que cuesta',
-    fineP:'Nada por adelantado y nada mensual. Nuestro cargo de 20% se le añade al pago del padrino, nunca se saca de lo tuyo: una promesa de $200, <b>cuando se cobra</b>, es un pago de $240 y el programa recibe los $200 completos. Fíjate en «cuando se cobra»: el 100% es de lo cobrado, no de lo prometido. El cobro tiene su cierre y no toda promesa entra — por eso un padrino que paga vale más que diez promesas apuntadas. Lo que recaudes es tuyo, incluido cualquier acuerdo que tengas con tu liga o con quien te trajo.'
+    fineP:'Cada Punto se licencia <b>por evento</b>: $49 por equipo, por juego — $29 si la plantilla tiene menos de ocho. Se factura cuando cierra el evento y se paga dentro de siete días; nada por adelantado. No es un por ciento de nada, no sale de ninguna promesa, y a tus padrinos no les cobramos nada. Una cosa que conviene tener clara desde el principio: <b>lo prometido no es lo recaudado</b>. Nosotros anotamos lo prometido; lo que entre, y cuándo, depende de tu cobro — por eso un padrino que paga vale más que diez promesas apuntadas. Lo que recaudes es tuyo, incluido cualquier acuerdo que tengas con tu liga o con quien te trajo.'
   },
   en:{
     kick:'Sign up your team',
     h1:'Your team scores. Your program gets paid.',
     lede:'Padrinos pledge a few cents on every point your team scores in a game. They play the game they were playing anyway, the score goes in, and each padrino pays on what was actually scored. Nothing to sell, nothing to deliver, nobody to gather.',
-    s1b:'We open your campaign.',
+    s1b:'Before day 1 · We open your campaign.',
     s1:'You write to us, we set it up, and we give you your code. Nobody signs themselves up — we open them one at a time, by hand, and nothing goes live until you say so.',
-    s2b:'You send us your roster and your schedule.',
-    s2:'The names and the games you already have booked. We coordinate with you which ones count and when — and the scrimmages too, if you want to play them.',
-    s3b:'Padrinos pick their game.',
-    s3:'You send the board link to the team group. Each one picks how much a point and which game, and sets a cap if they want one. A game’s pledges close when the game starts: pledging while knowing the score is not pledging.',
-    s4b:'You play, the score goes in, and the billing happens on its own.',
-    s4:'The final score closes that game’s pledges and works out what every padrino owes. Payment links go out by themselves, with reminders at seven and twenty-one days, and you get an email saying how much. At thirty days collections close.',
-    otroH:'No season?',
-    otroP:'The Fortress is the other way: a game played on a phone, four quarters in one day, with padrinos pledging by the point exactly as they do on a real game. It suits the off-season, a group that does not play basketball, or a second event in the year. Say so when you write and we will set that one up.',
-    otroGo:'See the Fortress',
+    s2b:'Before day 1 · You send us your roster and the date.',
+    s2:'Your roster and the date of the game. One event is one game: if you want to run another afterwards, that is its own campaign. Scrimmages count the same.',
+    s3b:'Days 1 to 14 · Padrinos pledge.',
+    s3:'You send the link to the team group. There are fourteen days to gather padrinos, and the game is day fifteen. Each one picks how much a point and sets a cap if they want one. Pledging closes when the game starts: pledging while knowing the score is not pledging.',
+    s4b:'Day 15 · You play and the score goes in.',
+    s4:'The score closes pledging and the platform calculates each padrino’s total, with his cap applied if it bit. Each one gets a notice with the result and his total — no payment link — and you are left with the full list, to print or download. The collecting you do yourself, wherever you already talk to those people.',
     formH:'Tell us about your team',
     teamL:'Team name', teamPh:'As the families know it',
     progL:'Program name', progPh:'What families will see',
@@ -339,8 +228,8 @@ var S = {
     phoneL:'Your phone (optional)', phonePh:'787…',
     terms:'I have read and accept the <a href="terms.html" target="_blank">Terms of Use</a> and the <a href="privacy.html" target="_blank">Privacy Policy</a>.',
     errTerms:'You have to accept the terms to continue.',
-    custody:'I have read <a href="custodia.html" target="_blank">how the money is handled</a>: what padrinos pay is collected by Gostar Digital LLC and remitted to the program on the 1st and the 15th of each month.',
-    errCustody:'You have to accept how the money is handled to continue.',
+    custody:'I have read <a href="custodia.html" target="_blank">that the money does not pass through you</a>: Cada Punto processes and holds no payments, and my program collects and manages the money itself.',
+    errCustody:'You have to accept how the money works to continue.',
     go:'Sign up my team',
     errTeam:'Write the team name.',
     errProg:'Write the program name.',
@@ -353,7 +242,7 @@ var S = {
     doneMore:'Meanwhile, this is the board of a team already running.',
     seeBoard:'See a board →',
     fineH:'What it costs',
-    fineP:'Nothing up front and nothing monthly. Our 20% is added to the padrino\u2019s payment, never taken out of yours: a $200 pledge, <b>once collected</b>, is a $240 payment and the program receives the full $200. Note \u201conce collected\u201d: the 100% is of what is collected, not of what is pledged. Collections have a close and not every pledge comes in \u2014 so one padrino who pays is worth more than ten pledges on a list. What you raise is yours, including any arrangement you have with your league or with whoever brought you in.'
+    fineP:'Cada Punto is licensed <b>per event</b>: $49 per team, per game — $29 if the roster is under eight. It is invoiced when the event closes and due within seven days; nothing up front. It is not a percentage of anything, it does not come out of any pledge, and we charge your padrinos nothing. One thing worth having straight from the start: <b>pledged is not collected</b>. We record what was pledged; what comes in, and when, depends on your collecting \u2014 so one padrino who pays is worth more than ten pledges on a list. What you raise is yours, including any arrangement you have with your league or with whoever brought you in.'
   }
 };
 
@@ -390,10 +279,8 @@ function draw(){
         '<h1>' + T('doneH') + '</h1>' +
         '<p class="lede">' + T('doneP', { E: esc(SENT) }) + '</p>' +
         '<p class="lede">' + T('doneMore') + '</p>' +
-        /* El tablero de un juego de verdad, no el del Fortress: es el
-           modelo que acaba de pedir. El id es la campana de
-           demostracion que scoreboard.html ya reconoce como tal y
-           anuncia en la pagina. */
+        /* El id es la campana de demostracion que scoreboard.html
+           reconoce como tal y anuncia en la propia pagina. */
         '<a class="btn line" href="scoreboard.html?c=8d0d1f66-29a8-4406-90f2-3c3cf9479d55" ' +
           'target="_blank" rel="noopener">' + T('seeBoard') + '</a>' +
       '</div>';
@@ -411,15 +298,6 @@ function draw(){
       '<div class="s"><b>' + T('s3b') + '</b><span>' + T('s3') + '</span></div>' +
       '<div class="s"><b>' + T('s4b') + '</b><span>' + T('s4') + '</span></div>' +
     '</div>' +
-
-    /* El otro camino, para quien no tiene temporada. Debajo de los
-       pasos y encima del formulario: quien ya se convencio no lo lee,
-       y quien no tiene temporada lo encuentra antes de irse. */
-    '<a class="otro" href="the-fortress.html">' +
-      '<b>' + T('otroH') + '</b>' +
-      '<span>' + T('otroP') + '</span>' +
-      '<i>' + T('otroGo') + ' \u2192</i>' +
-    '</a>' +
 
     '<h2>' + T('formH') + '</h2>' +
     '<label for="tm">' + T('teamL') + '</label>' +
