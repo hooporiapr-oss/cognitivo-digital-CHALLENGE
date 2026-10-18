@@ -380,6 +380,13 @@ function send(){
     SENT = email;
     draw();
 
+    /* El acuse de la licencia, guardado. Va aparte y despues de que
+       la solicitud entro: si esto falla, el equipo ya quedo inscrito
+       igual. El correo al admin lo lleva tambien, asi que el acuse
+       existe en dos sitios y no en ninguno. */
+    rpc('license_record', { p_email: email, p_by: name, p_terms: T('lic') })
+      .catch(function(e){ console.error('license_record', e) });
+
     fetch(SERVER + '/team-signup', {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
