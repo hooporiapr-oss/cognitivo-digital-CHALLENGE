@@ -13,16 +13,16 @@
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/">
 <meta property="og:title" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
-<meta property="og:description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
-<meta property="og:image" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
+<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo en un juego de verdad. Cada Punto lleva la cuenta; el programa cobra su dinero directo.">
+<meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
-<meta name="twitter:description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
-<meta name="twitter:image" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
+<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo en un juego de verdad. Cada Punto lleva la cuenta; el programa cobra su dinero directo.">
+<meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -337,9 +337,10 @@ footer a:hover{text-decoration:underline}
       <p class="remate"><span id="remate"></span></p>
     </section>
 
-    <!-- El cobro. Es lo que un programa no puede hacer por su cuenta,
-         y por eso va entero y no resumido: juntar promesas es fácil,
-         cobrarlas es el trabajo. -->
+    <!-- La cuenta. Es lo que un programa no puede hacer por su cuenta
+         sin equivocarse, y por eso va entero y no resumido: juntar
+         promesas es fácil, llevar la cuenta es el trabajo. El dinero
+         no se menciona aquí como nuestro: lo cobra el programa. -->
     <section class="sec">
       <h2 id="h2cob"></h2>
       <p id="pCob"></p>
@@ -416,33 +417,35 @@ var S = {
       '<b>Las promesas de un juego cierran cuando empieza.</b> Prometer sabiendo el marcador no es prometer.',
       '<b>No se paga nada por adelantado.</b> El padrino paga después, por los puntos que de verdad se anotaron, y un juego que no se jugó no se cobra.',
       '<b>Es el marcador del equipo.</b> Ningún jugador vale más que otro y nadie gana nada tirando de más.',
-      '<b>Al programa le llega el 100% de lo que se cobra.</b> Nuestro cargo se le suma al pago del padrino; nunca sale de lo recaudado.',
+      '<b>El dinero va directo al programa.</b> El padrino le paga al programa, no a nosotros. No procesamos pagos y no guardamos dinero de nadie.',
       /* Lo que no se puede dejar insinuado en ningún sitio: que el
-         total prometido sea el total recibido. Se espera cobrar casi
-         todo, pero el cobro cierra, y el número del cierre es el
-         número. Decirlo aquí, al lado de la promesa, en vez de que un
-         programa lo descubra el día de la remesa. */
-      '<b>Lo prometido no es lo recaudado.</b> Una promesa es una promesa. El cobro tiene su cierre, y lo que entró para ese cierre es el marcador de verdad de la recaudación.'
+         total prometido sea el total recibido. Nosotros llevamos la
+         cuenta de lo prometido y hasta ahí; quien cobra es el
+         programa. Decirlo aquí, al lado de la promesa, en vez de que
+         lo descubra con la lista en la mano. */
+      '<b>Lo prometido no es lo recaudado.</b> Una promesa es una promesa, y quien cobra es el programa. Nosotros llevamos la cuenta de lo prometido — lo que entre, y cuándo, es cosa tuya.'
     ],
     remate:'Lo que anota tu equipo es lo que prometieron sus padrinos. Cada <em>Punto</em> <i>Cuenta</i>.',
 
-    h2cob:'Prometer es fácil. Cobrar es el trabajo.',
-    pCob:'Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que deben doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Nadie quiere ese trabajo, y el que lo intenta a mano lo deja a medias. Por eso el cobro no se lo dejamos a nadie.',
+    h2cob:'Prometer es fácil. Llevar la cuenta es el trabajo.',
+    pCob:'Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que prometieron doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Esa cuenta a mano no la lleva nadie sin equivocarse. Eso es exactamente lo que hacemos nosotros.',
     cobpasos:[
-      ['Al cerrar el juego sale el cobro, solo','A cada padrino le llega su enlace de pago por correo: el juego, lo que anotó el equipo, la cuenta hecha y el tope aplicado si mordió. Nadie manda un correo a mano.'],
-      ['A los siete días, un recordatorio','Automático, y sólo al que todavía no ha pagado. Con el enlace otra vez, por si se perdió entre los correos.'],
-      ['A los veintiún días, el último','Y dice que es el último, porque lo es. Después de ése no se vuelve a escribir.'],
-      ['A los treinta días, el cobro cierra','La promesa se cierra y no se debe nada. No se pide más y no se llama a nadie. Ahí se sabe el marcador de verdad de la recaudación.'],
-      ['Al programa se le remite el día 1 y el día 15','Lo cobrado, completo. Nuestro cargo se le sumó al pago del padrino; nunca sale de lo tuyo.']
+      ['Cada promesa queda anotada','El nombre del padrino, los centavos por punto, el juego, y el tope si lo puso. Todo en un sitio, y nadie tiene que acordarse de nada.'],
+      ['Entra el marcador y sale la cuenta','El marcador cierra las promesas de ese juego y saca lo que le toca a cada padrino, con el tope aplicado si mordió. Diez padrinos, diez cantidades distintas, sin una sola cuenta a mano.'],
+      ['Cada padrino recibe su aviso','Automático, al cerrar el juego: el resultado y lo que dio su promesa. Un aviso, y nada más — sin enlace de pago y sin recordatorios.'],
+      ['La lista se imprime o se baja','Cada padrino con su cantidad, lista para que la trabajes por donde ya hablas con esa gente.'],
+      ['El programa cobra como siempre ha cobrado','Por ATH Móvil, en efectivo, o como acuerde con cada quien. El dinero le llega directo, el mismo día, a su propia cuenta.'],
+      ['Nosotros no tocamos un centavo','No procesamos pagos, no guardamos dinero y no le cobramos nada a ningún padrino. Nosotros manejamos las promesas; tú manejas el dinero.']
     ],
-    /* Cuánto dura, sumando los pasos de arriba. Decir "treinta días"
-       sería más limpio y sería mentira: los treinta son SÓLO el cobro
-       de un juego. Un programa al que le prometes treinta y le pagas
-       el día 52 no vuelve. */
-    duraL:'Cuánto dura',
-    duraP:'Un juego se cobra en <b>30 a 45 días</b>: las semanas que se tomen juntando promesas, el juego, los treinta días de cobro, y la remesa del 1 o del 15. Una temporada son varios juegos, cada uno con sus propios padrinos y su propio cierre, así que el dinero entra por tandas y no de una vez.',
+    /* Cuánto tarda. Antes aquí había treinta a cuarenta y cinco días
+       porque el cobro era nuestro y había remesa. Ya no: la cuenta
+       sale el día del marcador y de ahí en adelante el calendario es
+       del programa. Prometer una fecha de dinero que no controlamos
+       sería prometer por cuenta ajena. */
+    duraL:'Cuánto tarda',
+    duraP:'Un evento son <b>catorce días para conseguir padrinos y el juego el día quince</b>. La cuenta sale el mismo día que entra el marcador, los avisos salen solos, y ahí el evento cierra. De ahí en adelante el calendario es tuyo: cobras cuando cobras, por donde cobras. Una temporada son varios eventos, cada uno con sus propios padrinos y su propia lista.',
     nadieH:'Lo que nadie tiene que hacer',
-    nadieP:'Pedirle dinero a nadie. Ni el entrenador a las abuelas de sus jugadores, ni un nene a su tío, ni tú a ninguno de los dos. Nadie cuenta efectivo, nadie manda un sobre a la escuela y nadie lleva una lista de quién debe qué. Es un pago con tarjeta y un recibo, como cualquier cosa que se paga por internet.',
+    nadieP:'Sacar la cuenta a mano. Ni el entrenador con una libreta, ni tú con una hoja de cálculo a las once de la noche, ni nadie sumando doscientas cantidades distintas sacadas de doscientos marcadores. Nadie manda un sobre a la escuela y nadie lleva la lista de quién prometió qué: la lista está hecha, con nombre y cantidad, cuando acaba el juego.',
 
     fKick:'También',
     fTit:'El Fortress',
@@ -461,16 +464,16 @@ var S = {
     pYa:'Cuéntanos de tu escuela, tu club o tu grupo y lo montamos — tu plantilla, tu calendario — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
     btnYa:'Escríbenos',
 
-    fWhat:'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.',
+    fWhat:'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.',
     rutas:[
       ['Tu programa',[['mi-equipo.html','Mi equipo'],['plantilla.html','La plantilla'],
                       ['scoreboard.html','El tablero del equipo'],
-                      ['ayuda.html','Coach Cada Punto'],['cobro.html','A dónde te pagamos']]],
+                      ['ayuda.html','Coach Cada Punto'],['cobro.html','Cómo cobras']]],
       ['Empezar',[['equipo.html','Inscribe tu equipo'],['padrinos.html','Conseguir padrinos'],
                   ['contact.html','Habla con nosotros']]]
     ],
     legal:[['terms.html','Términos'],['privacy.html','Privacidad'],
-           ['custodia.html','Cómo se maneja el dinero']]
+           ['custodia.html','El dinero no pasa por nosotros']]
   },
   en:{
     titulo:'Cada Punto — your team scores, your program gets paid',
@@ -489,24 +492,25 @@ var S = {
       '<b>A game’s pledges close when it starts.</b> Pledging while knowing the score is not pledging.',
       '<b>Nothing is paid up front.</b> A padrino pays afterwards, on the points actually scored, and a game that was never played is never charged.',
       '<b>It is the team’s score.</b> No player is worth more than another and nobody gains anything by shooting more.',
-      '<b>The program gets 100% of what is collected.</b> Our fee is added to the padrino’s payment; it never comes out of what was raised.',
-      '<b>Pledged is not collected.</b> A pledge is a promise. Collections have a close, and what came in by that close is the real fundraising score.'
+      '<b>The money goes straight to the program.</b> A padrino pays the program, not us. We process no payments and we hold nobody’s money.',
+      '<b>Pledged is not collected.</b> A pledge is a promise, and the program is the one who collects. We keep the count of what was pledged — what comes in, and when, is yours.'
     ],
     remate:'What your team scores is what their padrinos pledged. Cada <em>Punto</em> <i>Cuenta</i>.',
 
-    h2cob:'Pledging is easy. Collecting is the work.',
-    pCob:'Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people owing two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody wants that job, and whoever tries it by hand leaves it half done. That is why we do not leave the collecting to anyone.',
+    h2cob:'Pledging is easy. Keeping the count is the work.',
+    pCob:'Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people who pledged two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody keeps that count by hand without getting it wrong. That is exactly what we do.',
     cobpasos:[
-      ['When the game closes, the billing goes out on its own','Each padrino gets their payment link by email: the game, what the team scored, the arithmetic done, and the cap applied if it bit. Nobody sends an email by hand.'],
-      ['At seven days, one reminder','Automatic, and only to whoever has not paid. With the link again, in case it got buried.'],
-      ['At twenty-one days, the last one','And it says it is the last one, because it is. After that nobody writes again.'],
-      ['At thirty days, collections close','The pledge closes and nothing is owed. Nothing more is asked and nobody is called. That is when the real fundraising score is known.'],
-      ['The program is paid on the 1st and the 15th','What was collected, in full. Our fee was added to the padrino’s payment; it never comes out of yours.']
+      ['Every pledge is recorded','The padrino’s name, the cents per point, the game, and the cap if he set one. All in one place, and nobody has to remember anything.'],
+      ['The score goes in and the arithmetic comes out','The score closes that game’s pledges and works out what each padrino comes to, with the cap applied if it bit. Ten padrinos, ten different amounts, not one sum done by hand.'],
+      ['Every padrino gets his notice','Automatic, when the game closes: the result and what his pledge came to. A notice, and nothing more — no payment link and no reminders.'],
+      ['The list prints or downloads','Every padrino with his amount, ready to work through wherever you already talk to those people.'],
+      ['The program collects the way it always has','By ATH Móvil, in cash, or however it agrees with each one. The money arrives directly, the same day, in its own account.'],
+      ['We do not touch a cent','We process no payments, hold no money, and charge no padrino anything. We manage the pledges; you manage the proceeds.']
     ],
-    duraL:'How long it runs',
-    duraP:'One game is collected in <b>30 to 45 days</b>: however long they take gathering pledges, the game, the thirty days of collecting, and the remittance on the 1st or the 15th. A season is several games, each with its own padrinos and its own close, so the money arrives in waves rather than all at once.',
+    duraL:'How long it takes',
+    duraP:'An event is <b>fourteen days to gather padrinos and the game on day fifteen</b>. The arithmetic comes out the same day the score goes in, the notices go out on their own, and the event closes there. After that the calendar is yours: you collect when you collect, however you collect. A season is several events, each with its own padrinos and its own list.',
     nadieH:'What nobody has to do',
-    nadieP:'Ask anybody for money. Not the coach asking his players’ grandmothers, not a child asking his uncle, not you asking either of them. Nobody counts cash, nobody sends an envelope to school, and nobody keeps a list of who owes what. It is a card payment and a receipt, like anything else paid for online.',
+    nadieP:'Work out the arithmetic by hand. Not the coach with a notebook, not you with a spreadsheet at eleven at night, not anybody adding up two hundred different amounts off two hundred different scores. Nobody sends an envelope to school, and nobody keeps the list of who pledged what by hand: the list is made, with name and amount, the moment the game ends.',
 
     fKick:'Also',
     fTit:'The Fortress',
@@ -525,16 +529,16 @@ var S = {
     pYa:'Tell us about your school, club or group and we will build it — your roster, your schedule — and send it over. Nothing goes live until you say so.',
     btnYa:'Write to us',
 
-    fWhat:'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.',
+    fWhat:'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.',
     rutas:[
       ['Your program',[['mi-equipo.html','My team'],['plantilla.html','The roster'],
                        ['scoreboard.html','The team board'],
-                       ['ayuda.html','Coach Cada Punto'],['cobro.html','Where we pay you']]],
+                       ['ayuda.html','Coach Cada Punto'],['cobro.html','How you collect']]],
       ['Start',[['equipo.html','Sign up my team'],['padrinos.html','Getting padrinos'],
                 ['contact.html','Talk to us']]]
     ],
     legal:[['terms.html','Terms'],['privacy.html','Privacy'],
-           ['custodia.html','How the money is handled']]
+           ['custodia.html','The money does not pass through us']]
   }
 };
 
