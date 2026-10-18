@@ -9,145 +9,76 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#0C6E8C}
-*{box-sizing:border-box}
-html{background:#07141E}
-body{margin:0;height:100dvh;overflow:hidden;display:flex;flex-direction:column;
-  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#07141E;line-height:1.6;-webkit-text-size-adjust:100%}
-.wrap{width:min(720px,93vw);margin:0 auto}
-
-header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
-  padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#4FD3F0}
-.mark i{font-style:normal;color:#9FB3C4}
-.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-
-main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden}
-main .wrap{padding:clamp(20px,4vw,32px) 0 34px}
-
-h1{font-size:clamp(1.5rem,4.4vw,2rem);letter-spacing:-.03em;margin:0 0 4px;font-weight:900}
-.updated{color:var(--mute);font-size:.86rem;margin:0 0 22px}
-h2{font-size:1.08rem;margin:26px 0 6px;font-weight:900;letter-spacing:-.02em}
-p{margin:0 0 12px}
-ul{margin:0 0 14px;padding-left:20px}
-li{margin-bottom:6px}
-.lead{color:var(--mute);margin:0 0 20px}
-strong{font-weight:800}
-
-footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
-footer p{margin:0 0 7px}
-footer .f-co{color:#fff;font-weight:700}
-footer a{color:#4FD3F0;text-decoration:none}
-footer .f-legal{margin:7px 0 0;font-size:.78rem}
-footer .f-dot{padding:0 7px;opacity:.5}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo del resto del sitio. Esto es un documento largo, así que
+   la tipografía manda: ancho de lectura corto, titulares que se
+   distinguen del cuerpo, y nada de cajas donde no hacen falta. */
 :root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2;
 }
-html, body{background:#07141E;color:#EAF2F7}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.68;-webkit-text-size-adjust:100%}
+.wrap{width:min(680px,calc(100% - 40px));margin:0 auto}
 
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
+header{background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
+  padding-top:env(safe-area-inset-top,0px)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
+main .wrap{padding:44px 0 56px}
+h1{font-size:clamp(2rem,5.6vw,3rem);line-height:1.06;letter-spacing:-.045em;margin:0 0 10px}
+.updated{color:var(--muted);font-size:.86rem;margin:0 0 26px;
+  padding-bottom:20px;border-bottom:3px solid var(--navy)}
+.lead{font-size:1.1rem;color:var(--ink);margin:0 0 34px;max-width:58ch}
 
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
+/* ── Cada cláusula: el titular en naranja y pequeño, para que la
+   vista encuentre la sección sin que el titular grite. */
+h2{font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin:38px 0 10px;padding-top:22px;border-top:1px solid var(--linea)}
+main h2:first-of-type{border-top:none;padding-top:0}
+p{margin:0 0 15px;color:var(--muted);max-width:62ch}
+strong,b{color:var(--ink);font-weight:750}
+ul{margin:0 0 15px;padding:0;list-style:none;max-width:62ch}
+li{position:relative;padding:9px 0 9px 22px;color:var(--muted);
+  border-top:1px solid var(--linea)}
+li:first-child{border-top:none}
+li::before{content:"";position:absolute;left:0;top:1.05em;
+  width:7px;height:7px;background:var(--orange);border-radius:2px}
+main a{color:var(--navy);font-weight:700;text-decoration:none;
+  border-bottom:2px solid rgba(255,122,24,.5)}
+main a:hover{border-bottom-color:var(--orange);color:var(--orange)}
 
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
+footer{background:#0a1420;color:#aeb9c6;padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
+footer p{margin:0 0 7px;color:#aeb9c6;max-width:none}
+footer .f-co{color:#fff;font-weight:700}
+footer .f-what{margin:7px auto 0;font-size:.78rem;line-height:1.5;opacity:.75;max-width:54ch}
+footer .f-legal{margin:9px 0 0;font-size:.82rem}
+footer .f-dot{padding:0 8px;opacity:.45}
 
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
-
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
-
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
-
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
+@media print{
+  header,footer,.langb{display:none !important}
+  html,body{background:#fff;color:#000}
+  main .wrap{width:100%;padding:0}
+  h2{color:#000;border-top-color:#000}
+  p,li{color:#000}
+  main a{border-bottom:none;color:#000}
+  h2,li{break-inside:avoid}
 }
-
 </style>
 </head>
 <body>
@@ -201,19 +132,17 @@ use it.</p>
 
 <h2>What Cada Punto does</h2>
 <p>Cada Punto is a pledge management system. A supporter — a <em>padrino</em> — pledges an amount
-for every point a team scores in one game, or for every point one participant scores in a Fortress
-game day. Cada Punto records that pledge, works out what it comes to once the score is in, and
-shows the program what was pledged.</p>
+for every point the team scores in one scheduled game. Cada Punto records that pledge, calculates
+what it comes to once the final score is in, and shows the program what was pledged.</p>
 
 <p><strong>Cada Punto does not process, receive, hold, verify or collect any payment.</strong>
 Whatever a padrino pays, he pays the program directly, by whatever method the two of them agree.
 We are not a party to that payment, we do not know whether it was made, and the system has nowhere
 to record it.</p>
 
-<p>Where the score comes from depends on the game. In a real basketball game the coach reports the
-final score with his code, or Gostar Digital LLC enters it from the schedule the program provided.
-In the Fortress, the game records each quarter as it is played, and the total is the sum of those
-quarters.</p>
+<p>The final score is reported by the program: the coach enters it on the team board with his code,
+or Gostar Digital LLC enters it from the schedule the program provided. It sits on that board,
+visible to anyone holding the link.</p>
 
 <p>An event runs to a fixed shape: fourteen days to gather pledges, and the game on day fifteen.
 When the score is confirmed, Cada Punto works out each pledge and sends every padrino one notice
@@ -290,11 +219,7 @@ at the address below and we will correct the record. Anything concerning money a
 between the padrino and the program.</p>
 
 <h2>The games</h2>
-<p>The Fortress is the game the fundraiser is played on, and it is free to practise as often as
-you like — on a screen, or in a headset. Practice is never recorded and never billed. Only the four
-quarters taken inside a program's game day count for anything.</p>
-
-<p>The other Memory Basketball games — The Rebound, The Replay, The Recall and their head-to-head
+<p>The Memory Basketball games — The Rebound, The Replay, The Recall and their head-to-head
 versions — are free to play, need no account, and record nothing. We may change or withdraw any of
 the games at any time.</p>
 
@@ -343,17 +268,16 @@ favor no lo uses.</p>
 <h2>Qué hace Cada Punto</h2>
 <p>Cada Punto es un sistema de manejo de promesas. Un padrino promete una cantidad por cada punto
 que anota un equipo en un juego, o por cada punto que anota un participante en un día de juego del
-Fortress. Cada Punto anota esa promesa, saca lo que corresponde cuando entra el marcador, y le
-enseña al programa lo prometido.</p>
+juego pautado. Cada Punto anota esa promesa, calcula lo que corresponde cuando entra el marcador
+final, y le enseña al programa lo prometido.</p>
 
 <p><strong>Cada Punto no procesa, no recibe, no guarda, no verifica y no cobra ningún pago.</strong>
 Lo que un padrino pague, se lo paga al programa directo, por el método que los dos acuerden. No
 somos parte de ese pago, no sabemos si se hizo, y el sistema no tiene dónde anotarlo.</p>
 
-<p>De dónde sale el marcador depende del juego. En un juego de baloncesto de verdad lo reporta el
-entrenador del programa, con su código, o Gostar Digital a partir del calendario que el programa
-entregó; queda en el tablero del equipo. En el Fortress no lo escribe nadie: el juego registra cada
-cuarto según se juega, y el total es la suma de esos cuartos.</p>
+<p>El marcador final lo reporta el programa: el entrenador lo entra en el tablero del equipo con
+su código, o lo entra Gostar Digital a partir del calendario que el programa entregó. Queda en ese
+tablero, a la vista de quien tenga el enlace.</p>
 
 <p>Un evento tiene una forma fija: catorce días para conseguir promesas, y el juego el día quince.
 Cuando se confirma el marcador, Cada Punto saca lo que dio cada promesa y le manda a cada padrino
@@ -432,11 +356,7 @@ la dirección de abajo y corregimos el registro. Todo lo que tenga que ver con d
 entre el padrino y el programa.</p>
 
 <h2>Los juegos</h2>
-<p>The Fortress es el juego sobre el que se juega la recaudación, y practicarlo es gratis, todas
-las veces que quieras — en pantalla o con un casco. La práctica no se registra y no se cobra nunca.
-Lo único que cuenta son los cuatro cuartos que se juegan dentro del día de juego de un programa.</p>
-
-<p>Los demás juegos de Memory Basketball — The Rebound, The Replay, The Recall y sus versiones uno
+<p>Los juegos de Memory Basketball — The Rebound, The Replay, The Recall y sus versiones uno
 contra uno — son gratis, no hace falta cuenta y no guardan nada. Podemos cambiar o retirar
 cualquiera de ellos en cualquier momento.</p>
 
