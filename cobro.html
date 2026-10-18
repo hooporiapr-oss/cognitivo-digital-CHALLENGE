@@ -3,219 +3,160 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>A dónde te pagamos — Cada Punto</title>
-<!-- Esta página no se comparte: se le manda al entrenador con su
-     código. Aun así, si el enlace cae en un grupo, que no diga
-     "formulario de pago" en la vista previa. -->
-<meta name="robots" content="noindex,nofollow">
+<title>Cómo cobras — Cada Punto</title>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cada Punto">
 <meta property="og:url" content="https://cadapunto.com/cobro.html">
-<meta property="og:title" content="A dónde te pagamos — Cada Punto">
-<meta property="og:description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
+<meta property="og:title" content="Cómo cobras">
+<meta property="og:description" content="Cuando entra el marcador te entregamos la lista: cada padrino con su cantidad. De ahí cobras tú, por donde ya hablas con tu gente.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Cada Punto Cuenta — baloncesto">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="A dónde te pagamos — Cada Punto">
-<meta name="twitter:description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
+<meta name="twitter:title" content="Cómo cobras">
+<meta name="twitter:description" content="Cuando entra el marcador te entregamos la lista: cada padrino con su cantidad. De ahí cobras tú, por donde ya hablas con tu gente.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
-
-<meta name="description" content="Dinos la cuenta ATH Móvil Business de tu organización para remitirte lo recaudado el día 1 y el día 15.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<meta name="description" content="Cuando entra el marcador te entregamos la lista: cada padrino con su cantidad. De ahí cobras tú, por donde ya hablas con tu gente.">
 <style>
-:root{--ink:#12202E;--mute:#5A6B7C;--line:#D7E0E8;--tint:#F7FAFC;--accent:#A84200;
-      --good:#0B7A5A;--bad:#A8323F}
+/* ── El look nuevo: crema, navy y naranja ─────────────────────────
+   El mismo que terms, privacy y custodia: esto es la cuarta hoja de
+   ese juego, no una pantalla de la aplicación. Un entrenador la
+   imprime y la pega en la pared del gimnasio.
+
+   Antes eran tres <style> apilados — el claro original, el oscuro
+   encima, y los parches del oscuro encima de ése. Uno solo. */
+:root{
+  --navy:#101c2a; --navy2:#192b3d; --orange:#ff7a18;
+  --cream:#faf8f4; --ink:#1b2937; --muted:#617083;
+  --linea:#e7e6e2;
+}
 *{box-sizing:border-box}
-html{background:#07141E}
-/* Mismo arreglo que en equipo.html: el scroll vive en la página, no
-   en <main>, para que el navegador pueda subir el campo enfocado por
-   encima del teclado. */
+html{background:var(--cream)}
 body{margin:0;min-height:100dvh;display:flex;flex-direction:column;
-  font-family:Archivo,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#07141E;line-height:1.55;-webkit-text-size-adjust:100%}
-.wrap{width:min(600px,93vw);margin:0 auto}
+  background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.68;-webkit-text-size-adjust:100%}
+.wrap{width:min(680px,calc(100% - 40px));margin:0 auto}
 
-header{flex:0 0 auto;background:#12202E;border-bottom:1px solid #0B1724;
+header{flex:0 0 auto;background:var(--navy);color:#fff;border-bottom:1px solid #ffffff22;
   padding-top:env(safe-area-inset-top,0px)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:#FF8A2B}
-.mark i{font-style:normal;color:#6FD83C}
-.langb{border:1px solid #33465A;background:none;color:#C8D6E2;border-radius:999px;
-  padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.mark{font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+  font-size:1.05rem;color:#fff;text-decoration:none;white-space:nowrap}
+.mark em{font-style:normal;color:#fff}
+.mark i{font-style:normal;color:var(--orange)}
+@media(max-width:380px){ .mark{font-size:.92rem} }
+.langb{border:1px solid #ffffff55;background:transparent;color:#fff;
+  padding:8px 11px;border-radius:7px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.langb:hover{border-color:var(--orange);color:var(--orange)}
 
-main{flex:1 1 auto;overflow-x:hidden}
-main .wrap{padding:clamp(20px,5vw,34px) 0 32px}
+main{flex:1 1 auto}
+main .wrap{padding:44px 0 56px}
 
-footer{flex:0 0 auto;background:#12202E;color:#9FB3C4;border-top:1px solid #0B1724;
-  padding:15px 0 calc(15px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.82rem}
+/* ── La portada: el nombre una vez, en grande ─────────────────── */
+.rtop{margin:0 0 26px;padding-bottom:20px;border-bottom:3px solid var(--navy)}
+.kick{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--orange);margin:0 0 10px}
+.rtop h1{font-size:clamp(1.9rem,5.2vw,2.7rem);line-height:1.08;letter-spacing:-.04em;margin:0 0 8px}
+.rtop .sub{color:var(--muted);margin:0;font-size:.86rem}
+.lede{font-size:1.08rem;color:var(--ink);margin:0 0 34px;max-width:58ch}
+
+/* ── El por qué de todo esto ──────────────────────────────────────
+   Va en caja y sin número: no es una cláusula, es la razón por la
+   que existen las cláusulas. */
+.porque{margin:0 0 36px;padding:22px 24px;background:#fff;
+  border:1px solid var(--linea);border-left:5px solid var(--orange);
+  border-radius:16px;box-shadow:0 8px 25px #17243808}
+.porque h2{margin:0 0 12px;padding:0;border:0;
+  font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange)}
+.porque p{margin:0 0 12px;color:var(--muted);max-width:58ch}
+.porque p:last-child{margin-bottom:0}
+.porque .golpe{font-size:1.1rem;font-weight:750;letter-spacing:-.02em;color:var(--ink)}
+/* El cierre, separado por una raya: la caja abre con lo que sabemos
+   nosotros y cierra con lo que hace el programa. */
+.porque .cierre{margin-top:16px;padding-top:15px;border-top:1px solid var(--linea)}
+
+h2{font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin:38px 0 14px;padding-top:22px;border-top:1px solid var(--linea)}
+
+/* ── Los tres pasos ──────────────────────────────────────────────
+   Numerados por CSS: el orden es el contenido, y escribir "1." a
+   mano en el texto se desordena solo en cuanto se traduce. */
+.num{display:grid;gap:12px;margin:0 0 8px;counter-reset:paso}
+.num .s{position:relative;background:#fff;border:1px solid var(--linea);
+  border-radius:14px;padding:16px 18px 16px 54px;box-shadow:0 8px 25px #17243806}
+.num .s::before{counter-increment:paso;content:counter(paso);
+  position:absolute;left:18px;top:17px;width:24px;height:24px;border-radius:50%;
+  background:var(--orange);color:#111a24;font-size:.76rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center}
+.num .s b{display:block;font-size:1rem;color:var(--ink);margin-bottom:3px}
+.num .s span{color:var(--muted);font-size:.94rem}
+
+/* ── La letra pequeña, que aquí es lo importante ──────────────── */
+.fine{background:#fff;border:1px solid var(--linea);border-radius:14px;
+  padding:16px 18px;margin:14px 0 0;box-shadow:0 8px 25px #17243806}
+.fine b{display:block;color:var(--orange);font-size:.72rem;font-weight:800;
+  letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}
+.fine p{margin:0;color:var(--muted);font-size:.94rem;max-width:60ch}
+.fine a{color:var(--navy);font-weight:700;text-decoration:none;
+  border-bottom:2px solid rgba(255,122,24,.5)}
+.fine a:hover{border-bottom-color:var(--orange);color:var(--orange)}
+
+/* ── Donde está escrito ──────────────────────────────────────── */
+.ackbox{margin:34px 0 0;padding:22px 24px;background:var(--navy);color:#fff;
+  border-radius:16px}
+.ackbox h2{margin:0 0 8px;padding:0;border:0;color:var(--orange)}
+.ackbox p{margin:0;color:#c8d2dd;font-size:.95rem;max-width:58ch}
+.ackbox a{display:inline-block;margin:14px 20px 0 0;color:#fff;font-weight:700;
+  font-size:.92rem;text-decoration:none;border-bottom:2px solid var(--orange)}
+.ackbox a:hover{color:var(--orange)}
+
+.pie{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0 0}
+.pie a,.pie button{flex:1 1 170px;border:1px solid var(--navy);border-radius:9px;
+  padding:13px 16px;background:transparent;color:var(--navy);
+  font:inherit;font-weight:800;font-size:.94rem;
+  text-align:center;text-decoration:none;cursor:pointer}
+.pie a:hover,.pie button:hover{background:var(--navy);color:#fff}
+
+footer{flex:0 0 auto;background:#0a1420;color:#aeb9c6;
+  padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));
+  text-align:center;font-size:.86rem}
+footer a{color:#aeb9c6;text-decoration:none}
+footer a:hover{color:var(--orange)}
 footer p{margin:0 0 7px}
 footer .f-co{color:#fff;font-weight:700}
-footer a{color:#8FA8C0;text-decoration:none}
-footer .f-legal{margin:7px 0 0;font-size:.78rem}
-footer .f-dot{padding:0 7px;opacity:.5}
-.f-what{margin:7px 0 0;font-size:.74rem;line-height:1.5;opacity:.72;max-width:52ch;
-  margin-left:auto;margin-right:auto}
+footer .f-what{margin:7px auto 0;font-size:.78rem;line-height:1.5;opacity:.75;max-width:54ch}
+footer .f-legal{margin:9px 0 0;font-size:.82rem}
+footer .f-dot{padding:0 8px;opacity:.45}
 
-.kick{font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:8px}
-h1{font-size:clamp(1.5rem,4.6vw,2rem);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px;font-weight:900}
-.lede{color:var(--mute);margin:0 0 22px}
-h2{font-size:1.02rem;margin:26px 0 8px;font-weight:900;letter-spacing:-.02em}
+/* ── Impresa ──────────────────────────────────────────────────────
+   Un entrenador la imprime y la pega en la pared. Antes esta regla
+   decía background:#07141E — el navy del look viejo — así que la
+   hoja salía negra y se bebía un cartucho. En papel: blanco.
 
-label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 5px}
-input{width:100%;padding:14px;border:2px solid var(--ink);border-radius:4px;
-  background:#07141E;color:var(--ink);font:inherit;font-size:1.02rem}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12,110,140,.15)}
-label,input{scroll-margin-top:64px;scroll-margin-bottom:24px}
-.hint{font-size:.82rem;color:var(--mute);margin:4px 0 0}
-.btn{display:block;width:100%;padding:16px;border:2px solid var(--ink);border-radius:4px;
-  background:var(--ink);color:#fff;font:inherit;font-weight:800;font-size:1.02rem;
-  cursor:pointer;text-align:center;text-decoration:none;margin-top:18px}
-.btn.line{background:#07141E;color:var(--ink);margin-top:10px}
-.ok{display:flex;gap:10px;align-items:flex-start;margin-top:18px;
-  font-size:.88rem;font-weight:400;color:var(--mute)}
-.ok span{cursor:pointer}
-.ok input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--accent);cursor:pointer}
-.ok a{color:var(--accent)}
-.msg{margin-top:12px;font-weight:700;font-size:.92rem;min-height:1.2em}
-.msg.bad{color:var(--bad)}
-.msg.ok{color:var(--good)}
-
-/* Quién pide esto, para que nadie llene un formulario a ciegas. */
-.who{border:1.5px solid var(--line);border-radius:4px;padding:13px 15px;margin:0 0 6px}
-.who b{display:block;font-size:.98rem}
-.who span{color:var(--mute);font-size:.92rem}
-
-.fine{border-left:4px solid var(--accent);background:var(--tint);padding:14px 16px;margin:22px 0 0}
-.fine b{display:block;margin-bottom:3px}
-.fine p{margin:0;color:var(--mute);font-size:.93rem}
-
-/* Lo que ya está guardado, cuando vuelven a entrar. */
-.now{border:1.5px solid var(--good);border-radius:4px;padding:13px 15px;margin:0 0 20px}
-.now b{display:block;color:var(--good);
-  letter-spacing:.1em;text-transform:uppercase;font-size:.66rem;margin-bottom:5px}
-.now dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.92rem}
-.now dt{color:var(--mute)}
-.now dd{margin:0;font-weight:700}
-
-@media(max-width:560px){
-  footer{padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));font-size:.76rem}
-  footer p{margin:0 0 4px}
-  footer .f-legal{margin:4px 0 0}
-  main .wrap{padding-bottom:20px}
+   Y la hoja tiene que decir de dónde salió: alguien la pega en la
+   pared, otro entrenador le saca una foto, y sin la dirección esa
+   foto no lleva a ningún sitio. */
+.pie-print{display:none}
+@media print{
+  header,footer,.pie,.langb{display:none !important}
+  html,body{background:#fff;color:#000}
+  main .wrap{width:100%;padding:0}
+  h1,h2,.kick,.porque h2,.fine b{color:#000}
+  p,li,.porque p,.fine p,.num .s span{color:#000}
+  .porque,.fine,.num .s,.ackbox{background:#fff;color:#000;
+    border:1px solid #000;box-shadow:none;break-inside:avoid}
+  .ackbox p,.ackbox a{color:#000}
+  .num .s::before{background:#000;color:#fff}
+  .rtop{border-bottom:2px solid #000}
+  a{text-decoration:none;color:#000;border-bottom:none}
+  .pie-print{display:block;margin-top:22px;padding-top:12px;
+    border-top:2px solid #000;font-size:.86rem;font-weight:700;
+    text-align:center;break-inside:avoid}
+  .pie-print span{display:block;font-weight:400;font-size:.8rem;margin-top:3px}
 }
-
-.done{text-align:center}
-.done .tick{font-size:2.8rem;line-height:1;margin-bottom:10px}
-.f-ayuda{margin:6px 0 0}
-.f-ayuda a{color:#8FA8C0;text-decoration:none;font-weight:800}
-
-
-/* ══════════════════════════════════════════════════════════════
-   LA CANCHA DE NOCHE
-   El mismo color que la portada, en todo el sitio. Va al final a
-   propósito: las reglas de arriba se quedan como están y éstas
-   mandan encima.
-   ══════════════════════════════════════════════════════════════ */
-:root{
-  --noche:#07141E; --cancha:#0E2232; --linea:#1B3A4F;
-  --viva:#4FD3F0;  --brasa:#FF8A2B;  --hueso:#EAF2F7; --humo:#7A96A9;
-  /* Y las que ya usaba esta página, apuntando a lo mismo */
-  --ink:#EAF2F7; --mute:#7A96A9; --line:#1B3A4F; --tint:#0E2232;
-  --accent:#4FD3F0; --good:#3FD89A; --bad:#FF7B7B;
-  --paper:#EAF2F7; --panel:#0E2232; --gold:#FF8A2B; --leather:#4FD3F0;
-  --ball:#FF8A2B; --edge:#2E5570; --teal:#4FD3F0;
-}
-html, body{background:#07141E;color:#EAF2F7}
-
-/* La cabecera y el pie ya eran oscuros, pero de otro azul. */
-header, footer, .top{background:#07141E;border-color:#1B3A4F}
-header{border-bottom:1px solid #1B3A4F}
-footer{border-top:1px solid #1B3A4F;color:#7A96A9}
-footer a{color:#4FD3F0}
-.mark{color:#EAF2F7}
-.mark i{color:#7A96A9}
-.langb{border-color:#2E5570;color:#9DB6C7;background:none}
-.langb:hover{color:#EAF2F7;border-color:#7A96A9}
-
-/* Cajas, paneles y cualquier cosa que antes era un rectángulo claro
-   sobre blanco. */
-.how, .linkbox, .s, .w, .tal, .num, .team, .pl, .caja, .chat, .card,
-.panel, .box, .waits, .pay, .cuadro, .m.me{
-  background:#0E2232;border-color:#1B3A4F;color:#EAF2F7}
-.how p, .s span, .w span, .num span, .tal span, .help, .hint, .lede,
-.cp, .who, .sub, .nota{color:#7A96A9}
-
-/* Lo que se escribe. Un campo blanco en una página oscura es un
-   agujero de luz, y en un teléfono de noche duele. */
-input, select, textarea{
-  background:#07141E;border-color:#2E5570;color:#EAF2F7}
-input::placeholder, textarea::placeholder{color:#5F7C91}
-input:focus, select:focus, textarea:focus{
-  border-color:#4FD3F0;box-shadow:0 0 0 3px rgba(79,211,240,.18)}
-
-/* Los botones. Aquí es donde un cambio de variables a ciegas dejaba
-   blanco sobre blanco: el relleno era var(--ink), que ahora es la
-   tinta. Se dicen los dos colores, y ya. */
-.btn, button.btn, a.btn{
-  background:#4FD3F0;border:2px solid #4FD3F0;color:#07141E}
-.btn:hover{background:#07141E;color:#4FD3F0}
-.btn.line, .btn.ghost, .btn.sec{
-  background:transparent;border:2px solid #EAF2F7;color:#EAF2F7}
-.btn.line:hover{background:#EAF2F7;color:#07141E}
-.btn.go, .btn.hot, .btn.naranja{background:#FF8A2B;border-color:#FF8A2B;color:#07141E}
-[style*="#FF8A2B"], .btn[class*="go"]{color:#07141E}
-.btn:disabled{opacity:.45}
-
-/* Separadores y reglas */
-hr, .sep, .div{border-color:#1B3A4F;background:#1B3A4F}
-table, th, td{border-color:#1B3A4F}
-
-/* Enlaces dentro del texto */
-/* Cada :not() suma fuerza, asi que esta regla le ganaba a cosas
-   como a.wa. Lo que es un boton se excluye por nombre. */
-main a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go), .wrap a:not(.btn):not(.pedir):not(.cta):not(.wa):not(.go){color:#4FD3F0}
-a.pedir{color:inherit}
-
-/* Lo que estaba escrito a mano en blanco y ahora es un agujero */
-[style*="background:#07141E"], [style*="background: #07141E"]{background:#0E2232 !important}
-
-
-/* Los que estaban puestos a mano con otro blanco: #FFF8F3, #FFFFFF.
-   No son var() de nadie, así que hay que nombrarlos. */
-[class]{--ff8:#0E2232}
-.ojo, .env-nota, .nota-ojo, .aviso, .warn, .tip{background:#0E2232 !important;color:#EAF2F7}
-.ttl, .env-nota b{color:#EAF2F7}
-.cta{background:#4FD3F0 !important;border-color:#4FD3F0 !important;color:#07141E !important}
-.cta:hover{background:#07141E !important;color:#4FD3F0 !important}
-h1,h2,h3,h4{color:#EAF2F7}
-
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
 </style>
 </head>
 <body>
@@ -227,342 +168,89 @@ h1,h2,h3,h4{color:#EAF2F7}
   </div>
 </header>
 
-<main>
-  <div class="wrap" id="app"></div>
-</main>
+<main><div class="wrap" id="app"></div></main>
 
 <footer>
   <div class="wrap">
     <p class="f-co">© 2026 Gostar Digital LLC · Puerto Rico</p>
-    <p class="f-ayuda"><a href="ayuda.html">Coach Cada Punto — ayuda del entrenador</a></p>
-    <p class="f-what" id="fWhat"></p>
+<p class="f-what" id="fWhat"></p>
+<script>
+(function(){
+  var l = 'es';
+  try{ l = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') ||
+           localStorage.getItem('fc-lang') ||
+           ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
+  var el = document.getElementById('fWhat');
+  if (el) el.textContent = (l === 'es')
+    ? 'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.'
+    : 'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.';
+})();
+</script>
     <p><a href="mailto:gostardigital@gmail.com">gostardigital@gmail.com</a></p>
     <p class="f-legal">
-      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="custodia.html">Dinero</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
+      <a href="terms.html">Términos</a><span class="f-dot">·</span><a href="privacy.html">Privacidad</a>
     </p>
   </div>
 </footer>
 
 <script>
-var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
-var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
-
-function rpc(name, args){
-  return fetch(SB_URL + '/rest/v1/rpc/' + name, {
-    method:'POST',
-    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
-    body: JSON.stringify(args || {})
-  }).then(function(r){ if(!r.ok) throw new Error('rpc'); return r.json(); });
-}
-
-var S = {
-  es:{
-    kick:'A dónde te pagamos',
-    h1:'Dinos la cuenta de tu organización.',
-    lede:'Lo que pagan los padrinos lo cobramos nosotros y te lo remitimos el día 1 y el día 15 de cada mes. Para remitirlo hace falta una cosa: una cuenta ATH Móvil Business a nombre de la organización.',
-    codeL:'Tu código de entrenador', codePh:'El mismo que usas en Mi equipo',
-    codeHint:'Distingue mayúsculas de minúsculas. Es el código de tu equipo, no uno general.',
-    codeGo:'Entrar',
-    errCode:'Ese código no sirve. Revísalo y prueba otra vez.',
-    errScope:'Ese código no es de un equipo en particular, así que no puede decir a dónde va el dinero. Usa el código que te dimos para tu equipo.',
-    errGen:'No se pudo guardar. Intenta otra vez.',
-
-    whoB:'Estás llenando esto para {N}.',
-    whoS:'Entraste con el código de {B}.',
-
-    nowB:'Lo que tenemos ahora',
-    nowOrg:'Organización', nowAth:'Cuenta ATH', nowTel:'Teléfono',
-    nowP:'Si cambió algo, llénalo otra vez abajo y se reemplaza.',
-
-    formH:'La cuenta',
-    orgL:'Nombre legal de la organización',
-    orgPh:'Como está registrada',
-    orgHint:'El nombre que aparece en el registro, no el apodo del equipo.',
-    regL:'Número de registro (opcional)',
-    regPh:'Registro de Corporaciones',
-    nameL:'Nombre en la cuenta ATH Móvil Business',
-    namePh:'Exacto, como sale en ATH',
-    nameHint:'Tiene que ser el de la organización. Una cuenta personal no.',
-    phoneL:'Teléfono de la cuenta ATH',
-    phonePh:'787 555 0101',
-    phoneHint:'Diez dígitos. Es el número al que le llega el pago.',
-    whoL:'Quién autoriza',
-    whoPh:'Nombre y apellido',
-    titleL:'Su puesto',
-    titlePh:'Presidente, tesorero, director…',
-
-    isorg:'Confirmo que esta cuenta ATH Móvil Business es de la organización, no de una persona, y que estoy autorizado a dar esta información.',
-    errIsorg:'Tienes que confirmar que la cuenta es de la organización.',
-    errOrg:'Escribe el nombre legal de la organización.',
-    errName:'Escribe el nombre que sale en la cuenta ATH.',
-    errWho:'Escribe quién autoriza y su puesto.',
-    errPhone:'El teléfono tiene que ser de diez dígitos.',
-
-    go:'Guardar',
-    doneH:'Guardado.',
-    doneP:'Le remitiremos a {O} al ATH Móvil Business {T} el día 1 y el día 15 de cada mes, por lo que se haya cobrado hasta ese día.',
-    doneMore:'Si te equivocaste en algo, entra otra vez con tu código y vuelve a llenarlo.',
-    back:'Volver al inicio →',
-
-    fineH:'Por qué ATH y no banco',
-    fineP:'Con ATH Móvil Business no tenemos que guardar ningún número de cuenta de banco tuyo — ni nosotros ni nadie que entre a nuestros sistemas. Guardamos un nombre y un teléfono, y eso es todo lo que hace falta para pagarte. Si tu organización necesita transferencia bancaria, escríbenos y lo hacemos por otra vía.'
-  },
-  en:{
-    kick:'Where we pay you',
-    h1:'Tell us your organization’s account.',
-    lede:'What padrinos pay is collected by us and remitted to you on the 1st and the 15th of each month. To remit it we need one thing: an ATH Móvil Business account in the organization’s name.',
-    codeL:'Your coach code', codePh:'The same one you use for the schedule',
-    codeHint:'Capital letters matter. This is your team’s code, not a general one.',
-    codeGo:'Enter',
-    errCode:'That code does not work. Check it and try again.',
-    errScope:'That code is not tied to one team, so it cannot say where the money goes. Use the code we gave you for your team.',
-    errGen:'That did not save. Try again.',
-
-    whoB:'You are filling this in for {N}.',
-    whoS:'You came in with {B}’s code.',
-
-    nowB:'What we have now',
-    nowOrg:'Organization', nowAth:'ATH account', nowTel:'Phone',
-    nowP:'If something changed, fill it in again below and it replaces this.',
-
-    formH:'The account',
-    orgL:'Legal name of the organization',
-    orgPh:'As it is registered',
-    orgHint:'The name on the registration, not the team’s nickname.',
-    regL:'Registration number (optional)',
-    regPh:'Corporations registry',
-    nameL:'Name on the ATH Móvil Business account',
-    namePh:'Exactly as it appears in ATH',
-    nameHint:'It has to be the organization’s. A personal account will not do.',
-    phoneL:'Phone on the ATH account',
-    phonePh:'787 555 0101',
-    phoneHint:'Ten digits. This is the number the payment lands on.',
-    whoL:'Who authorizes this',
-    whoPh:'First and last name',
-    titleL:'Their title',
-    titlePh:'President, treasurer, director…',
-
-    isorg:'I confirm this ATH Móvil Business account belongs to the organization, not to a person, and that I am authorized to give this information.',
-    errIsorg:'You have to confirm the account belongs to the organization.',
-    errOrg:'Write the legal name of the organization.',
-    errName:'Write the name on the ATH account.',
-    errWho:'Write who authorizes this and their title.',
-    errPhone:'The phone has to be ten digits.',
-
-    go:'Save',
-    doneH:'Saved.',
-    doneP:'We will remit to {O} at ATH Móvil Business {T} on the 1st and the 15th of each month, for whatever has been collected up to that day.',
-    doneMore:'If you got something wrong, come back in with your code and fill it in again.',
-    back:'Back to the start →',
-
-    fineH:'Why ATH and not a bank',
-    fineP:'With ATH Móvil Business we never have to hold a bank account number of yours — not us, and not anyone who gets into our systems. We hold a name and a phone number, and that is all it takes to pay you. If your organization needs a bank transfer, write to us and we will arrange it another way.'
-  }
-};
-
 var LANG='es';
 try{ LANG = localStorage.getItem('cfh_lang') || localStorage.getItem('cp-lang') || localStorage.getItem('fc-lang') ||
   ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es':'en'); }catch(e){}
 
-function T(k,v){
-  var s = (S[LANG] && S[LANG][k]) || S.es[k] || '';
-  if (v) Object.keys(v).forEach(function(x){ s = s.split('{'+x+'}').join(v[x]); });
-  return s;
-}
+var S = {"es": {"kick": "Cómo cobras", "h1": "Tu programa cobra. Nosotros anotamos las promesas.", "sub": "Gostar Digital LLC · Cada Punto · octubre 2026", "lede": "Cada Punto no procesa pagos ni guarda dinero. Cuando entra el marcador, el sistema saca lo que prometió cada padrino y te entrega la lista. De ahí en adelante cobras tú, por donde ya hablas con tu gente.", "porqueH": "Por qué esto te conviene", "porque1": "El dinero no espera por nosotros.", "porque2": "Si pasara por nuestras manos habría una fecha de pago, un corte y una cuenta ajena de por medio, y tú esperando por los tres. Así no: lo que te pagan te llega el mismo día, a tu propia cuenta, sin que nadie te lo tenga que remitir.", "porque3": "Y lo que se hacía cuesta arriba nunca fue cobrar — fue saber cuánto le toca a cada quien. Diez padrinos a tarifas distintas, con topes distintos, sobre un marcador que cambia cada juego. Esa cuenta la hacemos nosotros, bien, cada vez.", "porqueCierre": "Nosotros manejamos las promesas. Tú manejas el dinero.", "pasosH": "Cómo se cobra un juego", "pasos": [["Imprime o baja la lista", "Cada padrino con su nombre y su cantidad, ya con el tope aplicado si mordió. La lista es tuya: imprímela, bájala, o pásala por donde quieras."], ["Cobra por donde ya cobras", "ATH Móvil, efectivo, o lo que use tu organización. El dinero te llega directo, el mismo día, a tu propia cuenta. Nosotros no estamos en el medio."], ["Marca tú quién pagó", "En tu libreta, en tu hoja, o en tu propia cuenta. El sistema no tiene columna de pagado y no la va a tener: lo que anotamos es lo prometido. A tus padrinos les mandamos el resultado y su cantidad al cerrar el juego, pero el cobro no lo tocamos."]], "fine1H": "Lo que no hacemos", "fine1P": "No procesamos pagos, no te pedimos número de cuenta, no guardamos dinero tuyo ni de nadie, y al padrino nunca le pedimos dinero: el aviso que le mandamos trae el resultado y su cantidad, sin enlace de pago y sin recordatorios. Si alguien te dice que Cada Punto cobra, está equivocado.", "fine2H": "Un detalle que ayuda", "fine2P": "Una cuenta ATH Móvil Business a nombre de la organización mantiene el dinero del programa separado del de una persona. No hace falta para usar Cada Punto — simplemente es más limpio a la hora de cuadrar.", "listaH": "Dónde está la lista", "listaP": "La lista sale del reporte del evento, al cerrar el juego: cada padrino con su tarifa, su tope y su total, para imprimir o bajar en una hoja de cálculo.", "listaA": "Abrir el reporte →", "dondeH": "Dónde está escrito", "dondeP": "Nada de esto depende de que nos creas. Está en los documentos que aceptas al inscribir un equipo.", "verD": "El dinero no pasa por nosotros →", "verT": "Términos de Uso →", "print": "Imprimir", "back": "← Cada Punto", "pieP": "cadapunto.com/cobro.html", "pieS": "Cómo cobras · Cada Punto · Gostar Digital LLC, Puerto Rico"}, "en": {"kick": "How you collect", "h1": "Your program collects. We record the pledges.", "sub": "Gostar Digital LLC · Cada Punto · October 2026", "lede": "Cada Punto processes no payments and holds no money. When the score goes in, the system works out what each padrino pledged and hands you the list. From there you collect, wherever you already talk to your people.", "porqueH": "Why this suits you", "porque1": "The money does not wait on us.", "porque2": "If it came through our hands there would be a payment date, a cut-off and somebody else’s account in between, and you waiting on all three. Not this way: what you are paid arrives the same day, in your own account, with nobody needing to remit it to you.", "porque3": "And the hard part was never collecting — it was knowing what each person owes. Ten padrinos at different rates, with different caps, on a score that changes every game. We calculate it, correctly, every time.", "porqueCierre": "We manage the pledges. You manage the proceeds.", "pasosH": "How one game gets collected", "pasos": [["Print or download the list", "Every padrino with his name and his amount, with the cap already applied if it bit. The list is yours: print it, download it, or send it wherever you like."], ["Collect the way you already collect", "ATH Móvil, cash, or whatever your organization uses. The money reaches you directly, the same day, in your own account. We are not in the middle."], ["You mark who paid", "In your notebook, on your sheet, or in your own account. The system has no paid column and never will: what we record is what was pledged. We send your padrinos the result and their amount when the game closes, but the collecting we do not touch."]], "fine1H": "What we do not do", "fine1P": "We process no payments, we ask you for no account number, we hold no money of yours or anyone else’s, and we never ask a padrino for money: the notice we send carries the result and their amount, with no payment link and no reminders. If somebody tells you Cada Punto collects, they are mistaken.", "fine2H": "One detail that helps", "fine2P": "An ATH Móvil Business account in the organization’s name keeps the program’s money separate from a person’s. It is not required to use Cada Punto — it is simply cleaner when the time comes to square things up.", "listaH": "Where the list is", "listaP": "The list comes from the event report, when the game closes: every padrino with his rate, his cap and his total, to print or download as a spreadsheet.", "listaA": "Open the report →", "dondeH": "Where this is written down", "dondeP": "None of it depends on taking our word for it. It is in the documents a program accepts when it signs a team up.", "verD": "The money does not pass through us →", "verT": "Terms of Use →", "print": "Print", "back": "← Cada Punto", "pieP": "cadapunto.com/cobro.html", "pieS": "How you collect · Cada Punto · Gostar Digital LLC, Puerto Rico"}};
+function T(k){ return (S[LANG] && S[LANG][k]) !== undefined ? S[LANG][k] : (S.en[k]||''); }
+function esc(s){ return String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function toggleLang(){
-  LANG = LANG==='es' ? 'en':'es';
-  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG), localStorage.setItem('fc-lang', LANG); }catch(e){}
-  document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
-  paintWhat();
-  draw();
+  LANG = (LANG === 'es') ? 'en' : 'es';
+  try{ localStorage.setItem('cfh_lang', LANG), localStorage.setItem('cp-lang', LANG),
+       localStorage.setItem('fc-lang', LANG); }catch(e){}
+  paint();
 }
-
-var app = document.getElementById('app');
-var CODE = null;   /* el código, una vez que payout_check lo aceptó */
-var INFO = null;   /* lo que payout_check devolvió de la campaña */
-var SENT = null;   /* { org, tel } cuando ya se guardó */
-
-function esc(s){
-  return String(s==null?'':s).replace(/[&<>"\']/g, function(m){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
-  });
-}
-
-/* El teléfono se guarda en diez dígitos pelados; se lee mejor por partes. */
-function tel(t){
-  var d = String(t||'').replace(/[^0-9]/g,'');
-  return d.length === 10 ? d.slice(0,3)+' '+d.slice(3,6)+' '+d.slice(6) : (t||'');
-}
-
-function paintWhat(){
-  var el = document.getElementById('fWhat');
-  if (el) el.textContent = (LANG === 'es')
-    ? 'Cada Punto es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. El programa recauda y recibe completo lo que se cobra; nosotros cobramos por el uso de la herramienta.'
-    : 'Cada Punto is a platform from Gostar Digital LLC, a for-profit company. The program raises the money and receives all of what is collected; we charge for use of the tool.';
-}
-
-function draw(){
-  /* Tres pantallas: el código, el formulario, y el recibo. */
-  if (SENT){
-    app.innerHTML =
-      '<div class="done">' +
-        '<div class="tick">✓</div>' +
-        '<h1>' + T('doneH') + '</h1>' +
-        '<p class="lede">' + T('doneP', { O: esc(SENT.org), T: esc(tel(SENT.tel)) }) + '</p>' +
-        '<p class="lede">' + T('doneMore') + '</p>' +
-        '<a class="btn line" href="index.html">' + T('back') + '</a>' +
-      '</div>';
-    return;
-  }
-
-  if (!INFO){
-    app.innerHTML =
-      '<div class="kick">' + T('kick') + '</div>' +
-      '<h1>' + T('h1') + '</h1>' +
-      '<p class="lede">' + T('lede') + '</p>' +
-      '<label for="cd">' + T('codeL') + '</label>' +
-      '<input id="cd" type="text" maxlength="40" placeholder="' + T('codePh') + '" ' +
-        'autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">' +
-      '<p class="hint">' + T('codeHint') + '</p>' +
-      '<button class="btn" onclick="checkCode()">' + T('codeGo') + '</button>' +
-      '<p class="msg" id="msg"></p>' +
-      '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
-
-    var cd = document.getElementById('cd');
-    if (cd) cd.addEventListener('keydown', function(e){
-      if (e.key === 'Enter'){ e.preventDefault(); checkCode(); }
-    });
-    return;
-  }
-
-  var now = '';
-  if (INFO.already){
-    now =
-      '<div class="now">' +
-        '<b>' + T('nowB') + '</b>' +
-        '<dl>' +
-          '<dt>' + T('nowOrg') + '</dt><dd>' + esc(INFO.org || '—') + '</dd>' +
-          '<dt>' + T('nowAth') + '</dt><dd>' + esc(INFO.ath || '—') + '</dd>' +
-          '<dt>' + T('nowTel') + '</dt><dd>' + esc(tel(INFO.phone)) + '</dd>' +
-        '</dl>' +
-      '</div>' +
-      '<p class="lede">' + T('nowP') + '</p>';
-  }
-
-  app.innerHTML =
-    '<div class="kick">' + T('kick') + '</div>' +
-    '<h1>' + T('h1') + '</h1>' +
-    '<div class="who">' +
-      '<b>' + T('whoB', { N: esc(INFO.name || '—') }) + '</b>' +
-      '<span>' + T('whoS', { B: esc(INFO.by || '—') }) + '</span>' +
+function paint(){
+  document.documentElement.lang = LANG;
+  document.getElementById('langBtn').textContent = (LANG === 'es') ? 'EN' : 'ES';
+  document.title = (LANG === 'es') ? 'C\u00f3mo cobras \u2014 Cada Punto'
+                                   : 'How you collect \u2014 Cada Punto';
+  var pasos = T('pasos'), ps = '';
+  for (var i=0;i<pasos.length;i++)
+    ps += '<div class="s"><b>' + esc(pasos[i][0]) + '</b><span>' + esc(pasos[i][1]) + '</span></div>';
+  var out =
+    '<div class="rtop">' +
+      '<p class="kick">' + esc(T('kick')) + '</p>' +
+      '<h1>' + esc(T('h1')) + '</h1>' +
+      '<p class="sub">' + esc(T('sub')) + '</p>' +
     '</div>' +
-    '<p class="lede">' + T('lede') + '</p>' +
-    now +
-
-    '<h2>' + T('formH') + '</h2>' +
-    '<label for="og">' + T('orgL') + '</label>' +
-    '<input id="og" type="text" maxlength="90" placeholder="' + T('orgPh') + '" ' +
-      'value="' + esc(INFO.org || '') + '" autocapitalize="words" ' +
-      'autocomplete="organization" enterkeyhint="next">' +
-    '<p class="hint">' + T('orgHint') + '</p>' +
-    '<label for="rg">' + T('regL') + '</label>' +
-    '<input id="rg" type="text" maxlength="30" placeholder="' + T('regPh') + '" ' +
-      'autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="next">' +
-    '<label for="an">' + T('nameL') + '</label>' +
-    '<input id="an" type="text" maxlength="90" placeholder="' + T('namePh') + '" ' +
-      'value="' + esc(INFO.ath || '') + '" autocapitalize="words" enterkeyhint="next">' +
-    '<p class="hint">' + T('nameHint') + '</p>' +
-    '<label for="ph">' + T('phoneL') + '</label>' +
-    '<input id="ph" type="tel" maxlength="25" placeholder="' + T('phonePh') + '" ' +
-      'value="' + esc(tel(INFO.phone)) + '" autocomplete="tel" enterkeyhint="next">' +
-    '<p class="hint">' + T('phoneHint') + '</p>' +
-    '<label for="wh">' + T('whoL') + '</label>' +
-    '<input id="wh" type="text" maxlength="60" placeholder="' + T('whoPh') + '" ' +
-      'autocapitalize="words" autocomplete="name" enterkeyhint="next">' +
-    '<label for="ti">' + T('titleL') + '</label>' +
-    '<input id="ti" type="text" maxlength="40" placeholder="' + T('titlePh') + '" ' +
-      'autocapitalize="words" enterkeyhint="done">' +
-
-    '<div class="ok">' +
-      '<input id="io" type="checkbox">' +
-      '<span onclick="document.getElementById(\'io\').click()">' + T('isorg') + '</span>' +
+    '<p class="lede">' + esc(T('lede')) + '</p>' +
+    '<div class="porque">' +
+      '<h2>' + esc(T('porqueH')) + '</h2>' +
+      '<p class="golpe">' + esc(T('porque1')) + '</p>' +
+      '<p>' + esc(T('porque2')) + '</p>' +
+      '<p>' + esc(T('porque3')) + '</p>' +
+      '<p class="golpe cierre">' + esc(T('porqueCierre')) + '</p>' +
     '</div>' +
-    '<button class="btn" onclick="save()">' + T('go') + '</button>' +
-    '<p class="msg" id="msg"></p>' +
-
-    '<div class="fine"><b>' + T('fineH') + '</b><p>' + T('fineP') + '</p></div>';
+    '<h2>' + esc(T('pasosH')) + '</h2>' +
+    '<div class="num">' + ps + '</div>' +
+    /* El enlace va fuera de esc(): es nuestro, no del texto. */
+    '<div class="fine"><b>' + esc(T('listaH')) + '</b><p>' + esc(T('listaP')) +
+      ' <a href="reporte.html">' + esc(T('listaA')) + '</a></p></div>' +
+    '<div class="fine"><b>' + esc(T('fine1H')) + '</b><p>' + esc(T('fine1P')) + '</p></div>' +
+    '<div class="fine"><b>' + esc(T('fine2H')) + '</b><p>' + esc(T('fine2P')) + '</p></div>' +
+    '<div class="ackbox">' +
+      '<h2>' + esc(T('dondeH')) + '</h2>' +
+      '<p>' + esc(T('dondeP')) + '</p>' +
+      '<a href="custodia.html">' + esc(T('verD')) + '</a>' +
+      '<a href="terms.html">' + esc(T('verT')) + '</a>' +
+    '</div>' +
+    '<div class="pie">' +
+      '<button type="button" onclick="window.print()">' + esc(T('print')) + '</button>' +
+      '<a href="index.html">' + esc(T('back')) + '</a>' +
+    '</div>' +
+    '<p class="pie-print">' + esc(T('pieP')) + '<span>' + esc(T('pieS')) + '</span></p>';
+  document.getElementById('app').innerHTML = out;
 }
-
-function say(t,c){
-  var el = document.getElementById('msg');
-  if (el){ el.textContent = t; el.className = 'msg ' + (c||''); }
-}
-
-function toTop(){
-  try{ var m = document.querySelector('main'); if (m) m.scrollTop = 0; window.scrollTo(0,0); }catch(e){}
-}
-
-function checkCode(){
-  var code = (document.getElementById('cd').value || '').trim();
-  if (!code) return say(T('errCode'), 'bad');
-  say('…');
-  rpc('payout_check', { p_code: code })
-    .then(function(r){
-      if (!r || !r.ok){
-        if (r && r.reason === 'scope') return say(T('errScope'), 'bad');
-        return say(T('errCode'), 'bad');
-      }
-      CODE = code;
-      INFO = r;
-      draw();
-      toTop();
-    })
-    .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
-}
-
-function save(){
-  var org   = (document.getElementById('og').value || '').trim();
-  var regno = (document.getElementById('rg').value || '').trim();
-  var name  = (document.getElementById('an').value || '').trim();
-  var phone = (document.getElementById('ph').value || '').trim();
-  var who   = (document.getElementById('wh').value || '').trim();
-  var title = (document.getElementById('ti').value || '').trim();
-
-  if (!org)  return say(T('errOrg'), 'bad');
-  if (!name) return say(T('errName'), 'bad');
-  if (!who || !title) return say(T('errWho'), 'bad');
-  if (phone.replace(/[^0-9]/g,'').length !== 10) return say(T('errPhone'), 'bad');
-
-  var io = document.getElementById('io');
-  if (!io || !io.checked) return say(T('errIsorg'), 'bad');
-
-  say('…');
-  rpc('set_payout', {
-    p_code: CODE, p_campaign: INFO.campaign,
-    p_org: org, p_regno: regno, p_name: name, p_phone: phone,
-    p_who: who, p_title: title, p_is_org: true
-  })
-    .then(function(r){
-      if (!r || !r.ok){
-        if (r && r.reason === 'scope') return say(T('errScope'), 'bad');
-        if (r && r.reason === 'code')  return say(T('errCode'), 'bad');
-        if (r && r.reason === 'phone') return say(T('errPhone'), 'bad');
-        if (r && r.reason === 'isorg') return say(T('errIsorg'), 'bad');
-        if (r && r.reason === 'org')   return say(T('errOrg'), 'bad');
-        if (r && r.reason === 'name')  return say(T('errName'), 'bad');
-        if (r && (r.reason === 'who' || r.reason === 'title')) return say(T('errWho'), 'bad');
-        return say(T('errGen'), 'bad');
-      }
-      SENT = { org: r.org || org, tel: r.phone || phone };
-      draw();
-      toTop();
-    })
-    .catch(function(e){ console.error(e); say(T('errGen'), 'bad'); });
-}
-
-document.getElementById('langBtn').textContent = LANG==='es' ? 'EN':'ES';
-paintWhat();
-draw();
+paint();
 </script>
 </body>
 </html>
