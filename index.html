@@ -3,26 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07141E">
-<title>Cada Punto — tu equipo anota, tu programa cobra</title>
-<meta name="description" content="Cinco bolas, una cadena que crece, y se entrena como se entrena un clavado. El día de juego cada nene juega cuatro cuartos desde su teléfono y sus padrinos prometen unos centavos por punto.">
-<!-- La vista previa cuando alguien comparte el enlace: en un grupo de
-     WhatsApp sale el cartel y no un enlace pelado. Así es como se
-     reparte esto, así que importa. -->
+<title>Cada Punto Cuenta — manejo de promesas por juego</title>
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Cada Punto">
+<meta property="og:site_name" content="Cada Punto Cuenta">
 <meta property="og:url" content="https://cadapunto.com/">
-<meta property="og:title" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
-<meta property="og:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo en un juego de verdad. Cada Punto lleva la cuenta; el programa cobra su dinero directo.">
+<meta property="og:title" content="El marcador es la recaudación.">
+<meta property="og:description" content="Los padrinos prometen por punto. Se juega, la plataforma calcula el total de cada promesa, y tú cobras. Nosotros manejamos las promesas; tú manejas el dinero.">
 <meta property="og:image" content="https://cadapunto.com/cadapunto-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
+<meta property="og:image:alt" content="Una cancha de baloncesto de noche con la pelota botando">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tu equipo ya está compitiendo. Los padrinos prometen unos centavos por cada punto que anotan, y el programa cobra lo que se anotó.">
-<meta name="twitter:description" content="Los padrinos prometen unos centavos por cada punto que anota el equipo en un juego de verdad. Cada Punto lleva la cuenta; el programa cobra su dinero directo.">
+<meta name="twitter:title" content="El marcador es la recaudación.">
+<meta name="twitter:description" content="Los padrinos prometen por punto. Se juega, la plataforma calcula el total de cada promesa, y tú cobras. Nosotros manejamos las promesas; tú manejas el dinero.">
 <meta name="twitter:image" content="https://cadapunto.com/cadapunto-share.jpg">
+<meta name="description" content="Plataforma de manejo de promesas por evento: un equipo, un juego, catorce días para conseguir padrinos. No procesamos pagos.">
+<link rel="icon" href="cadapunto.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -43,13 +40,15 @@ body{margin:0;background:var(--noche);color:var(--hueso);
   line-height:1.55;-webkit-text-size-adjust:100%}
 .wrap{width:var(--ancho);margin:0 auto}
 
-/* ── Cabecera, la misma del sitio ─────────────────────────────── */
+/* ── Cabecera ─────────────────────────────────────────────────── */
 .top{background:var(--noche);border-bottom:1px solid var(--linea);
   padding-top:env(safe-area-inset-top,0px)}
 .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-.mark{font-weight:900;font-size:1.05rem;color:#fff;text-decoration:none}
-.mark em{font-style:normal;color:var(--viva)}
-.mark i{font-style:normal;color:var(--humo)}
+.mark{color:#EAF2F7;text-decoration:none;font-size:23px;font-weight:800;
+  letter-spacing:-.035em;line-height:1.1}
+.mark em{font-style:normal;color:var(--brasa)}
+.mark i{font-style:normal;color:var(--viva)}
+@media(max-width:380px){ .mark{font-size:20px} }
 .langb{border:1px solid var(--linea);background:none;color:var(--humo);border-radius:999px;
   padding:6px 13px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
 .langb:hover{color:var(--hueso);border-color:var(--humo)}
@@ -62,106 +61,110 @@ body{margin:0;background:var(--noche);color:var(--hueso);
 .pista{display:block;width:100%;height:auto}
 .piso{stroke:var(--linea);fill:none;stroke-width:2}
 
-/* ── El titular ───────────────────────────────────────────────── */
-.titular{font-size:clamp(2.6rem,12vw,5.4rem);line-height:.92;font-weight:900;
+.titular{font-size:clamp(2.2rem,9.5vw,4.2rem);line-height:.95;font-weight:900;
   letter-spacing:-.045em;margin:0;text-transform:uppercase}
-.bajo{color:var(--humo);font-size:clamp(1rem,2.6vw,1.18rem);
-  max-width:34ch;margin:16px 0 0}
+/* El lema, debajo del titular. Va en dos lineas a proposito: son dos
+   frases y dos duenos, y partirlas es la mitad del mensaje. */
+.lema{margin:18px 0 0;font-size:clamp(1.05rem,3vw,1.3rem);font-weight:800;
+  letter-spacing:-.02em;line-height:1.3;color:var(--hueso);max-width:30ch}
+.lema em{font-style:normal;color:var(--brasa)}
+.lema i{font-style:normal;color:var(--viva)}
+.lema span{display:block}
+
+/* Las tres del lema: catorce dias, un juego, resultados solos. */
+.golpes{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-wrap:wrap;
+  gap:9px;justify-content:center}
+.golpes li{font-size:.84rem;font-weight:800;letter-spacing:-.01em;color:var(--hueso);
+  background:rgba(79,211,240,.09);border:1px solid rgba(79,211,240,.26);
+  border-radius:999px;padding:8px 15px}
+@media(max-width:380px){ .golpes li{font-size:.78rem;padding:7px 12px} }
 
 /* ── Cuerpo ───────────────────────────────────────────────────── */
 main .wrap{padding:clamp(34px,7vw,58px) 0}
-h2{font-size:clamp(1.5rem,4.5vw,2.1rem);font-weight:900;letter-spacing:-.035em;
-  line-height:1.05;margin:0 0 14px}
+h2{font-size:clamp(1.4rem,4.2vw,1.95rem);font-weight:900;letter-spacing:-.035em;
+  line-height:1.08;margin:0 0 12px}
 p{margin:0 0 14px;max-width:62ch}
 .sec{padding:clamp(30px,6vw,52px) 0;border-top:1px solid var(--linea)}
 .sec:first-child{border-top:none;padding-top:0}
+.sub{color:var(--humo);margin:0 0 4px}
 
-/* ── La escalera: lo que de verdad convence ───────────────────── */
-.escalera{margin:22px 0 0;display:grid;gap:11px}
-.peldano{display:grid;grid-template-columns:5rem 1fr auto;align-items:center;gap:12px}
-.ronda{font-weight:900;font-size:.9rem;color:var(--humo);font-variant-numeric:tabular-nums;
-  text-align:right;white-space:nowrap}
-.barra{height:13px;background:var(--cancha);border:1px solid var(--linea);position:relative}
-.barra span{position:absolute;inset:0 auto 0 0;background:var(--viva);display:block}
-.pts{font-weight:900;font-size:1.05rem;font-variant-numeric:tabular-nums;min-width:3.2rem;text-align:right}
-.peldano.cima .barra span{background:var(--brasa)}
-.peldano.cima .pts{color:var(--brasa)}
-.pie-esc{color:var(--humo);font-size:.95rem;margin:16px 0 0;max-width:46ch}
-
-/* ── Cómo funciona ────────────────────────────────────────────────
-   Numerados porque de verdad son una secuencia: cada paso depende
-   del anterior y van en ese orden. */
-.pasos{list-style:none;counter-reset:paso;margin:22px 0 0;padding:0;display:grid;gap:0}
-.pasos li{counter-increment:paso;position:relative;padding:16px 0 16px 46px;
+/* ── Las cinco fases ──────────────────────────────────────────────
+   Numeradas porque son una secuencia de verdad: cada una depende de
+   la anterior, y el dia que cae va en la propia linea. */
+.fases{list-style:none;counter-reset:fase;margin:22px 0 0;padding:0}
+.fases li{counter-increment:fase;position:relative;padding:18px 0 18px 48px;
   border-top:1px solid var(--linea)}
-.pasos li:last-child{border-bottom:1px solid var(--linea)}
-.pasos li::before{content:counter(paso);position:absolute;left:0;top:17px;
-  width:26px;height:26px;border:1.5px solid var(--viva);border-radius:50%;
-  color:var(--viva);font-size:.78rem;font-weight:900;
+.fases li:last-child{border-bottom:1px solid var(--linea)}
+.fases li::before{content:counter(fase);position:absolute;left:0;top:19px;
+  width:28px;height:28px;border:1.5px solid var(--viva);border-radius:50%;
+  color:var(--viva);font-size:.8rem;font-weight:900;
   display:flex;align-items:center;justify-content:center}
-.pasos b{display:block;font-size:1.06rem;font-weight:800;margin-bottom:3px}
-.pasos span{color:var(--humo);font-size:.97rem}
+.fases .cuando{display:block;font-size:.62rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--brasa);margin-bottom:5px}
+.fases b{display:block;font-size:1.08rem;font-weight:800;margin-bottom:4px;letter-spacing:-.015em}
+.fases span.q{color:var(--humo);font-size:.97rem}
 
-/* Las tres cosas que la gente pregunta antes de prometer. */
-.claves{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:9px}
-.claves li{padding-left:20px;position:relative;color:var(--humo);font-size:.96rem}
-.claves li::before{content:"";position:absolute;left:0;top:.62em;
-  width:8px;height:8px;background:var(--brasa)}
-.claves b{color:var(--hueso);font-weight:800}
+/* ── Quien hace que. Dos columnas, y la raya del medio es el punto
+   entero de la pagina: de un lado nosotros, del otro el programa. */
+.reparto{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:22px 0 0;
+  border:1px solid var(--linea);border-radius:12px;overflow:hidden}
+.lado{padding:18px 20px}
+.lado+.lado{border-left:1px solid var(--linea)}
+.lado.nos{background:rgba(79,211,240,.06)}
+.lado.tu{background:rgba(255,138,43,.06)}
+.lado h3{margin:0 0 10px;font-size:.62rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase}
+.lado.nos h3{color:var(--viva)}
+.lado.tu h3{color:var(--brasa)}
+.lado ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.lado li{font-size:.95rem;padding-left:15px;position:relative;line-height:1.45}
+.lado li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px}
+.lado.nos li::before{background:var(--viva)}
+.lado.tu li::before{background:var(--brasa)}
+@media(max-width:540px){
+  .reparto{grid-template-columns:1fr}
+  .lado+.lado{border-left:none;border-top:1px solid var(--linea)}
+}
+.nunca{margin:16px 0 0;color:var(--humo);font-size:.95rem;max-width:58ch}
 
-/* Cuanto dura. Una linea seca debajo de los pasos: es la suma de los
-   cinco, y es el numero por el que un programa pregunta primero. */
-.dura{margin:20px 0 0;font-size:.97rem;line-height:1.55;color:var(--humo)}
-.dura b{color:var(--hueso);font-weight:800}
-.dura span b{color:var(--brasa)}
+/* ── La licencia, en tabla: son datos, no argumentos. */
+.tabla{width:100%;border-collapse:collapse;margin:20px 0 0;font-size:.96rem}
+.tabla th,.tabla td{text-align:left;padding:11px 0;border-bottom:1px solid var(--linea);
+  vertical-align:top}
+.tabla th{color:var(--humo);font-weight:500;width:46%}
+.tabla td{font-weight:800;text-align:right}
+.tabla td.no{color:var(--humo);font-weight:500}
+.tabla tr:last-child th,.tabla tr:last-child td{border-bottom:none}
 
-/* Lo que nadie tiene que hacer. Va en caja y no en lista porque no es
-   un paso mas: es el resumen de por que lo anterior importa. */
-.nadie{margin:26px 0 0;padding:16px 18px;background:rgba(255,138,43,.08);
-  border:1px solid rgba(255,138,43,.3);border-radius:10px}
-.nadie b{display:block;font-size:.6rem;font-weight:900;letter-spacing:.13em;
-  color:var(--brasa);text-transform:uppercase;margin-bottom:7px}
-.nadie p{margin:0;color:var(--hueso);font-size:1rem;line-height:1.5}
-
-/* El remate de la seccion. Mas grande que el texto de
-   alrededor porque no explica nada: es la frase que se queda. La
-   marca va en sus propios colores, los mismos de la cabecera. */
-.remate{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--linea);
-  font-size:1.18rem;font-weight:800;letter-spacing:-.015em;line-height:1.35;
-  color:var(--hueso);text-align:center}
-/* La raya cruza entera — cierra la seccion — pero la frase va corta y
-   al medio. Centrada de borde a borde se leeria como un parrafo mal
-   puesto; asi parte por donde tiene sentido. */
-.remate span{display:block;max-width:24ch;margin:0 auto}
-.remate em{font-style:normal;color:var(--brasa)}
-.remate i{font-style:normal;color:var(--viva)}
-@media(max-width:380px){ .remate{font-size:1.06rem} }
-
-/* La línea del jugador, separada de los pasos pero sin ser otra
-   sección: es una salida, no un tema. Centrada, para que el botón
-   no se confunda con el principio de otro párrafo. */
-.soyjug{margin:26px auto 14px;color:var(--humo);max-width:52ch;text-align:center}
-#btnJug{display:block;width:max-content;margin:0 auto}
-
-/* ── Como clavar ──────────────────────────────────────────────── */
-.beats{margin:20px 0 0;display:grid;gap:0}
-.beat{padding:15px 0;border-top:1px solid var(--linea)}
-.beat:last-child{border-bottom:1px solid var(--linea)}
-.beat b{display:block;font-size:1.08rem;font-weight:800;margin-bottom:3px}
-.beat span{color:var(--humo);font-size:.97rem}
+/* ── La tarjeta del Fortress ──────────────────────────────────── */
+.tarjeta{display:block;text-decoration:none;padding:20px 22px;
+  background:var(--cancha);border:1px solid var(--linea);
+  border-left:4px solid var(--viva);border-radius:12px;
+  transition:border-color .16s,background .16s,transform .16s}
+.tarjeta:hover{background:#12293B;border-color:var(--humo);transform:translateY(-2px)}
+.tarjeta:focus-visible{outline:3px solid var(--viva);outline-offset:3px}
+.t-kick{display:block;font-size:.6rem;font-weight:900;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--viva);margin-bottom:8px}
+.t-tit{display:block;font-size:1.3rem;font-weight:900;letter-spacing:-.02em;
+  color:var(--hueso);line-height:1.15}
+.t-txt{display:block;margin:9px 0 0;color:var(--humo);font-size:.97rem;line-height:1.55}
+.t-ir{display:block;margin:13px 0 0;color:var(--viva);font-size:.9rem;font-weight:800}
+@media(prefers-reduced-motion:reduce){ .tarjeta{transition:none}
+  .tarjeta:hover{transform:none} }
 
 /* ── Llamada ──────────────────────────────────────────────────── */
 .jugar{display:inline-block;background:var(--brasa);color:#0A1118;font-weight:900;
   font-size:1.12rem;text-decoration:none;padding:17px 34px;border:2px solid var(--brasa)}
 .jugar:hover{background:var(--noche);color:var(--brasa)}
 .jugar:focus-visible,.langb:focus-visible,a:focus-visible{outline:3px solid var(--viva);outline-offset:3px}
-.gratis{color:var(--humo);font-size:.92rem;margin:13px 0 0}
 
-/* Quien llega aquí casi nunca trae código, así que la puerta que
-   enseña la portada es la que sí es suya. */
-.pedir{display:inline-block;border:2px solid var(--hueso);color:var(--hueso);
-  text-decoration:none;font-weight:800;padding:12px 22px}
-.pedir:hover{background:var(--hueso);color:var(--noche)}
+/* ── El remate: la frase que se queda, y nada mas. */
+.remate{margin:0;padding:clamp(30px,6vw,46px) 0 0;border-top:1px solid var(--linea);
+  font-size:1.25rem;font-weight:800;letter-spacing:-.02em;line-height:1.35;text-align:center}
+.remate span{display:block;max-width:26ch;margin:0 auto}
+.remate em{font-style:normal;color:var(--brasa)}
+.remate i{font-style:normal;color:var(--viva)}
+@media(max-width:380px){ .remate{font-size:1.08rem} }
 
 /* ── Pie ──────────────────────────────────────────────────────── */
 footer{border-top:1px solid var(--linea);padding:30px 0 calc(26px + env(safe-area-inset-bottom,0px));
@@ -177,70 +180,11 @@ footer a:hover{text-decoration:underline}
 .legal a{color:var(--humo)}
 .legal span{padding:0 7px;opacity:.5}
 
-/* Si el sistema pide menos movimiento, la pelota se queda en el piso.
-   Quieta, no escondida: sigue siendo una pelota de baloncesto. */
-@media (prefers-reduced-motion:reduce){
-  .salta,.achata,.rueda,.onda{animation:none !important}
-  .salta{transform:translateY(0)}
-  .onda{opacity:0}
-}
-
-/* ══ LA MARCA ══════════════════════════════════════════════════
-   cada (hueso) · punto (naranja) · cuenta (cian), a 23px con peso
-   800 y el espaciado cerrado — la que lleva padrinos.html. Es la
-   marca, no un enlace del menú, y a 16px con peso 900 parecía lo
-   segundo: apretada, pequeña y sin aire entre las letras.
-
-   El espaciado va en em y no en px para que siga cerrado si alguna
-   página la pinta a otro tamaño. */
-.mark, .mark .wm{
-  color:#EAF2F7 !important;text-decoration:none !important;
-  font-size:23px !important;font-weight:800 !important;
-  letter-spacing:-.035em !important;line-height:1.1}
-.mark em, .wm em{font-style:normal;color:#FF8A2B !important}
-.mark i,  .wm i {font-style:normal;color:#4FD3F0 !important}
-/* En un teléfono estrecho, que no empuje al botón de idioma. */
-@media(max-width:380px){
-  .mark, .mark .wm{font-size:20px !important}
-}
-
-
-/* Los cuatro golpes del ruedo. Cuatro frases cortas hacen el trabajo
-   que no hace un parrafo: decir lo que ESTO no es. */
-.golpes{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;
-  gap:9px;justify-content:center}
-.golpes li{font-size:.84rem;font-weight:800;letter-spacing:-.01em;color:var(--hueso);
-  background:rgba(79,211,240,.09);border:1px solid rgba(79,211,240,.26);
-  border-radius:999px;padding:8px 15px}
-@media(max-width:380px){ .golpes li{font-size:.78rem;padding:7px 12px} }
-
-/* La tarjeta del Fortress. Entera es el enlace: en un telefono, un
-   "ver mas" de dos palabras es un blanco diminuto, y aqui el area de
-   toque es toda la caja. */
-.tarjeta{display:block;text-decoration:none;padding:20px 22px;
-  background:var(--cancha);border:1px solid var(--linea);
-  border-left:4px solid var(--viva);border-radius:12px;
-  transition:border-color .16s,background .16s,transform .16s}
-.tarjeta:hover{background:#12293B;border-color:var(--humo);
-  border-left-color:var(--viva);transform:translateY(-2px)}
-.tarjeta:focus-visible{outline:3px solid var(--viva);outline-offset:3px}
-.t-kick{display:block;font-size:.6rem;font-weight:900;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--viva);margin-bottom:8px}
-.t-tit{display:block;font-size:1.3rem;font-weight:900;letter-spacing:-.02em;
-  color:var(--hueso);line-height:1.15}
-.t-txt{display:block;margin:9px 0 0;color:var(--humo);font-size:.97rem;line-height:1.55}
-.t-ir{display:block;margin:13px 0 0;color:var(--viva);font-size:.9rem;font-weight:800}
-.tarjeta:hover .t-ir{color:var(--hueso)}
-@media(prefers-reduced-motion:reduce){ .tarjeta{transition:none}
-  .tarjeta:hover{transform:none} }
-
-/* La pelota del ruedo. Bota, se achata cuando toca el piso, y gira
-   despacio. Tres animaciones en tres grupos anidados a proposito: una
-   sola transform no puede llevar el salto, el achatamiento y el giro a
-   la vez sin que se peleen. */
+/* ── La pelota. Bota, se achata al tocar el piso y gira despacio.
+   Tres animaciones en tres grupos anidados a proposito: una sola
+   transform no puede llevar las tres sin que se peleen. */
 .bola{fill:var(--brasa)}
 .costura{fill:none;stroke:#7A2E00;stroke-width:3.2;stroke-linecap:round;opacity:.55}
-
 .salta{animation:salta 1.25s infinite}
 @keyframes salta{
   /* Cayendo acelera y subiendo frena, que es lo que hace una pelota.
@@ -250,9 +194,6 @@ footer a:hover{text-decoration:underline}
   54%  {transform:translateY(0);      animation-timing-function:cubic-bezier(.1,.62,.55,1)}
   100% {transform:translateY(-172px)}
 }
-
-/* El achatamiento, desde abajo: una pelota se deforma contra el piso,
-   no alrededor de su centro. */
 .achata{transform-box:fill-box;transform-origin:center bottom;
   animation:achata 1.25s infinite}
 @keyframes achata{
@@ -260,20 +201,19 @@ footer a:hover{text-decoration:underline}
   47%      {transform:scale(1.15,.85)}
   56%,100% {transform:scale(1,1)}
 }
-
-/* El giro, lento. Rapido, las costuras se vuelven un borron. */
-.rueda{transform-box:fill-box;transform-origin:center;
-  animation:rueda 7s linear infinite}
+.rueda{transform-box:fill-box;transform-origin:center;animation:rueda 7s linear infinite}
 @keyframes rueda{ to{transform:rotate(360deg)} }
-
-/* La onda, sincronizada con el golpe. */
 .onda{fill:none;stroke:var(--viva);stroke-width:2;opacity:0;
-  transform-box:fill-box;transform-origin:center;
-  animation:onda 1.25s infinite}
+  transform-box:fill-box;transform-origin:center;animation:onda 1.25s infinite}
 @keyframes onda{
   0%,40%   {opacity:0;   transform:scale(.35)}
   50%      {opacity:.45; transform:scale(1)}
   72%,100% {opacity:0;   transform:scale(1.6)}
+}
+@media (prefers-reduced-motion:reduce){
+  .salta,.achata,.rueda,.onda{animation:none !important}
+  .salta{transform:translateY(0)}
+  .onda{opacity:0}
 }
 </style>
 </head>
@@ -286,24 +226,13 @@ footer a:hover{text-decoration:underline}
   </div>
 </header>
 
-<!-- La cancha, sin nada encima. El juego es baloncesto de verdad: no
-     hay nada que explicar con un dibujo, y un titular sobre una cancha
-     vacía dice lo que hace falta. -->
 <section class="ruedo">
   <div class="wrap">
     <svg class="pista" viewBox="0 58 800 420" role="img" aria-labelledby="pistaT">
-      <title id="pistaT">Una cancha de baloncesto vista de lado, con el círculo central</title>
+      <title id="pistaT">Una cancha de baloncesto vista de lado, con la pelota botando</title>
       <ellipse class="piso" cx="400" cy="430" rx="330" ry="54"></ellipse>
       <ellipse class="piso" cx="400" cy="430" rx="190" ry="31" opacity=".6"></ellipse>
-
-      <!-- La onda del bote, debajo de la pelota. Va antes para que la
-           pelota le caiga encima y no al revés. -->
       <ellipse class="onda" cx="400" cy="430" rx="62" ry="11"></ellipse>
-
-      <!-- Una pelota de baloncesto, no un punto naranja: las cuatro
-           costuras de siempre. Todo cuelga de un translate al centro,
-           asi que los giros y el achatamiento pasan alrededor de ella
-           y no de la esquina del lienzo. -->
       <g transform="translate(400,378)">
         <g class="salta">
           <g class="achata">
@@ -321,7 +250,7 @@ footer a:hover{text-decoration:underline}
       </g>
     </svg>
     <h1 class="titular" id="h1"></h1>
-    <p class="bajo" id="bajo"></p>
+    <p class="lema" id="lema"></p>
     <ul class="golpes" id="golpes"></ul>
   </div>
 </section>
@@ -329,59 +258,47 @@ footer a:hover{text-decoration:underline}
 <main>
   <div class="wrap">
 
+    <!-- Las cinco fases. Es el proceso entero y es lo unico que hace
+         falta para entender el producto: se registra, se consiguen
+         padrinos, se juega, salen los avisos, cierra. -->
     <section class="sec">
-      <h2 id="h2como"></h2>
-      <p id="pComo"></p>
-      <ol class="pasos" id="pasos"></ol>
-      <ul class="claves" id="claves"></ul>
-      <p class="remate"><span id="remate"></span></p>
+      <h2 id="h2fases"></h2>
+      <p class="sub" id="pFases"></p>
+      <ol class="fases" id="fases"></ol>
     </section>
 
-    <!-- La cuenta. Es lo que un programa no puede hacer por su cuenta
-         sin equivocarse, y por eso va entero y no resumido: juntar
-         promesas es fácil, llevar la cuenta es el trabajo. El dinero
-         no se menciona aquí como nuestro: lo cobra el programa. -->
+    <!-- Quien hace que. La raya del medio es el producto. -->
     <section class="sec">
-      <h2 id="h2cob"></h2>
-      <p id="pCob"></p>
-      <ol class="pasos" id="cobpasos"></ol>
-      <p class="dura"><b id="duraL"></b> <span id="duraP"></span></p>
-      <div class="nadie" id="nadie">
-        <b id="nadieH"></b>
-        <p id="nadieP"></p>
+      <h2 id="h2rep"></h2>
+      <div class="reparto">
+        <div class="lado nos"><h3 id="repNosH"></h3><ul id="repNos"></ul></div>
+        <div class="lado tu"><h3 id="repTuH"></h3><ul id="repTu"></ul></div>
       </div>
+      <p class="nunca" id="nunca"></p>
     </section>
 
-    <!-- El Fortress, como lo que es ahora: el otro camino, para un
-         programa sin temporada o para un segundo evento. Tarjeta y no
-         seccion a proposito — una seccion lo pondria al nivel del
-         modelo principal, y no lo esta. -->
+    <!-- La licencia. Datos, no argumentos. -->
+    <section class="sec">
+      <h2 id="h2lic"></h2>
+      <table class="tabla"><tbody id="lic"></tbody></table>
+    </section>
+
     <section class="sec">
       <a class="tarjeta" href="the-fortress.html">
-        <b class="t-kick" id="fKick"></b>
+        <span class="t-kick" id="fKick"></span>
         <span class="t-tit" id="fTit"></span>
         <span class="t-txt" id="fTxt"></span>
         <span class="t-ir" id="fIr"></span>
       </a>
     </section>
 
-    <section class="sec">
-      <h2 id="h2prog"></h2>
-      <p id="pProg"></p>
-      <a class="jugar" href="equipo.html" id="btnProg"></a>
-    </section>
-
-    <section class="sec">
-      <h2 id="h2coach"></h2>
-      <p id="pCoach"></p>
-      <a class="pedir" href="ayuda.html" id="btnCoach"></a>
-    </section>
-
-    <section class="sec">
+    <section class="sec" style="text-align:center">
       <h2 id="h2ya"></h2>
-      <p id="pYa"></p>
+      <p id="pYa" style="margin-left:auto;margin-right:auto"></p>
       <a class="jugar" href="contact.html" id="btnYa"></a>
     </section>
+
+    <p class="remate"><span id="remate"></span></p>
 
   </div>
 </main>
@@ -401,139 +318,134 @@ footer a:hover{text-decoration:underline}
 <script>
 var S = {
   es:{
-    titulo:'Cada Punto — tu equipo anota, tu programa cobra',
-    h1:'Tu equipo ya está compitiendo.',
-    bajo:'Cada Punto convierte cada punto que anotan en dinero para el programa — unos centavos a la vez, prometidos por la gente que ya estaba gritando en la cancha. Diez padrinos a diez centavos, una noche de 68 puntos, y el programa tiene $68.',
-    golpes:['Nada que vender.','Sin rifas.','Nada que entregar.','Anotan, y te pagan.'],
+    titulo:'Cada Punto Cuenta — manejo de promesas por juego',
+    h1:'El marcador es la recaudación.',
+    lema:'<span>Nosotros manejamos las <em>promesas</em>.</span><span>Tú manejas el <i>dinero</i>.</span>',
+    golpes:['14 días para conseguir padrinos','Un juego','Resultados automáticos'],
 
-    h2como:'Cómo recauda',
-    pComo:'Un juego de tu calendario, el que ya ibas a jugar. Los padrinos prometen unos centavos por cada punto que anote el equipo esa noche, y pagan después — por lo que de verdad se anotó.',
-    pasos:[
-      ['Nos dices tu calendario','Nos escribes, montamos tu campaña y coordinamos los juegos y los interescuadras contigo. Nadie se da de alta solo: las abrimos una por una.'],
-      ['Los padrinos escogen su juego','Diez centavos el sábado. Veinticinco para el torneo. La familia, los vecinos, el negocio de la esquina — cada uno escoge cuánto y en cuál, y pone su tope si quiere.'],
-      ['Se juega, y se pone el marcador','El marcador del juego cierra las promesas de ese juego y saca lo que debe cada padrino. Anotan 68 con diez padrinos a diez centavos, y hay $68 para cobrar.']
+    h2fases:'Cómo funciona un evento',
+    pFases:'De principio a fin son quince días.',
+    fases:[
+      ['Antes del día 1','Registras el evento',
+       'Nos escribes, montamos tu campaña y queda fijada la fecha del juego. Un representante del equipo acepta la licencia y sus términos. No se paga nada por adelantado.'],
+      ['Días 1 al 14','Los jugadores consiguen padrinos',
+       'Invitan a la familia, a los vecinos, al negocio de la esquina. Cada padrino promete una cantidad por cada punto que anote el equipo, y pone su tope si quiere. La plataforma organiza las promesas por jugador y por equipo.'],
+      ['Día 15','Se juega',
+       'El equipo juega su juego. Un representante entra el marcador final y lo confirma. Ahí mismo la plataforma calcula el total de cada promesa, a partir del marcador, la cantidad prometida por punto y el tope de cada padrino.'],
+      ['Al confirmar el marcador','Salen los avisos y el reporte',
+       'Cada padrino recibe el resultado del juego y el total de su promesa. Al equipo le queda el resumen completo y un reporte final para bajar. No hay cálculos manuales ni avisos que mandar uno por uno.'],
+      ['Al cerrar','El evento se cierra y se factura la licencia',
+       'Bajas tu reporte y te lo quedas. Nosotros facturamos el cargo fijo del evento, que se paga dentro de siete días. El cargo no depende de cuánto se prometió ni de cuánto se recaudó.']
     ],
-    claves:[
-      '<b>Las promesas de un juego cierran cuando empieza.</b> Prometer sabiendo el marcador no es prometer.',
-      '<b>No se paga nada por adelantado.</b> El padrino paga después, por los puntos que de verdad se anotaron, y un juego que no se jugó no se cobra.',
-      '<b>Es el marcador del equipo.</b> Ningún jugador vale más que otro y nadie gana nada tirando de más.',
-      '<b>El dinero va directo al programa.</b> El padrino le paga al programa, no a nosotros. No procesamos pagos y no guardamos dinero de nadie.',
-      /* Lo que no se puede dejar insinuado en ningún sitio: que el
-         total prometido sea el total recibido. Nosotros llevamos la
-         cuenta de lo prometido y hasta ahí; quien cobra es el
-         programa. Decirlo aquí, al lado de la promesa, en vez de que
-         lo descubra con la lista en la mano. */
-      '<b>Lo prometido no es lo recaudado.</b> Una promesa es una promesa, y quien cobra es el programa. Nosotros llevamos la cuenta de lo prometido — lo que entre, y cuándo, es cosa tuya.'
-    ],
-    remate:'Lo que anota tu equipo es lo que prometieron sus padrinos. Cada <em>Punto</em> <i>Cuenta</i>.',
 
-    h2cob:'Prometer es fácil. Llevar la cuenta es el trabajo.',
-    pCob:'Juntar promesas lo hace cualquiera. Lo que mata estas recaudaciones viene después: doscientas personas que prometieron doscientas cantidades distintas — $16.20, $6.45, $42.75 — cada una sacada de un marcador distinto. Esa cuenta a mano no la lleva nadie sin equivocarse. Eso es exactamente lo que hacemos nosotros.',
-    cobpasos:[
-      ['Cada promesa queda anotada','El nombre del padrino, los centavos por punto, el juego, y el tope si lo puso. Todo en un sitio, y nadie tiene que acordarse de nada.'],
-      ['Entra el marcador y sale la cuenta','El marcador cierra las promesas de ese juego y saca lo que le toca a cada padrino, con el tope aplicado si mordió. Diez padrinos, diez cantidades distintas, sin una sola cuenta a mano.'],
-      ['Cada padrino recibe su aviso','Automático, al cerrar el juego: el resultado y lo que dio su promesa. Un aviso, y nada más — sin enlace de pago y sin recordatorios.'],
-      ['La lista se imprime o se baja','Cada padrino con su cantidad, lista para que la trabajes por donde ya hablas con esa gente.'],
-      ['El programa cobra como siempre ha cobrado','Por ATH Móvil, en efectivo, o como acuerde con cada quien. El dinero le llega directo, el mismo día, a su propia cuenta.'],
-      ['Nosotros no tocamos un centavo','No procesamos pagos, no guardamos dinero y no le cobramos nada a ningún padrino. Nosotros manejamos las promesas; tú manejas el dinero.']
-    ],
-    /* Cuánto tarda. Antes aquí había treinta a cuarenta y cinco días
-       porque el cobro era nuestro y había remesa. Ya no: la cuenta
-       sale el día del marcador y de ahí en adelante el calendario es
-       del programa. Prometer una fecha de dinero que no controlamos
-       sería prometer por cuenta ajena. */
-    duraL:'Cuánto tarda',
-    duraP:'Un evento son <b>catorce días para conseguir padrinos y el juego el día quince</b>. La cuenta sale el mismo día que entra el marcador, los avisos salen solos, y ahí el evento cierra. De ahí en adelante el calendario es tuyo: cobras cuando cobras, por donde cobras. Una temporada son varios eventos, cada uno con sus propios padrinos y su propia lista.',
-    nadieH:'Lo que nadie tiene que hacer',
-    nadieP:'Sacar la cuenta a mano. Ni el entrenador con una libreta, ni tú con una hoja de cálculo a las once de la noche, ni nadie sumando doscientas cantidades distintas sacadas de doscientos marcadores. Nadie manda un sobre a la escuela y nadie lleva la lista de quién prometió qué: la lista está hecha, con nombre y cantidad, cuando acaba el juego.',
+    h2rep:'Quién hace qué',
+    repNosH:'La plataforma',
+    repNos:['Guarda cada promesa, con su tarifa y su tope',
+            'Calcula el total de cada promesa cuando entra el marcador',
+            'Le manda su aviso a cada padrino',
+            'Genera el reporte final del evento'],
+    repTuH:'Tu programa',
+    repTu:['Registra el evento y fija la fecha',
+           'Invita a los padrinos',
+           'Provee el marcador final',
+           'Cobra por su cuenta, por donde ya cobra',
+           'Lleva sus propias cuentas'],
+    nunca:'Cada Punto Cuenta no cobra donativos, no procesa pagos, no guarda información bancaria, no lleva el control de lo cobrado y no cuadra fondos.',
+
+    h2lic:'La licencia',
+    lic:[['Tipo','Cargo fijo por equipo, por juego'],
+         ['Conseguir padrinos','14 días'],
+         ['Día de juego','Día 15'],
+         ['Cierre','Después de los avisos y el reporte'],
+         ['Por adelantado','$0'],
+         ['Se factura','Al cerrar el evento'],
+         ['Se paga','Dentro de 7 días'],
+         ['Procesamiento de donativos','No'],
+         ['Control de lo cobrado','No']],
 
     fKick:'También',
     fTit:'El Fortress',
-    fTxt:'No todos los programas tienen temporada. El Fortress es el otro camino: un juego que se juega en el teléfono, cuatro cuartos en un día, y los padrinos prometen por punto igual que en un juego de verdad. Sirve para un equipo fuera de temporada, para un grupo que no juega baloncesto, o para un segundo evento en el año.',
+    fTxt:'¿No tienes temporada? El Fortress es el otro camino: un juego que se juega en el teléfono, cuatro cuartos en un día, y los padrinos prometen por punto igual que en un juego de verdad.',
     fIr:'Ver el Fortress →',
 
-    h2prog:'¿Llevas un programa?',
-    pProg:'Trabajamos directo contigo: nos pasas tu plantilla, coordinamos los juegos y los interescuadras, y montamos la campaña nosotros. No hay nada que vender, nada que repartir y nadie a quien juntar en un sitio.',
-    btnProg:'Habla con nosotros',
-
-    h2coach:'Pregúntale al coach',
-    pCoach:'Coach Cada Punto contesta lo de los juegos, lo de los padrinos y lo del dinero — y de baloncesto, si te hace falta. Debajo de él están las preguntas de siempre, ya contestadas. Para entrar hace falta tu código de entrenador.',
-    btnCoach:'Abrir Coach Cada Punto',
-
-    h2ya:'Empieza ahora',
-    pYa:'Cuéntanos de tu escuela, tu club o tu grupo y lo montamos — tu plantilla, tu calendario — y te lo mandamos. Nada sale al aire hasta que tú lo digas.',
+    h2ya:'Empieza con un juego',
+    pYa:'Cuéntanos de tu equipo y de la fecha. Montamos la campaña nosotros y nada sale al aire hasta que tú lo digas.',
     btnYa:'Escríbenos',
 
-    fWhat:'Cada Punto es un sistema de manejo de promesas de Gostar Digital LLC, una empresa con fines de lucro. El programa recibe su dinero directo; nosotros cobramos por el uso de la herramienta.',
+    remate:'Nosotros manejamos las <em>promesas</em>. Tú manejas el <i>dinero</i>.',
+    fWhat:'Cada Punto Cuenta es una plataforma de Gostar Digital LLC, una empresa con fines de lucro. Se licencia por evento; el dinero lo cobra y lo maneja el programa.',
     rutas:[
       ['Tu programa',[['mi-equipo.html','Mi equipo'],['plantilla.html','La plantilla'],
-                      ['scoreboard.html','El tablero del equipo'],
-                      ['ayuda.html','Coach Cada Punto'],['cobro.html','Cómo cobras']]],
+                      ['scoreboard.html','El tablero'],['ayuda.html','Coach Cada Punto'],
+                      ['cobro.html','Cómo cobras']]],
       ['Empezar',[['equipo.html','Inscribe tu equipo'],['padrinos.html','Conseguir padrinos'],
                   ['contact.html','Habla con nosotros']]]
     ],
     legal:[['terms.html','Términos'],['privacy.html','Privacidad'],
            ['custodia.html','El dinero no pasa por nosotros']]
   },
+
   en:{
-    titulo:'Cada Punto — your team scores, your program gets paid',
-    h1:'Your team is already competing.',
-    bajo:'Cada Punto turns every point they score into money for the program — a few cents at a time, pledged by the people who were already cheering. Ten padrinos at a dime, a 68-point night, and the program has $68.',
-    golpes:['Nothing to sell.','No raffles.','Nothing to deliver.','They score. You get paid.'],
+    titulo:'Cada Punto Cuenta — single-game pledge management',
+    h1:'The scoreboard is the fundraiser.',
+    lema:'<span>We manage the <em>pledges</em>.</span><span>You manage the <i>proceeds</i>.</span>',
+    golpes:['14 days to recruit','One game','Automatic results'],
 
-    h2como:'How it raises',
-    pComo:'One game off your schedule — the one you were playing anyway. Padrinos pledge a few cents on every point the team scores that night, and they pay afterwards, on what was actually scored.',
-    pasos:[
-      ['You tell us your schedule','You write to us, we build your campaign, and we coordinate the games and scrimmages with you. Nobody signs themselves up: we open them one at a time.'],
-      ['Padrinos pick their game','A dime on Saturday. A quarter for the tournament. Family, neighbours, the business down the road — each one picks how much and which game, and sets a cap if they want one.'],
-      ['You play, and the score goes in','The game’s final score closes that game’s pledges and works out what every padrino owes. Score 68 with ten padrinos at a dime, and there is $68 to collect.']
+    h2fases:'How an event runs',
+    pFases:'Start to finish, fifteen days.',
+    fases:[
+      ['Before day 1','The team registers its event',
+       'You write to us, we build your campaign, and the game date is set. An authorized representative accepts the license fee and its terms. No upfront payment is required.'],
+      ['Days 1 to 14','Players recruit their padrinos',
+       'They invite family, neighbours, the business down the road. Each padrino pledges an amount for every point the team scores, and may set a maximum. The platform organizes the pledges by player and by team.'],
+      ['Day 15','The game is played',
+       'The team plays its scheduled game. An authorized representative enters and confirms the final score. Right there the platform calculates each pledge total, from the final score, the amount pledged per point, and each padrino’s cap.'],
+      ['On confirmation','Notices and reporting go out',
+       'Every padrino receives the game result and their individual pledge total. The team is left with a complete pledge summary and a final report to download. No manual calculations and no individual notifications are required.'],
+      ['At close','The event closes and the license is invoiced',
+       'You download your report and keep it. We invoice the fixed event fee, due within seven days. The fee does not depend on how much was pledged or how much was collected.']
     ],
-    claves:[
-      '<b>A game’s pledges close when it starts.</b> Pledging while knowing the score is not pledging.',
-      '<b>Nothing is paid up front.</b> A padrino pays afterwards, on the points actually scored, and a game that was never played is never charged.',
-      '<b>It is the team’s score.</b> No player is worth more than another and nobody gains anything by shooting more.',
-      '<b>The money goes straight to the program.</b> A padrino pays the program, not us. We process no payments and we hold nobody’s money.',
-      '<b>Pledged is not collected.</b> A pledge is a promise, and the program is the one who collects. We keep the count of what was pledged — what comes in, and when, is yours.'
-    ],
-    remate:'What your team scores is what their padrinos pledged. Cada <em>Punto</em> <i>Cuenta</i>.',
 
-    h2cob:'Pledging is easy. Keeping the count is the work.',
-    pCob:'Anybody can gather pledges. What kills these fundraisers comes afterwards: two hundred people who pledged two hundred different amounts — $16.20, $6.45, $42.75 — each one worked out from a different score. Nobody keeps that count by hand without getting it wrong. That is exactly what we do.',
-    cobpasos:[
-      ['Every pledge is recorded','The padrino’s name, the cents per point, the game, and the cap if he set one. All in one place, and nobody has to remember anything.'],
-      ['The score goes in and the arithmetic comes out','The score closes that game’s pledges and works out what each padrino comes to, with the cap applied if it bit. Ten padrinos, ten different amounts, not one sum done by hand.'],
-      ['Every padrino gets his notice','Automatic, when the game closes: the result and what his pledge came to. A notice, and nothing more — no payment link and no reminders.'],
-      ['The list prints or downloads','Every padrino with his amount, ready to work through wherever you already talk to those people.'],
-      ['The program collects the way it always has','By ATH Móvil, in cash, or however it agrees with each one. The money arrives directly, the same day, in its own account.'],
-      ['We do not touch a cent','We process no payments, hold no money, and charge no padrino anything. We manage the pledges; you manage the proceeds.']
-    ],
-    duraL:'How long it takes',
-    duraP:'An event is <b>fourteen days to gather padrinos and the game on day fifteen</b>. The arithmetic comes out the same day the score goes in, the notices go out on their own, and the event closes there. After that the calendar is yours: you collect when you collect, however you collect. A season is several events, each with its own padrinos and its own list.',
-    nadieH:'What nobody has to do',
-    nadieP:'Work out the arithmetic by hand. Not the coach with a notebook, not you with a spreadsheet at eleven at night, not anybody adding up two hundred different amounts off two hundred different scores. Nobody sends an envelope to school, and nobody keeps the list of who pledged what by hand: the list is made, with name and amount, the moment the game ends.',
+    h2rep:'Who does what',
+    repNosH:'The platform',
+    repNos:['Holds every pledge, with its rate and its cap',
+            'Calculates each pledge total when the score goes in',
+            'Sends each padrino their notice',
+            'Generates the final event report'],
+    repTuH:'Your program',
+    repTu:['Registers the event and sets the date',
+           'Invites the padrinos',
+           'Provides the final score',
+           'Collects on its own, however it already collects',
+           'Keeps its own books'],
+    nunca:'Cada Punto Cuenta does not collect donations, process payments, hold banking information, track collections, or reconcile funds.',
+
+    h2lic:'The license',
+    lic:[['Type','Fixed fee per team, per game'],
+         ['Recruitment','14 days'],
+         ['Game day','Day 15'],
+         ['Closing','After notices and reporting'],
+         ['Upfront','$0'],
+         ['Invoiced','When the event closes'],
+         ['Due','Within 7 days'],
+         ['Donation processing','Not provided'],
+         ['Collection tracking','Not provided']],
 
     fKick:'Also',
     fTit:'The Fortress',
-    fTxt:'Not every program has a season. The Fortress is the other way: a game played on a phone, four quarters in one day, with padrinos pledging by the point exactly as they do on a real game. It suits a team out of season, a group that does not play basketball, or a second event in the year.',
+    fTxt:'No season? The Fortress is the other way: a game played on a phone, four quarters in one day, with padrinos pledging by the point exactly as they do on a real game.',
     fIr:'See the Fortress →',
 
-    h2prog:'Do you run a program?',
-    pProg:'We work with you directly: you send us your roster, we coordinate the games and scrimmages, and we build the campaign ourselves. Nothing to sell, nothing to deliver, nobody to gather in one place.',
-    btnProg:'Talk to us',
-
-    h2coach:'Ask the coach',
-    pCoach:'Coach Cada Punto answers the games, the padrinos and the money — and basketball, if you need it. Underneath him are the usual questions, already answered. You need your coach code to get in.',
-    btnCoach:'Open Coach Cada Punto',
-
-    h2ya:'Start now',
-    pYa:'Tell us about your school, club or group and we will build it — your roster, your schedule — and send it over. Nothing goes live until you say so.',
+    h2ya:'Start with one game',
+    pYa:'Tell us about your team and the date. We build the campaign ourselves, and nothing goes live until you say so.',
     btnYa:'Write to us',
 
-    fWhat:'Cada Punto is a pledge management system from Gostar Digital LLC, a for-profit company. The program receives its money directly; we charge for use of the tool.',
+    remate:'We manage the <em>pledges</em>. You manage the <i>proceeds</i>.',
+    fWhat:'Cada Punto Cuenta is a platform from Gostar Digital LLC, a for-profit company. It is licensed per event; the money is collected and managed by the program.',
     rutas:[
       ['Your program',[['mi-equipo.html','My team'],['plantilla.html','The roster'],
-                       ['scoreboard.html','The team board'],
-                       ['ayuda.html','Coach Cada Punto'],['cobro.html','How you collect']]],
+                       ['scoreboard.html','The board'],['ayuda.html','Coach Cada Punto'],
+                       ['cobro.html','How you collect']]],
       ['Start',[['equipo.html','Sign up my team'],['padrinos.html','Getting padrinos'],
                 ['contact.html','Talk to us']]]
     ],
@@ -547,71 +459,69 @@ try{ LANG = localStorage.getItem('cfh_lang')||localStorage.getItem('cp-lang')||
   localStorage.getItem('fc-lang')||
   ((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en'); }catch(e){}
 
-function T(k){ var v=(S[LANG]&&S[LANG][k]); return v===undefined?S.es[k]:v }
+function T(k){ return (S[LANG]&&S[LANG][k]!==undefined)?S[LANG][k]:S.es[k] }
 function $(id){ return document.getElementById(id) }
-function esc(s){
-  return String(s==null?'':s).replace(/[&<>"']/g,function(m){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
-  });
-}
-/* Los textos con <b> o <em> van por innerHTML; el resto por
-   textContent. Mezclarlos es como se cuela una etiqueta a la vista. */
-function pon(id,t){ var e=$(id); if(e) e.textContent=t }
+function esc(t){ return String(t==null?'':t)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function pon(id,html){ var e=$(id); if(e) e.innerHTML=html }
 
 function toggleLang(){
-  LANG = LANG==='es'?'en':'es';
+  LANG = (LANG==='es') ? 'en' : 'es';
   try{ localStorage.setItem('cfh_lang',LANG); localStorage.setItem('cp-lang',LANG);
        localStorage.setItem('fc-lang',LANG); }catch(e){}
-  $('langBtn').textContent = LANG==='es'?'EN':'ES';
   pintar();
 }
 
 function pintar(){
-  document.documentElement.lang=LANG;
-  document.title=T('titulo');
+  document.documentElement.lang = LANG;
+  document.title = T('titulo');
+  $('langBtn').textContent = (LANG==='es') ? 'EN' : 'ES';
 
-  pon('h1',T('h1'));  pon('bajo',T('bajo'));
-  $('golpes').innerHTML=T('golpes').map(function(g){
-    return '<li>'+esc(g)+'</li>';
-  }).join('');
+  pon('h1', esc(T('h1')));
+  pon('lema', T('lema'));
+  pon('golpes', T('golpes').map(function(g){ return '<li>'+esc(g)+'</li>' }).join(''));
 
-  pon('h2como',T('h2como'));  pon('pComo',T('pComo'));
-  $('pasos').innerHTML=T('pasos').map(function(p){
-    return '<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>';
-  }).join('');
-  $('claves').innerHTML=T('claves').map(function(c){
-    return '<li>'+c+'</li>';
-  }).join('');
-  $('remate').innerHTML=T('remate');
+  pon('h2fases', esc(T('h2fases')));
+  pon('pFases', esc(T('pFases')));
+  pon('fases', T('fases').map(function(f){
+    return '<li><span class="cuando">'+esc(f[0])+'</span>'+
+           '<b>'+esc(f[1])+'</b><span class="q">'+esc(f[2])+'</span></li>';
+  }).join(''));
 
-  pon('h2cob',T('h2cob'));  pon('pCob',T('pCob'));
-  $('cobpasos').innerHTML=T('cobpasos').map(function(p){
-    return '<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>';
-  }).join('');
-  pon('duraL',T('duraL'));
-  $('duraP').innerHTML=T('duraP');
-  pon('nadieH',T('nadieH'));  pon('nadieP',T('nadieP'));
+  pon('h2rep', esc(T('h2rep')));
+  pon('repNosH', esc(T('repNosH')));
+  pon('repNos', T('repNos').map(function(x){ return '<li>'+esc(x)+'</li>' }).join(''));
+  pon('repTuH', esc(T('repTuH')));
+  pon('repTu', T('repTu').map(function(x){ return '<li>'+esc(x)+'</li>' }).join(''));
+  pon('nunca', esc(T('nunca')));
 
-  pon('fKick',T('fKick'));  pon('fTit',T('fTit'));
-  pon('fTxt',T('fTxt'));    pon('fIr',T('fIr'));
+  pon('h2lic', esc(T('h2lic')));
+  pon('lic', T('lic').map(function(r){
+    var no = /^(No|Not provided)$/.test(r[1]);
+    return '<tr><th>'+esc(r[0])+'</th><td'+(no?' class="no"':'')+'>'+esc(r[1])+'</td></tr>';
+  }).join(''));
 
-  pon('h2prog',T('h2prog'));   pon('pProg',T('pProg'));   pon('btnProg',T('btnProg'));
-  pon('h2coach',T('h2coach')); pon('pCoach',T('pCoach')); pon('btnCoach',T('btnCoach'));
-  pon('h2ya',T('h2ya'));       pon('pYa',T('pYa'));       pon('btnYa',T('btnYa'));
+  pon('fKick', esc(T('fKick')));
+  pon('fTit',  esc(T('fTit')));
+  pon('fTxt',  esc(T('fTxt')));
+  pon('fIr',   esc(T('fIr')));
 
-  pon('fWhat',T('fWhat'));
-  $('rutas').innerHTML=T('rutas').map(function(g){
-    return '<div class="ruta"><b>'+esc(g[0])+'</b>'+
-      g[1].map(function(l){
-        return '<a href="'+esc(l[0])+'">'+esc(l[1])+'</a>';
-      }).join('')+'</div>';
-  }).join('');
-  $('legal').innerHTML=T('legal').map(function(l){
-    return '<a href="'+esc(l[0])+'">'+esc(l[1])+'</a>';
-  }).join('<span class="punto">·</span>');
+  pon('h2ya', esc(T('h2ya')));
+  pon('pYa',  esc(T('pYa')));
+  $('btnYa').textContent = T('btnYa');
+
+  pon('remate', T('remate'));
+  pon('fWhat', esc(T('fWhat')));
+
+  pon('rutas', T('rutas').map(function(g){
+    return '<div><b>'+esc(g[0])+'</b>'+
+      g[1].map(function(l){ return '<a href="'+l[0]+'">'+esc(l[1])+'</a>' }).join('')+'</div>';
+  }).join(''));
+  pon('legal', T('legal').map(function(l){
+    return '<a href="'+l[0]+'">'+esc(l[1])+'</a>';
+  }).join('<span>·</span>'));
 }
 
-$('langBtn').textContent = LANG==='es'?'EN':'ES';
 pintar();
 </script>
 </body>
